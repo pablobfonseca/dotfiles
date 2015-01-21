@@ -26,7 +26,7 @@ syntax on
 " The mapleader has to be set before vundle starts loading all 
 " the plugins.
 let mapleader=","
-colorscheme distinguished
+colorscheme codeschool
 
 " ================ Turn Off Swap Files ==============
 
