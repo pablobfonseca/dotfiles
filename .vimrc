@@ -54,6 +54,7 @@ set tabstop=2
 set expandtab
 
 " Display tabs and trailing spaces visually
+set list
 set listchars=tab:\ \ ,trail:·
 
 set nowrap       "Don't wrap lines
@@ -67,7 +68,7 @@ set nofoldenable        "dont fold by default
 
 " ================ Completion =======================
 
-set wildmode=list:longest
+set wildmode=list,longest
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
@@ -94,8 +95,9 @@ set hlsearch        " Highlight searches by default
 set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 
-" Allow cursor keys in insert mode
-set esckeys
+" Clear the search buffer when hitting return
+nnoremap <cr> :nohlsearch<cr>
+
 " Optimize for fast terminal connections
 set ttyfast
 " Add g flag to search/replace by default
@@ -104,8 +106,6 @@ set gdefault
 set encoding=utf-8 nobomb
 " Change mapleader
 let mapleader=","
-" Don’t add empty newlines at the end of files
-set binary
 " Centralize backups, swapfiles and undo history
 set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
@@ -119,9 +119,42 @@ set wmh=0 " reduces splits to a single line
 set exrc
 set secure
 set cursorline
+
+autocmd FileType gitcommit setlocal colorcolumn=72
+
+" This tip is an improved version of the example given for :help last-position-jump.
+" It fixes a problem where the cursor position will not be restored if the file only has a single line.
+"
+" http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
+
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
+
+" Configure syntastic syntax checking to check on open as well as save
+let g:syntastic_check_on_open=1
+
+" Ruby
+imap <c-l> <space>=><space>
+
+" RSpec
+let g:rspec_command = "!bin/rspec {spec}"
+
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+
 " Make tabs as wide as two spaces
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-set lcs=trail:·
+"	set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+"	set lcs=trail:·
 " Highlight searches
 " Always show status line
 set laststatus=2
@@ -229,7 +262,6 @@ Bundle "vim-scripts/AnsiEsc.vim.git"
 Bundle "vim-scripts/AutoTag.git"
 Bundle "vim-scripts/lastpos.vim"
 Bundle "vim-scripts/sudo.vim"
-Bundle "xsunsmile/showmarks.git"
 "vim-misc is required for vim-session
 Bundle "xolox/vim-misc"
 Bundle "xolox/vim-session"
@@ -279,36 +311,3 @@ Plugin 'airblade/vim-gitgutter'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-augroup configgroup
-		autocmd!
-		autocmd VimEnter * highlight clear SignColumn
-		autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.md
-								\:call <SID>StripTrailingWhitespaces()
-		autocmd FileType php setlocal expandtab
-		autocmd FileType php setlocal list
-		autocmd FileType php setlocal listchars=tab:+\ ,eol:-
-		autocmd FileType php setlocal formatprg=par\ -w80\ -T4
-		autocmd FileType ruby setlocal tabstop=2
-		autocmd FileType ruby setlocal shiftwidth=2
-		autocmd FileType ruby setlocal softtabstop=2
-		autocmd FileType ruby setlocal commentstring=#\ %s
-		autocmd FileType python setlocal commentstring=#\ %s
-		autocmd BufEnter *.cls setlocal filetype=java
-		autocmd BufEnter *.zsh-theme setlocal filetype=zsh
-		autocmd BufEnter Makefile setlocal noexpandtab
-		autocmd BufEnter *.sh setlocal tabstop=2
-		autocmd BufEnter *.sh setlocal shiftwidth=2
-		autocmd BufEnter *.sh setlocal softtabstop=2
-augroup END
