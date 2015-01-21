@@ -1,5 +1,5 @@
 set nocompatible              " be iMproved, required
-filetype off                  " required
+filetype off
 
 " ================ General Config ====================
 
@@ -53,11 +53,8 @@ set softtabstop=2
 set tabstop=2
 set expandtab
 
-filetype plugin on
-filetype indent on
-
 " Display tabs and trailing spaces visually
-set list listchars=tab:\ \ ,trail:·
+set listchars=tab:\ \ ,trail:·
 
 set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
@@ -123,7 +120,7 @@ set exrc
 set secure
 set cursorline
 " Make tabs as wide as two spaces
-"set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
 set lcs=trail:·
 " Highlight searches
 " Always show status line
@@ -144,26 +141,9 @@ set shortmess=atI
 " Show the current mode
 set title
 
-" Strip trailing whitespace (,ss)
-function! StripWhitespace()
-        let save_cursor = getpos(".")
-        let old_query = getreg('/')
-        :%s/\s\+$//e
-        call setpos('.', save_cursor)
-        call setreg('/', old_query)
-endfunction
-noremap <leader>ss :call StripWhitespace()<CR>
-" Save a file as root (,W)
-noremap <leader>W :w !sudo tee % > /dev/null<CR>
-
-" Automatic commands
-if has("autocmd")
-        " Enable file type detection
-        filetype on
-        " Treat .json files as .js
-        autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-endif
-
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -171,47 +151,124 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
+" Bundles
+
+" Ruby, Rails, Rake
+Bundle "astashov/vim-ruby-debugger"
+Bundle "ecomba/vim-ruby-refactoring"
+Bundle "tpope/vim-rails.git"
+Bundle "tpope/vim-rake.git"
+Bundle "tpope/vim-rvm.git"
+Bundle "vim-ruby/vim-ruby.git"
+Bundle "vim-scripts/Specky.git"
+Bundle "ck3g/vim-change-hash-syntax"
+
+" Other languages
+Bundle "briancollins/vim-jst"
+Bundle "pangloss/vim-javascript"
+Bundle "rodjek/vim-puppet"
+
+" Html, Xml, Css, Markdown...
+Bundle "claco/jasmine.vim"
+Bundle "digitaltoad/vim-jade.git"
+Bundle "groenewege/vim-less.git"
+Bundle "itspriddle/vim-jquery.git"
+Bundle "jtratner/vim-flavored-markdown.git"
+Bundle "kchmck/vim-coffee-script"
+Bundle "nelstrom/vim-markdown-preview"
+Bundle "skwp/vim-html-escape"
+Bundle "slim-template/vim-slim.git"
+Bundle "timcharper/textile.vim.git"
+Bundle "tpope/vim-haml"
+Bundle "wavded/vim-stylus"
+
+" Git related...
+Bundle "gregsexton/gitv"
+Bundle "mattn/gist-vim"
+Bundle "skwp/vim-git-grep-rails-partial"
+Bundle "tjennings/git-grep-vim"
+Bundle "tpope/vim-fugitive"
+Bundle "tpope/vim-git"
+
+" General text editing improvements...
+Bundle "AndrewRadev/splitjoin.vim"
+Bundle "Raimondi/delimitMate"
+Bundle "Shougo/neocomplcache.git"
+Bundle "briandoll/change-inside-surroundings.vim.git"
+Bundle "garbas/vim-snipmate.git"
+Bundle "godlygeek/tabular"
+Bundle "honza/vim-snippets"
+Bundle "nelstrom/vim-visual-star-search"
+Bundle "skwp/vim-easymotion"
+Bundle "tomtom/tcomment_vim.git"
+Bundle "tpope/vim-bundler"
+Bundle "vim-scripts/IndexedSearch"
+Bundle "vim-scripts/camelcasemotion.git"
+Bundle "vim-scripts/matchit.zip.git"
+Bundle "terryma/vim-multiple-cursors"
+
+" General vim improvements
+Bundle "MarcWeber/vim-addon-mw-utils.git"
+Bundle "kien/ctrlp.vim"
+Bundle "majutsushi/tagbar.git"
+Bundle "mattn/webapi-vim.git"
+Bundle "rking/ag.vim"
+Bundle "scrooloose/syntastic.git"
+Bundle "sjl/gundo.vim"
+Bundle "skwp/YankRing.vim"
+Bundle "skwp/greplace.vim"
+Bundle "skwp/vim-conque"
+Bundle "tomtom/tlib_vim.git"
+Bundle "tpope/vim-abolish"
+Bundle "tpope/vim-endwise.git"
+Bundle "tpope/vim-ragtag"
+Bundle "tpope/vim-repeat.git"
+Bundle "tpope/vim-surround.git"
+Bundle "tpope/vim-unimpaired"
+Bundle "vim-scripts/AnsiEsc.vim.git"
+Bundle "vim-scripts/AutoTag.git"
+Bundle "vim-scripts/lastpos.vim"
+Bundle "vim-scripts/sudo.vim"
+Bundle "xsunsmile/showmarks.git"
+"vim-misc is required for vim-session
+Bundle "xolox/vim-misc"
+Bundle "xolox/vim-session"
+
+" Text objects
+Bundle "austintaylor/vim-indentobject"
+Bundle "bootleq/vim-textobj-rubysymbol"
+Bundle "coderifous/textobj-word-column.vim"
+Bundle "kana/vim-textobj-datetime"
+Bundle "kana/vim-textobj-entire"
+Bundle "kana/vim-textobj-function"
+Bundle "kana/vim-textobj-user"
+Bundle "lucapette/vim-textobj-underscore"
+Bundle "nathanaelkane/vim-indent-guides"
+Bundle "nelstrom/vim-textobj-rubyblock"
+Bundle "thinca/vim-textobj-function-javascript"
+Bundle "vim-scripts/argtextobj.vim"
+
+" Cosmetics, color scheme, Powerline...
+Bundle "chrisbra/color_highlight.git"
+Bundle "skwp/vim-colors-solarized"
+Bundle "bling/vim-airline.git"
+Bundle "vim-scripts/TagHighlight.git"
+Bundle "bogado/file-line.git"
+Bundle "jby/tmux.vim.git"
+
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 " plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
 Plugin 'L9'
-" Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
 " Pass the path to set the runtimepath properly.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
-" It's easiest to explain with examples. Press cs"' inside
-Plugin 'tpope/vim-surround'
-
-" Syntastic is a syntax checking plugin for Vim that runs files through external syntax checkers
-Plugin 'scrooloose/syntastic'
-
-" CtrlP vim
-Plugin 'kien/ctrlp.vim'
-
-" Vim rails
-Plugin 'tpope/vim-rails'
-
 "Ack
 Plugin 'mileszs/ack.vim'
 
-"Easy motion
-Plugin 'Lokaltog/vim-easymotion'
-
 Plugin 'ervandew/supertab'
-
-"Javascript
-Plugin 'pangloss/vim-javascript'
-
-"Tabular
-Plugin 'godlygeek/tabular'
-
-"Vim ruby
-Plugin 'vim-ruby/vim-ruby'
 
 "Markdown
 Plugin 'tpope/vim-markdown'
@@ -235,23 +292,23 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 
 augroup configgroup
-    autocmd!
-    autocmd VimEnter * highlight clear SignColumn
-    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.md
-                \:call <SID>StripTrailingWhitespaces()
-    autocmd FileType php setlocal expandtab
-    autocmd FileType php setlocal list
-    autocmd FileType php setlocal listchars=tab:+\ ,eol:-
-    autocmd FileType php setlocal formatprg=par\ -w80\ -T4
-    autocmd FileType ruby setlocal tabstop=2
-    autocmd FileType ruby setlocal shiftwidth=2
-    autocmd FileType ruby setlocal softtabstop=2
-    autocmd FileType ruby setlocal commentstring=#\ %s
-    autocmd FileType python setlocal commentstring=#\ %s
-    autocmd BufEnter *.cls setlocal filetype=java
-    autocmd BufEnter *.zsh-theme setlocal filetype=zsh
-    autocmd BufEnter Makefile setlocal noexpandtab
-    autocmd BufEnter *.sh setlocal tabstop=2
-    autocmd BufEnter *.sh setlocal shiftwidth=2
-    autocmd BufEnter *.sh setlocal softtabstop=2
+		autocmd!
+		autocmd VimEnter * highlight clear SignColumn
+		autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.md
+								\:call <SID>StripTrailingWhitespaces()
+		autocmd FileType php setlocal expandtab
+		autocmd FileType php setlocal list
+		autocmd FileType php setlocal listchars=tab:+\ ,eol:-
+		autocmd FileType php setlocal formatprg=par\ -w80\ -T4
+		autocmd FileType ruby setlocal tabstop=2
+		autocmd FileType ruby setlocal shiftwidth=2
+		autocmd FileType ruby setlocal softtabstop=2
+		autocmd FileType ruby setlocal commentstring=#\ %s
+		autocmd FileType python setlocal commentstring=#\ %s
+		autocmd BufEnter *.cls setlocal filetype=java
+		autocmd BufEnter *.zsh-theme setlocal filetype=zsh
+		autocmd BufEnter Makefile setlocal noexpandtab
+		autocmd BufEnter *.sh setlocal tabstop=2
+		autocmd BufEnter *.sh setlocal shiftwidth=2
+		autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
