@@ -15,7 +15,7 @@ Now you should create a new `.vimrc` file in your home directory that
 loads the pre-configured one that comes bundled in this package. You can do it
 on Linux/Mac like this:
 ```
-echo "source ~/.vim/vimrc" > ~/.vimrc
+ln -s .vim/.vimrc .vimrc
 ```
 On Windows you should create a _vimrc (underline instead of dot) and add
 the following line inside:

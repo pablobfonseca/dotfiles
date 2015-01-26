@@ -17,3 +17,4 @@ bundle/vim-peepopen
 *.[t]bz2
 tmp/
 log/
+backups/*
