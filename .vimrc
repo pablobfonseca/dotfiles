@@ -1,9 +1,17 @@
+" Maintained by: Pablo Fonseca
+" pablofonseca777@gmail.com
+
+
 set nocompatible              " be iMproved, required
 filetype off
 
 " ================ General Config ====================
 
-set number                      "Line numbers are good
+scriptencoding utf-8          " utf-8 all the way
+set encoding=utf-8
+set number               "Line numbers are good
+set splitbelow
+set splitright
 set backspace=indent,eol,start  "Allow backspace in insert mode
 set history=1000                "Store lots of :cmdline history
 set showcmd                     "Show incomplete cmds down the bottom
@@ -163,6 +171,7 @@ set modeline
 set modelines=4
 " Enable mouse in all modes
 set mouse=a
+set mousehide
 " Disable error bells
 set noerrorbells
 " Don’t reset cursor to start of line when moving around.
@@ -186,10 +195,8 @@ call vundle#begin()
 
 " Ruby, Rails, Rake
 Bundle "astashov/vim-ruby-debugger"
-Bundle "ecomba/vim-ruby-refactoring"
-Bundle "tpope/vim-rails.git"
+Bundle "tpope/vim-rails.git" 
 Bundle "tpope/vim-rake.git"
-Bundle "tpope/vim-rvm.git"
 Bundle "vim-ruby/vim-ruby.git"
 Bundle "vim-scripts/Specky.git"
 Bundle "ck3g/vim-change-hash-syntax"
@@ -212,6 +219,8 @@ Bundle "slim-template/vim-slim.git"
 Bundle "timcharper/textile.vim.git"
 Bundle "tpope/vim-haml"
 Bundle "wavded/vim-stylus"
+Plugin 'mattn/emmet-vim'
+Plugin 'shemerey/vim-peepopen'
 
 " Git related...
 Bundle "gregsexton/gitv"
@@ -247,9 +256,6 @@ Bundle "rking/ag.vim"
 Bundle "scrooloose/syntastic.git"
 Bundle "sjl/gundo.vim"
 Bundle "skwp/YankRing.vim"
-Bundle "skwp/greplace.vim"
-Bundle "skwp/vim-conque"
-Bundle "tomtom/tlib_vim.git"
 Bundle "tpope/vim-abolish"
 Bundle "tpope/vim-endwise.git"
 Bundle "tpope/vim-ragtag"
@@ -258,7 +264,6 @@ Bundle "tpope/vim-surround.git"
 Bundle "tpope/vim-unimpaired"
 Bundle "vim-scripts/AnsiEsc.vim.git"
 Bundle "vim-scripts/AutoTag.git"
-Bundle "vim-scripts/lastpos.vim"
 Bundle "vim-scripts/sudo.vim"
 "vim-misc is required for vim-session
 Bundle "xolox/vim-misc"
