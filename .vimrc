@@ -1,7 +1,3 @@
-" Maintained by: Pablo Fonseca
-" pablofonseca777@gmail.com
-
-
 set nocompatible              " be iMproved, required
 filetype off
 
@@ -14,6 +10,7 @@ set splitbelow
 set splitright
 set backspace=indent,eol,start  "Allow backspace in insert mode
 set history=1000                "Store lots of :cmdline history
+set mouse-=a                    "Disable mouse click"
 set showcmd                     "Show incomplete cmds down the bottom
 set showmode                    "Show current mode down the bottom
 set gcr=a:blinkon0              "Disable cursor blink
@@ -169,9 +166,6 @@ set laststatus=2
 " Respect modeline in files
 set modeline
 set modelines=4
-" Enable mouse in all modes
-set mouse=a
-set mousehide
 " Disable error bells
 set noerrorbells
 " Don’t reset cursor to start of line when moving around.
@@ -250,6 +244,7 @@ Bundle "terryma/vim-multiple-cursors"
 " General vim improvements
 Bundle "MarcWeber/vim-addon-mw-utils.git"
 Bundle "kien/ctrlp.vim"
+Bundle "tomtom/tlib_vim.git"
 Bundle "majutsushi/tagbar.git"
 Bundle "mattn/webapi-vim.git"
 Bundle "rking/ag.vim"
@@ -316,3 +311,17 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 
 :let g:session_autoload = 'no'
+
+" Disable mouse scroll wheel
+:nmap <ScrollWheelUp> <nop>
+:nmap <S-ScrollWheelUp> <nop>
+:nmap <C-ScrollWheelUp> <nop>
+:nmap <ScrollWheelDown> <nop>
+:nmap <S-ScrollWheelDown> <nop>
+:nmap <C-ScrollWheelDown> <nop>
+:nmap <ScrollWheelLeft> <nop>
+:nmap <S-ScrollWheelLeft> <nop>
+:nmap <C-ScrollWheelLeft> <nop>
+:nmap <ScrollWheelRight> <nop>
+:nmap <S-ScrollWheelRight> <nop>
+:nmap <C-ScrollWheelRight> <nop>
