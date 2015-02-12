@@ -3,7 +3,6 @@ tags
 *.sw*
 .VimballRecord
 .netrwhist
-bundle/vim-peepopen
 .DS_Store
 *.log
 *.tmp
@@ -17,4 +16,4 @@ bundle/vim-peepopen
 *.[t]bz2
 tmp/
 log/
-backups/*
+backups/
