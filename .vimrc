@@ -16,7 +16,7 @@ set showmode                    "Show current mode down the bottom
 set gcr=a:blinkon0              "Disable cursor blink
 set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
-set guifont=Inconsolata\ XL:h17,Inconsolata:h20,Monaco:h17
+set guifont=Inconsolata\ XL:h14,Inconsolata:h15,Monaco:h17
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
@@ -31,7 +31,7 @@ syntax on
 " The mapleader has to be set before vundle starts loading all 
 " the plugins.
 let mapleader=","
-colorscheme codeschool
+colorscheme distinguished
 
 " ================ Turn Off Swap Files ==============
 
