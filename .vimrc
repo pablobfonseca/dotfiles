@@ -325,3 +325,9 @@ filetype plugin indent on    " required
 :nmap <ScrollWheelRight> <nop>
 :nmap <S-ScrollWheelRight> <nop>
 :nmap <C-ScrollWheelRight> <nop>
+
+" Disable arrow keys
+map <Left> <Nop>
+map <Right> <Nop>
+map <Up> <Nop>
+map <Down> <Nop>
