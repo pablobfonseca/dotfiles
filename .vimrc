@@ -1,5 +1,6 @@
 set nocompatible              " be iMproved, required
 filetype off
+set so=7
 
 " ================ General Config ====================
 
@@ -30,7 +31,18 @@ syntax on
 " That means all \x commands turn into ,x
 " The mapleader has to be set before vundle starts loading all 
 " the plugins.
-let mapleader=","
+let mapleader="\<Space>"
+
+nnoremap <Leader>o :CtrlP<CR>
+nnoremap <Leader>w :w<CR>
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
+nmap <Leader><Leader> V
+
 colorscheme distinguished
 
 " ================ Turn Off Swap Files ==============
@@ -109,8 +121,6 @@ set ttyfast
 set gdefault
 " Use UTF-8 without BOM
 set encoding=utf-8 nobomb
-" Change mapleader
-let mapleader=","
 " Centralize backups, swapfiles and undo history
 set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
@@ -149,13 +159,6 @@ let g:syntastic_check_on_open=1
 
 " Ruby
 imap <c-l> <space>=><space>
-
-" RSpec
-let g:rspec_command = "!bin/rspec {spec}"
-
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
 
 " Make tabs as wide as two spaces
 "	set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
@@ -214,6 +217,7 @@ Bundle "timcharper/textile.vim.git"
 Bundle "tpope/vim-haml"
 Bundle "wavded/vim-stylus"
 Plugin 'mattn/emmet-vim'
+Plugin 'elzr/vim-json'
 Plugin 'shemerey/vim-peepopen'
 
 " Git related...
@@ -285,6 +289,10 @@ Bundle "bling/vim-airline.git"
 Bundle "vim-scripts/TagHighlight.git"
 Bundle "bogado/file-line.git"
 Bundle "jby/tmux.vim.git"
+Plugin 'mmozuras/vim-github-comment'
+
+let g:github_user = 'pablobfonseca'
+let g:github_comment_open_browser = 1
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
@@ -294,9 +302,6 @@ Plugin 'L9'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-
-"Ack
-Plugin 'mileszs/ack.vim'
 
 Plugin 'ervandew/supertab'
 
@@ -326,8 +331,20 @@ filetype plugin indent on    " required
 :nmap <S-ScrollWheelRight> <nop>
 :nmap <C-ScrollWheelRight> <nop>
 
-" Disable arrow keys
 map <Left> <Nop>
 map <Right> <Nop>
 map <Up> <Nop>
 map <Down> <Nop>
+
+" Increase CtrlP power with GIT
+let g:ctrlp_use_caching = 0
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --nocolor
+
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+else
+  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+  let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
+    \ }
+endif

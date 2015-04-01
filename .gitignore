@@ -16,4 +16,4 @@ tags
 *.[t]bz2
 tmp/
 log/
-backups/
+backups/*
