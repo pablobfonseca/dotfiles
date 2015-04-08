@@ -33,7 +33,6 @@ syntax on
 " the plugins.
 let mapleader="\<Space>"
 
-nnoremap <Leader>o :CtrlP<CR>
 nnoremap <Leader>w :w<CR>
 vmap <Leader>y "+y
 vmap <Leader>d "+d
@@ -202,6 +201,8 @@ Bundle "ck3g/vim-change-hash-syntax"
 Bundle "briancollins/vim-jst"
 Bundle "pangloss/vim-javascript"
 Bundle "rodjek/vim-puppet"
+Plugin 'burnettk/vim-angular'
+Plugin 'matthewsimo/angular-vim-snippets'
 
 " Html, Xml, Css, Markdown...
 Bundle "claco/jasmine.vim"
@@ -218,7 +219,6 @@ Bundle "tpope/vim-haml"
 Bundle "wavded/vim-stylus"
 Plugin 'mattn/emmet-vim'
 Plugin 'elzr/vim-json'
-Plugin 'shemerey/vim-peepopen'
 
 " Git related...
 Bundle "gregsexton/gitv"
