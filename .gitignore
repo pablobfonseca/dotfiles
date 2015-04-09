@@ -17,3 +17,5 @@ tags
 tmp/
 log/
 backups/*
+bundle/*
+sessions/*

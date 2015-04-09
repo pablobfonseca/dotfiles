@@ -1,6 +1,7 @@
 set nocompatible              " be iMproved, required
 filetype off
 set so=7
+let g:snips_author = "Pablo Fonseca"
 
 " ================ General Config ====================
 
@@ -17,7 +18,7 @@ set showmode                    "Show current mode down the bottom
 set gcr=a:blinkon0              "Disable cursor blink
 set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
-set guifont=Inconsolata\ XL:h14,Inconsolata:h15,Monaco:h17
+set guifont=Monospace
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
@@ -134,7 +135,8 @@ set exrc
 set secure
 set cursorline
 
-autocmd FileType gitcommit setlocal colorcolumn=72
+autocmd FileType gitcommit      setlocal spell textwidth=72
+autocmd FileType Gemfile        set ft=ruby
 
 " This tip is an improved version of the example given for :help last-position-jump.
 " It fixes a problem where the cursor position will not be restored if the file only has a single line.
@@ -190,31 +192,27 @@ call vundle#begin()
 " Bundles
 
 " Ruby, Rails, Rake
-Bundle "astashov/vim-ruby-debugger"
 Bundle "tpope/vim-rails.git" 
 Bundle "tpope/vim-rake.git"
 Bundle "vim-ruby/vim-ruby.git"
-Bundle "vim-scripts/Specky.git"
 Bundle "ck3g/vim-change-hash-syntax"
 
-" Other languages
+" Javascript
 Bundle "briancollins/vim-jst"
 Bundle "pangloss/vim-javascript"
 Bundle "rodjek/vim-puppet"
 Plugin 'burnettk/vim-angular'
 Plugin 'matthewsimo/angular-vim-snippets'
 
-" Html, Xml, Css, Markdown...
-Bundle "claco/jasmine.vim"
+" Html, JSON, Css, Markdown...
+Plugin 'tpope/vim-markdown'
 Bundle "digitaltoad/vim-jade.git"
 Bundle "groenewege/vim-less.git"
 Bundle "itspriddle/vim-jquery.git"
 Bundle "jtratner/vim-flavored-markdown.git"
-Bundle "kchmck/vim-coffee-script"
 Bundle "nelstrom/vim-markdown-preview"
 Bundle "skwp/vim-html-escape"
 Bundle "slim-template/vim-slim.git"
-Bundle "timcharper/textile.vim.git"
 Bundle "tpope/vim-haml"
 Bundle "wavded/vim-stylus"
 Plugin 'mattn/emmet-vim'
@@ -222,11 +220,13 @@ Plugin 'elzr/vim-json'
 
 " Git related...
 Bundle "gregsexton/gitv"
+Plugin 'L9'
 Bundle "mattn/gist-vim"
 Bundle "skwp/vim-git-grep-rails-partial"
 Bundle "tjennings/git-grep-vim"
 Bundle "tpope/vim-fugitive"
 Bundle "tpope/vim-git"
+Plugin 'airblade/vim-gitgutter'
 
 " General text editing improvements...
 Bundle "AndrewRadev/splitjoin.vim"
@@ -238,7 +238,6 @@ Bundle "godlygeek/tabular"
 Bundle "honza/vim-snippets"
 Bundle "nelstrom/vim-visual-star-search"
 Bundle "skwp/vim-easymotion"
-Bundle "tomtom/tcomment_vim.git"
 Bundle "tpope/vim-bundler"
 Bundle "vim-scripts/IndexedSearch"
 Bundle "vim-scripts/camelcasemotion.git"
@@ -254,7 +253,7 @@ Bundle "mattn/webapi-vim.git"
 Bundle "rking/ag.vim"
 Bundle "scrooloose/syntastic.git"
 Bundle "sjl/gundo.vim"
-Bundle "skwp/YankRing.vim"
+Bundle "YankRing.vim"
 Bundle "tpope/vim-abolish"
 Bundle "tpope/vim-endwise.git"
 Bundle "tpope/vim-ragtag"
@@ -263,53 +262,45 @@ Bundle "tpope/vim-surround.git"
 Bundle "tpope/vim-unimpaired"
 Bundle "vim-scripts/AnsiEsc.vim.git"
 Bundle "vim-scripts/AutoTag.git"
-Bundle "vim-scripts/sudo.vim"
+Bundle "sudo.vim"
 "vim-misc is required for vim-session
 Bundle "xolox/vim-misc"
 Bundle "xolox/vim-session"
 
 " Text objects
 Bundle "austintaylor/vim-indentobject"
-Bundle "bootleq/vim-textobj-rubysymbol"
 Bundle "coderifous/textobj-word-column.vim"
 Bundle "kana/vim-textobj-datetime"
 Bundle "kana/vim-textobj-entire"
 Bundle "kana/vim-textobj-function"
 Bundle "kana/vim-textobj-user"
-Bundle "lucapette/vim-textobj-underscore"
 Bundle "nathanaelkane/vim-indent-guides"
 Bundle "nelstrom/vim-textobj-rubyblock"
 Bundle "thinca/vim-textobj-function-javascript"
 Bundle "vim-scripts/argtextobj.vim"
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 " Cosmetics, color scheme, Powerline...
 Bundle "chrisbra/color_highlight.git"
-Bundle "skwp/vim-colors-solarized"
+Plugin 'ervandew/supertab'
 Bundle "bling/vim-airline.git"
 Bundle "vim-scripts/TagHighlight.git"
-Bundle "bogado/file-line.git"
-Bundle "jby/tmux.vim.git"
+" Ex.: vim index.html:20 - Open file index into line 20
+Bundle "bogado/file-line.git" 
 Plugin 'mmozuras/vim-github-comment'
+Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 let g:github_user = 'pablobfonseca'
 let g:github_comment_open_browser = 1
 
+" Enable neocomplcache
+let g:neocomplcache_enable_at_startup = 1
+
+" Enable easymotion
+let g:EasyMotion_leader_key = '<Leader>'
+
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
-" plugin on GitHub repo
-Plugin 'L9'
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-
-Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-
-Plugin 'ervandew/supertab'
-
-"Markdown
-Plugin 'tpope/vim-markdown'
-
-"GitGutter
-Plugin 'airblade/vim-gitgutter'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -348,3 +339,5 @@ else
     \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
     \ }
 endif
+
+silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
