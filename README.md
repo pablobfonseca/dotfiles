@@ -8,7 +8,7 @@ Clone this repo into your home directory either as .vim (linux/mac) or
 vimfiles (Windows). Such as:
 
 ```
-git clone git://github.com/pablobfonseca/vim-files.git ~/.vim
+git clone git://github.com/pablobfonseca/dotfiles.git ~/.vim
 ```
 
 Now you should create a new `.vimrc` file in your home directory that
@@ -16,11 +16,6 @@ loads the pre-configured one that comes bundled in this package. You can do it
 on Linux/Mac like this:
 ```
 ln -s .vim/.vimrc .vimrc
-```
-On Windows you should create a _vimrc (underline instead of dot) and add
-the following line inside:
-```
-source ~/vim-files/vimrc
 ```
 
 # **HELP TAGS**
