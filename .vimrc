@@ -1,5 +1,5 @@
 set nocompatible              " be iMproved, required
-filetype off
+filetype on
 set so=7
 let g:snips_author = "Pablo Fonseca"
 
@@ -243,6 +243,7 @@ Bundle "vim-scripts/IndexedSearch"
 Bundle "vim-scripts/camelcasemotion.git"
 Bundle "vim-scripts/matchit.zip.git"
 Bundle "terryma/vim-multiple-cursors"
+Bundle "vim-scripts/vim-polyglot"
 
 " General vim improvements
 Bundle "MarcWeber/vim-addon-mw-utils.git"
@@ -326,6 +327,17 @@ map <Left> <Nop>
 map <Right> <Nop>
 map <Up> <Nop>
 map <Down> <Nop>
+
+"" ctrlp.vim
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|tox)$'
+let g:ctrlp_user_command = "find %s -type f | grep -Ev '"+ g:ctrlp_custom_ignore +"'"
+let g:ctrlp_use_caching = 0
+cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+noremap <leader>b :CtrlPBuffer<CR>
+let g:ctrlp_map = '<leader>e'
+let g:ctrlp_open_new_file = 'r'
 
 " Increase CtrlP power with GIT
 let g:ctrlp_use_caching = 0
