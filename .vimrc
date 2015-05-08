@@ -143,17 +143,17 @@ autocmd FileType Gemfile        set ft=ruby
 "
 " http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
 
-function! ResCur()
-  if line("'\"") <= line("$")
-    normal! g`"
-    return 1
-  endif
-endfunction
-
-augroup resCur
-  autocmd!
-  autocmd BufWinEnter * call ResCur()
-augroup END
+" function! ResCur()
+"   if line("'\"") <= line("$")
+"     normal! g`"
+"     return 1
+"   endif
+" endfunction
+"
+" augroup resCur
+"   autocmd!
+"   autocmd BufWinEnter * call ResCur()
+" augroup END
 
 " Configure syntastic syntax checking to check on open as well as save
 let g:syntastic_check_on_open=1
@@ -179,10 +179,6 @@ set shortmess=atI
 " Show the current mode
 set title
 
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -201,32 +197,29 @@ Bundle "ck3g/vim-change-hash-syntax"
 Bundle "briancollins/vim-jst"
 Bundle "pangloss/vim-javascript"
 Bundle "rodjek/vim-puppet"
-Plugin 'burnettk/vim-angular'
-Plugin 'matthewsimo/angular-vim-snippets'
+Bundle 'burnettk/vim-angular'
+Bundle 'matthewsimo/angular-vim-snippets'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'othree/javascript-libraries-syntax.vim'
 
 " Html, JSON, Css, Markdown...
-Plugin 'tpope/vim-markdown'
-Bundle "digitaltoad/vim-jade.git"
 Bundle "groenewege/vim-less.git"
 Bundle "itspriddle/vim-jquery.git"
-Bundle "jtratner/vim-flavored-markdown.git"
-Bundle "nelstrom/vim-markdown-preview"
 Bundle "skwp/vim-html-escape"
-Bundle "slim-template/vim-slim.git"
-Bundle "tpope/vim-haml"
-Bundle "wavded/vim-stylus"
-Plugin 'mattn/emmet-vim'
-Plugin 'elzr/vim-json'
+Bundle 'mattn/emmet-vim'
+Bundle 'elzr/vim-json'
+Bundle 'othree/html5.vim'
+Bundle 'gregsexton/MatchTag'
 
 " Git related...
 Bundle "gregsexton/gitv"
-Plugin 'L9'
+Bundle 'L9'
 Bundle "mattn/gist-vim"
 Bundle "skwp/vim-git-grep-rails-partial"
 Bundle "tjennings/git-grep-vim"
 Bundle "tpope/vim-fugitive"
 Bundle "tpope/vim-git"
-Plugin 'airblade/vim-gitgutter'
+Bundle 'airblade/vim-gitgutter'
 
 " General text editing improvements...
 Bundle "AndrewRadev/splitjoin.vim"
@@ -279,16 +272,14 @@ Bundle "nathanaelkane/vim-indent-guides"
 Bundle "nelstrom/vim-textobj-rubyblock"
 Bundle "thinca/vim-textobj-function-javascript"
 Bundle "vim-scripts/argtextobj.vim"
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 " Cosmetics, color scheme, Powerline...
-Bundle "chrisbra/color_highlight.git"
-Plugin 'ervandew/supertab'
+Bundle 'ervandew/supertab'
 Bundle "bling/vim-airline.git"
-Bundle "vim-scripts/TagHighlight.git"
 " Ex.: vim index.html:20 - Open file index into line 20
 Bundle "bogado/file-line.git" 
-Plugin 'mmozuras/vim-github-comment'
+Bundle 'mmozuras/vim-github-comment'
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 let g:github_user = 'pablobfonseca'
@@ -327,29 +318,49 @@ map <Left> <Nop>
 map <Right> <Nop>
 map <Up> <Nop>
 map <Down> <Nop>
+" Syntastic
+"
+" " Enable autochecks
+ let g:syntastic_check_on_open=1
+ let g:syntastic_enable_signs=1
+"
+" " For correct works of next/previous error navigation
+ let g:syntastic_always_populate_loc_list = 1
+"
+" " check json files with jshint
+ let g:syntastic_filetype_map = { "json": "javascript", }
+"
+" " open quicfix window with all error found
+ nmap <silent> <leader>ll :Errors<cr>
+" " previous syntastic error
+ nmap <silent> [ :lprev<cr>
+" " next syntastic error
+ nmap <silent> ] :lnext<cr>
 
-"" ctrlp.vim
-set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|tox)$'
-let g:ctrlp_user_command = "find %s -type f | grep -Ev '"+ g:ctrlp_custom_ignore +"'"
-let g:ctrlp_use_caching = 0
-cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-noremap <leader>b :CtrlPBuffer<CR>
-let g:ctrlp_map = '<leader>e'
-let g:ctrlp_open_new_file = 'r'
+" neocomplcache
+"
+" " Enable NeocomplCache at startup
+ let g:neocomplcache_enable_at_startup = 1
+"
+" " Max items in code-complete
+ let g:neocomplcache_max_list = 10
+"
+" " Max width of code-complete window
+ let g:neocomplcache_max_keyword_width = 80
+"
+" " Code complete is ignoring case until no Uppercase letter is in input
+ let g:neocomplcache_enable_smart_case = 1
+"
+" " Auto select first item in code-complete
+let g:neocomplcache_enable_auto_select = 1
+"
+" " Disable auto popup
+let g:neocomplcache_disable_auto_complete = 1
 
-" Increase CtrlP power with GIT
-let g:ctrlp_use_caching = 0
-if executable('ag')
-    set grepprg=ag\ --nogroup\ --nocolor
-
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-else
-  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-  let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
-    \ }
-endif
-
-silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
+" Undo autocomplete
+ inoremap <expr><C-e> neocomplcache#undo_completion()
+"
+" " Enable omni completion.
+ autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
