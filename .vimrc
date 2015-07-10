@@ -178,6 +178,9 @@ call vundle#begin()
 
 " Bundles
 
+" PHP
+Bundle 'StanAngeloff/php.vim'
+
 " Ruby, Rails, Rake
 Bundle "tpope/vim-rails.git" 
 Bundle "tpope/vim-rake.git"
@@ -204,6 +207,7 @@ Bundle "tpope/vim-git"
 Bundle 'airblade/vim-gitgutter'
 
 " General text editing improvements...
+Bundle "tomtom/tcomment_vim"
 Bundle "AndrewRadev/splitjoin.vim"
 Bundle "Raimondi/delimitMate"
 Bundle "Shougo/neocomplcache.git"
@@ -354,3 +358,14 @@ let g:neocomplcache_disable_auto_complete = 1
  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+
+" PHP
+function! PhpSyntaxOverride()
+  hi! def link phpDocTags  phpDefine
+  hi! def link phpDocParam phpType
+endfunction
+
+augroup phpSyntaxOverride
+  autocmd!
+  autocmd FileType php call PhpSyntaxOverride()
+augroup END
