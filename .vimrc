@@ -34,15 +34,6 @@ syntax on
 " the plugins.
 let mapleader="\<Space>"
 
-nnoremap <Leader>w :w<CR>
-vmap <Leader>y "+y
-vmap <Leader>d "+d
-nmap <Leader>p "+p
-nmap <Leader>P "+P
-vmap <Leader>p "+p
-vmap <Leader>P "+P
-nmap <Leader><Leader> V
-
 colorscheme distinguished
 
 " ================ Turn Off Swap Files ==============
@@ -191,25 +182,16 @@ call vundle#begin()
 Bundle "tpope/vim-rails.git" 
 Bundle "tpope/vim-rake.git"
 Bundle "vim-ruby/vim-ruby.git"
-Bundle "ck3g/vim-change-hash-syntax"
 
 " Javascript
 Bundle "briancollins/vim-jst"
 Bundle "pangloss/vim-javascript"
 Bundle "rodjek/vim-puppet"
-Bundle 'burnettk/vim-angular'
-Bundle 'matthewsimo/angular-vim-snippets'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'othree/javascript-libraries-syntax.vim'
 
-" Html, JSON, Css, Markdown...
-Bundle "groenewege/vim-less.git"
-Bundle "itspriddle/vim-jquery.git"
-Bundle "skwp/vim-html-escape"
 Bundle 'mattn/emmet-vim'
-Bundle 'elzr/vim-json'
-Bundle 'othree/html5.vim'
-Bundle 'gregsexton/MatchTag'
+Bundle 'tomtom/tcomment_vim'
 
 " Git related...
 Bundle "gregsexton/gitv"
@@ -237,6 +219,7 @@ Bundle "vim-scripts/camelcasemotion.git"
 Bundle "vim-scripts/matchit.zip.git"
 Bundle "terryma/vim-multiple-cursors"
 Bundle "vim-scripts/vim-polyglot"
+Bundle 'jeetsukumaran/vim-buffergator'
 
 " General vim improvements
 Bundle "MarcWeber/vim-addon-mw-utils.git"
@@ -260,6 +243,7 @@ Bundle "sudo.vim"
 "vim-misc is required for vim-session
 Bundle "xolox/vim-misc"
 Bundle "xolox/vim-session"
+Bundle 'rizzatti/dash.vim'
 
 " Text objects
 Bundle "austintaylor/vim-indentobject"
@@ -285,6 +269,11 @@ Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 let g:github_user = 'pablobfonseca'
 let g:github_comment_open_browser = 1
 
+" Remapping the emmet leader key
+let g:user_emmet_leader_key='<C-Z>'
+let g:user_emmet_mode='a'
+autocmd FileType html,css EmmetInstall
+
 " Enable neocomplcache
 let g:neocomplcache_enable_at_startup = 1
 
@@ -298,7 +287,8 @@ Plugin 'gmarik/Vundle.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-:let g:session_autoload = 'no'
+:let g:session_autoload = 'yes'
+:let g:session_autosave = 'yes'
 
 " Disable mouse scroll wheel
 :nmap <ScrollWheelUp> <nop>
