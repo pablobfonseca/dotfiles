@@ -210,7 +210,6 @@ Bundle 'airblade/vim-gitgutter'
 Bundle "tomtom/tcomment_vim"
 Bundle "AndrewRadev/splitjoin.vim"
 Bundle "Raimondi/delimitMate"
-Bundle "Shougo/neocomplcache.git"
 Bundle "briandoll/change-inside-surroundings.vim.git"
 Bundle "garbas/vim-snipmate.git"
 Bundle "godlygeek/tabular"
@@ -278,9 +277,6 @@ let g:user_emmet_leader_key='<C-Z>'
 let g:user_emmet_mode='a'
 autocmd FileType html,css EmmetInstall
 
-" Enable neocomplcache
-let g:neocomplcache_enable_at_startup = 1
-
 " Enable easymotion
 let g:EasyMotion_leader_key = '<Leader>'
 
@@ -331,29 +327,6 @@ map <Down> <Nop>
 " " next syntastic error
  nmap <silent> ] :lnext<cr>
 
-" neocomplcache
-"
-" " Enable NeocomplCache at startup
- let g:neocomplcache_enable_at_startup = 1
-"
-" " Max items in code-complete
- let g:neocomplcache_max_list = 10
-"
-" " Max width of code-complete window
- let g:neocomplcache_max_keyword_width = 80
-"
-" " Code complete is ignoring case until no Uppercase letter is in input
- let g:neocomplcache_enable_smart_case = 1
-"
-" " Auto select first item in code-complete
-let g:neocomplcache_enable_auto_select = 1
-"
-" " Disable auto popup
-let g:neocomplcache_disable_auto_complete = 1
-
-" Undo autocomplete
- inoremap <expr><C-e> neocomplcache#undo_completion()
-"
 " " Enable omni completion.
  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -369,3 +342,7 @@ augroup phpSyntaxOverride
   autocmd!
   autocmd FileType php call PhpSyntaxOverride()
 augroup END
+
+map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
+map ,t :tabe <C-R>=expand("%:p:h") . "/" <CR>
+map ,s :split <C-R>=expand("%:p:h") . "/" <CR>
