@@ -207,7 +207,6 @@ Bundle "tpope/vim-git"
 Bundle 'airblade/vim-gitgutter'
 
 " General text editing improvements...
-Bundle "tomtom/tcomment_vim"
 Bundle "AndrewRadev/splitjoin.vim"
 Bundle "Raimondi/delimitMate"
 Bundle "briandoll/change-inside-surroundings.vim.git"
@@ -326,11 +325,6 @@ map <Down> <Nop>
  nmap <silent> [ :lprev<cr>
 " " next syntastic error
  nmap <silent> ] :lnext<cr>
-
-" " Enable omni completion.
- autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
- autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
- autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 
 " PHP
 function! PhpSyntaxOverride()
