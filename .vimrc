@@ -326,6 +326,29 @@ map <Down> <Nop>
 " " next syntastic error
  nmap <silent> ] :lnext<cr>
 
+" neocomplcache
+"
+" " Enable NeocomplCache at startup
+ let g:neocomplcache_enable_at_startup = 1
+"
+" " Max items in code-complete
+ let g:neocomplcache_max_list = 10
+"
+" " Max width of code-complete window
+ let g:neocomplcache_max_keyword_width = 80
+"
+" " Code complete is ignoring case until no Uppercase letter is in input
+ let g:neocomplcache_enable_smart_case = 1
+"
+" " Auto select first item in code-complete
+let g:neocomplcache_enable_auto_select = 1
+"
+" " Disable auto popup
+let g:neocomplcache_disable_auto_complete = 1
+
+" Undo autocomplete
+ inoremap <expr><C-e> neocomplcache#undo_completion()
+"
 " PHP
 function! PhpSyntaxOverride()
   hi! def link phpDocTags  phpDefine
