@@ -146,9 +146,6 @@ autocmd FileType Gemfile        set ft=ruby
 "   autocmd BufWinEnter * call ResCur()
 " augroup END
 
-" Configure syntastic syntax checking to check on open as well as save
-let g:syntastic_check_on_open=1
-
 " Ruby
 imap <c-l> <space>=><space>
 
@@ -183,11 +180,9 @@ Bundle 'StanAngeloff/php.vim'
 
 " Ruby, Rails, Rake
 Bundle "tpope/vim-rails.git" 
-Bundle "tpope/vim-rake.git"
 Bundle "vim-ruby/vim-ruby.git"
 
 " Javascript
-Bundle "briancollins/vim-jst"
 Bundle "pangloss/vim-javascript"
 Bundle "rodjek/vim-puppet"
 Bundle 'jelera/vim-javascript-syntax'
@@ -197,21 +192,22 @@ Bundle 'mattn/emmet-vim'
 Bundle 'tomtom/tcomment_vim'
 
 " Git related...
-Bundle "gregsexton/gitv"
 Bundle 'L9'
 Bundle "mattn/gist-vim"
-Bundle "skwp/vim-git-grep-rails-partial"
-Bundle "tjennings/git-grep-vim"
 Bundle "tpope/vim-fugitive"
 Bundle "tpope/vim-git"
 Bundle 'airblade/vim-gitgutter'
 
 " General text editing improvements...
+" gS to split a one-liner into multiple lines
+" gJ (with the cursor on the first line of a block) to join a block into a single-line statement.
 Bundle "AndrewRadev/splitjoin.vim"
+
 Bundle "Raimondi/delimitMate"
 Bundle "briandoll/change-inside-surroundings.vim.git"
 Bundle "garbas/vim-snipmate.git"
 Bundle "godlygeek/tabular"
+" Olhei até aqui
 Bundle "honza/vim-snippets"
 Bundle "nelstrom/vim-visual-star-search"
 Bundle "skwp/vim-easymotion"
@@ -221,16 +217,15 @@ Bundle "vim-scripts/camelcasemotion.git"
 Bundle "vim-scripts/matchit.zip.git"
 Bundle "terryma/vim-multiple-cursors"
 Bundle "vim-scripts/vim-polyglot"
-Bundle 'jeetsukumaran/vim-buffergator'
 
 " General vim improvements
+Bundle 'othree/html5.vim'
 Bundle "MarcWeber/vim-addon-mw-utils.git"
 Bundle "kien/ctrlp.vim"
 Bundle "tomtom/tlib_vim.git"
 Bundle "majutsushi/tagbar.git"
 Bundle "mattn/webapi-vim.git"
 Bundle "rking/ag.vim"
-Bundle "scrooloose/syntastic.git"
 Bundle "sjl/gundo.vim"
 Bundle "YankRing.vim"
 Bundle "tpope/vim-abolish"
@@ -244,7 +239,6 @@ Bundle "vim-scripts/AutoTag.git"
 Bundle "sudo.vim"
 "vim-misc is required for vim-session
 Bundle "xolox/vim-misc"
-Bundle "xolox/vim-session"
 Bundle 'rizzatti/dash.vim'
 
 " Text objects
@@ -263,8 +257,6 @@ Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Cosmetics, color scheme, Powerline...
 Bundle 'ervandew/supertab'
 Bundle "bling/vim-airline.git"
-" Ex.: vim index.html:20 - Open file index into line 20
-Bundle "bogado/file-line.git" 
 Bundle 'mmozuras/vim-github-comment'
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
@@ -286,69 +278,26 @@ Plugin 'gmarik/Vundle.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-:let g:session_autoload = 'yes'
-:let g:session_autosave = 'yes'
-
 " Disable mouse scroll wheel
-:nmap <ScrollWheelUp> <nop>
-:nmap <S-ScrollWheelUp> <nop>
-:nmap <C-ScrollWheelUp> <nop>
-:nmap <ScrollWheelDown> <nop>
-:nmap <S-ScrollWheelDown> <nop>
-:nmap <C-ScrollWheelDown> <nop>
-:nmap <ScrollWheelLeft> <nop>
-:nmap <S-ScrollWheelLeft> <nop>
-:nmap <C-ScrollWheelLeft> <nop>
-:nmap <ScrollWheelRight> <nop>
-:nmap <S-ScrollWheelRight> <nop>
-:nmap <C-ScrollWheelRight> <nop>
+" :nmap <ScrollWheelUp> <nop>
+" :nmap <S-ScrollWheelUp> <nop>
+" :nmap <C-ScrollWheelUp> <nop>
+" :nmap <ScrollWheelDown> <nop>
+" :nmap <S-ScrollWheelDown> <nop>
+" :nmap <C-ScrollWheelDown> <nop>
+" :nmap <ScrollWheelLeft> <nop>
+" :nmap <S-ScrollWheelLeft> <nop>
+" :nmap <C-ScrollWheelLeft> <nop>
+" :nmap <ScrollWheelRight> <nop>
+" :nmap <S-ScrollWheelRight> <nop>
+" :nmap <C-ScrollWheelRight> <nop>
 
+" Disable arrows
 map <Left> <Nop>
 map <Right> <Nop>
 map <Up> <Nop>
 map <Down> <Nop>
-" Syntastic
-"
-" " Enable autochecks
- let g:syntastic_check_on_open=1
- let g:syntastic_enable_signs=1
-"
-" " For correct works of next/previous error navigation
- let g:syntastic_always_populate_loc_list = 1
-"
-" " check json files with jshint
- let g:syntastic_filetype_map = { "json": "javascript", }
-"
-" " open quicfix window with all error found
- nmap <silent> <leader>ll :Errors<cr>
-" " previous syntastic error
- nmap <silent> [ :lprev<cr>
-" " next syntastic error
- nmap <silent> ] :lnext<cr>
 
-" neocomplcache
-"
-" " Enable NeocomplCache at startup
- let g:neocomplcache_enable_at_startup = 1
-"
-" " Max items in code-complete
- let g:neocomplcache_max_list = 10
-"
-" " Max width of code-complete window
- let g:neocomplcache_max_keyword_width = 80
-"
-" " Code complete is ignoring case until no Uppercase letter is in input
- let g:neocomplcache_enable_smart_case = 1
-"
-" " Auto select first item in code-complete
-let g:neocomplcache_enable_auto_select = 1
-"
-" " Disable auto popup
-let g:neocomplcache_disable_auto_complete = 1
-
-" Undo autocomplete
- inoremap <expr><C-e> neocomplcache#undo_completion()
-"
 " PHP
 function! PhpSyntaxOverride()
   hi! def link phpDocTags  phpDefine
@@ -360,6 +309,10 @@ augroup phpSyntaxOverride
   autocmd FileType php call PhpSyntaxOverride()
 augroup END
 
-map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
-map ,t :tabe <C-R>=expand("%:p:h") . "/" <CR>
-map ,s :split <C-R>=expand("%:p:h") . "/" <CR>
+" javascript libraries
+let g:used_javascript_libs = 'angularjs,jquery,react'
+
+map <S-Right>e :e <C-R>=expand("%:p:h") . "/" <CR>
+map <S-Right>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
+map <S-Right>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
+map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
