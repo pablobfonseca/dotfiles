@@ -316,3 +316,5 @@ map <S-Right>e :e <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
+
+let g:html5_event_handler_attributes_complete = 0
