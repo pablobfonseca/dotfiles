@@ -1,8 +1,5 @@
 set nocompatible              " be iMproved, required
 filetype on
-set so=7
-let g:snips_author = "Pablo Fonseca"
-
 " ================ General Config ====================
 
 scriptencoding utf-8          " utf-8 all the way
@@ -19,14 +16,16 @@ set gcr=a:blinkon0              "Disable cursor blink
 set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
 set guifont=Inconsolata\ XL:h14,Inconsolata:h15,Monaco:17,Monospace
+syntax on
+if exists('+colorcolumn')
+  set colorcolumn=80
+endif
+set tw=80
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden
-
-"turn on syntax highlighting
-syntax on
 
 " Change leader to a comma because the backslash is too far away
 " That means all \x commands turn into ,x
@@ -129,23 +128,6 @@ set cursorline
 autocmd FileType gitcommit      setlocal spell textwidth=72
 autocmd FileType Gemfile        set ft=ruby
 
-" This tip is an improved version of the example given for :help last-position-jump.
-" It fixes a problem where the cursor position will not be restored if the file only has a single line.
-"
-" http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
-
-" function! ResCur()
-"   if line("'\"") <= line("$")
-"     normal! g`"
-"     return 1
-"   endif
-" endfunction
-"
-" augroup resCur
-"   autocmd!
-"   autocmd BufWinEnter * call ResCur()
-" augroup END
-
 " Ruby
 imap <c-l> <space>=><space>
 
@@ -175,18 +157,15 @@ call vundle#begin()
 
 " Bundles
 
-" PHP
-Bundle 'StanAngeloff/php.vim'
-
 " Ruby, Rails, Rake
 Bundle "tpope/vim-rails.git" 
 Bundle "vim-ruby/vim-ruby.git"
 
 " Javascript
 Bundle "pangloss/vim-javascript"
-Bundle "rodjek/vim-puppet"
+" Bundle "rodjek/vim-puppet"
 Bundle 'jelera/vim-javascript-syntax'
-Bundle 'othree/javascript-libraries-syntax.vim'
+" Bundle 'othree/javascript-libraries-syntax.vim'
 
 Bundle 'mattn/emmet-vim'
 Bundle 'tomtom/tcomment_vim'
@@ -194,74 +173,44 @@ Bundle 'tomtom/tcomment_vim'
 " Git related...
 Bundle 'L9'
 Bundle "mattn/gist-vim"
-Bundle "tpope/vim-fugitive"
-Bundle "tpope/vim-git"
+" Bundle "tpope/vim-fugitive"
 Bundle 'airblade/vim-gitgutter'
 
 " General text editing improvements...
-" gS to split a one-liner into multiple lines
-" gJ (with the cursor on the first line of a block) to join a block into a single-line statement.
-Bundle "AndrewRadev/splitjoin.vim"
 
 Bundle "Raimondi/delimitMate"
 Bundle "briandoll/change-inside-surroundings.vim.git"
-Bundle "garbas/vim-snipmate.git"
+" :Tab {pattern}
 Bundle "godlygeek/tabular"
-" Olhei até aqui
-Bundle "honza/vim-snippets"
-Bundle "nelstrom/vim-visual-star-search"
 Bundle "skwp/vim-easymotion"
 Bundle "tpope/vim-bundler"
-Bundle "vim-scripts/IndexedSearch"
-Bundle "vim-scripts/camelcasemotion.git"
-Bundle "vim-scripts/matchit.zip.git"
 Bundle "terryma/vim-multiple-cursors"
 Bundle "vim-scripts/vim-polyglot"
 
 " General vim improvements
-Bundle 'othree/html5.vim'
-Bundle "MarcWeber/vim-addon-mw-utils.git"
+" Bundle "MarcWeber/vim-addon-mw-utils.git"
 Bundle "kien/ctrlp.vim"
 Bundle "tomtom/tlib_vim.git"
 Bundle "majutsushi/tagbar.git"
 Bundle "mattn/webapi-vim.git"
 Bundle "rking/ag.vim"
 Bundle "sjl/gundo.vim"
-Bundle "YankRing.vim"
-Bundle "tpope/vim-abolish"
+" Bundle "YankRing.vim"
 Bundle "tpope/vim-endwise.git"
-Bundle "tpope/vim-ragtag"
-Bundle "tpope/vim-repeat.git"
 Bundle "tpope/vim-surround.git"
-Bundle "tpope/vim-unimpaired"
-Bundle "vim-scripts/AnsiEsc.vim.git"
-Bundle "vim-scripts/AutoTag.git"
 Bundle "sudo.vim"
 "vim-misc is required for vim-session
 Bundle "xolox/vim-misc"
-Bundle 'rizzatti/dash.vim'
 
 " Text objects
 Bundle "austintaylor/vim-indentobject"
 Bundle "coderifous/textobj-word-column.vim"
-Bundle "kana/vim-textobj-datetime"
-Bundle "kana/vim-textobj-entire"
-Bundle "kana/vim-textobj-function"
-Bundle "kana/vim-textobj-user"
-Bundle "nathanaelkane/vim-indent-guides"
-Bundle "nelstrom/vim-textobj-rubyblock"
-Bundle "thinca/vim-textobj-function-javascript"
-Bundle "vim-scripts/argtextobj.vim"
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Bundle "nathanaelkane/vim-indent-guides"
 
 " Cosmetics, color scheme, Powerline...
-Bundle 'ervandew/supertab'
+" Bundle 'ervandew/supertab'
 Bundle "bling/vim-airline.git"
-Bundle 'mmozuras/vim-github-comment'
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-
-let g:github_user = 'pablobfonseca'
-let g:github_comment_open_browser = 1
 
 " Remapping the emmet leader key
 let g:user_emmet_leader_key='<C-Z>'
@@ -279,18 +228,18 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 
 " Disable mouse scroll wheel
-" :nmap <ScrollWheelUp> <nop>
-" :nmap <S-ScrollWheelUp> <nop>
-" :nmap <C-ScrollWheelUp> <nop>
-" :nmap <ScrollWheelDown> <nop>
-" :nmap <S-ScrollWheelDown> <nop>
-" :nmap <C-ScrollWheelDown> <nop>
-" :nmap <ScrollWheelLeft> <nop>
-" :nmap <S-ScrollWheelLeft> <nop>
-" :nmap <C-ScrollWheelLeft> <nop>
-" :nmap <ScrollWheelRight> <nop>
-" :nmap <S-ScrollWheelRight> <nop>
-" :nmap <C-ScrollWheelRight> <nop>
+:nmap <ScrollWheelUp> <nop>
+:nmap <S-ScrollWheelUp> <nop>
+:nmap <C-ScrollWheelUp> <nop>
+:nmap <ScrollWheelDown> <nop>
+:nmap <S-ScrollWheelDown> <nop>
+:nmap <C-ScrollWheelDown> <nop>
+:nmap <ScrollWheelLeft> <nop>
+:nmap <S-ScrollWheelLeft> <nop>
+:nmap <C-ScrollWheelLeft> <nop>
+:nmap <ScrollWheelRight> <nop>
+:nmap <S-ScrollWheelRight> <nop>
+:nmap <C-ScrollWheelRight> <nop>
 
 " Disable arrows
 map <Left> <Nop>
@@ -298,23 +247,20 @@ map <Right> <Nop>
 map <Up> <Nop>
 map <Down> <Nop>
 
-" PHP
-function! PhpSyntaxOverride()
-  hi! def link phpDocTags  phpDefine
-  hi! def link phpDocParam phpType
-endfunction
-
-augroup phpSyntaxOverride
-  autocmd!
-  autocmd FileType php call PhpSyntaxOverride()
-augroup END
-
 " javascript libraries
-let g:used_javascript_libs = 'angularjs,jquery,react'
+" let g:used_javascript_libs = 'angularjs,jquery'
 
 map <S-Right>e :e <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
 
-let g:html5_event_handler_attributes_complete = 0
+let g:gist_clip_command = 'pbcopy'
+
+highlight ColorColumn ctermbg=7
+
+" Ruby vim
+:let g:ruby_indent_access_modifier_style = 'indent'
+
+" Vim Javascript Syntax
+au FileType javascript call JavaScriptFold()
