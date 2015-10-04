@@ -2,6 +2,7 @@ set nocompatible              " be iMproved, required
 filetype on
 " ================ General Config ====================
 
+let mapleader=','
 scriptencoding utf-8          " utf-8 all the way
 set encoding=utf-8
 set number               "Line numbers are good
@@ -12,15 +13,14 @@ set history=1000                "Store lots of :cmdline history
 set mouse-=a                    "Disable mouse click
 set showcmd                     "Show incomplete cmds down the bottom
 set showmode                    "Show current mode down the bottom
-set gcr=a:blinkon0              "Disable cursor blink
+set guicursor=a:blinkon0        "Disable cursor blink
+set cursorline                  " Set line on cursor
 set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
 set guifont=Inconsolata\ XL:h14,Inconsolata:h15,Monaco:17,Monospace
 syntax on
-if exists('+colorcolumn')
-  set colorcolumn=80
-endif
-set tw=80
+
+set textwidth=80
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
@@ -31,7 +31,6 @@ set hidden
 " That means all \x commands turn into ,x
 " The mapleader has to be set before vundle starts loading all 
 " the plugins.
-let mapleader="\<Space>"
 
 colorscheme distinguished
 
@@ -75,7 +74,6 @@ set nofoldenable        "dont fold by default
 
 " ================ Completion =======================
 
-set wildmode=list,longest
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
@@ -91,7 +89,7 @@ set wildignore+=*.png,*.jpg,*.gif
 "
 " ================ Scrolling ========================
 
-set scrolloff=8         "Start scrolling when we're 8 lines away from margins
+set scrolloff=7         "Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
 
@@ -102,8 +100,10 @@ set hlsearch        " Highlight searches by default
 set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 
-" Clear the search buffer when hitting return
-nnoremap <cr> :nohlsearch<cr>
+" Normal mode mappings
+nnoremap <leader><space> :nohlsearch<cr>
+nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>a :Ag
 
 " Optimize for fast terminal connections
 set ttyfast
@@ -123,18 +123,11 @@ set wmh=0 " reduces splits to a single line
 " Enable per-directory .vimrc files and disable unsafe commands in them
 set exrc
 set secure
-set cursorline
 
+" AutoCommand settings
 autocmd FileType gitcommit      setlocal spell textwidth=72
 autocmd FileType Gemfile        set ft=ruby
 
-" Ruby
-imap <c-l> <space>=><space>
-
-" Make tabs as wide as two spaces
-"	set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-"	set lcs=trail:·
-" Highlight searches
 " Always show status line
 set laststatus=2
 " Respect modeline in files
@@ -180,7 +173,6 @@ Bundle 'airblade/vim-gitgutter'
 
 Bundle "Raimondi/delimitMate"
 Bundle "briandoll/change-inside-surroundings.vim.git"
-" :Tab {pattern}
 Bundle "godlygeek/tabular"
 Bundle "skwp/vim-easymotion"
 Bundle "tpope/vim-bundler"
@@ -211,6 +203,7 @@ Bundle "coderifous/textobj-word-column.vim"
 " Bundle 'ervandew/supertab'
 Bundle "bling/vim-airline.git"
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Bundle 'rizzatti/dash.vim'
 
 " Remapping the emmet leader key
 let g:user_emmet_leader_key='<C-Z>'
@@ -242,25 +235,18 @@ filetype plugin indent on    " required
 :nmap <C-ScrollWheelRight> <nop>
 
 " Disable arrows
-map <Left> <Nop>
-map <Right> <Nop>
-map <Up> <Nop>
-map <Down> <Nop>
-
-" javascript libraries
-" let g:used_javascript_libs = 'angularjs,jquery'
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
 
 map <S-Right>e :e <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
+map <S-Right>r :r <C-R>=expand("%:p:h") . "/" <CR>
 
 let g:gist_clip_command = 'pbcopy'
 
-highlight ColorColumn ctermbg=7
-
 " Ruby vim
 :let g:ruby_indent_access_modifier_style = 'indent'
-
-" Vim Javascript Syntax
-au FileType javascript call JavaScriptFold()
