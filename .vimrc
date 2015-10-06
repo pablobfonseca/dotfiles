@@ -181,6 +181,7 @@ Bundle "vim-scripts/vim-polyglot"
 
 " General vim improvements
 " Bundle "MarcWeber/vim-addon-mw-utils.git"
+Bundle "Shougo/neocomplete.vim"
 Bundle "kien/ctrlp.vim"
 Bundle "tomtom/tlib_vim.git"
 Bundle "majutsushi/tagbar.git"
@@ -249,4 +250,22 @@ map <S-Right>r :r <C-R>=expand("%:p:h") . "/" <CR>
 let g:gist_clip_command = 'pbcopy'
 
 " Ruby vim
-:let g:ruby_indent_access_modifier_style = 'indent'
+let g:ruby_indent_access_modifier_style = 'indent'
+
+" Neocomplete
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+      " For no inserting <CR> key.
+      "return pumvisible() ? "\<C-y>" : "\<CR>"
+      " endfunction
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>""
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
