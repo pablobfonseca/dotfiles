@@ -74,6 +74,7 @@ set nofoldenable        "dont fold by default
 
 " ================ Completion =======================
 
+set wildmode=list:longest,full
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
@@ -180,14 +181,13 @@ Bundle "terryma/vim-multiple-cursors"
 Bundle "vim-scripts/vim-polyglot"
 
 " General vim improvements
-" Bundle "MarcWeber/vim-addon-mw-utils.git"
 Bundle "kien/ctrlp.vim"
-Bundle "tomtom/tlib_vim.git"
+" Bundle 'MarcWeber/vim-addon-mw-utils'
+" Bundle "tomtom/tlib_vim.git"
 Bundle "majutsushi/tagbar.git"
 Bundle "mattn/webapi-vim.git"
 Bundle "rking/ag.vim"
 Bundle "sjl/gundo.vim"
-" Bundle "YankRing.vim"
 Bundle "tpope/vim-endwise.git"
 Bundle "tpope/vim-surround.git"
 Bundle "sudo.vim"
