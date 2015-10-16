@@ -28,3 +28,5 @@
 [diff]
   mnemonicprefix = true
   algorithm = patience
+[merge]
+  tool = vimdiff
