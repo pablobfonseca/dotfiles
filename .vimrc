@@ -97,12 +97,31 @@ set sidescroll=1
 set incsearch       " Find the next match as we type the search
 set hlsearch        " Highlight searches by default
 set ignorecase      " Ignore case when searching...
-set smartcase       " ...unless we type a capital
 
-" Normal mode mappings
-nnoremap <leader><space> :nohlsearch<cr>
+" ================ Normal mode mappings ====================
+
+nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>ev :e $MYVIMRC<CR>
-nnoremap <leader>a :Ag
+nnoremap <leader>sv :so $MYVIMRC <cr>
+noremap <leader>a :Ag 
+
+" ================ Custom AutoCMDS ====================
+augroup vimrcEx
+  " Clear all autocmds in the group
+  autocmd!
+  autocmd Filetype text setlocal textwidth=78
+  "for ruby, autoindent with two spaces, always expand tabs
+  autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
+  autocmd FileType python set sw=4 sts=4 et
+
+  autocmd! BufRead,BufNewFile *.sass setfiletype sass
+
+  autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
+  autocmd BufRead *.markdown  set ai formatoptions=tcroqn2 comments=n:&gt;
+
+  " Don't syntax highlight markdown because it's often wrong
+  autocmd! FileType mkd setlocal syn=off
+augroup END
 
 " Optimize for fast terminal connections
 set ttyfast
@@ -252,3 +271,4 @@ let g:gist_clip_command = 'pbcopy'
 
 " Ruby vim
 let g:ruby_indent_access_modifier_style = 'indent'
+
