@@ -20,8 +20,6 @@ set autoread                    "Reload files changed outside vim
 set guifont=Inconsolata\ XL:h14,Inconsolata:h15,Monaco:17,Monospace
 syntax on
 
-set textwidth=80
-
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
 " http://items.sjbach.com/319/configuring-vim-right
@@ -190,7 +188,6 @@ Bundle "rking/ag.vim"
 Bundle "sjl/gundo.vim"
 Bundle "tpope/vim-endwise.git"
 Bundle "tpope/vim-surround.git"
-Bundle "sudo.vim"
 "vim-misc is required for vim-session
 Bundle "xolox/vim-misc"
 
@@ -245,6 +242,11 @@ map <S-Right>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>r :r <C-R>=expand("%:p:h") . "/" <CR>
+
+" Runs the current Ruby file
+map ,t :w\|:!ruby %<cr>
+
+noremap <leader>cc :CtrlPClearAllCaches <cr>
 
 let g:gist_clip_command = 'pbcopy'
 
