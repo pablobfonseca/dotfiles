@@ -1,1 +1,30 @@
-.gitconfig
+[core]
+  editor = vim
+[user]
+  name = Pablo Fonseca
+  email = pablofonseca777@gmail.com
+[branch]
+  autosetuprebase = always
+[branch "master"]
+  rebase = true
+[push]
+  default = current
+[pull]
+  default = current
+[color]
+  ui = true
+  diff = auto
+  branch = auto
+  interactive = auto
+[color "status"]
+  added = green
+  changed = blue
+  untracked = magenta
+  deleted = red
+[alias]
+  co = checkout
+  st = status
+  cm = commit
+[diff]
+  mnemonicprefix = true
+  algorithm = patience
