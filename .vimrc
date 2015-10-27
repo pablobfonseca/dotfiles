@@ -30,7 +30,7 @@ set hidden
 " The mapleader has to be set before vundle starts loading all 
 " the plugins.
 
-colorscheme distinguished
+colorscheme vendetta
 
 " ================ Turn Off Swap Files ==============
 
@@ -262,8 +262,8 @@ map <S-Right>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>r :r <C-R>=expand("%:p:h") . "/" <CR>
 
-" Runs the current Ruby file
-map ,t :w\|:!ruby %<cr>
+" Runs javascript File on Node
+noremap ,n :w\|:!node %<cr>
 
 noremap <leader>cc :CtrlPClearAllCaches <cr>
 
@@ -272,3 +272,15 @@ let g:gist_clip_command = 'pbcopy'
 " Ruby vim
 let g:ruby_indent_access_modifier_style = 'indent'
 
+" Rename current file
+function! Rename()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
+endfunction
+
+noremap <Leader>r :call Rename()<CR>
