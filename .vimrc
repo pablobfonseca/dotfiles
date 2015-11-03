@@ -19,6 +19,7 @@ set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
 set guifont=Inconsolata\ XL:h14,Inconsolata:h15,Monaco:17,Monospace
 syntax on
+set textwidth=80
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
@@ -123,6 +124,7 @@ augroup vimrcEx
   autocmd! FileType mkd setlocal syn=off
 augroup END
 
+
 " Optimize for fast terminal connections
 set ttyfast
 " Add g flag to search/replace by default
@@ -172,11 +174,17 @@ call vundle#begin()
 Bundle "tpope/vim-rails.git" 
 Bundle "vim-ruby/vim-ruby.git"
 
+" Python
+" Bundle "scrooloose/syntastic"
+" Bundle "Yggdroot/indentLine"
+
+" PHP
+Bundle 'arnaud-lb/vim-php-namespace'
+
 " Javascript
 Bundle "pangloss/vim-javascript"
 " Bundle "rodjek/vim-puppet"
 Bundle 'jelera/vim-javascript-syntax'
-" Bundle 'othree/javascript-libraries-syntax.vim'
 
 Bundle 'mattn/emmet-vim'
 Bundle 'tomtom/tcomment_vim'
@@ -184,7 +192,6 @@ Bundle 'tomtom/tcomment_vim'
 " Git related...
 Bundle 'L9'
 Bundle "mattn/gist-vim"
-" Bundle "tpope/vim-fugitive"
 Bundle 'airblade/vim-gitgutter'
 
 " General text editing improvements...
@@ -201,7 +208,7 @@ Bundle "vim-scripts/vim-polyglot"
 Bundle "kien/ctrlp.vim"
 " Bundle 'MarcWeber/vim-addon-mw-utils'
 " Bundle "tomtom/tlib_vim.git"
-Bundle "majutsushi/tagbar.git"
+" Bundle "majutsushi/tagbar.git"
 Bundle "mattn/webapi-vim.git"
 Bundle "rking/ag.vim"
 Bundle "sjl/gundo.vim"
@@ -214,12 +221,12 @@ Bundle "xolox/vim-misc"
 Bundle "austintaylor/vim-indentobject"
 Bundle "coderifous/textobj-word-column.vim"
 " Bundle "nathanaelkane/vim-indent-guides"
+Bundle "suan/vim-instant-markdown"
 
 " Cosmetics, color scheme, Powerline...
 " Bundle 'ervandew/supertab'
 Bundle "bling/vim-airline.git"
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-Bundle 'rizzatti/dash.vim'
 
 " Remapping the emmet leader key
 let g:user_emmet_leader_key='<C-Z>'
@@ -263,7 +270,9 @@ map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>r :r <C-R>=expand("%:p:h") . "/" <CR>
 
 " Runs javascript File on Node
-noremap ,n :w\|:!node %<cr>
+noremap <leader>n :w\|:!node %<cr>
+noremap <leader>p :w\|:!python %<cr>
+noremap <leader>r :w\|:!ruby %<cr>
 
 noremap <leader>cc :CtrlPClearAllCaches <cr>
 
@@ -283,4 +292,8 @@ function! Rename()
   endif
 endfunction
 
-noremap <Leader>r :call Rename()<CR>
+noremap <Leader>rr :call Rename()<CR>
+
+" syntastic
+let g:syntastic_python_checkers=['python', 'flake8']
+let g:syntastic_python_flake8_post_args='--ignore=W391'
