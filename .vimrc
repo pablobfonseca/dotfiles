@@ -17,9 +17,10 @@ set guicursor=a:blinkon0        "Disable cursor blink
 set cursorline                  " Set line on cursor
 set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
-set guifont=Inconsolata\ XL:h14,Inconsolata:h15,Monaco:17,Monospace
 syntax on
 set textwidth=80
+highlight ColorColumn ctermbg=white
+set colorcolumn=81
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
@@ -62,18 +63,17 @@ set expandtab
 set list
 set listchars=tab:\ \ ,trail:·
 
-set nowrap       "Don't wrap lines
-set linebreak    "Wrap lines at convenient points
+set wrapmargin=2
 
 " ================ Folds ============================
 
 set foldmethod=indent   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
-set nofoldenable        "dont fold by default
+ set nofoldenable        "dont fold by default
 
 " ================ Completion =======================
 
-set wildmode=list:longest,full
+set wildmode=list:longest
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
@@ -89,6 +89,7 @@ set wildignore+=*.png,*.jpg,*.gif
 "
 " ================ Scrolling ========================
 
+" Type zz to center the window
 set scrolloff=7         "Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
@@ -101,10 +102,36 @@ set ignorecase      " Ignore case when searching...
 
 " ================ Normal mode mappings ====================
 
-nnoremap <leader><space> :nohlsearch<CR>
-nnoremap <leader>ev :e $MYVIMRC<CR>
-nnoremap <leader>sv :so $MYVIMRC <cr>
+nnoremap <silent><leader><space> :silent :nohlsearch<CR>
+nnoremap <silent><leader>ev :silent :e $MYVIMRC<CR>
+nnoremap <silent><leader>sv :silent :so $MYVIMRC <cr>
 noremap <leader>a :Ag 
+
+" Disable arrows
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+
+" Runs javascript File on Node
+noremap <leader>n :w\|:!node %<cr>
+noremap <leader>p :w\|:!python %<cr>
+noremap <leader>r :w\|:!ruby %<cr>
+
+noremap <leader>cc :CtrlPClearAllCaches <cr>
+
+" Scroll the viewport faster
+nnoremap <C-e> 7<C-e>
+nnoremap <C-y> 7<C-y>
+vnoremap <C-e> 7<C-e>
+vnoremap <C-y> 7<C-y>
+
+" ================ Mappings ====================
+map <S-Right>e :e <C-R>=expand("%:p:h") . "/" <CR>
+map <S-Right>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
+map <S-Right>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
+map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
+map <S-Right>r :r <C-R>=expand("%:p:h") . "/" <CR>
 
 " ================ Custom AutoCMDS ====================
 augroup vimrcEx
@@ -146,7 +173,7 @@ set secure
 
 " AutoCommand settings
 autocmd FileType gitcommit      setlocal spell textwidth=72
-autocmd FileType Gemfile        set ft=ruby
+autocmd FileType Gemfile        set filetype=ruby
 
 " Always show status line
 set laststatus=2
@@ -157,12 +184,12 @@ set modelines=4
 set noerrorbells
 " Don’t reset cursor to start of line when moving around.
 set nostartofline
-" Don’t show the intro message when starting Vim
-set shortmess=atI
 " Show the current mode
 set title
 
 " set the runtime path to include Vundle and initialize
+
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
@@ -203,6 +230,7 @@ Bundle "skwp/vim-easymotion"
 Bundle "tpope/vim-bundler"
 Bundle "terryma/vim-multiple-cursors"
 Bundle "vim-scripts/vim-polyglot"
+Bundle "pablobfonseca/vim-dragvisuals"
 
 " General vim improvements
 Bundle "kien/ctrlp.vim"
@@ -216,12 +244,14 @@ Bundle "tpope/vim-endwise.git"
 Bundle "tpope/vim-surround.git"
 "vim-misc is required for vim-session
 Bundle "xolox/vim-misc"
+Bundle "tmhedberg/matchit"
 
 " Text objects
 Bundle "austintaylor/vim-indentobject"
 Bundle "coderifous/textobj-word-column.vim"
 " Bundle "nathanaelkane/vim-indent-guides"
 Bundle "suan/vim-instant-markdown"
+Bundle "sotte/presenting.vim"
 
 " Cosmetics, color scheme, Powerline...
 " Bundle 'ervandew/supertab'
@@ -257,25 +287,6 @@ filetype plugin indent on    " required
 :nmap <S-ScrollWheelRight> <nop>
 :nmap <C-ScrollWheelRight> <nop>
 
-" Disable arrows
-noremap <Left> <Nop>
-noremap <Right> <Nop>
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-
-map <S-Right>e :e <C-R>=expand("%:p:h") . "/" <CR>
-map <S-Right>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
-map <S-Right>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
-map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
-map <S-Right>r :r <C-R>=expand("%:p:h") . "/" <CR>
-
-" Runs javascript File on Node
-noremap <leader>n :w\|:!node %<cr>
-noremap <leader>p :w\|:!python %<cr>
-noremap <leader>r :w\|:!ruby %<cr>
-
-noremap <leader>cc :CtrlPClearAllCaches <cr>
-
 let g:gist_clip_command = 'pbcopy'
 
 " Ruby vim
@@ -297,3 +308,13 @@ noremap <Leader>rr :call Rename()<CR>
 " syntastic
 let g:syntastic_python_checkers=['python', 'flake8']
 let g:syntastic_python_flake8_post_args='--ignore=W391'
+
+"===== Make arrow keys move visual blocks around ======================
+vmap  <expr>  <LEFT>   DVB_Drag('left')
+vmap  <expr>  <RIGHT>  DVB_Drag('right')
+vmap  <expr>  <DOWN>   DVB_Drag('down')
+vmap  <expr>  <UP>     DVB_Drag('up')
+vmap  <expr>  D        DVB_Duplicate()
+vmap  <expr>  <C-D>    DVB_Duplicate()
+
+au FileType rst let b:presenting_slide_separator = '\v(^|\n)\~{4,}'
