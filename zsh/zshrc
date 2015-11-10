@@ -1,0 +1,26 @@
+export ZSH=/Users/Pablo/.oh-my-zsh
+
+ZSH_THEME="fwalch"
+
+plugins=(git brew osx)
+
+# User configuration
+
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Pablo/.rvm/bin"
+# export MANPATH="/usr/local/man:$MANPATH"
+
+source $ZSH/oh-my-zsh.sh
+
+export EDITOR="vim -v"
+export GIT_EDITOR="vim -v"
+export VISUAL="vim -v"
+
+export PATH="/usr/local/sbin:$PATH"
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+[[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
+export PIP_REQUIRE_VIRTUALENV=true
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+export PATH=/usr/local/share/npm/bin:$PATH
