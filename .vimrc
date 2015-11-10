@@ -3,9 +3,9 @@ filetype on
 " ================ General Config ====================
 
 let mapleader=','
-scriptencoding utf-8          " utf-8 all the way
+scriptencoding utf-8            " utf-8 all the way
 set encoding=utf-8
-set number               "Line numbers are good
+set number                      "Line numbers are good
 set splitbelow
 set splitright
 set backspace=indent,eol,start  "Allow backspace in insert mode
@@ -120,6 +120,9 @@ noremap <leader>r :w\|:!ruby %<cr>
 
 noremap <leader>cc :CtrlPClearAllCaches <cr>
 
+" Toggle Gundo
+nnoremap <F2> :GundoToggle<CR>
+
 " Scroll the viewport faster
 nnoremap <C-e> 7<C-e>
 nnoremap <C-y> 7<C-y>
@@ -132,6 +135,28 @@ map <S-Right>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
 map <S-Right>r :r <C-R>=expand("%:p:h") . "/" <CR>
+
+" Disable mouse scroll wheel
+nmap <ScrollWheelUp> <nop>
+nmap <S-ScrollWheelUp> <nop>
+nmap <C-ScrollWheelUp> <nop>
+nmap <ScrollWheelDown> <nop>
+nmap <S-ScrollWheelDown> <nop>
+nmap <C-ScrollWheelDown> <nop>
+nmap <ScrollWheelLeft> <nop>
+nmap <S-ScrollWheelLeft> <nop>
+nmap <C-ScrollWheelLeft> <nop>
+nmap <ScrollWheelRight> <nop>
+nmap <S-ScrollWheelRight> <nop>
+nmap <C-ScrollWheelRight> <nop>
+
+" Make arrow keys move visual blocks around
+vmap  <expr>  <LEFT>   DVB_Drag('left')
+vmap  <expr>  <RIGHT>  DVB_Drag('right')
+vmap  <expr>  <DOWN>   DVB_Drag('down')
+vmap  <expr>  <UP>     DVB_Drag('up')
+vmap  <expr>  D        DVB_Duplicate()
+vmap  <expr>  <C-D>    DVB_Duplicate()
 
 " ================ Custom AutoCMDS ====================
 augroup vimrcEx
@@ -195,22 +220,11 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
-" Bundles
-
 " Ruby, Rails, Rake
-Bundle "tpope/vim-rails.git" 
-Bundle "vim-ruby/vim-ruby.git"
-
-" Python
-" Bundle "scrooloose/syntastic"
-" Bundle "Yggdroot/indentLine"
-
-" PHP
-Bundle 'arnaud-lb/vim-php-namespace'
+Bundle 'tpope/vim-rails.git' 
+Bundle 'vim-ruby/vim-ruby.git'
 
 " Javascript
-Bundle "pangloss/vim-javascript"
-" Bundle "rodjek/vim-puppet"
 Bundle 'jelera/vim-javascript-syntax'
 
 Bundle 'mattn/emmet-vim'
@@ -218,44 +232,34 @@ Bundle 'tomtom/tcomment_vim'
 
 " Git related...
 Bundle 'L9'
-Bundle "mattn/gist-vim"
+Bundle 'mattn/gist-vim'
 Bundle 'airblade/vim-gitgutter'
 
 " General text editing improvements...
 
-Bundle "Raimondi/delimitMate"
-Bundle "briandoll/change-inside-surroundings.vim.git"
-Bundle "godlygeek/tabular"
-Bundle "skwp/vim-easymotion"
-Bundle "tpope/vim-bundler"
-Bundle "terryma/vim-multiple-cursors"
-Bundle "vim-scripts/vim-polyglot"
-Bundle "pablobfonseca/vim-dragvisuals"
+Bundle 'Raimondi/delimitMate'
+Bundle 'skwp/vim-easymotion'
+Bundle 'terryma/vim-multiple-cursors'
+Bundle 'sheerun/vim-polyglot'
+Bundle 'pablobfonseca/vim-dragvisuals'
 
 " General vim improvements
-Bundle "kien/ctrlp.vim"
-" Bundle 'MarcWeber/vim-addon-mw-utils'
-" Bundle "tomtom/tlib_vim.git"
-" Bundle "majutsushi/tagbar.git"
-Bundle "mattn/webapi-vim.git"
-Bundle "rking/ag.vim"
-Bundle "sjl/gundo.vim"
-Bundle "tpope/vim-endwise.git"
-Bundle "tpope/vim-surround.git"
+Bundle 'kien/ctrlp.vim'
+Bundle 'mattn/webapi-vim.git'
+Bundle 'rking/ag.vim'
+Bundle 'sjl/gundo.vim'
+Bundle 'tpope/vim-endwise.git'
+Bundle 'tpope/vim-surround.git'
 "vim-misc is required for vim-session
-Bundle "xolox/vim-misc"
-Bundle "tmhedberg/matchit"
+Bundle 'xolox/vim-misc'
+Bundle 'tmhedberg/matchit'
 
 " Text objects
-Bundle "austintaylor/vim-indentobject"
-Bundle "coderifous/textobj-word-column.vim"
-" Bundle "nathanaelkane/vim-indent-guides"
-Bundle "suan/vim-instant-markdown"
-Bundle "sotte/presenting.vim"
+Bundle 'coderifous/textobj-word-column.vim'
+Bundle 'suan/vim-instant-markdown'
 
 " Cosmetics, color scheme, Powerline...
-" Bundle 'ervandew/supertab'
-Bundle "bling/vim-airline.git"
+Bundle 'bling/vim-airline.git'
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 " Remapping the emmet leader key
@@ -272,20 +276,6 @@ Plugin 'gmarik/Vundle.vim'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-
-" Disable mouse scroll wheel
-:nmap <ScrollWheelUp> <nop>
-:nmap <S-ScrollWheelUp> <nop>
-:nmap <C-ScrollWheelUp> <nop>
-:nmap <ScrollWheelDown> <nop>
-:nmap <S-ScrollWheelDown> <nop>
-:nmap <C-ScrollWheelDown> <nop>
-:nmap <ScrollWheelLeft> <nop>
-:nmap <S-ScrollWheelLeft> <nop>
-:nmap <C-ScrollWheelLeft> <nop>
-:nmap <ScrollWheelRight> <nop>
-:nmap <S-ScrollWheelRight> <nop>
-:nmap <C-ScrollWheelRight> <nop>
 
 let g:gist_clip_command = 'pbcopy'
 
@@ -304,17 +294,3 @@ function! Rename()
 endfunction
 
 noremap <Leader>rr :call Rename()<CR>
-
-" syntastic
-let g:syntastic_python_checkers=['python', 'flake8']
-let g:syntastic_python_flake8_post_args='--ignore=W391'
-
-"===== Make arrow keys move visual blocks around ======================
-vmap  <expr>  <LEFT>   DVB_Drag('left')
-vmap  <expr>  <RIGHT>  DVB_Drag('right')
-vmap  <expr>  <DOWN>   DVB_Drag('down')
-vmap  <expr>  <UP>     DVB_Drag('up')
-vmap  <expr>  D        DVB_Duplicate()
-vmap  <expr>  <C-D>    DVB_Duplicate()
-
-au FileType rst let b:presenting_slide_separator = '\v(^|\n)\~{4,}'
