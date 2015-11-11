@@ -3,6 +3,15 @@ set-option -g default-shell $SHELL
 set -g default-terminal "screen-256color"
 set -g status-utf8 on
 
+# Act like VIM
+setw -g mode-keys vi
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+bind-key -r C-h select-window -t :-
+bind-key -r C-l select-window -t :+
+
 set -g history-limit 20000
 
 # automatically renumber tmux windows
@@ -59,10 +68,6 @@ bind - split-window -v -c "#{pane_current_path}"
 bind y setw synchronize-panes
 
 # pane movement shortcuts
-bind -n M-Left select-pane -L
-bind -n M-Right select-pane -R
-bind -n M-Up select-pane -U
-bind -n M-Down select-pane -D
 
 # Resize panes shortcuts
 bind -r H resize-pane -L 10
@@ -76,8 +81,17 @@ bind Up new-window -d -n fullscreen \; swap-pane -s fullscreen.1 \; select-windo
 unbind Down
 bind Down last-window \; swap-pane -s fullscreen.1 \; kill-window -t fullscreen
 
-# set vi mode for copy mode
-setw -g mode-keys vi
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm' # Tmux package manager
+set -g @plugin 'tmux-plugins/tmux-battery' #Show battery icon/status
+
+# How to install other plugins from Github:
+# To install new plugins press: prefix + I
+# set -g @plugin 'github_username/plugin_name'
+# set -g @plugin 'git@github.com/user/plugin'
+# set -g @plugin 'git@bitbucket.com/user/plugin'
 
 # ====== Color & Style Settingd ======
 source ~/.tmux/theme.sh
+
+run-shell '~/.tmux/plugins/tpm/tpm'
