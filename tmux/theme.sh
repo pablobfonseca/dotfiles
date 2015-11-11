@@ -50,7 +50,6 @@ set-window-option -g clock-mode-colour $tm_color_active
 
 tm_spotify="#[fg=$tm_color_music]#(osascript ~/.tmux/applescripts/spotify.scpt)"
 tm_itunes="#[fg=$tm_color_music]#(osascript ~/.tmux/applescripts/itunes.scpt)"
-tm_battery="#(~/.tmux/plugins/battery_indicator.sh)"
 
 tm_date="#[fg=$tm_color_inactive] %R %d %b"
 tm_host="#[fg=$tm_color_feature,bold]#h"

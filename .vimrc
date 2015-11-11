@@ -130,11 +130,11 @@ vnoremap <C-e> 7<C-e>
 vnoremap <C-y> 7<C-y>
 
 " ================ Mappings ====================
-map <S-Right>e :e <C-R>=expand("%:p:h") . "/" <CR>
-map <S-Right>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
-map <S-Right>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
-map <S-Right>s :split <C-R>=expand("%:p:h") . "/" <CR>
-map <S-Right>r :r <C-R>=expand("%:p:h") . "/" <CR>
+noremap <space>e :e <C-R>=expand("%:p:h") . "/" <CR>
+noremap <space>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
+noremap <space>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
+noremap <space>s :split <C-R>=expand("%:p:h") . "/" <CR>
+noremap <space>r :r <C-R>=expand("%:p:h") . "/" <CR>
 
 " Disable mouse scroll wheel
 nmap <ScrollWheelUp> <nop>
@@ -215,52 +215,52 @@ set title
 " set the runtime path to include Vundle and initialize
 
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+set runtimepath+=~/.vim/bundle/neobundle.vim
+call neobundle#begin(expand('~/.vim/bundle'))
+
+NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Ruby, Rails, Rake
-Bundle 'tpope/vim-rails.git' 
-Bundle 'vim-ruby/vim-ruby.git'
+NeoBundle 'tpope/vim-rails.git' 
+NeoBundle 'vim-ruby/vim-ruby.git'
 
 " Javascript
-Bundle 'jelera/vim-javascript-syntax'
+NeoBundle 'jelera/vim-javascript-syntax'
 
-Bundle 'mattn/emmet-vim'
-Bundle 'tomtom/tcomment_vim'
+NeoBundle 'mattn/emmet-vim'
+NeoBundle 'tomtom/tcomment_vim'
 
 " Git related...
-Bundle 'L9'
-Bundle 'mattn/gist-vim'
-Bundle 'airblade/vim-gitgutter'
+NeoBundle 'L9'
+NeoBundle 'mattn/gist-vim'
+NeoBundle 'airblade/vim-gitgutter'
 
 " General text editing improvements...
 
-Bundle 'Raimondi/delimitMate'
-Bundle 'skwp/vim-easymotion'
-Bundle 'terryma/vim-multiple-cursors'
-Bundle 'sheerun/vim-polyglot'
-Bundle 'pablobfonseca/vim-dragvisuals'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'skwp/vim-easymotion'
+NeoBundle 'terryma/vim-multiple-cursors'
+NeoBundle 'sheerun/vim-polyglot'
+NeoBundle 'pablobfonseca/vim-dragvisuals'
 
 " General vim improvements
-Bundle 'kien/ctrlp.vim'
-Bundle 'mattn/webapi-vim.git'
-Bundle 'rking/ag.vim'
-Bundle 'sjl/gundo.vim'
-Bundle 'tpope/vim-endwise.git'
-Bundle 'tpope/vim-surround.git'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'mattn/webapi-vim.git'
+NeoBundle 'rking/ag.vim'
+NeoBundle 'sjl/gundo.vim'
+NeoBundle 'tpope/vim-endwise.git'
+NeoBundle 'tpope/vim-surround.git'
 "vim-misc is required for vim-session
-Bundle 'xolox/vim-misc'
-Bundle 'tmhedberg/matchit'
+NeoBundle 'xolox/vim-misc'
+NeoBundle 'tmhedberg/matchit'
 
 " Text objects
-Bundle 'coderifous/textobj-word-column.vim'
-Bundle 'suan/vim-instant-markdown'
+NeoBundle 'coderifous/textobj-word-column.vim'
+NeoBundle 'suan/vim-instant-markdown'
 
 " Cosmetics, color scheme, Powerline...
-Bundle 'bling/vim-airline.git'
-Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+NeoBundle 'bling/vim-airline.git'
+NeoBundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 " Remapping the emmet leader key
 let g:user_emmet_leader_key='<C-Z>'
@@ -270,12 +270,11 @@ autocmd FileType html,css EmmetInstall
 " Enable easymotion
 let g:EasyMotion_leader_key = '<Leader>'
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+call neobundle#end()
 filetype plugin indent on    " required
+
+NeoBundleCheck
 
 let g:gist_clip_command = 'pbcopy'
 
