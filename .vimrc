@@ -1,26 +1,34 @@
+" Type <leader>sv to refresh .vimrc after making changes
 set nocompatible              " be iMproved, required
 filetype on
 " ================ General Config ====================
 
 let mapleader=','
 scriptencoding utf-8            " utf-8 all the way
+syntax on
 set encoding=utf-8
 set number                      "Line numbers are good
 set splitbelow
 set splitright
-set backspace=indent,eol,start  "Allow backspace in insert mode
-set history=1000                "Store lots of :cmdline history
-set mouse-=a                    "Disable mouse click
-set showcmd                     "Show incomplete cmds down the bottom
-set showmode                    "Show current mode down the bottom
-set guicursor=a:blinkon0        "Disable cursor blink
+set backspace=indent,eol,start  " Allow backspace in insert mode
+set history=1000                " Store lots of :cmdline history
+set mouse-=a                    " Disable mouse click
+set showcmd                     " Show incomplete cmds down the bottom
+set showmode                    " Show current mode down the bottom
+set guicursor=a:blinkon0        " Disable cursor blink
 set cursorline                  " Set line on cursor
-set visualbell                  "No sounds
-set autoread                    "Reload files changed outside vim
-syntax on
+set visualbell                  " No sounds
+set autowrite                   " Automatically :write before running commands
+set autoread                    " Reload files changed outside vim
+set diffopt+=vertical           " Always use vertical diffs
 set textwidth=80
 highlight ColorColumn ctermbg=white
-set colorcolumn=81
+set formatoptions=qrn1
+set wrapmargin=0
+set colorcolumn=+1
+
+" Trigger autoread when changing buffers or coming back to vim in terminal.
+au FocusGained,BufEnter * :silent! !
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
@@ -69,11 +77,11 @@ set wrapmargin=2
 
 set foldmethod=indent   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
- set nofoldenable        "dont fold by default
+set nofoldenable        "dont fold by default
 
 " ================ Completion =======================
 
-set wildmode=list:longest
+set wildmode=list:longest,full
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
@@ -90,33 +98,48 @@ set wildignore+=*.png,*.jpg,*.gif
 " ================ Scrolling ========================
 
 " Type zz to center the window
-set scrolloff=7         "Start scrolling when we're 8 lines away from margins
+set scrolloff=7         "Start scrolling when we're 7 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
 
+"Toggle relative numbering, and set to absolute on loss of focus or insert mode
+set rnu
+autocmd FocusLost * call ToggleRelativeOn()
+autocmd FocusGained * call ToggleRelativeOn()
+autocmd InsertEnter * call ToggleRelativeOn()
+autocmd InsertLeave * call ToggleRelativeOn()
+
+" ================ Quicker window movement ===========================
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+
 " ================ Search ===========================
 
+nnoremap / /\v
+vnoremap / /\v
+set gdefault        " Never have to type /g at the end of search / replace again
 set incsearch       " Find the next match as we type the search
 set hlsearch        " Highlight searches by default
 set ignorecase      " Ignore case when searching...
 
-" ================ Normal mode mappings ====================
+" ================ Mappings ====================
 
 nnoremap <silent><leader><space> :silent :nohlsearch<CR>
 nnoremap <silent><leader>ev :silent :e $MYVIMRC<CR>
 nnoremap <silent><leader>sv :silent :so $MYVIMRC <cr>
-noremap <leader>a :Ag 
+" bind \ (backward slash) to grep shortcut
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
 
 " Disable arrows
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 noremap <Up> <Nop>
 noremap <Down> <Nop>
-
-" Runs javascript File on Node
-noremap <leader>n :w\|:!node %<cr>
-noremap <leader>p :w\|:!python %<cr>
-noremap <leader>r :w\|:!ruby %<cr>
 
 noremap <leader>cc :CtrlPClearAllCaches <cr>
 
@@ -129,12 +152,40 @@ nnoremap <C-y> 7<C-y>
 vnoremap <C-e> 7<C-e>
 vnoremap <C-y> 7<C-y>
 
-" ================ Mappings ====================
-noremap <space>e :e <C-R>=expand("%:p:h") . "/" <CR>
-noremap <space>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
-noremap <space>v :vsp <C-R>=expand("%:p:h") . "/" <CR>
-noremap <space>s :split <C-R>=expand("%:p:h") . "/" <CR>
-noremap <space>r :r <C-R>=expand("%:p:h") . "/" <CR>
+" Navigate properly when lines are wrapped
+nnoremap j gj
+nnoremap k gk
+
+" Use tab to jump between blocks, because it's easier
+nnoremap <tab> %
+vnoremap <tab> %
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" zoom a vim pane, <C-w>= to re-balance
+nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
+nnoremap <leader>= :wincmd =<cr>
+
+" resize panes
+nnoremap <silent> <Left> :vertical resize +5<cr>
+nnoremap <silent> <Right> :vertical resize -5<cr>
+nnoremap <silent> <Up> :resize +5<cr>
+nnoremap <silent> <Down> :resize -5<cr>
+
+inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <S-Tab> <c-n>
+
+noremap <Leader>rr :call Rename()<CR>
+
+" Switch between the last two files
+nnoremap <leader><leader> <c-^>
+
+noremap <space>e :e <C-R>=
+noremap <space>t :tabe <C-R>=
+noremap <space>v :vsp <C-R>=
+noremap <space>s :split <C-R>=
+noremap <space>r :r <C-R>=
 
 " Disable mouse scroll wheel
 nmap <ScrollWheelUp> <nop>
@@ -159,6 +210,16 @@ vmap  <expr>  D        DVB_Duplicate()
 vmap  <expr>  <C-D>    DVB_Duplicate()
 
 " ================ Custom AutoCMDS ====================
+" Save whenever switching windows or leaving vim. This is useful when running
+" the tests inside vim without having to save all files first.
+autocmd FocusLost,WinLeave * :silent! wa
+
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
+
+"update dir to current file
+autocmd BufEnter * silent! cd %:p:h
+
 augroup vimrcEx
   " Clear all autocmds in the group
   autocmd!
@@ -172,8 +233,15 @@ augroup vimrcEx
   autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
   autocmd BufRead *.markdown  set ai formatoptions=tcroqn2 comments=n:&gt;
 
+  " Allow stylesheets to autocomplete hyphenated words
+  autocmd FileType css,scss,sass,less setlocal iskeyword+=-
+
+  " Enable spellchecking for Markdown
+  autocmd FileType markdown setlocal spell
+
   " Don't syntax highlight markdown because it's often wrong
   autocmd! FileType mkd setlocal syn=off
+
 augroup END
 
 
@@ -214,7 +282,6 @@ set title
 
 " set the runtime path to include Vundle and initialize
 
-
 set runtimepath+=~/.vim/bundle/neobundle.vim
 call neobundle#begin(expand('~/.vim/bundle'))
 
@@ -244,7 +311,7 @@ NeoBundle 'sheerun/vim-polyglot'
 NeoBundle 'pablobfonseca/vim-dragvisuals'
 
 " General vim improvements
-NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'mattn/webapi-vim.git'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'sjl/gundo.vim'
@@ -253,6 +320,8 @@ NeoBundle 'tpope/vim-surround.git'
 "vim-misc is required for vim-session
 NeoBundle 'xolox/vim-misc'
 NeoBundle 'tmhedberg/matchit'
+NeoBundle 'christoomey/vim-tmux-navigator'
+NeoBundle 'benmills/vimux'
 
 " Text objects
 NeoBundle 'coderifous/textobj-word-column.vim'
@@ -263,7 +332,7 @@ NeoBundle 'bling/vim-airline.git'
 NeoBundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 " Remapping the emmet leader key
-let g:user_emmet_leader_key='<C-Z>'
+let g:user_emmet_leader_key='<Tab>'
 let g:user_emmet_mode='a'
 autocmd FileType html,css EmmetInstall
 
@@ -281,6 +350,20 @@ let g:gist_clip_command = 'pbcopy'
 " Ruby vim
 let g:ruby_indent_access_modifier_style = 'indent'
 
+" ================ Functions ====================
+
+" Tab completion
+" will insert tab at beginning of line,
+" will use completion if not at beginning
+function! InsertTabWrapper()
+  let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+    return "\<tab>"
+  else
+    return "\<c-p>"
+  endif
+endfunction
+
 " Rename current file
 function! Rename()
   let old_name = expand('%')
@@ -292,4 +375,11 @@ function! Rename()
   endif
 endfunction
 
-noremap <Leader>rr :call Rename()<CR>
+function! ToggleNumbersOn()
+  set nu!
+  set rnu
+endfunction
+function! ToggleRelativeOn()
+  set rnu!
+  set nu
+endfunction
