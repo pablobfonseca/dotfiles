@@ -1,4 +1,8 @@
+[init]
+  templatedir = ~/.git_template
 [core]
+  excludesfile = ~/.gitignore
+  autocrlf = input
   editor = vim
 [user]
   name = Pablo Fonseca
@@ -18,7 +22,7 @@
   interactive = auto
 [color "status"]
   added = green
-  changed = blue
+  changed = yellow
   untracked = magenta
   deleted = red
 [alias]
@@ -30,3 +34,7 @@
   algorithm = patience
 [merge]
   tool = vimdiff
+[fetch]
+  prune = true
+[github]
+	user = pablobfonseca

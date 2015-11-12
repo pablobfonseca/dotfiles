@@ -104,7 +104,7 @@ set sidescroll=1
 
 "Toggle relative numbering, and set to absolute on loss of focus or insert mode
 set rnu
-autocmd FocusLost * call ToggleRelativeOn()
+autocmd FocusLost   * call ToggleRelativeOn()
 autocmd FocusGained * call ToggleRelativeOn()
 autocmd InsertEnter * call ToggleRelativeOn()
 autocmd InsertLeave * call ToggleRelativeOn()
@@ -141,7 +141,7 @@ noremap <Right> <Nop>
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 
-noremap <leader>cc :CtrlPClearAllCaches <cr>
+noremap <silent><leader>cc :silent :CtrlPClearAllCaches <cr>
 
 " Toggle Gundo
 nnoremap <F2> :GundoToggle<CR>
@@ -181,11 +181,13 @@ noremap <Leader>rr :call Rename()<CR>
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
 
-noremap <space>e :e <C-R>=
-noremap <space>t :tabe <C-R>=
-noremap <space>v :vsp <C-R>=
-noremap <space>s :split <C-R>=
-noremap <space>r :r <C-R>=
+noremap <space>e :e<space>
+noremap <space>t :tabe<space>
+noremap <space>v :vsp<space>
+noremap <space>s :split<space>
+noremap <space>r :r<space>
+
+nnoremap <leader>ri :RunInInteractiveShell<space>
 
 " Disable mouse scroll wheel
 nmap <ScrollWheelUp> <nop>
@@ -236,9 +238,6 @@ augroup vimrcEx
   " Allow stylesheets to autocomplete hyphenated words
   autocmd FileType css,scss,sass,less setlocal iskeyword+=-
 
-  " Enable spellchecking for Markdown
-  autocmd FileType markdown setlocal spell
-
   " Don't syntax highlight markdown because it's often wrong
   autocmd! FileType mkd setlocal syn=off
 
@@ -256,8 +255,6 @@ set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
 
 set viminfo+=! " make sure vim history works
-map <C-J> <C-W>j<C-W>_ " open and maximize the split below
-map <C-K> <C-W>k<C-W>_ " open and maximize the split above
 set wmh=0 " reduces splits to a single line 
 
 " Enable per-directory .vimrc files and disable unsafe commands in them
@@ -321,7 +318,7 @@ NeoBundle 'tpope/vim-surround.git'
 NeoBundle 'xolox/vim-misc'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'benmills/vimux'
+NeoBundle 'christoomey/vim-run-interactive'
 
 " Text objects
 NeoBundle 'coderifous/textobj-word-column.vim'
@@ -330,6 +327,8 @@ NeoBundle 'suan/vim-instant-markdown'
 " Cosmetics, color scheme, Powerline...
 NeoBundle 'bling/vim-airline.git'
 NeoBundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+" Diary, notes, whatever. It's amazing
+NeoBundle 'vimwiki/vimwiki'
 
 " Remapping the emmet leader key
 let g:user_emmet_leader_key='<Tab>'
@@ -345,7 +344,12 @@ filetype plugin indent on    " required
 
 NeoBundleCheck
 
-let g:gist_clip_command = 'pbcopy'
+let g:gist_clip_command = 'pbcopy' "Using Gist will copy URL to clipboard automatically
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1"
+
+" Set Vim Wiki to my Dropbox directory
+let g:vimwiki_list = [{'path':'$HOME/Dropbox/vimwiki'}]
 
 " Ruby vim
 let g:ruby_indent_access_modifier_style = 'indent'
@@ -383,3 +387,16 @@ function! ToggleRelativeOn()
   set rnu!
   set nu
 endfunction
+
+" Use the silver_searcher
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_working_path_mode = 'r'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
