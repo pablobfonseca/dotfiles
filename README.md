@@ -32,9 +32,6 @@ call pathogen#helptags()
 This will make the plugins documentations available upon :help
 
 # **Learn VIM**
-Visit the following sites to learn more about Vim:  
-## Learn Vim
-
 Visit the following sites to learn more about Vim:
 
 * [Learn Vim Progressively](http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/)
