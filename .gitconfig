@@ -1,5 +1,3 @@
-[init]
-  templatedir = ~/.git_template
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
@@ -23,7 +21,7 @@
 [color "status"]
   added = green
   changed = yellow
-  untracked = magenta
+  untracked = cyan
   deleted = red
 [alias]
   co = checkout
