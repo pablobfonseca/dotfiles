@@ -181,11 +181,10 @@ noremap <Leader>rr :call Rename()<CR>
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
 
-noremap <space>e :e<space>
-noremap <space>t :tabe<space>
-noremap <space>v :vsp<space>
-noremap <space>s :split<space>
-noremap <space>r :r<space>
+noremap <space>e :e <C-R>=expand("%:p:h") . "/" <CR>
+noremap <space>v :vsplit <C-R>=expand("%:p:h") . "/" <CR>
+noremap <space>s :split <C-R>=expand("%:p:h") . "/" <CR>
+noremap <space>r :r <C-R>=expand("%:p:h") . "/" <CR>
 
 nnoremap <leader>ri :RunInInteractiveShell<space>
 
@@ -218,9 +217,6 @@ autocmd FocusLost,WinLeave * :silent! wa
 
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
-
-"update dir to current file
-autocmd BufEnter * silent! cd %:p:h
 
 augroup vimrcEx
   " Clear all autocmds in the group
@@ -301,6 +297,7 @@ NeoBundle 'airblade/vim-gitgutter'
 
 " General text editing improvements...
 
+NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'skwp/vim-easymotion'
 NeoBundle 'terryma/vim-multiple-cursors'
@@ -331,7 +328,7 @@ NeoBundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 NeoBundle 'vimwiki/vimwiki'
 
 " Remapping the emmet leader key
-let g:user_emmet_leader_key='<Tab>'
+let g:user_emmet_leader_key='<C-Z>'
 let g:user_emmet_mode='a'
 autocmd FileType html,css EmmetInstall
 
@@ -400,17 +397,3 @@ if executable('ag')
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif
-
-" Open url
-command -bar -nargs=1 OpenUrl :!open <args>
-function! OpenUrl()
-  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;:]*')
-  echo s:uri
-  if s:uri != ""
-    exec "!open \"" . s:uri . "\""
-  else
-    echo "No URI found in line."
-  endif
-endfunction
-
-map <leader>w :call OpenUrl()<CR>

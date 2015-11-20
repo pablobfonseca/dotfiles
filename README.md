@@ -25,6 +25,9 @@ Create a `tmux.conf` file in your home directory on Linux/Mac like this:
 ln -s .dotfiles/tmux ~/.tmux && ln -s .dotfiles/tmux/tmux.conf ~/.tmux.conf
 ```
 
+PS: Put [Tmux Navigator](https://github.com/christoomey/vim-tmux-navigator) in
+your `.vimrc`
+
 # **Help Tags**
 At first usage of vim, type “:” while in command mode and execute:
 
