@@ -156,10 +156,6 @@ vnoremap <C-y> 7<C-y>
 nnoremap j gj
 nnoremap k gk
 
-" Use tab to jump between blocks, because it's easier
-nnoremap <tab> %
-vnoremap <tab> %
-
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
@@ -315,14 +311,17 @@ NeoBundle 'xolox/vim-misc'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'christoomey/vim-run-interactive'
+NeoBundle 'garbas/vim-snipmate'
+NeoBundle 'MarcWeber/vim-addon-mw-utils'
+NeoBundle 'tomtom/tlib_vim'
+NeoBundle 'garbas/vim-snipmate'
 
 " Text objects
 NeoBundle 'coderifous/textobj-word-column.vim'
 NeoBundle 'suan/vim-instant-markdown'
 
 " Cosmetics, color scheme, Powerline...
-NeoBundle 'bling/vim-airline.git'
-NeoBundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+NeoBundle "itchyny/lightline.vim"
 " Diary, notes, whatever. It's amazing
 NeoBundle 'vimwiki/vimwiki'
 
