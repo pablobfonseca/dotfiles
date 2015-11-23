@@ -297,7 +297,6 @@ NeoBundle 'airblade/vim-gitgutter'
 
 " General text editing improvements...
 
-NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'skwp/vim-easymotion'
 NeoBundle 'terryma/vim-multiple-cursors'
@@ -331,6 +330,7 @@ NeoBundle 'vimwiki/vimwiki'
 let g:user_emmet_leader_key='<C-Z>'
 let g:user_emmet_mode='a'
 autocmd FileType html,css EmmetInstall
+
 
 " Enable easymotion
 let g:EasyMotion_leader_key = '<Leader>'
