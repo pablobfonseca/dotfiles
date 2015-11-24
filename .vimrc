@@ -21,6 +21,7 @@ set visualbell                  " No sounds
 set autowrite                   " Automatically :write before running commands
 set autoread                    " Reload files changed outside vim
 set diffopt+=vertical           " Always use vertical diffs
+set lazyredraw                  " Don't redraw  screen when running macros
 set textwidth=80
 highlight ColorColumn ctermbg=white
 set formatoptions=qrn1
@@ -184,6 +185,15 @@ noremap <space>r :r <C-R>=expand("%:p:h") . "/" <CR>
 
 nnoremap <leader>ri :RunInInteractiveShell<space>
 
+" Bundle install
+map <leader>bb :!bundle install<cr>
+
+" Indent all lines
+map <Leader>i mmgg=G`m
+
+"Coding notes
+map <Leader>cn :e ~/Dropbox/notes/coding-notes.md<cr>
+
 " Disable mouse scroll wheel
 nmap <ScrollWheelUp> <nop>
 nmap <S-ScrollWheelUp> <nop>
@@ -311,7 +321,7 @@ NeoBundle 'xolox/vim-misc'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'christoomey/vim-run-interactive'
-
+NeoBundle 'skwp/greplace.vim'
 " Text objects
 NeoBundle 'coderifous/textobj-word-column.vim'
 NeoBundle 'suan/vim-instant-markdown'
@@ -326,9 +336,12 @@ let g:user_emmet_leader_key='<C-Z>'
 let g:user_emmet_mode='a'
 autocmd FileType html,css EmmetInstall
 
+" Global replace configurations
+set grepprg=ag
+let g:grep_cmd_opts = '--line-numbers --noheading'
 
 " Enable easymotion
-let g:EasyMotion_leader_key = '<Leader>'
+let g:EasyMotion_leader_key = '<Leader><Leader>'
 
 " All of your Plugins must be added before the following line
 call neobundle#end()
