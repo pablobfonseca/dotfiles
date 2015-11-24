@@ -311,10 +311,6 @@ NeoBundle 'xolox/vim-misc'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'christoomey/vim-run-interactive'
-NeoBundle 'garbas/vim-snipmate'
-NeoBundle 'MarcWeber/vim-addon-mw-utils'
-NeoBundle 'tomtom/tlib_vim'
-NeoBundle 'garbas/vim-snipmate'
 
 " Text objects
 NeoBundle 'coderifous/textobj-word-column.vim'
@@ -392,6 +388,8 @@ if executable('ag')
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
   let g:ctrlp_working_path_mode = 'r'
+  let g:ctrlp_extensions = ['gazetteer']
+  nmap <Leader>g <Plug>GazetteerEchoLocation
 
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
