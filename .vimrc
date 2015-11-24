@@ -311,10 +311,6 @@ NeoBundle 'xolox/vim-misc'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'christoomey/vim-run-interactive'
-NeoBundle 'garbas/vim-snipmate'
-NeoBundle 'MarcWeber/vim-addon-mw-utils'
-NeoBundle 'tomtom/tlib_vim'
-NeoBundle 'garbas/vim-snipmate'
 
 " Text objects
 NeoBundle 'coderifous/textobj-word-column.vim'
