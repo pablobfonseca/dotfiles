@@ -1,19 +1,38 @@
 # **USAGE**
 
-Just run the follow command in your terminal.
+Troubleshoot: Because of the large amount of submodules, if you ever have any
+trouble after pulling from the repository, it will be easier to just back up
+your old .vim folder and just git clone a new version.
+
+Clone this repo into your home directory either as .vim (linux/mac). Such as:
 
 ```
-curl https://raw.githubusercontent.com/pablobfonseca/dotfiles/master/install.rb | ruby
+git clone git://github.com/pablobfonseca/dotfiles.git
 ```
 
-# NeoBundle
-I have chose [NeoBundle](https://github.com/Shougo/neobundle.vim) as my plugin manager, but feel free to use whatever you want.
+## VIM
+Now you should create a new `.vimrc` file in your home directory that
+loads the pre-configured one that comes bundled in this package. You can do it
+on Linux/Mac like this:
+```linux
+ln -s .dotfiles/vim/vimrc ~/.vimrc
+```
 
-## Install NeoBundle
+## tmux
+
+Create a `tmux.conf` file in your home directory on Linux/Mac like this:
+```linux
+ln -s .dotfiles/tmux ~/.tmux && ln -s .dotfiles/tmux/tmux.conf ~/.tmux.conf
 ```
-$ curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh > install.sh
-$ sh ./install.sh
-```
+
+PS: Put [Tmux Navigator](https://github.com/christoomey/vim-tmux-navigator) in
+your `.vimrc`
+
+# **Help Tags**
+At first usage of vim, type “:” while in command mode and execute:
+
+call pathogen#helptags()
+This will make the plugins documentations available upon :help
 
 # **Learn VIM**
 Visit the following sites to learn more about Vim:
@@ -35,7 +54,3 @@ to follow for newcomers, let me know.
 ## Customize tmux
 
 [Making tmux Pretty and Usable](http://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/)
-
-## Troubles
-If you find something wrong or you want to improve this repository, please do it
-:smile:, open an issue and send a pull request.
