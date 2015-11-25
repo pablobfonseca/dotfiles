@@ -8,25 +8,8 @@ Clone this repo into your home directory either as .vim (linux/mac). Such as:
 
 ```
 git clone git://github.com/pablobfonseca/dotfiles.git
+sh instal.sh
 ```
-
-## VIM
-Now you should create a new `.vimrc` file in your home directory that
-loads the pre-configured one that comes bundled in this package. You can do it
-on Linux/Mac like this:
-```linux
-ln -s .dotfiles/vim/vimrc ~/.vimrc
-```
-
-## tmux
-
-Create a `tmux.conf` file in your home directory on Linux/Mac like this:
-```linux
-ln -s .dotfiles/tmux ~/.tmux && ln -s .dotfiles/tmux/tmux.conf ~/.tmux.conf
-```
-
-PS: Put [Tmux Navigator](https://github.com/christoomey/vim-tmux-navigator) in
-your `.vimrc`
 
 # **Help Tags**
 At first usage of vim, type “:” while in command mode and execute:
