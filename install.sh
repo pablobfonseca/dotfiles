@@ -21,6 +21,8 @@ ln -s dotfiles/vim  ~/.vim
 ln -s dotfiles/vim/.vimrc ~/.vimrc
 ln -s dotfiles/tmux ~/.tmux
 ln -s dotfiles/tmux/tmux-conf ~/.tmux.conf
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+git clone https://github.com/tmux-plugins/tmux-battery ~/.tmux/plugins/tmux-battery
 
 # Git
 ln -s dotfiles/.gitconfig ~/.gitconfig
