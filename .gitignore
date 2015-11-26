@@ -19,3 +19,4 @@ log/
 backups/*
 bundle/*
 sessions/*
+vim/backups

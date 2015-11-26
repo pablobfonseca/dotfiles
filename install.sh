@@ -17,6 +17,8 @@ brew install mongodb zsh the_silver_searcher openssl redis tmate wget
 brew install caskroom/cask/brew-cask
 
 # Vim and Tmux
+ln -s dotfiles/zsh/zshrc ~/.zshrc
+source ~/.zshrc
 ln -s dotfiles/vim  ~/.vim
 ln -s dotfiles/vim/.vimrc ~/.vimrc
 ln -s dotfiles/tmux ~/.tmux
