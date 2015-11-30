@@ -7,8 +7,9 @@ your old .vim folder and just git clone a new version.
 Clone this repo into your home directory either as .vim (linux/mac). Such as:
 
 ```
-git clone git://github.com/pablobfonseca/dotfiles.git
-sh instal.sh
+git clone git://github.com/pablobfonseca/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+sh ./instal.sh
 ```
 
 # **Help Tags**
