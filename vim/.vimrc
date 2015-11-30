@@ -133,12 +133,6 @@ set ignorecase      " Ignore case when searching...
 set splitbelow
 set splitright
 
-" Quicker window movement
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-
 " Always use vertical diffs
 set diffopt+=vertical
 
