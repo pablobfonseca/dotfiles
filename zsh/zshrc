@@ -3,7 +3,7 @@ export ZSH=/Users/Pablo/.oh-my-zsh
 
 ZSH_THEME="fwalch"
 
-plugins=(git brew osx)
+plugins=(git tmuxinator brew osx)
 
 # User configuration
 
@@ -54,7 +54,6 @@ alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 # Git aliases
 alias st="git st"
 alias push="git push"
-
-
+alias commit="git commit"
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

@@ -1,55 +1,72 @@
 " Type <leader>sv to refresh .vimrc after making changes
-set nocompatible              " be iMproved, required
-filetype on
-" ================ General Config ====================
+set nocompatible          " be iMproved, required
+filetype off
 
-let mapleader=','
+" ===========[ General Config ]===========
+
+let mapleader = ","
 scriptencoding utf-8            " utf-8 all the way
-syntax on
-set encoding=utf-8
-set number                      "Line numbers are good
-set splitbelow
-set splitright
-set backspace=indent,eol,start  " Allow backspace in insert mode
-set history=1000                " Store lots of :cmdline history
+set encoding=utf-8 nobomb
+set backspace=indent,eol,start 	" Backspace deletes like most programs in insert mode
+set history=100
+set ruler                       " Show the cursor position all the time
 set mouse-=a                    " Disable mouse click
-set showcmd                     " Show incomplete cmds down the bottom
-set showmode                    " Show current mode down the bottom
-set guicursor=a:blinkon0        " Disable cursor blink
-set cursorline                  " Set line on cursor
-set visualbell                  " No sounds
+set cursorline                  " Set line on the cursor
+set showcmd                     " Display incomplete commands
+set showmode                    " Display current mode down the bottom
+set incsearch                   " Do incremental searching
+set laststatus=2                " Always display the status line
+set modeline
+set modelines=4
+set noerrorbells
+set title
 set autowrite                   " Automatically :write before running commands
 set autoread                    " Reload files changed outside vim
-set diffopt+=vertical           " Always use vertical diffs
 set lazyredraw                  " Don't redraw  screen when running macros
+set number
+set list listchars=tab:\ \ ,trail:·
+set ttyfast                     " Optimize for fast terminal connections
+set gdefault                    " Add g flag to search/replace by default
+set viminfo+=!                  " Make sure vimhistory works
+set winminheight=0              " Reduces splits to a single line
+
+colorscheme vendetta
+
+" Centralize backups, swapfiles and undo history
+set backupdir=~/.vim/backups
+set directory=~/.vim/swaps
+
+" Enable per-directory .vimrc files and disable unsafe commands in them
+set exrc
+set secure
+
+" Make it obvious where 80 characters is
 set textwidth=80
-highlight ColorColumn ctermbg=white
-set formatoptions=qrn1
 set wrapmargin=0
 set colorcolumn=+1
-
-" Trigger autoread when changing buffers or coming back to vim in terminal.
-au FocusGained,BufEnter * :silent! !
+highlight ColorColumn ctermbg=white
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden
 
-" Change leader to a comma because the backslash is too far away
-" That means all \x commands turn into ,x
-" The mapleader has to be set before vundle starts loading all 
-" the plugins.
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on
+endif
 
-colorscheme vendetta
+if filereadable(expand("~/.vimrc.bundles"))
+  source ~/.vimrc.bundles
+endif
 
-" ================ Turn Off Swap Files ==============
-
-set noswapfile
+" ===========[ Turn Off Swap Files ]===========
 set nobackup
-set nowb
+set nowritebackup
+set noswapfile                  " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
 
-" ================ Persistent Undo ==================
+" ============[ Persistent Undo ]============
 " Keep undo history across sessions, by storing in file.
 " Only works all the time.
 if has('persistent_undo')
@@ -58,8 +75,7 @@ if has('persistent_undo')
   set undofile
 endif
 
-" ================ Indentation ======================
-
+" ============[ Indentation ]============
 set autoindent
 set smartindent
 set smarttab
@@ -67,21 +83,9 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set expandtab
+set shiftround
 
-" Display tabs and trailing spaces visually
-set list
-set listchars=tab:\ \ ,trail:·
-
-set wrapmargin=2
-
-" ================ Folds ============================
-
-set foldmethod=indent   "fold based on indent
-set foldnestmax=3       "deepest fold is 3 levels
-set nofoldenable        "dont fold by default
-
-" ================ Completion =======================
-
+" ============[ Completion ]============
 set wildmode=list:longest,full
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
@@ -95,22 +99,20 @@ set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
 
-"
-" ================ Scrolling ========================
-
+" ============[ Scrolling ]============
 " Type zz to center the window
 set scrolloff=7         "Start scrolling when we're 7 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
 
 "Toggle relative numbering, and set to absolute on loss of focus or insert mode
-set rnu
+set relativenumber
 autocmd FocusLost   * call ToggleRelativeOn()
 autocmd FocusGained * call ToggleRelativeOn()
 autocmd InsertEnter * call ToggleRelativeOn()
 autocmd InsertLeave * call ToggleRelativeOn()
 
-" ================ Quicker window movement ===========================
+" ============[ Quicker window movement ]============
 let g:tmux_navigator_no_mappings = 1
 
 nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
@@ -118,7 +120,7 @@ nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 
-" ================ Search ===========================
+" ============[ Search ]============
 
 nnoremap / /\v
 vnoremap / /\v
@@ -127,12 +129,29 @@ set incsearch       " Find the next match as we type the search
 set hlsearch        " Highlight searches by default
 set ignorecase      " Ignore case when searching...
 
-" ================ Mappings ====================
+" Open new split panes to right and bottom, which feels more natural
+set splitbelow
+set splitright
 
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+" Always use vertical diffs
+set diffopt+=vertical
+
+" Local config
+if filereadable($HOME . "/.vimrc.local")
+  source ~/.vimrc.local
+endif
+
+" ===========[ Mappings ] ==============
 nnoremap <silent><leader><space> :silent :nohlsearch<CR>
 nnoremap <silent><leader>ev :silent :e $MYVIMRC<CR>
 nnoremap <silent><leader>sv :silent :so $MYVIMRC <cr>
-" bind \ (backward slash) to grep shortcut
+
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
 
@@ -160,38 +179,24 @@ nnoremap k gk
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
-" zoom a vim pane, <C-w>= to re-balance
-nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
-nnoremap <leader>= :wincmd =<cr>
-
 " resize panes
 nnoremap <silent> <Left> :vertical resize +5<cr>
 nnoremap <silent> <Right> :vertical resize -5<cr>
 nnoremap <silent> <Up> :resize +5<cr>
 nnoremap <silent> <Down> :resize -5<cr>
 
-inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <S-Tab> <c-n>
-
+" Rename the current file
 noremap <Leader>rr :call Rename()<CR>
-
-" Switch between the last two files
-nnoremap <leader><leader> <c-^>
 
 noremap <space>e :e <C-R>=expand("%:p:h") . "/" <CR>
 noremap <space>v :vsplit <C-R>=expand("%:p:h") . "/" <CR>
 noremap <space>s :split <C-R>=expand("%:p:h") . "/" <CR>
 noremap <space>r :r <C-R>=expand("%:p:h") . "/" <CR>
 
-nnoremap <leader>ri :RunInInteractiveShell<space>
-
-" Bundle install
-map <leader>bb :!bundle install<cr>
-
 " Indent all lines
 map <Leader>i mmgg=G`m
 
-"Coding notes
+" Coding notes
 map <Leader>cn :e ~/Dropbox/notes/coding-notes.md<cr>
 
 " Disable mouse scroll wheel
@@ -208,78 +213,49 @@ nmap <ScrollWheelRight> <nop>
 nmap <S-ScrollWheelRight> <nop>
 nmap <C-ScrollWheelRight> <nop>
 
-" Make arrow keys move visual blocks around
-vmap  <expr>  <LEFT>   DVB_Drag('left')
-vmap  <expr>  <RIGHT>  DVB_Drag('right')
-vmap  <expr>  <DOWN>   DVB_Drag('down')
-vmap  <expr>  <UP>     DVB_Drag('up')
-vmap  <expr>  D        DVB_Duplicate()
-vmap  <expr>  <C-D>    DVB_Duplicate()
-
-" ================ Custom AutoCMDS ====================
+" ===========[ Custom AutoCMDS ]===========
 " Save whenever switching windows or leaving vim. This is useful when running
 " the tests inside vim without having to save all files first.
 autocmd FocusLost,WinLeave * :silent! wa
 
-" automatically rebalance windows on vim resize
-autocmd VimResized * :wincmd =
-
-augroup vimrcEx
-  " Clear all autocmds in the group
+augroup	vimrcEx
   autocmd!
+
   autocmd Filetype text setlocal textwidth=78
-  "for ruby, autoindent with two spaces, always expand tabs
   autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
-  autocmd FileType python set sw=4 sts=4 et
+  autocmd Filetype python set sw=4 sts=4 et
 
-  autocmd! BufRead,BufNewFile *.sass setfiletype sass
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it for commit messages, when the position is invalid, or when
+  " inside an event handler (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+	\ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+	\   exe "normal g`\"" |
+	\ endif
+  " Set syntax highlighting for specific file types
+  autocmd BufRead,BufNewFile *.md set filetype=markdown
 
-  autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
-  autocmd BufRead *.markdown  set ai formatoptions=tcroqn2 comments=n:&gt;
+  " Enable spellchecking for Markdown
+  autocmd FileType markdown setlocal spell
+
+  " Automatically wrap at 80 characters for Markdown
+  autocmd BufRead,BufNewFile *.md setlocal textwidth=80
+
+  " Automatically wrap at 72 characters and spell check git commit messages
+  autocmd FileType gitcommit setlocal textwidth=72
+  autocmd FileType gitcommit setlocal spell
 
   " Allow stylesheets to autocomplete hyphenated words
-  autocmd FileType css,scss,sass,less setlocal iskeyword+=-
-
-  " Don't syntax highlight markdown because it's often wrong
-  autocmd! FileType mkd setlocal syn=off
-
+  autocmd FileType css,scss,sass setlocal iskeyword+=-
 augroup END
 
-
-" Optimize for fast terminal connections
-set ttyfast
-" Add g flag to search/replace by default
-set gdefault
-" Use UTF-8 without BOM
-set encoding=utf-8 nobomb
-" Centralize backups, swapfiles and undo history
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-
-set viminfo+=! " make sure vim history works
-set wmh=0 " reduces splits to a single line 
-
-" Enable per-directory .vimrc files and disable unsafe commands in them
-set exrc
-set secure
-
-" AutoCommand settings
-autocmd FileType gitcommit      setlocal spell textwidth=72
+" Trigger autoread when changing buffers or coming back to vim in terminal.
+autocmd FocusGained,BufEnter * :silent! !
 autocmd FileType Gemfile        set filetype=ruby
+autocmd FileType html,css EmmetInstall
 
-" Always show status line
-set laststatus=2
-" Respect modeline in files
-set modeline
-set modelines=4
-" Disable error bells
-set noerrorbells
-" Don’t reset cursor to start of line when moving around.
-set nostartofline
-" Show the current mode
-set title
-
-" set the runtime path to include Vundle and initialize
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
 
 set runtimepath+=~/.vim/bundle/neobundle.vim
 call neobundle#begin(expand('~/.vim/bundle'))
@@ -306,8 +282,6 @@ NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'skwp/vim-easymotion'
 NeoBundle 'terryma/vim-multiple-cursors'
-NeoBundle 'sheerun/vim-polyglot'
-NeoBundle 'pablobfonseca/vim-dragvisuals'
 
 " General vim improvements
 NeoBundle 'ctrlpvim/ctrlp.vim'
@@ -316,25 +290,22 @@ NeoBundle 'rking/ag.vim'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'tpope/vim-endwise.git'
 NeoBundle 'tpope/vim-surround.git'
-"vim-misc is required for vim-session
-NeoBundle 'xolox/vim-misc'
+
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'christoomey/vim-run-interactive'
-NeoBundle 'skwp/greplace.vim'
+
 " Text objects
 NeoBundle 'coderifous/textobj-word-column.vim'
 NeoBundle 'suan/vim-instant-markdown'
 
-" Cosmetics, color scheme, Powerline...
-NeoBundle "itchyny/lightline.vim"
-" Diary, notes, whatever. It's amazing
-NeoBundle 'vimwiki/vimwiki'
+call neobundle#end()         " required
+filetype plugin indent on    " required
+
+NeoBundleCheck
 
 " Remapping the emmet leader key
 let g:user_emmet_leader_key='<C-Z>'
 let g:user_emmet_mode='a'
-autocmd FileType html,css EmmetInstall
 
 " Global replace configurations
 set grepprg=ag
@@ -343,36 +314,11 @@ let g:grep_cmd_opts = '--line-numbers --noheading'
 " Enable easymotion
 let g:EasyMotion_leader_key = '<Leader><Leader>'
 
-" All of your Plugins must be added before the following line
-call neobundle#end()
-filetype plugin indent on    " required
-
-NeoBundleCheck
-
 let g:gist_clip_command = 'pbcopy' "Using Gist will copy URL to clipboard automatically
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1"
 
-" Set Vim Wiki to my Dropbox directory
-let g:vimwiki_list = [{'path':'$HOME/Dropbox/vimwiki'}]
-
-" Ruby vim
-let g:ruby_indent_access_modifier_style = 'indent'
-
-" ================ Functions ====================
-
-" Tab completion
-" will insert tab at beginning of line,
-" will use completion if not at beginning
-function! InsertTabWrapper()
-  let col = col('.') - 1
-  if !col || getline('.')[col - 1] !~ '\k'
-    return "\<tab>"
-  else
-    return "\<c-p>"
-  endif
-endfunction
-
+" =======[ Functions ]==========
 " Rename current file
 function! Rename()
   let old_name = expand('%')
@@ -392,16 +338,3 @@ function! ToggleRelativeOn()
   set rnu!
   set nu
 endfunction
-
-" Use the silver_searcher
-if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  let g:ctrlp_working_path_mode = 'r'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
