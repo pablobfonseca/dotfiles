@@ -42,6 +42,7 @@ set secure
 
 " Make it obvious where 80 characters is
 set textwidth=80
+set wrap
 set wrapmargin=0
 set colorcolumn=+1
 highlight ColorColumn ctermbg=white
@@ -145,15 +146,18 @@ endif
 nnoremap <silent><leader><space> :silent :nohlsearch<CR>
 nnoremap <silent><leader>ev :silent :e $MYVIMRC<CR>
 nnoremap <silent><leader>sv :silent :so $MYVIMRC <cr>
+" Delete all the file and enter in the INSERT mode
+nnoremap <silent><leader>ca ggVGc
 
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
 
 " Disable arrows
-noremap <Left> <Nop>
-noremap <Right> <Nop>
-noremap <Up> <Nop>
-noremap <Down> <Nop>
+for prefix in ['i', 'n', 'v']
+  for key in ['<Up>', '<Down>', '<Left>', '<Right>']
+    exe prefix . "noremap " . key . " <Nop>"
+  endfor
+endfor
 
 noremap <silent><leader>cc :silent :CtrlPClearAllCaches <cr>
 
@@ -183,6 +187,7 @@ nnoremap <silent> <Down> :resize -5<cr>
 noremap <Leader>rr :call Rename()<CR>
 
 noremap <space>e :e <C-R>=expand("%:p:h") . "/" <CR>
+noremap <space>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
 noremap <space>v :vsplit <C-R>=expand("%:p:h") . "/" <CR>
 noremap <space>s :split <C-R>=expand("%:p:h") . "/" <CR>
 noremap <space>r :r <C-R>=expand("%:p:h") . "/" <CR>
@@ -229,9 +234,6 @@ augroup	vimrcEx
   " Set syntax highlighting for specific file types
   autocmd BufRead,BufNewFile *.md set filetype=markdown
 
-  " Enable spellchecking for Markdown
-  autocmd FileType markdown setlocal spell
-
   " Automatically wrap at 80 characters for Markdown
   autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 
@@ -241,6 +243,21 @@ augroup	vimrcEx
 
   " Allow stylesheets to autocomplete hyphenated words
   autocmd FileType css,scss,sass setlocal iskeyword+=-
+augroup END
+
+" Enable seeing-is-believing mappings only for Ruby
+augroup seeingIsBelievingSettings
+  autocmd!
+
+  autocmd FileType ruby nmap <buffer> <Enter> <Plug>(seeing-is-believing-mark-and-run)
+  autocmd FileType ruby xmap <buffer> <Enter> <Plug>(seeing-is-believing-mark-and-run)
+
+  autocmd FileType ruby nmap <buffer> <F4> <Plug>(seeing-is-believing-mark)
+  autocmd FileType ruby xmap <buffer> <F4> <Plug>(seeing-is-believing-mark)
+  autocmd FileType ruby imap <buffer> <F4> <Plug>(seeing-is-believing-mark)
+
+  autocmd FileType ruby nmap <buffer> <F5> <Plug>(seeing-is-believing-run)
+  autocmd FileType ruby imap <buffer> <F5> <Plug>(seeing-is-believing-run)
 augroup END
 
 " Trigger autoread when changing buffers or coming back to vim in terminal.
@@ -259,6 +276,10 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Ruby, Rails, Rake
 NeoBundle 'tpope/vim-rails.git' 
 NeoBundle 'vim-ruby/vim-ruby.git'
+NeoBundle 'ecomba/vim-ruby-refactoring'
+NeoBundle 'hwartig/vim-seeing-is-believing'
+
+NeoBundle 'honza/vim-snippets'
 
 " Javascript
 NeoBundle 'jelera/vim-javascript-syntax'
@@ -284,6 +305,9 @@ NeoBundle 'rking/ag.vim'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'tpope/vim-endwise.git'
 NeoBundle 'tpope/vim-surround.git'
+NeoBundle 'MarcWeber/vim-addon-mw-utils'
+NeoBundle 'tomtom/tlib_vim'
+NeoBundle 'garbas/vim-snipmate'
 
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'christoomey/vim-tmux-navigator'

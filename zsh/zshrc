@@ -36,6 +36,7 @@ alias v='$VISUAL'
 alias sites="cd ~/Sites"
 alias code="cd ~/code"
 alias codetython="cd ~/code/codetython"
+alias study="cd ~/code/Study"
 
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"

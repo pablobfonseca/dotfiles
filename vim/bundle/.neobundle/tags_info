@@ -9,6 +9,8 @@ matchit
 neobundle.vim
 tcomment_vim
 textobj-word-column.vim
+tlib_vim
+vim-addon-mw-utils
 vim-easymotion
 vim-endwise
 vim-gitgutter
@@ -17,6 +19,10 @@ vim-javascript-syntax
 vim-multiple-cursors
 vim-rails
 vim-ruby
+vim-ruby-refactoring
+vim-seeing-is-believing
+vim-snipmate
+vim-snippets
 vim-surround
 vim-tmux-navigator
 webapi-vim
