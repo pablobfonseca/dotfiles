@@ -45,7 +45,7 @@ set textwidth=80
 set wrap
 set wrapmargin=0
 set colorcolumn=+1
-highlight ColorColumn ctermbg=white
+" highlight ColorColumn ctermbg=white
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.

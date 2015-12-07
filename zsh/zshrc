@@ -3,7 +3,7 @@ export ZSH=/Users/Pablo/.oh-my-zsh
 
 ZSH_THEME="fwalch"
 
-plugins=(git tmuxinator brew osx)
+plugins=(git tmuxinator vagrant vi-mode brew osx zsh-syntax-highlighting)
 
 # User configuration
 
@@ -24,12 +24,12 @@ for config ($DOTFILES/zsh/completion.sh) source $config
 
 export PATH="/usr/local/sbin:$PATH"
 
-export PIP_REQUIRE_VIRTUALENV=true
 export PATH=/usr/local/share/npm/bin:$PATH
 export PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
 
 # Aliases
 
+alias zshconfig='vim ~/.zshrc'
 alias reload!='source ~/.zshrc'
 alias e='$EDITOR'
 alias v='$VISUAL'
@@ -58,3 +58,4 @@ alias push="git push"
 alias commit="git commit"
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PHPBREW_SET_PROMPT=1

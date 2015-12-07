@@ -937,7 +937,7 @@ OPTIONS 					*neobundle-options*
 		\      'sh -c "cd ruby/command-t && ruby extconf.rb && make"'
 		\   }
 		\ }
-
+<
 						*neobundle-options-augroup*
 		augroup		(String)
 		Specify an augroup name that the plugin uses for |VimEnter| or
@@ -1136,7 +1136,7 @@ OPTIONS 					*neobundle-options*
 		It is deprecated key.
 
 						*neobundle-options-on_map*
-		mappings	(List) or (String)
+		on_map		(List) or (String)
 		Mappings list. The items are {mapping} or
 		[{mode}, {mapping1}, [{mapping2}, ...]].  If {mode} is
 		omitted, "nxo" is used.

@@ -31,8 +31,13 @@
   mnemonicprefix = true
   algorithm = patience
 [merge]
-  tool = vimdiff
+	tool = vim
 [fetch]
   prune = true
 [github]
 	user = pablobfonseca
+[mergetool "vim"]
+	cmd = vim -w $MERGED
+	trustExitCode = false
+[credential]
+	helper = osxkeychain
