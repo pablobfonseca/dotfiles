@@ -1,10 +1,6 @@
 # **USAGE**
 
-Troubleshoot: Because of the large amount of submodules, if you ever have any
-trouble after pulling from the repository, it will be easier to just back up
-your old .vim folder and just git clone a new version.
-
-Clone this repo into your home directory either as .vim (linux/mac). Such as:
+Clone this repo into your home directory. Such as:
 
 ```
 git clone git://github.com/pablobfonseca/dotfiles.git ~/dotfiles
