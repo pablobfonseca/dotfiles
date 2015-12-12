@@ -17,6 +17,7 @@ tags
 tmp/
 log/
 backups/*
-bundle/*
+vim/bundle/*
 sessions/*
 vim/backups/*
+tmux/plugins/*
