@@ -312,6 +312,8 @@ NeoBundle 'garbas/vim-snipmate'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'christoomey/vim-tmux-navigator'
 
+NeoBundle 'ajh17/VimCompletesMe'
+
 " Text objects
 NeoBundle 'coderifous/textobj-word-column.vim'
 NeoBundle 'suan/vim-instant-markdown'
@@ -324,6 +326,9 @@ NeoBundleCheck
 " Remapping the emmet leader key
 let g:user_emmet_leader_key='<C-Z>'
 let g:user_emmet_mode='a'
+
+" Vim Completes Me
+let b:vcm_tab_complete='omni'
 
 " Global replace configurations
 set grepprg=ag
