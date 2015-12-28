@@ -14,6 +14,7 @@ showMenu(){
   echo "[8]  Cleanup brew"
   echo "[9]  Install NeoBundle"
   echo "[10] Install vagrant"
+  echo "[11] Install Slate"
   echo "[0]  Exit"
   echo "----------------"
 
@@ -87,6 +88,10 @@ do
     brew cask install virtualbox
     brew cask install vagrant
     brew cask install vagrant-manager
+  elif [[ "$mc" == "11" ]]; then
+    cd /Applications
+    curl http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz
+    cd ~/dotfiles && ln -s slate ~/.slate
   fi
   showMenu
   m=$?

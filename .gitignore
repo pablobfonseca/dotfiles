@@ -16,7 +16,7 @@ tags
 *.[t]bz2
 tmp/
 log/
-vim/backups/
-vim/bundle/
+vim/backups
+vim/bundle
 sessions/
-tmux/plugins/
+tmux/plugins
