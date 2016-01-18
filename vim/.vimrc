@@ -5,6 +5,7 @@ filetype off
 " ===========[ General Config ]===========
 
 let mapleader = ","
+nnoremap ; :
 scriptencoding utf-8            " utf-8 all the way
 set encoding=utf-8 nobomb
 set backspace=indent,eol,start 	" Backspace deletes like most programs in insert mode
@@ -19,7 +20,6 @@ set laststatus=2                " Always display the status line
 set modeline
 set modelines=4
 set noerrorbells
-set title
 set autowrite                   " Automatically :write before running commands
 set autoread                    " Reload files changed outside vim
 set lazyredraw                  " Don't redraw  screen when running macros
@@ -29,6 +29,7 @@ set ttyfast                     " Optimize for fast terminal connections
 set gdefault                    " Add g flag to search/replace by default
 set viminfo+=!                  " Make sure vimhistory works
 set winminheight=0              " Reduces splits to a single line
+set guifont=PT\ Mono:h13
 
 colorscheme vendetta
 
@@ -76,8 +77,10 @@ if has('persistent_undo')
   set undofile
 endif
 
+
 " ============[ Indentation ]============
 set autoindent
+set copyindent
 set smartindent
 set smarttab
 set shiftwidth=2
@@ -120,6 +123,10 @@ nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+
+" ============[ Run files ]============
+nnoremap <leader>n :!node %<CR>
+nnoremap <leader>r :!ruby %<CR>
 
 " ============[ Search ]============
 
@@ -195,8 +202,8 @@ noremap <space>r :r <C-R>=expand("%:p:h") . "/" <CR>
 " Indent all lines
 map <Leader>i mmgg=G`m
 
-" Coding notes
-map <Leader>cn :e ~/Dropbox/notes/coding-notes.md<cr>
+" Open a file splitted
+noremap <leader>se <C-w>f
 
 " Disable mouse scroll wheel
 nmap <ScrollWheelUp> <nop>
@@ -245,20 +252,6 @@ augroup	vimrcEx
   autocmd FileType css,scss,sass setlocal iskeyword+=-
 augroup END
 
-" Enable seeing-is-believing mappings only for Ruby
-augroup seeingIsBelievingSettings
-  autocmd!
-
-  autocmd FileType ruby nmap <buffer> <Enter> <Plug>(seeing-is-believing-mark-and-run)
-  autocmd FileType ruby xmap <buffer> <Enter> <Plug>(seeing-is-believing-mark-and-run)
-
-  autocmd FileType ruby nmap <buffer> <F4> <Plug>(seeing-is-believing-mark)
-  autocmd FileType ruby xmap <buffer> <F4> <Plug>(seeing-is-believing-mark)
-  autocmd FileType ruby imap <buffer> <F4> <Plug>(seeing-is-believing-mark)
-
-  autocmd FileType ruby nmap <buffer> <F5> <Plug>(seeing-is-believing-run)
-  autocmd FileType ruby imap <buffer> <F5> <Plug>(seeing-is-believing-run)
-augroup END
 
 " Trigger autoread when changing buffers or coming back to vim in terminal.
 autocmd FocusGained,BufEnter * :silent! !
@@ -267,6 +260,8 @@ autocmd FileType html,css EmmetInstall
 
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
+
+" ===========[ Plugins ]===========
 
 set runtimepath+=~/.vim/bundle/neobundle.vim
 call neobundle#begin(expand('~/.vim/bundle'))
@@ -277,9 +272,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'tpope/vim-rails.git' 
 NeoBundle 'vim-ruby/vim-ruby.git'
 NeoBundle 'ecomba/vim-ruby-refactoring'
-NeoBundle 'hwartig/vim-seeing-is-believing'
-
-NeoBundle 'honza/vim-snippets'
 
 " Javascript
 NeoBundle 'jelera/vim-javascript-syntax'
@@ -311,8 +303,7 @@ NeoBundle 'garbas/vim-snipmate'
 
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'christoomey/vim-tmux-navigator'
-
-NeoBundle 'ajh17/VimCompletesMe'
+NeoBundle 'benmills/vimux'
 
 " Text objects
 NeoBundle 'coderifous/textobj-word-column.vim'
