@@ -11,9 +11,6 @@ sh ./instal.sh
 # **Help Tags**
 At first usage of vim, type “:” while in command mode and execute:
 
-call pathogen#helptags()
-This will make the plugins documentations available upon :help
-
 # **Learn VIM**
 Visit the following sites to learn more about Vim:
 
