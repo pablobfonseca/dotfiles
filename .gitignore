@@ -18,5 +18,6 @@ tmp/
 log/
 vim/backups
 vim/bundle
+vim/bundle/neobundle.vim
 sessions/
 tmux/plugins
