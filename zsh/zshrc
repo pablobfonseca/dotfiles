@@ -25,11 +25,12 @@ for config ($DOTFILES/zsh/completion.sh) source $config
 export PATH="/usr/local/sbin:$PATH"
 
 export PATH=/usr/local/share/npm/bin:$PATH
-export PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 
 # Aliases
 
 alias zshconfig='vim ~/.zshrc'
+alias vimconfig='vim ~/.vimrc'
 alias reload!='source ~/.zshrc'
 alias e='$EDITOR'
 alias v='$VISUAL'
@@ -37,6 +38,13 @@ alias sites="cd ~/Sites"
 alias code="cd ~/code"
 alias codetython="cd ~/code/codetython"
 alias study="cd ~/code/Study"
+alias pubkey="cat ~/.ssh/id_rsa.pub | pbcopy | echo \"Public key copied to clipboard\""
+alias update="brew update"
+alias upgrade="brew upgrade"
+alias cleanup="brew cleanup"
+alias install="brew install"
+alias cinstall="brew cask install"
+alias c="clear"
 
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
@@ -58,4 +66,3 @@ alias push="git push"
 alias commit="git commit"
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export PHPBREW_SET_PROMPT=1
