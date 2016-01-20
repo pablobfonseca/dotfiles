@@ -34,7 +34,7 @@ do
     brew install vim tmux git node mysql postgresql tig
     brew install zsh zsh-completions the_silver_searcher openssl redis tmate wget heroku-toolbelt
   elif [[ "$mc" == "3" ]]; then
-    # It install oh-my-zsh and set zsh as a default shell
+    # It installs oh-my-zsh and set zsh as a default shell
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     chsh -s /bin/zsh
   elif [[ "$mc" == "4" ]]; then
@@ -43,6 +43,7 @@ do
     \curl -sSL https://get.rvm.io | bash -s stable
     source ~/.rvm/scripts/rvm
     type rvm | head -n 1
+    # Installs the lastest ruby version
     rvm install ruby --latest
   elif [[ "$mc" == "5" ]]; then
     # Vim and Tmux
@@ -64,7 +65,6 @@ do
     brew cask install alfred
     brew cask install android-file-transfer
     brew cask install caffeine
-    brew cask install cheatsheet
     brew cask install dropbox
     brew cask install google-drive
     brew cask install google-hangouts
