@@ -1,39 +1,42 @@
 [core]
-  excludesfile = ~/.gitignore
-  autocrlf = input
-  editor = vim
+	excludesfile = ~/.gitignore
+	autocrlf = input
+	editor = vim
 [user]
-  name = Pablo Fonseca
-  email = pablofonseca777@gmail.com
+	name = Pablo Fonseca
+	email = pablofonseca777@gmail.com
 [branch]
-  autosetuprebase = always
+	autosetuprebase = always
 [branch "master"]
-  rebase = true
+	rebase = true
 [push]
-  default = current
+	default = current
 [pull]
-  default = current
+	default = current
+	rebase = true
 [color]
-  ui = true
-  diff = auto
-  branch = auto
-  interactive = auto
+	ui = true
+	diff = auto
+	branch = auto
+	interactive = auto
 [color "status"]
-  added = green
-  changed = yellow
-  untracked = cyan
-  deleted = red
+	added = green
+	changed = yellow
+	untracked = cyan
+	deleted = red
 [alias]
-  co = checkout
-  st = status
-  cm = commit
+	co = checkout
+	st = status -s
+	lg = log --oneline --decorate --all --graph
+	cm = commit
+	co-pr = !sh -c 'git fetch origin pull/$1/head:pr/$1 && git checkout pr/$1' -
 [diff]
-  mnemonicprefix = true
-  algorithm = patience
+	mnemonicprefix = true
+	algorithm = patience
 [merge]
 	tool = vim
 [fetch]
-  prune = true
+	prune = true
 [github]
 	user = pablobfonseca
 [mergetool "vim"]
@@ -41,3 +44,5 @@
 	trustExitCode = false
 [credential]
 	helper = osxkeychain
+[rerere]
+	enabled = true

@@ -1,4 +1,3 @@
-" Type <leader>sv to refresh .vimrc after making changes
 set nocompatible          " be iMproved, required
 filetype off
 
@@ -8,7 +7,6 @@ let mapleader = ","
 nnoremap ; :
 scriptencoding utf-8            " utf-8 all the way
 set encoding=utf-8 nobomb
-set backspace=indent,eol,start 	" Backspace deletes like most programs in insert mode
 set history=100
 set ruler                       " Show the cursor position all the time
 set mouse-=a                    " Disable mouse click
