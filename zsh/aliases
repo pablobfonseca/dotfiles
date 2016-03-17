@@ -1,0 +1,42 @@
+alias a='ls -lrthG'
+alias zshconfig='vim ~/.zshrc'
+alias vimconfig='vim ~/.vimrc'
+alias reload!='source ~/.zshrc'
+alias e='$EDITOR'
+alias v='$VISUAL'
+alias sites="cd ~/Sites"
+alias code="cd ~/code"
+alias codetython="cd ~/code/codetython"
+alias study="cd ~/code/Study"
+alias pubkey="cat ~/.ssh/id_rsa.pub | pbcopy | echo \"Public key copied to clipboard\""
+alias update="brew update"
+alias upgrade="brew upgrade && brew cleanup"
+alias install="brew install"
+alias cinstall="brew cask install"
+alias weather="curl -4 http://wttr.in/"
+alias c="clear"
+alias r="ranger"
+alias aliases="vim ~/dotfiles/zsh/aliases"
+alias bi="bundle install"
+alias d="cd ~/dotfiles"
+
+# Hide/show all desktop icons (useful when presenting)
+alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+
+# Kill all the tabs in Chrome to free up memory
+# [C] explained:
+# http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
+alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+
+# IP address
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en1"
+alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
+
+# Git aliases
+alias st="git st"
+alias push="git push"
+alias commit="git commit"
+alias pull-master="git pull origin master"
+alias lg="git lg"

@@ -1,149 +1,130 @@
 " This is Pablo Fonseca's .vimrc file
 " vim:set ts=2 sts=2 sw=2 expandtab:
+" ========================================================================
+" NeoBundle stuff
+" ========================================================================
 
-autocmd!
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" BASIC EDITING CONFIGURATION
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let mapleader = ","
-set nocompatible          " be iMproved, required
-scriptencoding utf-8            " utf-8 all the way
-set encoding=utf-8 nobomb
-" allow unsaved background buffers and remember marks/undo for them
-set hidden
-" remember more commands and search history
-set history=10000
-set laststatus=2
-set showmatch
-set cursorline
-set ruler
-set mouse-=a
-set cmdheight=1
-set switchbuf=useopen
-set showtabline=2
-" This makes RVM work inside Vim. I have no idea why.
-set shell=bash
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-set showcmd
-set modeline
-set modelines=4
-set noerrorbells
-set autoread
-set lazyredraw
-set number
-set list listchars=tab:\ \ ,trail:·
-set ttyfast
-set viminfo+=!
-set winminheight=0
-set guifont=Hack:h13
-set exrc
-set secure
-set diffopt+=vertical
-" Fix slow O inserts
-set timeout timeoutlen=1000 ttimeoutlen=100
-" Turn folding off for real, hopefully
-set foldmethod=manual
-set nofoldenable
-" Insert only one space when joining lines that contain sentence-terminating  punctuation like `.`.
-set nojoinspaces
-" If a file is changed outside of vim, automatically reload it without " asking
-set autoread
-set splitbelow
-set splitright
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Scrolling
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Type zz to center the window
-set scrolloff=7         "Start scrolling when we're 7 lines away from margins
-set sidescrolloff=15
-set sidescroll=1
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" SEARCH
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set incsearch
-set hlsearch
-" make searches case-sensitive only if they contain upper-case characters
-set ignorecase smartcase
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" IDENTATION
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set autoindent
-set copyindent
-set smartindent
-set smarttab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
-set expandtab
-set shiftround
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" TURN OFF SWAP FILES
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nobackup
-set nowritebackup
-set noswapfile                  " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
-" Centralize backups, swapfiles and undo history
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" SYNTAX
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax enable
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" COMPLETION
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set wildmode=list:longest,full
-set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
-set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
-set wildignore+=*vim/backups*
-set wildignore+=*sass-cache*
-set wildignore+=*DS_Store*
-set wildignore+=vendor/rails/**
-set wildignore+=vendor/cache/**
-set wildignore+=*.gem
-set wildignore+=log/**
-set wildignore+=tmp/**
-set wildignore+=*.png,*.jpg,*.gif
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" PERSISTENT UNDO
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Keep undo history across sessions, by storing in file.
-" Only works all the time.
-if has('persistent_undo')
-  silent !mkdir ~/.vim/backups > /dev/null 2>&1
-  set undodir=~/.vim/backups
-  set undofile
+if &compatible
+  set compatible " Be iMproved
 endif
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" COLOR
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set background=dark
-color vendetta
+set nocompatible
+filetype off
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-" STATUS LINE
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
-set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+" set the runtime path to include NeoBundle and initialize
+set runtimepath^=~/.vim/bundle/neobundle.vim/
+call neobundle#begin(expand('~/.vim/bundle/'))
+" Let NeoBundle manage NeoBundle
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-" MISC KEY MAPS
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
+NeoBundle 'ervandew/supertab'
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'skwp/greplace.vim'
+NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'thoughtbot/vim-rspec'
+NeoBundle 'tpope/vim-bundler'
+" Take a look further
+NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'tpope/vim-endwise'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'jelera/vim-javascript-syntax'
+NeoBundle 'mattn/emmet-vim'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'skwp/vim-easymotion'
+NeoBundle 'terryma/vim-multiple-cursors'
+NeoBundle 'slim-template/vim-slim.git'
+NeoBundle 'christoomey/vim-tmux-navigator'
+NeoBundle 'benmills/vimux'
+
+" Text objects
+NeoBundle 'coderifous/textobj-word-column.vim'
+NeoBundle 'suan/vim-instant-markdown'
+
+" Colors
+NeoBundle "nanotech/jellybeans.vim"
+call neobundle#end()
+filetype plugin indent on
+NeoBundleCheck
+
+" Use the colorscheme from above
+colorscheme jellybeans
+
+" ========================================================================
+" Ruby stuff
+" ========================================================================
+syntax on " Enable syntax highlighting
+
+augroup myfiletypes
+  " Clear old autocmds in group
+  autocmd!
+  " autoindent with two spaces, always expand tabs
+  autocmd FileType ruby,eruby,yaml setlocal ai sw=2 sts=2 et
+  autocmd FileType ruby,eruby,yaml setlocal path+=lib
+  autocmd FileType ruby,eruby,yaml setlocal colorcolumn=80
+  " Make ?s part of words
+  autocmd FileType ruby,eruby,yaml setlocal iskeyword+=?
+augroup END
+
+" Enable built-in matchit plugin 
+runtime macros/matchit.vim
+
+" ========================================================================
+" Mappings
+" ========================================================================
+let mapleader=','
+
+nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>vi :tabe $MYVIMRC<cr>
+map <leader>ni :NeoBundleInstall<cr>
+map <leader>sp :set paste<cr>"+p<Esc>np
+map <leader>np :set nopaste<cr>
+
+nnoremap ; :
+" Copy the entire file content to the clipboard
+map <Leader>co mmggVG"*y`m
+" Open code directory
+map <Leader>ec :e ~/code/
+" Git WIP
+map <Leader>gw :!git add . && git commit -m 'WIP' && git push<cr>
+" Indent the whole file
+map <Leader>i mmgg=G`m
+" Join all the lines
+map <Leader>mf mmgqap`m:w<cr>
+
+" Edit another file in the same directory as the current file
+" uses expression to extract path from current file's path
+map <space>e :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
+map <space>s :split <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+map <space>v :vsplit <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+map <space>r :r <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+
+map <silent><leader><space> :silent :nohl<cr>
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+map \ :Ag<space>
+
+" Close the quickfix window
+map <space><space> :ccl<cr>
+
+inoremap <Tab> <C-P>
+
+" Let's be reasonable, shall we?
+nmap k gk
+nmap j gj
+
 nnoremap <silent><leader>gb :silent :Gblame<CR>
 
-nnoremap <silent><leader><space> :silent :nohlsearch<CR>
-nnoremap <silent><leader>ev :silent :e $MYVIMRC<CR>
-nnoremap <silent><leader>sv :silent :so $MYVIMRC <cr>
-nnoremap ; :
-
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-nnoremap \ :Ag<SPACE>
+" resize panes
+nnoremap <silent> <Left> :vertical resize +5<cr>
+nnoremap <silent> <Right> :vertical resize -5<cr>
+nnoremap <silent> <Up> :resize +5<cr>
+nnoremap <silent> <Down> :resize -5<cr>
 
 " Disable arrows
 for prefix in ['i', 'n', 'v']
@@ -157,34 +138,6 @@ nnoremap <C-e> 7<C-e>
 nnoremap <C-y> 7<C-y>
 vnoremap <C-e> 7<C-e>
 vnoremap <C-y> 7<C-y>
-
-" Navigate properly when lines are wrapped
-nnoremap j gj
-nnoremap k gk
-
-" bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" resize panes
-nnoremap <silent> <Left> :vertical resize +5<cr>
-nnoremap <silent> <Right> :vertical resize -5<cr>
-nnoremap <silent> <Up> :resize +5<cr>
-nnoremap <silent> <Down> :resize -5<cr>
-
-" Rename the current file
-noremap <Leader>rr :call Rename()<CR>
-
-noremap <space>e :e <C-R>=expand("%:p:h") . "/" <CR>
-noremap <space>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
-noremap <space>v :vsplit <C-R>=expand("%:p:h") . "/" <CR>
-noremap <space>s :split <C-R>=expand("%:p:h") . "/" <CR>
-noremap <space>r :r <C-R>=expand("%:p:h") . "/" <CR>
-
-" Indent all lines
-map <Leader>i mmgg=G`m
-
-" Open a file splitted
-noremap <leader>se <C-w>f
 
 " Disable mouse scroll wheel
 nmap <ScrollWheelUp> <nop>
@@ -200,7 +153,12 @@ nmap <ScrollWheelRight> <nop>
 nmap <S-ScrollWheelRight> <nop>
 nmap <C-ScrollWheelRight> <nop>
 
-map <leader>y "*y
+" Remapping the emmet leader key
+let g:user_emmet_leader_key='<C-Z>'
+let g:user_emmet_mode='a'
+
+" Enable easymotion
+let g:EasyMotion_leader_key = '<Leader><Leader>'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -227,133 +185,110 @@ nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-" RELATIVE NUMBERS
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ========================================================================
+" General stuff
+" ========================================================================
+scriptencoding utf-8 " utf-8 all the way
+set encoding=utf-8 nobomb
+set backspace=indent,eol,start " allow backspacing over everything in insert mode
+set history=500 " keep 500 lines of command history
+set ruler " show the cursor position all the time
+set showcmd " display incomplete commands
+set showmatch
+set hidden
+set mouse-=a
+set noerrorbells
+set ttyfast
+set splitbelow
+set splitright
+set nowrap
+set autoread
+set wmh=0
+set viminfo+=!
+set guioptions-=T
+set guifont=Hack:h13
+set expandtab
+set number
+set sw=2
+set smarttab
+set noincsearch
+set hlsearch
+set ignorecase smartcase
+set laststatus=2 " Always shows the status line
 set relativenumber
-autocmd FocusLost   * call ToggleRelativeOn()
-autocmd FocusGained * call ToggleRelativeOn()
-autocmd InsertEnter * call ToggleRelativeOn()
-autocmd InsertLeave * call ToggleRelativeOn()
+set gdefault " assume the /g flag on :s substitutions to replace all matches in a line
+set autoindent
+set lazyredraw " Don't redraw screen when running macros.
+set scrolloff=7         "Start scrolling when we're 7 lines away from margins
+set sidescrolloff=15
+set sidescroll=1
+set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+" This makes RVM work inside Vim. I have no idea why.
+set shell=bash
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CUSTOM AUTOCMDS
-" """""""""""""""""""""""""""""""""""""""""""""""""""""
+set nobackup
+set nowritebackup
+set noswapfile  " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
+" Centralize backups, swapfiles and undo history
+set backupdir=~/.vim/backups
+set directory=~/.vim/swaps
 
-" Save whenever switching windows or leaving vim. This is useful when running
-" the tests inside vim without having to save all files first.
-autocmd FocusLost,WinLeave * :silent! wa
-
-augroup	vimrcEx
-  autocmd!
-
-  autocmd Filetype text setlocal textwidth=78
-  autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
-  autocmd Filetype python set sw=4 sts=4 et
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it for commit messages, when the position is invalid, or when
-  " inside an event handler (happens when dropping a file on gvim).
-  autocmd BufReadPost *
-	\ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
-	\   exe "normal g`\"" |
-	\ endif
-  " Set syntax highlighting for specific file types
-  autocmd BufRead,BufNewFile *.md set filetype=markdown
-
-  " Automatically wrap at 80 characters for Markdown
-  autocmd BufRead,BufNewFile *.md setlocal textwidth=80
-
-  " Automatically wrap at 72 characters and spell check git commit messages
-  autocmd FileType gitcommit setlocal textwidth=72
-  autocmd FileType gitcommit setlocal spell
-
-  " Allow stylesheets to autocomplete hyphenated words
-  autocmd FileType css,scss,sass setlocal iskeyword+=-
-augroup END
-
-
-" Trigger autoread when changing buffers or coming back to vim in terminal.
-autocmd FocusGained,BufEnter * :silent! !
-autocmd FileType Gemfile        set filetype=ruby
-autocmd FileType html,css EmmetInstall
-
-" automatically rebalance windows on vim resize
-autocmd VimResized * :wincmd =
-
-" ===========[ Plugins ]===========
-
-set runtimepath+=~/.vim/bundle/neobundle.vim
-call neobundle#begin(expand('~/.vim/bundle'))
-
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-" Ruby, Rails, Rake
-NeoBundle 'tpope/vim-rails.git' 
-NeoBundle 'vim-ruby/vim-ruby.git'
-NeoBundle 'ecomba/vim-ruby-refactoring'
-
-" Javascript
-NeoBundle 'jelera/vim-javascript-syntax'
-NeoBundle 'kchmck/vim-coffee-script'
-
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'tomtom/tcomment_vim'
-
-" Git related...
-NeoBundle 'L9'
-NeoBundle 'mattn/gist-vim'
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'tpope/vim-fugitive.git' 
-
-" General text editing improvements...
-
-NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'skwp/vim-easymotion'
-NeoBundle 'terryma/vim-multiple-cursors'
-NeoBundle 'slim-template/vim-slim.git'
-
-" General vim improvements
-NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'mattn/webapi-vim.git'
-NeoBundle 'rking/ag.vim'
-NeoBundle 'tpope/vim-endwise.git'
-NeoBundle 'tpope/vim-surround.git'
-NeoBundle 'MarcWeber/vim-addon-mw-utils'
-NeoBundle 'tomtom/tlib_vim'
-NeoBundle 'garbas/vim-snipmate'
-
-NeoBundle 'tmhedberg/matchit'
-NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'benmills/vimux'
-
-" Text objects
-NeoBundle 'coderifous/textobj-word-column.vim'
-NeoBundle 'suan/vim-instant-markdown'
-
-call neobundle#end()         " required
-filetype plugin indent on    " required
-
-NeoBundleCheck
-
-" Remapping the emmet leader key
-let g:user_emmet_leader_key='<C-Z>'
-let g:user_emmet_mode='a'
-
-" Global replace configurations
+" Use Silver Searcher instead of grep
 set grepprg=ag
-let g:grep_cmd_opts = '--line-numbers --noheading'
 
-" Enable easymotion
-let g:EasyMotion_leader_key = '<Leader><Leader>'
+" Make the omnicomplete text readable
+highlight PmenuSel ctermfg=black
 
-let g:gist_clip_command = 'pbcopy' "Using Gist will copy URL to clipboard automatically
-let g:gist_detect_filetype = 1
-let g:gist_open_browser_after_post = 1"
+" Ignore stuff that can't be opened
+set wildignore+=tmp/**
 
-" =======[ Functions ]==========
-" Rename current file
-function! Rename()
+" Highlight the status line
+highlight StatusLine ctermfg=blue ctermbg=yellow
+
+" Format xml files
+au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
+
+set shiftround " When at 3 spaces and I hit >>, go to 4, not 5.
+
+set nofoldenable " Say no to code folding...
+
+" Disable K looking stuff up
+map K <Nop>
+
+au BufNewFile,BufRead *.txt setlocal nolist " Don't display whitespace
+
+" Better? completion on command line
+set wildmenu
+" What to do when I press 'wildchar'. Worth tweaking to see what feels right.
+set wildmode=list:full
+
+" (Hopefully) removes the delay when hitting esc in insert mode
+set noesckeys
+set ttimeout
+set ttimeoutlen=1
+
+" Turn on spell-checking in markdown and text.
+au BufRead,BufNewFile *.md,*.txt setlocal spell
+
+" Make CtrlP use ag for listing the files. Way faster and no useless files.
+" Without --hidden, it never finds .travis.yml since it starts with a dot
+let g:ctrlp_user_command = 'ag %s -l --hidden --nocolor -g ""'
+let g:ctrlp_use_caching = 0
+
+" Don't wait so long for the next keypress (particularly in ambigious Leader
+" situations.
+set timeoutlen=500
+
+" Remove trailing whitespace on save for ruby files.
+au BufWritePre *.rb :%s/\s\+$//e
+
+" Set gutter background to black
+highlight SignColumn ctermbg=black
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" RENAME CURRENT FILE (thanks Gary Bernhardt)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RenameFile()
   let old_name = expand('%')
   let new_name = input('New file name: ', expand('%'), 'file')
   if new_name != '' && new_name != old_name
@@ -362,12 +297,33 @@ function! Rename()
     redraw!
   endif
 endfunction
+map <Leader>r :call RenameFile()<cr>
 
-function! ToggleNumbersOn()
-  set nu!
-  set rnu
-endfunction
-function! ToggleRelativeOn()
-  set rnu!
-  set nu
-endfunction
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+" if &t_Co > 2 || has("gui_running")
+"   syntax on
+"   set hlsearch
+" endif
+
+" Make it more obvious which paren I'm on
+hi MatchParen cterm=none ctermbg=black ctermfg=yellow
+
+" By default, vim thinks .md is Modula-2.
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+" Install Emmet
+autocmd FileType html,css EmmetInstall
+
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
+
+" Without this, vim breaks in the middle of words when wrapping
+autocmd FileType markdown setlocal nolist wrap lbr
+
+" Wrap the quickfix window
+autocmd FileType qf setlocal wrap linebreak
+
+" Make it more obviouser when lines are too long
+highlight ColorColumn ctermbg=235
+

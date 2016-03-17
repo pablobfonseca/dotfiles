@@ -1,3 +1,7 @@
+###########################
+##  Configuration
+############################
+
 set-option -g default-shell $SHELL
 # tmux display things in 256 colors
 set -g default-terminal "screen-256color"
@@ -8,6 +12,33 @@ set-option -g default-command "reattach-to-user-namespace -l zsh"
 
 # Act like VIM
 setw -g mode-keys vi
+
+# disable mouse
+setw -g mode-mouse off
+
+# decrease command delay (increases vim responsiveness)
+set -sg escape-time 1)
+
+# increase repeat time for repeatable commands
+set -g repeat-time 1000
+
+###########################
+##  Key Bindings
+############################
+# unbind default prefix and set it to C-a
+unbind C-b
+set -g prefix C-a
+bind a send-prefix
+
+# Resize panes shortcuts
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# reload config file
+bind r source-file ~/.tmux.conf \; display "Config Reloaded!"
+
 # Smart pane switching with awareness of vim splits
 # See: https://github.com/christoomey/vim-tmux-navigator
 is_vim='echo "#{pane_current_command}" | grep -iqE "(^|\/)g?(view|n?vim?)(diff)?$"'
@@ -21,18 +52,11 @@ bind -n C-\ if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
 bind-key -t vi-copy v begin-selection
 bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 
+# increase scroll-back history
 set -g history-limit 20000
 
 # automatically renumber tmux windows
 set -g renumber-windows on
-
-# unbind default prefix and set it to C-a
-unbind C-b
-set -g prefix C-a
-bind C-a send-prefix
-
-# for nested tmux sessions
-bind-key a send-prefix
 
 # Activity Monitoring
 setw -g monitor-activity off
@@ -42,9 +66,6 @@ set -g visual-activity off
 # connected to the *session*, constrain window size to the maximum size of any
 # client connected to *that window*. Much more reasonable.
 setw -g aggressive-resize on
-
-# make delay shorter
-set -sg escape-time 0
 
 # tile all windows
 unbind =
@@ -58,11 +79,6 @@ set-option -g set-titles on
 set-option -g set-titles-string "#T - #W"
 set-option -g allow-rename off
 
-# ====== Key Bindings ======
-
-# reload config file
-bind r source-file ~/.tmux.conf \; display "Config Reloaded!"
-
 # quickly open a new window
 bind N new-window
 
@@ -73,13 +89,6 @@ bind - split-window -v -c "#{pane_current_path}"
 # synchronize all panes in a window
 bind y setw synchronize-panes
 
-# pane movement shortcuts
-
-# Resize panes shortcuts
-bind -r H resize-pane -L 5
-bind -r J resize-pane -D 5
-bind -r K resize-pane -U 5
-bind -r L resize-pane -R 5
 
 # maximizing and restoring windows
 unbind Up
