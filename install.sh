@@ -14,7 +14,6 @@ showMenu(){
   echo "[8]  Cleanup brew"
   echo "[9]  Install NeoBundle"
   echo "[10] Install vagrant"
-  echo "[11] Install Slate"
   echo "[0]  Exit"
   echo "----------------"
 
@@ -53,6 +52,8 @@ do
     ln -s dotfiles/vim/.vimrc ~/.vimrc
     ln -s dotfiles/tmux ~/.tmux
     ln -s dotfiles/tmux/tmux-conf ~/.tmux.conf
+    ln -s dotfiles/irbrc ~/.irbrc
+    ln -s dotfiles/gemrc ~/.gemrc
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
     git clone https://github.com/tmux-plugins/tmux-battery ~/.tmux/plugins/tmux-battery
   elif [[ "$mc" == "6" ]]; then
@@ -88,10 +89,6 @@ do
     brew cask install virtualbox
     brew cask install vagrant
     brew cask install vagrant-manager
-  elif [[ "$mc" == "11" ]]; then
-    cd /Applications
-    curl http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz
-    cd ~/dotfiles && ln -s slate ~/.slate
   fi
   showMenu
   m=$?
