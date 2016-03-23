@@ -40,8 +40,15 @@ NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'skwp/vim-easymotion'
 NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'slim-template/vim-slim.git'
-NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'benmills/vimux'
+NeoBundle 'garbas/vim-snipmate'
+NeoBundle 'marcweber/vim-addon-mw-utils'
+NeoBundle 'tomtom/tlib_vim'
+
+" TMUX
+if executable('tmux')
+  NeoBundle 'christoomey/vim-tmux-navigator'
+  NeoBundle 'benmills/vimux'
+endif
 
 " Text objects
 NeoBundle 'coderifous/textobj-word-column.vim'
@@ -80,11 +87,20 @@ runtime macros/matchit.vim
 " ========================================================================
 let mapleader=','
 
+map t :tabe 
+
+" Rails mappings
+nnoremap <leader>ec :Econtroller<cr>
+nnoremap <leader>em :Emodel<cr>
+
+" Run the current ruby file
+map <leader>r :!ruby %<Tab><cr>
+
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>vi :tabe $MYVIMRC<cr>
 map <leader>ni :NeoBundleInstall<cr>
-map <leader>sp :set paste<cr>"+p<Esc>np
-map <leader>np :set nopaste<cr>
+" Toggle paste mode on and off
+map <leader>pp :setlocal paste!<cr>
 
 nnoremap ; :
 " Copy the entire file content to the clipboard
@@ -104,6 +120,7 @@ map <space>e :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
 map <space>s :split <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 map <space>v :vsplit <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 map <space>r :r <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+map <Leader>sn :e ~/.vim/snippets/ruby.snippets<CR>
 
 map <silent><leader><space> :silent :nohl<cr>
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -126,12 +143,28 @@ nnoremap <silent> <Right> :vertical resize -5<cr>
 nnoremap <silent> <Up> :resize +5<cr>
 nnoremap <silent> <Down> :resize -5<cr>
 
+" Coding notes
+map <silent><leader>cn :tabe ~/Dropbox/notes/coding-notes.md<cr>
+
 " Disable arrows
 for prefix in ['i', 'n', 'v']
   for key in ['<Up>', '<Down>', '<Left>', '<Right>']
     exe prefix . "noremap " . key . " <Nop>"
   endfor
 endfor
+
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :call VisualSelection('f')<CR>
+
+" When you press <leader>r you can search and replace the selected text
+vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
+
+" Remap VIM 0 to first non-blank character
+map 0 ^
+
+" Remap yanking
+map <space>y "+y
 
 " Scroll the viewport faster
 nnoremap <C-e> 7<C-e>
@@ -161,21 +194,6 @@ let g:user_emmet_mode='a'
 let g:EasyMotion_leader_key = '<Leader><Leader>'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
-" MULTIPURPOSE TAB KEY
-" Indent if we're at the beginning of a line. Else, do completion.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! InsertTabWrapper()
-  let col = col('.') - 1
-  if !col || getline('.')[col - 1] !~ '\k'
-    return "\<tab>"
-  else
-    return "\<c-p>"
-  endif
-endfunction
-inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-n>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""
 " QUICKER WINDOW MOVEMENT
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:tmux_navigator_no_mappings = 1
@@ -201,7 +219,8 @@ set noerrorbells
 set ttyfast
 set splitbelow
 set splitright
-set nowrap
+set wrap
+set wrapmargin=0
 set autoread
 set wmh=0
 set viminfo+=!
@@ -209,9 +228,10 @@ set guioptions-=T
 set guifont=Hack:h13
 set expandtab
 set number
+set re=2
 set sw=2
 set smarttab
-set noincsearch
+set incsearch
 set hlsearch
 set ignorecase smartcase
 set laststatus=2 " Always shows the status line
@@ -232,6 +252,8 @@ set noswapfile  " http://robots.thoughtbot.com/post/18739402579/global-gitignore
 " Centralize backups, swapfiles and undo history
 set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
+
+let g:ruby_path = system('rvm current')
 
 " Use Silver Searcher instead of grep
 set grepprg=ag
@@ -297,7 +319,7 @@ function! RenameFile()
     redraw!
   endif
 endfunction
-map <Leader>r :call RenameFile()<cr>
+map <Leader>rr :call RenameFile()<cr>
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -327,3 +349,32 @@ autocmd FileType qf setlocal wrap linebreak
 " Make it more obviouser when lines are too long
 highlight ColorColumn ctermbg=235
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" HELPER FUNCTIONS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! CmdLine(str)
+  exe "menu Foo.Bar :" . a:str
+  emenu Foo.Bar
+  unmenu Foo
+endfunction
+
+function! VisualSelection(direction) range
+  let l:saved_reg = @"
+  execute "normal! vgvy"
+
+  let l:pattern = escape(@", '\\/.*$^~[]')
+  let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+  if a:direction == 'b'
+    execute "normal ?" . l:pattern . "^M"
+  elseif a:direction == 'gv'
+    call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+  elseif a:direction == 'replace'
+    call CmdLine("%s" . '/'. l:pattern . '/')
+  elseif a:direction == 'f'
+    execute "normal /" . l:pattern . "^M"
+  endif
+
+  let @/ = l:pattern
+  let @" = l:saved_reg
+endfunction

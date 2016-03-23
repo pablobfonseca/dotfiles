@@ -1,0 +1,49 @@
+# #!/urs/bin/ruby
+snippet #!
+	#!/usr/bin/ruby
+snippet req
+	require "${1}"${2}
+snippet =b
+	=begin rdoc
+		${1}
+	=end
+snippet def
+	def ${1:method_name}
+		${2}
+	end
+
+# Conditionals
+snippet if
+	if ${1:condition}
+		${2}
+	end
+snippet ife
+	if ${1:condition}
+		${2}
+	else
+		${3}
+	end
+snippet unless
+	unless ${1:condition}
+		${2}
+	end
+snippet cla class .. end
+	class ${1:`substitute(Filename(), '^.', '\u&', '')`}
+		${2}
+	end
+snippet cla class .. initialize .. end
+	class ${1:`substitute(Filename(), '^.', '\u&', '')`}
+		def initialize(${2:args})
+			${3}
+		end
+
+
+	end
+snippet cla class .. < ParentClass .. initialize .. end
+	class ${1:`substitute(Filename(), '^.', '\u&', '')`} < ${2:ParentClass}
+		def initialize(${3:args})
+			${4}
+		end
+
+
+	end
