@@ -1,5 +1,7 @@
-" This is Pablo Fonseca's .vimrc file
-" vim:set ts=2 sts=2 sw=2 expandtab:
+" File: .vimrc
+" Author: Pablo Fonseca
+" Description: This is my amazing .vimrc
+" Last Modified: March 23, 2016
 " ========================================================================
 " NeoBundle stuff
 " ========================================================================
@@ -120,7 +122,7 @@ map <space>e :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
 map <space>s :split <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 map <space>v :vsplit <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 map <space>r :r <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
-map <Leader>sn :e ~/.vim/snippets/ruby.snippets<CR>
+map <Leader>sn :e ~/.vim/snippets/
 
 map <silent><leader><space> :silent :nohl<cr>
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -128,8 +130,6 @@ map \ :Ag<space>
 
 " Close the quickfix window
 map <space><space> :ccl<cr>
-
-inoremap <Tab> <C-P>
 
 " Let's be reasonable, shall we?
 nmap k gk
@@ -227,7 +227,6 @@ set viminfo+=!
 set guioptions-=T
 set guifont=Hack:h13
 set expandtab
-set number
 set re=2
 set sw=2
 set smarttab

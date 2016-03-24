@@ -1,0 +1,40 @@
+# Prototype
+snippet proto
+	${1:class_name}.prototype.${2:method_name} =
+	function(${3:first_argument}) {
+		${4:// body...}
+	};
+# Function
+snippet fun
+	function ${1:function_name} (${2:argument}) {
+		${3:// body...}
+	}
+# if
+snippet if
+	if (${1:true}) {${2}}
+# if ... else
+snippet ife
+	if (${1:true}) {${2}}
+	else{${3}}
+# return
+snippet retu
+	return {
+	  ${1:function_name:} ${2:function_name}
+	};
+# Console log
+snippet cons
+	console.log(${1:something});
+# Object Method
+snippet :f
+	${1:method_name}: function(${2:attribute}) {
+		${4}
+	}${3:,}
+# setTimeout function
+snippet timeout
+	setTimeout(function() {${3}}${2}, ${1:10};
+# Get Elements
+snippet get
+	getElementsBy${1:TagName}('${2}')${3}
+# Get Element
+snippet gett
+	getElementBy${1:Id}('${2}')${3}
