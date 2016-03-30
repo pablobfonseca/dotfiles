@@ -1,7 +1,7 @@
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: March 29, 2016
+" Last Modified: March 30, 2016
 
 if &compatible
   set compatible " Be iMproved
@@ -310,9 +310,6 @@ set timeoutlen=500
 
 " Remove trailing whitespace on save for ruby files.
 au BufWritePre *.rb :%s/\s\+$//e
-
-" Set gutter background to black
-highlight SignColumn ctermbg=black
 
 " Setting Ctags
 set tags+=.git/tags
