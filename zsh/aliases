@@ -6,6 +6,7 @@ alias e='$EDITOR'
 alias v='$VISUAL'
 alias sites="cd ~/Sites"
 alias code="cd ~/code"
+alias bizneo="cd ~/code/Bizneo/bizneo"
 alias codetython="cd ~/code/codetython"
 alias study="cd ~/code/Study"
 alias pubkey="cat ~/.ssh/id_rsa.pub | pbcopy | echo \"Public key copied to clipboard\""
@@ -18,7 +19,8 @@ alias c="clear"
 alias r="ranger"
 alias aliases="vim ~/dotfiles/zsh/aliases"
 alias bi="bundle install"
-alias d="cd ~/dotfiles"
+alias dot="cd ~/dotfiles"
+alias vssh="vagrant ssh"
 
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"

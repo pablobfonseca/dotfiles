@@ -1,10 +1,7 @@
 " File: .vimrc
-" Author: Pablo Fonseca
+" Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: March 23, 2016
-" ========================================================================
-" NeoBundle stuff
-" ========================================================================
+" Last Modified: March 29, 2016
 
 if &compatible
   set compatible " Be iMproved
@@ -13,19 +10,23 @@ endif
 set nocompatible
 filetype off
 
+" ========================================================================
+" NeoBundle stuff
+" ========================================================================
 " set the runtime path to include NeoBundle and initialize
 set runtimepath^=~/.vim/bundle/neobundle.vim/
 call neobundle#begin(expand('~/.vim/bundle/'))
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
-
 NeoBundle 'ervandew/supertab'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'skwp/greplace.vim'
+NeoBundle 'skwp/vim-easymotion'
+NeoBundle 'tomtom/tlib_vim'
 NeoBundle 'tomtom/tcomment_vim'
-NeoBundle 'thoughtbot/vim-rspec'
+
+" Tpope
 NeoBundle 'tpope/vim-bundler'
-" Take a look further
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-fugitive'
@@ -33,20 +34,21 @@ NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'tpope/vim-eunuch'
+
+NeoBundle 'thoughtbot/vim-rspec'
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'jelera/vim-javascript-syntax'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'skwp/vim-easymotion'
 NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'slim-template/vim-slim.git'
 NeoBundle 'garbas/vim-snipmate'
 NeoBundle 'marcweber/vim-addon-mw-utils'
-NeoBundle 'tomtom/tlib_vim'
 
-" TMUX
+" Tmux
 if executable('tmux')
   NeoBundle 'christoomey/vim-tmux-navigator'
   NeoBundle 'benmills/vimux'
@@ -58,6 +60,7 @@ NeoBundle 'suan/vim-instant-markdown'
 
 " Colors
 NeoBundle "nanotech/jellybeans.vim"
+
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
@@ -89,11 +92,13 @@ runtime macros/matchit.vim
 " ========================================================================
 let mapleader=','
 
-map t :tabe 
-
 " Rails mappings
 nnoremap <leader>ec :Econtroller<cr>
 nnoremap <leader>em :Emodel<cr>
+
+" Fugitive
+map <leader>gs :Gstatus<cr>
+map <leader>gc :Gcommit<cr>
 
 " Run the current ruby file
 map <leader>r :!ruby %<Tab><cr>
@@ -115,6 +120,9 @@ map <Leader>gw :!git add . && git commit -m 'WIP' && git push<cr>
 map <Leader>i mmgg=G`m
 " Join all the lines
 map <Leader>mf mmgqap`m:w<cr>
+
+" Get Ctags
+map <Leader>rt :!ctags --tag-relative --extra=+f -Rf.git/tags --exclude=.git,pkg --languages=-javascript,sql<CR><CR>
 
 " Edit another file in the same directory as the current file
 " uses expression to extract path from current file's path
@@ -306,6 +314,9 @@ au BufWritePre *.rb :%s/\s\+$//e
 " Set gutter background to black
 highlight SignColumn ctermbg=black
 
+" Setting Ctags
+set tags+=.git/tags
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " RENAME CURRENT FILE (thanks Gary Bernhardt)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -319,13 +330,6 @@ function! RenameFile()
   endif
 endfunction
 map <Leader>rr :call RenameFile()<cr>
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-" if &t_Co > 2 || has("gui_running")
-"   syntax on
-"   set hlsearch
-" endif
 
 " Make it more obvious which paren I'm on
 hi MatchParen cterm=none ctermbg=black ctermfg=yellow
@@ -344,9 +348,6 @@ autocmd FileType markdown setlocal nolist wrap lbr
 
 " Wrap the quickfix window
 autocmd FileType qf setlocal wrap linebreak
-
-" Make it more obviouser when lines are too long
-highlight ColorColumn ctermbg=235
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " HELPER FUNCTIONS

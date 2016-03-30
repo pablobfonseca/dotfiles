@@ -14,6 +14,7 @@ showMenu(){
   echo "[8]  Cleanup brew"
   echo "[9]  Install NeoBundle"
   echo "[10] Install vagrant"
+  echo "[11] Configure screenrc"
   echo "[0]  Exit"
   echo "----------------"
 
@@ -58,7 +59,8 @@ do
     git clone https://github.com/tmux-plugins/tmux-battery ~/.tmux/plugins/tmux-battery
   elif [[ "$mc" == "6" ]]; then
     # Git
-    ln -s dotfiles/.gitconfig ~/.gitconfig
+    ln -s dotfiles/git_template ~/.git_template
+    ln -s dotfiles/git_template/gitconfig ~/.gitconfig
   elif [[ "$mc" == "7" ]]; then
     # Cask - http://caskroom.io/
     brew cask install iterm2
@@ -89,6 +91,8 @@ do
     brew cask install virtualbox
     brew cask install vagrant
     brew cask install vagrant-manager
+  elif [[ "$mc" == "11" ]]; then
+    ln -s ~/dotfiles/screenrc ~/.screenrc
   fi
   showMenu
   m=$?

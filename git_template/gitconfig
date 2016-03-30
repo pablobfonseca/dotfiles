@@ -2,11 +2,15 @@
   excludesfile = ~/.gitignore
   autocrlf = input
   editor = vim --noplugin
+[init]
+  templatedir = ~/.git_template
+[help]
+  autocorrect = 10
 [user]
   name = Pablo Fonseca
   email = pablofonseca777@gmail.com
 [branch]
-  autosetupmerge = true
+  autosetupmerge = always
   autosetuprebase = always
 [branch "master"]
   rebase = true
@@ -15,8 +19,10 @@
 [pull]
   default = current
   rebase = true
+[rebase]
+  autosquash = true
 [color]
-  ui = true
+  ui = auto
   diff = auto
   branch = auto
   interactive = auto
@@ -32,6 +38,9 @@
   cm = commit
   co-pr = !sh -c 'git fetch origin pull/$1/head:pr/$1 && git checkout pr/$1' -
   cleanup = !git remote prune origin && git gc && git clean -df && git stash clear
+  ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
+[diff "ruby"]
+  funcname = "^ *\\(\\(def\\) .*\\)"
 [diff]
   mnemonicprefix = true
   algorithm = patience
@@ -49,5 +58,6 @@
   helper = osxkeychain
 [rerere]
   enabled = true
-[help]
-  autocorrect = 1
+[merge "railsschema"]
+  name = newer Rails schema version
+  driver = hookup resolve-schema %A %O %B %L

@@ -1,68 +1,53 @@
-export DOTFILES=$HOME/dotfiles
-export ZSH=/Users/Pablo/.oh-my-zsh
+# Allow completing of the remainder of a command
+bindkey "^N" insert-last-word
 
 ZSH_THEME="fwalch"
 
-plugins=(git tmuxinator vagrant vi-mode brew osx zsh-syntax-highlighting)
+# Save a ton of history
+HISTSIZE=20000
+HISTFILE=~/.zsh_history
+SAVEHIST=20000
 
-# User configuration
-
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Pablo/.rvm/bin"
-export MANPATH="/usr/local/man:$MANPATH"
-
-source $ZSH/oh-my-zsh.sh
-
-export EDITOR="vim"
-export GIT_EDITOR="vim -v"
-export VISUAL="mvim"
-
-# initialize autocomplete
+# Enable completion
+fpath=(~/.zsh/completions $fpath) 
 autoload -U compinit
 compinit
 
-for config ($DOTFILES/zsh/completion.sh) source $config
+export EDITOR=vim
+export VISUAL=macvim
 
-export PATH="/usr/local/sbin:$PATH"
+plugins=(git tmuxinator brew osx zsh-syntax-highlighting)
 
-export PATH=/usr/local/share/npm/bin:$PATH
+# Add paths
+export DOTFILES=$HOME/dotfiles
+export ZSH=/Users/Pablo/.oh-my-zsh
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Pablo/.rvm/bin"
 export PATH="$HOME/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export MANPATH="/usr/local/man:$MANPATH"
+export PATH=/usr/local/share/npm/bin:$PATH
+# Sourcing of other files
+source $ZSH/oh-my-zsh.sh
+for config ($DOTFILES/zsh/completion.sh) source $config
+source $DOTFILES/zsh/aliases
 
-# Aliases
+# By default, ^S freezes terminal output and ^Q resumes it. Disable that so
+# that those keys can be used for other things.
+unsetopt flowcontrol
 
-alias zshconfig='vim ~/.zshrc'
-alias vimconfig='vim ~/.vimrc'
-alias reload!='source ~/.zshrc'
-alias e='$EDITOR'
-alias v='$VISUAL'
-alias sites="cd ~/Sites"
-alias code="cd ~/code"
-alias codetython="cd ~/code/codetython"
-alias study="cd ~/code/Study"
-alias pubkey="cat ~/.ssh/id_rsa.pub | pbcopy | echo \"Public key copied to clipboard\""
-alias update="brew update"
-alias upgrade="brew upgrade"
-alias cleanup="brew cleanup"
-alias install="brew install"
-alias cinstall="brew cask install"
-alias c="clear"
+# Use C-x C-e to edit the current command line
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-x\C-e' edit-command-line
 
-# Hide/show all desktop icons (useful when presenting)
-alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
-alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+# By default, zsh considers many characters part of a word (e.g., _ and -).
+# Narrow that down to allow easier skipping through words via M-f and M-b.
+export WORDCHARS='*?[]~&;!$%^<>'
 
-# Kill all the tabs in Chrome to free up memory
-# # [C] explained:
-# http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
-alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+# Heroku toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
 
-# IP address
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en1"
-alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
-
-# Git aliases
-alias st="git st"
-alias push="git push"
-alias commit="git commit"
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

@@ -1,7 +1,7 @@
 #### COLOUR
 
 tm_icon="✡"
-tm_color_active=colour82
+tm_color_active=white
 tm_color_inactive=colour241
 tm_color_feature=colour10
 tm_color_music=colour10
@@ -60,7 +60,7 @@ tm_itunes="#[fg=$tm_color_music]#(osascript ~/.tmux/applescripts/itunes.scpt)"
 
 tm_date="#[fg=$tm_color_inactive] %a, %b, %d"
 tm_hour="#[fg=$tm_color_inactive] %I:%M"
-tm_session_name="#[fg=$tm_color_feature,bold]$tm_icon #S"
+tm_session_name="#[fg=white]$tm_icon #S"
 
 set -g status-left $tm_session_name' '
-set -g status-right "Battery: #{battery_icon} #{battery_percentage} #{battery_remain}"' '$tm_date' '$tm_hour' '$tm_spotify
+set -g status-right "Battery: #{battery_icon} #{battery_percentage} #{battery_remain}"' '$tm_date' '$tm_hour' '$tm_spotify' '$tm_itunes
