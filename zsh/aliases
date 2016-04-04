@@ -21,6 +21,8 @@ alias aliases="vim ~/dotfiles/zsh/aliases"
 alias bi="bundle install"
 alias dot="cd ~/dotfiles"
 alias vssh="vagrant ssh"
+alias vh="vagrant halt"
+alias :q="exit"
 
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"

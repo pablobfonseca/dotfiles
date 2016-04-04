@@ -35,11 +35,6 @@ source $DOTFILES/zsh/aliases
 # that those keys can be used for other things.
 unsetopt flowcontrol
 
-# Use C-x C-e to edit the current command line
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey '\C-x\C-e' edit-command-line
-
 # By default, zsh considers many characters part of a word (e.g., _ and -).
 # Narrow that down to allow easier skipping through words via M-f and M-b.
 export WORDCHARS='*?[]~&;!$%^<>'
