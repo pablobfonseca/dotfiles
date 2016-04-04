@@ -55,7 +55,7 @@ snippet cla class .. < ParentClass .. initialize .. end
 
 	end
 snippet cla class .. < ApplicationController .. end
-	class ${1:`substitute(Filename(), '^.', '\u&', '')`} < ${2:ApplicationController}
+	class ${1:`substitute(Filename(), '^.', '\u&', '')`}Controller < ${2:ApplicationController}
 
 	end
 snippet cla class .. < ActiveRecord::Base .. end
@@ -91,5 +91,23 @@ snippet bef before_filter
 	before_filter :${1:method_name}
 
 	def ${1:method_name}
+
+	end
+snippet desc describe .. end
+	describe ${1:`substitute(Filename(), '^.', '\u&', '')`} do
+
+	end
+snippet it it .. end
+	it '${1:something}' do
+
+	end
+snippet exp expect .. end
+	expect(${1:tested_value}).to eq(${2:expected_value})
+snippet feat feature .. end
+	feature '${1:something}' do
+
+	end
+snippet scen scenario .. end
+	scenario '${1:something}' do
 
 	end
