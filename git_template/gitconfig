@@ -1,5 +1,5 @@
 [core]
-  excludesfile = ~/.gitignore
+  excludesfile = ~/.global_ignore
   autocrlf = input
   editor = vim --noplugin
 [init]
@@ -46,7 +46,6 @@
   algorithm = patience
   tool = vimdiff
 [merge]
-  ff = only
   tool = vim
 [fetch]
   prune = true

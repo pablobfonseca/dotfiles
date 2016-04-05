@@ -1,0 +1,5 @@
+require 'environment/utils'
+require 'environment/dotfiles'
+require 'environment/vim'
+require 'environment/vim/plugins'
+require 'environment/shell'

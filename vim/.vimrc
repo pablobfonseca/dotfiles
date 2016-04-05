@@ -1,19 +1,16 @@
+call pathogen#infect()
+call pathogen#helptags()
+
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: April 4, 2016
+" Last Modified: April 5, 2016
 
 set nocompatible
-filetype off
-
-if &compatible
-  set compatible " Be iMproved
-endif
 
 " ========================================================================
 " Plugins
 " ========================================================================
-execute pathogen#infect()
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
@@ -36,7 +33,7 @@ augroup myfiletypes
   autocmd FileType ruby,eruby,yaml setlocal path+=lib
   " Make ?s part of words
   autocmd FileType ruby,eruby,yaml setlocal iskeyword+=?
-  autocmd FileType gitcommit setlocal spell
+  autocmd FileType gitcommit setlocal spell textwidth=72
 augroup END
 
 " Enable built-in matchit plugin 
@@ -197,7 +194,8 @@ set viminfo+=!
 set guioptions-=T
 set guifont=Source\ Code\ Pro:h13
 set expandtab
-set sw=2
+set shiftwidth=2
+set softtabstop=2
 set smarttab
 set incsearch
 set hlsearch
@@ -274,6 +272,8 @@ au BufWritePre *.rb :%s/\s\+$//e
 " Setting Ctags
 set tags+=.git/tags
 
+nnoremap <Leader>rt :!ctags --tag-relative --extra=+f -Rf.git/tags --exclude=.git,pkg --languages=-javascript,sql<CR><CR>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " RENAME CURRENT FILE (thanks Gary Bernhardt)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -341,7 +341,7 @@ function! VisualSelection(direction) range
 endfunction
 
 function! RSpec()
-  exec '!rspec'
+  exec '!bin/rspec %'
 endfunction
 nnoremap <Leader>a :call RSpec()<cr>
 
@@ -352,4 +352,30 @@ function! s:MkNonExDir(file, buf)
       call mkdir(dir, 'p')
     endif
   endif
+endfunction
+
+function! AlignSection(regex) range
+  let extra = 1
+  let sep = empty(a:regex) ? '=' : a:regex
+  let maxpos = 0
+  let section = getline(a:firstline, a:lastline)
+  for line in section
+    let pos = match(line, ' *'.sep)
+    if maxpos < pos
+      let maxpos = pos
+    endif
+  endfor
+  call map(section, 'AlignLine(v:val, sep, maxpos, extra)')
+  call setline(a:firstline, section)
+endfunction
+command! -nargs=? -range Align <line1>,<line2>call AlignSection('<args>')
+vnoremap <silent> <Leader>al :Align<CR>
+
+function! AlignLine(line, sep, maxpos, extra)
+  let m = matchlist(a:line, '\(.\{-}\) \{-}\('.a:sep.'.*\)')
+  if empty(m)
+    return a:line
+  endif
+  let spaces = repeat(' ', a:maxpos - strlen(m[1]) + a:extra)
+  return m[1] . spaces . m[2]
 endfunction
