@@ -1,16 +1,52 @@
-call pathogen#infect()
-call pathogen#helptags()
-
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: April 5, 2016
+" Last Modified: April 18, 2016
+
+" Preamble ---------------------- {{{
+filetype off
+filetype plugin indent on
+" }}}
+
+autocmd!
 
 set nocompatible
+colorscheme vividchalk
 
-" ========================================================================
-" Plugins
-" ========================================================================
+" Plugins ---------------------- {{{
+call plug#begin('~/.vim/plugged')
+Plug 'rking/ag.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'Raimondi/delimitMate'
+Plug 'mattn/emmet-vim'
+Plug 'ervandew/supertab'
+Plug 'tomtom/tcomment_vim'
+Plug 'coderifous/textobj-word-column.vim'
+Plug 'suan/vim-instant-markdown', { 'for': 'markdown' }
+Plug 'jlanzarotta/bufexplorer'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'marcweber/vim-addon-mw-utils' | Plug 'garbas/vim-snipmate'
+Plug 'tomtom/tlib_vim'
+Plug 'slim-template/vim-slim', { 'for': 'slim' }
+
+if executable('tmux')
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'benmills/vimux'
+endif
+
+call plug#end()
+
+" }}}
+
+" General settings ---------------------- {{{
+
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
@@ -18,167 +54,13 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
-filetype plugin indent on
-
-colorscheme vividchalk
-
-" ========================================================================
-" Ruby stuff
-" ========================================================================
-augroup myfiletypes
-  " Clear old autocmds in group
-  autocmd!
-  " autoindent with two spaces, always expand tabs
-  autocmd FileType ruby,eruby,yaml setlocal ai sw=2 sts=2 et
-  autocmd FileType ruby,eruby,yaml setlocal path+=lib
-  " Make ?s part of words
-  autocmd FileType ruby,eruby,yaml setlocal iskeyword+=?
-  autocmd FileType gitcommit setlocal spell textwidth=72
-augroup END
-
-" Enable built-in matchit plugin 
-runtime macros/matchit.vim
-
-" ========================================================================
-" Mappings
-" ========================================================================
-let mapleader=','
-let maplocalleader = "\\"
-
-" Rails mappings
-nnoremap <leader>ec :Econtroller<cr>
-nnoremap <leader>em :Emodel<cr>
-
-" select last paste in visual mode
-nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]''`']`
-
-" Fugitive
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gc :Gcommit<cr>
-
-" Run the current ruby file
-nnoremap <leader>r :!ruby %<Tab><cr>
-
-nnoremap <silent><leader>sv :source $MYVIMRC<cr>
-nnoremap <silent><leader>ev :split $MYVIMRC<cr>
-nnoremap <leader>ni :NeoBundleInstall<cr>
-nnoremap <leader>nc :NeoBundleCheckUpdate<cr>
-" Toggle paste mode on and off
-nnoremap <leader>pp :setlocal paste!<cr>
-
-nnoremap ; :
-" Copy the entire file content to the clipboard
-nnoremap <Leader>co mmggVG"*y`m
-" Open code directory
-nnoremap <Leader>ec :e ~/code/
-" Git WIP
-nnoremap <Leader>gw :!git add . && git commit -m 'WIP' && git push<cr>
-" Indent the whole file
-nnoremap <Leader>i mmgg=G`m
-" Join all the lines
-nnoremap <Leader>mf mmgqap`m:w<cr>
-
-" Get Ctags
-nnoremap <Leader>rt :!ctags --tag-relative --extra=+f -Rf.git/tags --exclude=.git,pkg --languages=-javascript,sql<CR><CR>
-
-" Edit another file in the same directory as the current file
-" uses expression to extract path from current file's path
-nnoremap <space>e :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
-nnoremap <space>s :split <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
-nnoremap <space>v :vsplit <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
-nnoremap <space>r :r <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
-nnoremap <Leader>sn :e ~/.vim/snippets/
-
-nnoremap <silent><leader><space> :nohl<CR>
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-nnoremap \ :Ag<space>
-
-" Close the quickfix window
-nnoremap <space><space> :ccl<cr>
-
-" Let's be reasonable, shall we?
-nnoremap k gk
-nnoremap j gj
-
-nnoremap <silent><leader>gb :silent :Gblame<CR>
-
-" Coding notes
-nnoremap <silent><leader>cn :tabe ~/Dropbox/notes/coding-notes.md<cr>
-
-" Disable arrows
-for prefix in ['i', 'n', 'v']
-  for key in ['<Up>', '<Down>', '<Left>', '<Right>']
-    exe prefix . "noremap " . key . " <Nop>"
-  endfor
-endfor
-
-" resize panes
-nnoremap <silent> <Left> :vertical resize +5<cr>
-nnoremap <silent> <Right> :vertical resize -5<cr>
-nnoremap <silent> <Up> :resize +5<cr>
-nnoremap <silent> <Down> :resize -5<cr>
-
-" Visual mode pressing * or # searches for the current selection
-" Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :call VisualSelection('f')<CR>
-
-" When you press <leader>r you can search and replace the selected text
-vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
-
-" Remap VIM 0 to first non-blank character
-nnoremap 0 ^
-
-" Remap yanking
-nnoremap <space>y "+y
-
-" Scroll the viewport faster
-nnoremap <C-e> 7<C-e>
-nnoremap <C-y> 7<C-y>
-vnoremap <C-e> 7<C-e>
-vnoremap <C-y> 7<C-y>
-
-" Disable mouse scroll wheel
-nnoremap <ScrollWheelUp> <nop>
-nnoremap <S-ScrollWheelUp> <nop>
-nnoremap <C-ScrollWheelUp> <nop>
-nnoremap <ScrollWheelDown> <nop>
-nnoremap <S-ScrollWheelDown> <nop>
-nnoremap <C-ScrollWheelDown> <nop>
-nnoremap <ScrollWheelLeft> <nop>
-nnoremap <S-ScrollWheelLeft> <nop>
-nnoremap <C-ScrollWheelLeft> <nop>
-nnoremap <ScrollWheelRight> <nop>
-nnoremap <S-ScrollWheelRight> <nop>
-nnoremap <C-ScrollWheelRight> <nop>
-
-" Remapping the emmet leader key
-let g:user_emmet_leader_key='<C-Z>'
-let g:user_emmet_mode='a'
-
-" Enable easymotion
-let g:EasyMotion_leader_key = '<Leader><Leader>'
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-" QUICKER WINDOW MOVEMENT
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:tmux_navigator_no_mappings = 1
-
-nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
-nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
-
-" ========================================================================
-" General stuff
-" ========================================================================
-scriptencoding utf-8 " utf-8 all the way
-set encoding=utf-8 nobomb
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set history=500 " keep 500 lines of command history
 set undolevels=500
 set ruler " show the cursor position all the time
 set showcmd " display incomplete commands
 set showmatch
+set wrap
 set hidden
 set mouse-=a
 set secure
@@ -186,9 +68,9 @@ set noerrorbells
 set ttyfast
 set splitbelow
 set splitright
-set wrap
 set wrapmargin=0
 set autoread
+set re=1
 set wmh=0
 set viminfo+=!
 set guioptions-=T
@@ -237,12 +119,8 @@ highlight StatusLine ctermfg=blue ctermbg=yellow
 
 set shiftround " When at 3 spaces and I hit >>, go to 4, not 5.
 
-set nofoldenable " Say no to code folding...
-
 " Disable K looking stuff up
 nnoremap K <Nop>
-
-au BufNewFile,BufRead *.txt setlocal nolist " Don't display whitespace
 
 " Better? completion on command line
 set wildmenu
@@ -254,9 +132,6 @@ set noesckeys
 set ttimeout
 set ttimeoutlen=1
 
-" Turn on spell-checking in markdown and text.
-au BufRead,BufNewFile *.md,*.txt setlocal spell
-
 " Make CtrlP use ag for listing the files. Way faster and no useless files.
 " Without --hidden, it never finds .travis.yml since it starts with a dot
 let g:ctrlp_user_command = 'ag %s -l --hidden --nocolor -g ""'
@@ -266,17 +141,156 @@ let g:ctrlp_use_caching = 0
 " situations.
 set timeoutlen=500
 
-" Remove trailing whitespace on save for ruby files.
-au BufWritePre *.rb :%s/\s\+$//e
-
 " Setting Ctags
 set tags+=.git/tags
 
+" Make it more obvious which paren I'm on
+hi MatchParen cterm=none ctermbg=black ctermfg=yellow
+
+let g:vimrubocop_config = '~/code/Bizneo/bizneo/rubocop.yml'
+
+" }}}
+
+" Mappings ---------------------- {{{
+let mapleader=','
+let maplocalleader = "\\"
+
+" select last paste in visual mode
+nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]''`']`
+
+" Change vertically split to horizonally
+nnoremap <leader>fh <C-w>t<C-w>K
+
+" Change horizonally split to vertically
+nnoremap <leader>fv <C-w>t<C-w>H
+
+" Fugitive
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gc :Gcommit<cr>
+
+" Map Y to yank from the cursor position until the end of the line
+map Y y$
+
+
+" Source vimrc
+nnoremap <silent><leader>sv :source $MYVIMRC<cr>
+" Edit vimrc
+nnoremap <silent><leader>ev :tabe $MYVIMRC<cr>
+
+nnoremap <leader>ni :NeoBundleInstall<cr>
+nnoremap <leader>nc :NeoBundleCheckUpdate<cr>
+" Toggle paste mode on and off
+nnoremap <leader>pp :setlocal paste!<cr>
+
+nnoremap ; :
+" Copy the entire file content to the clipboard
+nnoremap <Leader>co mmggVG"*y`m
+" Open code directory
+nnoremap <Leader>ec :e ~/code/
+" Git WIP
+nnoremap <Leader>gw :!git add . && git commit -m 'WIP' && git push<cr>
+" Indent the whole file
+nnoremap <Leader>i mmgg=G`m
+" Join all the lines
+nnoremap <Leader>mf mmgqap`m:w<cr>
+
+" Edit another file in the same directory as the current file
+" uses expression to extract path from current file's path
+nnoremap <space>e :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
+nnoremap <space>s :split <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+nnoremap <space>v :vsplit <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+nnoremap <space>r :r <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+nnoremap <space>t :tabe <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+nnoremap <Leader>sn :e ~/.vim/snippets/
+
+nnoremap <silent><leader><space> :nohl<CR>
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<space>
+
+" Close the quickfix window
+nnoremap <space><space> :ccl<cr>
+
+" Let's be reasonable, shall we?
+nnoremap k gk
+nnoremap j gj
+
+nnoremap <silent><leader>gb :silent :Gblame<CR>
+
+" Coding notes
+nnoremap <silent><leader>cn :tabe ~/Dropbox/notes/coding-notes.md<cr>
+
+" Disable arrows
+for prefix in ['i', 'n', 'v']
+  for key in ['<Up>', '<Down>', '<Left>', '<Right>']
+    exe prefix . "noremap " . key . " <Nop>"
+  endfor
+endfor
+
+" resize panes
+nnoremap <silent> <Left> :vertical resize +5<cr>
+nnoremap <silent> <Right> :vertical resize -5<cr>
+nnoremap <silent> <Up> :resize +5<cr>
+nnoremap <silent> <Down> :resize -5<cr>
+
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :call VisualSelection('f')<CR>
+
+" When you press <leader>r you can search and replace the selected text
+vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
+
+" Vimux
+nnoremap <silent><leader>vp :VimuxPromptCommand<cr>
+nnoremap <silent><leader>vl :VimuxRunLastCommand<cr>
+
+" Remap VIM 0 to first non-blank character
+nnoremap 0 ^
+
+" Remap yanking
+nnoremap <space>y "+y
+
+" Scroll the viewport faster
+nnoremap <C-e> 7<C-e>
+nnoremap <C-y> 7<C-y>
+vnoremap <C-e> 7<C-e>
+vnoremap <C-y> 7<C-y>
+
+" Disable mouse scroll wheel
+nnoremap <ScrollWheelUp> <nop>
+nnoremap <S-ScrollWheelUp> <nop>
+nnoremap <C-ScrollWheelUp> <nop>
+nnoremap <ScrollWheelDown> <nop>
+nnoremap <S-ScrollWheelDown> <nop>
+nnoremap <C-ScrollWheelDown> <nop>
+nnoremap <ScrollWheelLeft> <nop>
+nnoremap <S-ScrollWheelLeft> <nop>
+nnoremap <C-ScrollWheelLeft> <nop>
+nnoremap <ScrollWheelRight> <nop>
+nnoremap <S-ScrollWheelRight> <nop>
+nnoremap <C-ScrollWheelRight> <nop>
+
+" Generate ctags
 nnoremap <Leader>rt :!ctags --tag-relative --extra=+f -Rf.git/tags --exclude=.git,pkg --languages=-javascript,sql<CR><CR>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" RENAME CURRENT FILE (thanks Gary Bernhardt)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remapping the emmet leader key
+let g:user_emmet_leader_key='<C-Z>'
+let g:user_emmet_mode='a'
+
+" Enable easymotion
+let g:EasyMotion_leader_key = '<Leader><Leader>'
+
+" QUICKER WINDOW MOVEMENT
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+
+" }}}
+
+" Functions ---------------------- {{{
+
 function! RenameFile()
   let old_name = expand('%')
   let new_name = input('New file name: ', expand('%'), 'file')
@@ -288,31 +302,6 @@ function! RenameFile()
 endfunction
 nnoremap <Leader>rr :call RenameFile()<cr>
 
-" Make it more obvious which paren I'm on
-hi MatchParen cterm=none ctermbg=black ctermfg=yellow
-
-" By default, vim thinks .md is Modula-2.
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-
-" Install Emmet
-autocmd FileType html,css EmmetInstall
-
-" automatically rebalance windows on vim resize
-autocmd VimResized * :wincmd =
-
-" Without this, vim breaks in the middle of words when wrapping
-autocmd FileType markdown setlocal nolist wrap lbr
-
-" Wrap the quickfix window
-autocmd FileType qf setlocal wrap linebreak
-
-autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
-
-let g:vimrubocop_config = '~/code/Bizneo/bizneo/rubocop.yml'
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" HELPER FUNCTIONS
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! CmdLine(str)
   exe "menu Foo.Bar :" . a:str
   emenu Foo.Bar
@@ -379,3 +368,79 @@ function! AlignLine(line, sep, maxpos, extra)
   let spaces = repeat(' ', a:maxpos - strlen(m[1]) + a:extra)
   return m[1] . spaces . m[2]
 endfunction
+
+function! SearchForCallSitesCursor()
+  let searchTerm = expand("<cword>")
+  call SearchForCallSites(searchTerm)
+endfunction
+
+" Search for call sites for term (excluding its definition) and
+" load into the quickfix list.
+function! SearchForCallSites(term)
+  cexpr system('ag ' . shellescape(a:term) . '\| grep -v def')
+endfunction
+" }}}
+
+" Vimscript file settings ---------------------- {{{
+augroup filetype_vim
+  autocmd!
+  autocmd FileType vim setlocal foldmethod=marker
+augroup END
+" }}}
+
+" Augroups ---------------------- {{{
+augroup filetype_ruby
+  " Clear old autocmds in group
+  autocmd!
+  " autoindent with two spaces, always expand tabs
+  autocmd FileType ruby,eruby,yaml setlocal ai sw=2 sts=2 et
+  autocmd FileType ruby,eruby,yaml setlocal path+=lib
+  " Make ?s part of words
+  autocmd FileType ruby,eruby,yaml setlocal iskeyword+=?
+  autocmd FileType gitcommit setlocal spell textwidth=72
+  " Run the current ruby file
+  autocmd FileType ruby nnoremap <leader>r :!ruby %<Tab><cr>
+  " Remove trailing whitespace on save for ruby files.
+  autocmd BufWritePre *.rb :%s/\s\+$//e
+augroup END
+
+augroup filetype_markdown_and_txt
+  " Clear old autocmds in group
+  autocmd!
+  " By default, vim thinks .md is Modula-2.
+  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+  " Without this, vim breaks in the middle of words when wrapping
+  autocmd FileType markdown setlocal nolist wrap lbr
+  " Turn on spell-checking in markdown and text.
+  autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
+  " Don't display whitespaces
+  autocmd BufNewFile,BufRead *.txt setlocal nolist
+augroup END
+
+augroup filetype_javascript
+  " Clear old autocmds in group
+  autocmd!
+  " Set syntax javascript to coffee script files
+  autocmd BufNewFile,BufReadPost *.coffee setlocal syntax=javascript
+  autocmd FileType javascript nnoremap <leader>n :!node %<Tab><cr>
+augroup END
+
+augroup filetype_html
+  " Clear old autocmds in group
+  autocmd!
+  " Install Emmet
+  autocmd FileType html,css EmmetInstall
+augroup END
+
+augroup vim_stuff
+  " Clear old autocmds in group
+  autocmd!
+  " automatically rebalance windows on vim resize
+  autocmd VimResized * :wincmd =
+  " Wrap the quickfix window
+  autocmd FileType qf setlocal wrap linebreak
+  autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
+  autocmd BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+augroup END
+
+" }}}
