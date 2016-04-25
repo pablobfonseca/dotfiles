@@ -2,8 +2,6 @@
   excludesfile = ~/.global_ignore
   autocrlf = input
   editor = vim --noplugin
-[init]
-  templatedir = ~/.git_template
 [help]
   autocorrect = 10
 [user]
@@ -14,13 +12,13 @@
   autosetuprebase = always
 [branch "master"]
   rebase = true
+[rebase]
+  autosquash = true
 [push]
   default = current
 [pull]
   default = current
   rebase = true
-[rebase]
-  autosquash = true
 [color]
   ui = auto
   diff = auto
@@ -39,6 +37,9 @@
   co-pr = !sh -c 'git fetch origin pull/$1/head:pr/$1 && git checkout pr/$1' -
   cleanup = !git remote prune origin && git gc && git clean -df && git stash clear
   ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
+  ds = diff --stat=160,120
+  dh1 = diff HEAD~1
+  l = "!. ~/.githelpers && pretty_git_log"
 [diff "ruby"]
   funcname = "^ *\\(\\(def\\) .*\\)"
 [diff]
