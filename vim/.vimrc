@@ -1,7 +1,7 @@
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: April 18, 2016
+" Last Modified: May 09, 2016
 
 " Preamble ---------------------- {{{
 filetype off
@@ -167,6 +167,7 @@ nnoremap <leader>fv <C-w>t<C-w>H
 " Fugitive
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gc :Gcommit<cr>
+nnoremap <leader>gp :Gpush<cr>
 
 " Map Y to yank from the cursor position until the end of the line
 map Y y$
@@ -411,6 +412,8 @@ augroup filetype_markdown_and_txt
   autocmd BufNewFile,BufReadPost *.md set filetype=markdown
   " Without this, vim breaks in the middle of words when wrapping
   autocmd FileType markdown setlocal nolist wrap lbr
+  " Source markdown editor
+  autocmd FileType markdown source ~/.vim/writter.vim
   " Turn on spell-checking in markdown and text.
   autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
   " Don't display whitespaces
