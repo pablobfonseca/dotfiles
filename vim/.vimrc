@@ -1,7 +1,7 @@
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: May 09, 2016
+" Last Modified: May 22, 2016
 
 " Preamble ---------------------- {{{
 filetype off
@@ -43,6 +43,11 @@ endif
 
 call plug#end()
 
+" }}}
+
+" Abbreviations settings ---------------------- {{{
+
+iabbrev pry binding.pry
 " }}}
 
 " General settings ---------------------- {{{
@@ -172,6 +177,8 @@ nnoremap <leader>gp :Gpush<cr>
 " Map Y to yank from the cursor position until the end of the line
 map Y y$
 
+" Insert a caller into Ruby code
+nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
 
 " Source vimrc
 nnoremap <silent><leader>sv :source $MYVIMRC<cr>
