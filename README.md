@@ -4,8 +4,7 @@ Clone this repo into your home directory. Such as:
 
 ```
 git clone git://github.com/pablobfonseca/dotfiles.git ~/dotfiles
-cd ~/dotfiles
-sh ./instal.sh
+cd ~/dotfiles | sh ./install.sh
 ```
 
 # **Help Tags**
