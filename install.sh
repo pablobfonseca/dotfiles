@@ -32,18 +32,17 @@ do
     brew update
     brew install caskroom/cask/brew-cask
     brew install vim tmux ranger git node mysql postgresql tig
-    brew install zsh zsh-completions hub the_silver_searcher openssl redis tmate wget heroku-toolbelt
+    brew install zsh zsh-completions hub the_silver_searcher openssl redis tmate wget heroku-toolbelt pandoc
   elif [[ "$mc" == "3" ]]; then
     # It installs oh-my-zsh and set zsh as a default shell
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     chsh -s /bin/zsh
   elif [[ "$mc" == "4" ]]; then
     # RVM installation
-    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
     \curl -sSL https://get.rvm.io | bash -s stable
     source ~/.rvm/scripts/rvm
     type rvm | head -n 1
-    # Installs the lastest ruby version
+    # Installs the latest ruby version
     rvm install ruby --latest
   elif [[ "$mc" == "5" ]]; then
     # Vim and Tmux
