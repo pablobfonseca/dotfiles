@@ -1,7 +1,8 @@
+" vim: foldmethod=marker
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: May 22, 2016
+" Last Modified: May 23, 2016
 
 " Preamble ---------------------- {{{
 filetype off
@@ -11,7 +12,7 @@ filetype plugin indent on
 autocmd!
 
 set nocompatible
-colorscheme vividchalk
+colorscheme hipster
 
 " Plugins ---------------------- {{{
 call plug#begin('~/.vim/plugged')
@@ -159,6 +160,9 @@ let g:vimrubocop_config = '~/code/Bizneo/bizneo/rubocop.yml'
 " Mappings ---------------------- {{{
 let mapleader=','
 let maplocalleader = "\\"
+
+" Open current html file into firefox
+nnoremap <leader>of :!open -a "Firefox" %<tab><cr>
 
 " select last paste in visual mode
 nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]''`']`
@@ -389,14 +393,14 @@ function! SearchForCallSites(term)
 endfunction
 " }}}
 
-" Vimscript file settings ---------------------- {{{
-augroup filetype_vim
-  autocmd!
-  autocmd FileType vim setlocal foldmethod=marker
-augroup END
-" }}}
-
 " Augroups ---------------------- {{{
+augroup filetype_zsh
+  " Clear old autocmds in group
+  autocmd!
+  " set shell syntax for zsh files
+  autocmd FileType zsh set syntax=sh
+augroup END
+
 augroup filetype_ruby
   " Clear old autocmds in group
   autocmd!
@@ -453,4 +457,18 @@ augroup vim_stuff
   autocmd BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 
+" }}}
+
+" Extended text-objects ---------------------- {{{
+let s:items = ["<bar>", "\\", "/", ":", ".", "*", "_"]
+for item in s:items
+  exe "nnoremap yi".item." T".item."yt".item
+  exe "nnoremap ya".item." F".item."yf".item
+  exe "nnoremap ci".item." T".item."ct".item
+  exe "nnoremap ca".item." F".item."cf".item
+  exe "nnoremap di".item." T".item."dt".item
+  exe "nnoremap da".item." F".item."df".item
+  exe "nnoremap vi".item." T".item."vt".item
+  exe "nnoremap va".item." F".item."vf".item
+endfor
 " }}}
