@@ -2,7 +2,7 @@
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: May 23, 2016
+" Last Modified: May 24, 2016
 
 " Preamble ---------------------- {{{
 filetype off
@@ -108,6 +108,7 @@ set noswapfile  " http://robots.thoughtbot.com/post/18739402579/global-gitignore
 " Centralize backups, swapfiles and undo history
 set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
+set dictionary=~/.vim/spell/eng.utf-8.add
 
 let g:ruby_path = system('rvm current')
 
@@ -259,7 +260,7 @@ nnoremap <silent><leader>vl :VimuxRunLastCommand<cr>
 nnoremap 0 ^
 
 " Remap yanking
-nnoremap <space>y "+y
+nnoremap <leader>y "+y
 
 " Scroll the viewport faster
 nnoremap <C-e> 7<C-e>
