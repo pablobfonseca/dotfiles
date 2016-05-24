@@ -2,6 +2,8 @@
   excludesfile = ~/.global_ignore
   autocrlf = input
   editor = vim --noplugin
+[github]
+  user = pablobfonseca
 [help]
   autocorrect = 10
 [user]
@@ -39,7 +41,7 @@
   ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
   ds = diff --stat=160,120
   dh1 = diff HEAD~1
-  l = "!. ~/.githelpers && pretty_git_log"
+  l = log --graph --pretty="tformat:%C(yellow)%h%Creset\\ %Cgreen(%ar)%Creset\\ %C(cyan)<%an>%Creset\\ %C(red)%d%Creset\\ %s"
 [diff "ruby"]
   funcname = "^ *\\(\\(def\\) .*\\)"
 [diff]
@@ -47,14 +49,12 @@
   algorithm = patience
   tool = vimdiff
 [merge]
-  tool = vim
+  tool = fugitive
+[mergetool "fugitive"]
+  cmd = vim -f -c \"Gdiff\" \"$MERGED\"
+  keepBackup = false
 [fetch]
   prune = true
-[github]
-  user = pablobfonseca
-[mergetool "vim"]
-  cmd = vim -w $MERGED
-  trustExitCode = false
 [credential]
   helper = osxkeychain
 [rerere]
