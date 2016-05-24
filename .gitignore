@@ -1,4 +1,6 @@
 mutt/accounts/
+mutt/cache/*
+mutt/certificates
 tags
 *~
 *.sw*

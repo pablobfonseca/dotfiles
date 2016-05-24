@@ -1,0 +1,38 @@
+# vim: ft=muttrc
+
+[general]
+ui = blinkenlights
+accounts = pablofonseca777@gmail.com
+fsync = False
+
+[Account pablofonseca777@gmail.com]
+localrepository = pablofonseca777@gmail.com-Local
+remoterepository = pablofonseca777@gmail.com-Remote
+status_backend = sqlite
+postsynchook = notmuch new
+
+[Repository pablofonseca777@gmail.com-Local]
+type = Maildir
+localfolders = ~/.mail/some.folder
+nametrans = lambda folder: {'drafts':  '[Google Mail]/Drafts',
+                            'sent':    '[Google Mail]/Sent Mail',
+                            'trash':   '[Google Mail]/Bin',
+                            'archive': '[Google Mail]/All Mail',
+                            }.get(folder, folder)
+
+[Repository pablofonseca777@gmail.com-Remote]
+maxconnections = 1
+type = Gmail
+remoteuser = pablofonseca777@gmail.com
+remotepasseval = get_keychain_pass(account="pablofonseca777@gmail.com", server="imap.gmail.com")
+realdelete = no
+nametrans = lambda folder: {'[Google Mail]/Drafts':    'drafts',
+                            '[Google Mail]/Sent Mail': 'sent',
+                            '[Google Mail]/Bin':     'trash',
+                            '[Google Mail]/All Mail':  'archive',
+                            }.get(folder, folder)
+folderfilter = lambda folder: folder not in ['[Google Mail]/Bin',
+                                             '[Google Mail]/Spam',
+                                             #put here any Gmail folder you want to exclude
+                                             ]
+
