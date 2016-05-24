@@ -1,3 +1,4 @@
+mutt/accounts/
 tags
 *~
 *.sw*
@@ -19,5 +20,6 @@ log/
 vim/backups
 vim/bundle
 vim/bundle/neobundle.vim
+vim/plugged
 sessions/
 tmux/plugins
