@@ -9,12 +9,8 @@ showMenu(){
   echo "[3]  Oh-my-zsh"
   echo "[4]  RVM"
   echo "[5]  Configure VIM/TMUX"
-  echo "[6]  Configure Git"
-  echo "[7]  Install brew casks"
-  echo "[8]  Cleanup brew"
-  echo "[9]  Install NeoBundle"
-  echo "[10] Install vagrant"
-  echo "[11] Configure screenrc"
+  echo "[6]  Install brew casks"
+  echo "[7] Link symlinks"
   echo "[0]  Exit"
   echo "----------------"
 
@@ -31,7 +27,7 @@ do
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew update
     brew install caskroom/cask/brew-cask
-    brew install vim tmux ranger git node mysql postgresql tig
+    brew install vim tmux ranger git node mysql postgresql tig mutt
     brew install zsh zsh-completions hub the_silver_searcher openssl redis tmate wget heroku-toolbelt pandoc
   elif [[ "$mc" == "3" ]]; then
     # It installs oh-my-zsh and set zsh as a default shell
@@ -57,41 +53,19 @@ do
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
     git clone https://github.com/tmux-plugins/tmux-battery ~/.tmux/plugins/tmux-battery
   elif [[ "$mc" == "6" ]]; then
+    # Cask - http://caskroom.io/
+    brew cask install iterm2 google-chrome alfred android-file-transfer caffeine dropbox google-drive google-hangouts
+    brew cask install qlmarkdown quicklook-json slack screenhero skype spotify
+  elif [[ "$mc" == "7" ]]; then
     # Git
     ln -s dotfiles/git_template ~/.git_template
     ln -s dotfiles/git_template/gitconfig ~/.gitconfig
-  elif [[ "$mc" == "7" ]]; then
-    # Cask - http://caskroom.io/
-    brew cask install iterm2
-    brew cask install google-chrome
-    brew cask install alfred
-    brew cask install android-file-transfer
-    brew cask install caffeine
-    brew cask install dropbox
-    brew cask install google-drive
-    brew cask install google-hangouts
-    brew cask install qlmarkdown
-    brew cask install quicklook-json
-    brew cask install slack
-    brew cask install screenhero
-    brew cask install skype
-    brew cask install spotify
-  elif [[ "$mc" == "8" ]]; then
-    brew cleanup
-    brew cask cleanup
-  elif [[ "$mc" == "9" ]]; then
-    # NeoBundle
-    cd
-    curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh > install.sh
-    sh ./install.sh
-    rm install.sh
-    vim +NeoBundleInstall
-  elif [[ "$mc" == "10" ]]; then
-    brew cask install virtualbox
-    brew cask install vagrant
-    brew cask install vagrant-manager
-  elif [[ "$mc" == "11" ]]; then
+    # Screen
     ln -s ~/dotfiles/screenrc ~/.screenrc
+    # Mutt
+    ln -s ~/dotfiles/mutt ~/.mutt
+    # psqlrc
+    ln -s ~/dotfiles/.psqlrc ~/.psqlrc
   fi
   showMenu
   m=$?
