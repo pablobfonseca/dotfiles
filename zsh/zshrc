@@ -9,14 +9,13 @@ HISTFILE=~/.zsh_history
 SAVEHIST=20000
 
 # Enable completion
-fpath=(~/.zsh/completions $fpath) 
 autoload -U compinit
 compinit
 
-export EDITOR=vim
-export VISUAL=macvim
-
 plugins=(git tmuxinator brew osx zsh-syntax-highlighting)
+
+export EDITOR=vim
+export VISUAL=vim
 
 # Add paths
 export DOTFILES=$HOME/dotfiles
@@ -27,17 +26,16 @@ export PATH="/usr/local/sbin:$PATH"
 export MANPATH="/usr/local/man:$MANPATH"
 export PATH=/usr/local/share/npm/bin:$PATH
 # Sourcing of other files
+source $HOME/dotfiles/zsh/aliases
+source $HOME/dotfiles/zsh/functions
+source $HOME/dotfiles/zsh/completion
 source $ZSH/oh-my-zsh.sh
-for config ($DOTFILES/zsh/completion.sh) source $config
-source $DOTFILES/zsh/aliases
 
-# By default, ^S freezes terminal output and ^Q resumes it. Disable that so
-# that those keys can be used for other things.
-unsetopt flowcontrol
+# dont' expand aliases _before_ completion
+setopt complete_aliases
 
-# By default, zsh considers many characters part of a word (e.g., _ and -).
-# Narrow that down to allow easier skipping through words via M-f and M-b.
-export WORDCHARS='*?[]~&;!$%^<>'
+# Add current directory bin
+export PATH=$PATH:bin
 
 # Heroku toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -46,3 +44,9 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+# Go
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export GOPATH=$HOME/code/go
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
