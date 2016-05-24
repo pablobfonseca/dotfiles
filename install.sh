@@ -66,6 +66,8 @@ do
     ln -s ~/dotfiles/mutt ~/.mutt
     # psqlrc
     ln -s ~/dotfiles/.psqlrc ~/.psqlrc
+    # Rails
+    ln -s ~/dotfiles/.railsrc ~/.railsrc
   fi
   showMenu
   m=$?
