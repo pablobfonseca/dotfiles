@@ -2,7 +2,7 @@
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: May 24, 2016
+" Last Modified: June 02, 2016
 
 " Preamble ---------------------- {{{
 filetype off
@@ -36,6 +36,7 @@ Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'marcweber/vim-addon-mw-utils' | Plug 'garbas/vim-snipmate'
 Plug 'tomtom/tlib_vim'
 Plug 'slim-template/vim-slim', { 'for': 'slim' }
+Plug 'klen/python-mode', { 'for': 'python' }
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
@@ -161,6 +162,8 @@ let g:vimrubocop_config = '~/code/Bizneo/bizneo/rubocop.yml'
 " Mappings ---------------------- {{{
 let mapleader=','
 let maplocalleader = "\\"
+
+nnoremap L $
 
 " Open current html file into firefox
 nnoremap <leader>of :!open -a "Firefox" %<tab><cr>
@@ -402,6 +405,14 @@ augroup filetype_zsh
   autocmd FileType zsh set syntax=sh
 augroup END
 
+augroup filetype_python
+  " Clear old autocmds in group
+  autocmd!
+  autocmd BufNewFile,BufRead *.py setlocal ai sw=4 sts=4 et fileformat=unix
+  autocmd FileType python nnoremap <leader>py :!python %<Tab><cr>
+  autocmd BufWritePre *.py :%s/\s\+$//e
+augroup END
+
 augroup filetype_ruby
   " Clear old autocmds in group
   autocmd!
@@ -472,4 +483,35 @@ for item in s:items
   exe "nnoremap vi".item." T".item."vt".item
   exe "nnoremap va".item." F".item."vf".item
 endfor
+" }}}
+
+" Python mode settings ---------------------- {{{
+let g:pymode_rope = 1
+
+" Documentation
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'
+
+"Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checker = "pyflakes,pep8"
+
+" Auto check on save
+let g:pymode_lint_write = 1
+
+" Support virtualenv
+let g:pymode_virtualenv = 1
+
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = '<leader>b'
+
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" Don't autofold code
+let g:pymode_folding = 0
 " }}}

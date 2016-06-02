@@ -36,6 +36,7 @@ alias skim="open -a Skim"
 alias vlc="open -a VLC"
 alias github="firefox http://github.com"
 alias em="mutt"
+alias dbox="cd ~/Dropbox"
 
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"

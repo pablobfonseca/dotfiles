@@ -27,7 +27,7 @@ do
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew update
     brew install caskroom/cask/brew-cask
-    brew install vim tmux ranger git node mysql postgresql tig mutt
+    brew install vim tmux ranger git node mysql postgresql tig mutt youtube-dl
     brew install zsh zsh-completions hub the_silver_searcher openssl redis tmate wget heroku-toolbelt pandoc
   elif [[ "$mc" == "3" ]]; then
     # It installs oh-my-zsh and set zsh as a default shell

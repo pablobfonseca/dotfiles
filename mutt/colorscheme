@@ -46,15 +46,8 @@
   color body       brightcyan    default "(^| )_[^_]+_( |$)"
   color body       brightcyan    default "(^| )/[^/]+/( |$)"
 
-# smileys, the right way and the backward-ass euro way
-  color body       brightmagenta default "(^| )+(|[<>|])[8;:](|[^ ])[)(/|DOPS]( |$)+"
-  color body       brightmagenta default "(^| )+[)(/|DOPS](|[^ ])[8;:](|[<>|])( |$)+"
-
 # Color definitions when on a mono screen -------------
 mono bold      bold
 mono underline underline
 mono indicator reverse
 mono error     bold
-
-# color of folders with new mail
-color sidebar_new brightyellow default
