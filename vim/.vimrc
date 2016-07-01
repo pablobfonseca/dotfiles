@@ -2,7 +2,7 @@
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: June 02, 2016
+" Last Modified: July 01, 2016
 
 " Preamble ---------------------- {{{
 filetype off
@@ -29,7 +29,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'slim'] }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
@@ -37,6 +37,9 @@ Plug 'marcweber/vim-addon-mw-utils' | Plug 'garbas/vim-snipmate'
 Plug 'tomtom/tlib_vim'
 Plug 'slim-template/vim-slim', { 'for': 'slim' }
 Plug 'klen/python-mode', { 'for': 'python' }
+Plug 'mattn/webapi-vim'
+Plug 'heavenshell/vim-slack'
+Plug 'airblade/vim-gitgutter'
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
@@ -59,6 +62,18 @@ iabbrev pry binding.pry
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
+endif
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files.
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enouth that CtrlP doesn't need to cache
+  let g:ctrlp_user_caching = 0
 endif
 
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
@@ -110,11 +125,10 @@ set noswapfile  " http://robots.thoughtbot.com/post/18739402579/global-gitignore
 set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
 set dictionary=~/.vim/spell/eng.utf-8.add
+set colorcolumn=80
+set textwidth=80
 
 let g:ruby_path = system('rvm current')
-
-" Use Silver Searcher instead of grep
-set grepprg=ag
 
 " Make the omnicomplete text readable
 highlight PmenuSel ctermfg=black
@@ -163,6 +177,20 @@ let g:vimrubocop_config = '~/code/Bizneo/bizneo/rubocop.yml'
 let mapleader=','
 let maplocalleader = "\\"
 
+nnoremap K :grep! "\b<C-r><C-w>\b"<cr>:cw<cr>
+
+" Resize full horizontally
+nnoremap <leader>fl <C-w>|
+
+" Resize full vertically
+nnoremap <leader>fl <C-w>_
+
+" Resize equal
+nnoremap <leader>= <C-w>=
+
+" Git gutter
+nnoremap <Leader>hv <Plug>GitGutterPreviewHunk
+
 nnoremap L $
 
 " Open current html file into firefox
@@ -193,8 +221,6 @@ nnoremap <silent><leader>sv :source $MYVIMRC<cr>
 " Edit vimrc
 nnoremap <silent><leader>ev :tabe $MYVIMRC<cr>
 
-nnoremap <leader>ni :NeoBundleInstall<cr>
-nnoremap <leader>nc :NeoBundleCheckUpdate<cr>
 " Toggle paste mode on and off
 nnoremap <leader>pp :setlocal paste!<cr>
 
@@ -233,7 +259,7 @@ nnoremap j gj
 nnoremap <silent><leader>gb :silent :Gblame<CR>
 
 " Coding notes
-nnoremap <silent><leader>cn :tabe ~/Dropbox/notes/coding-notes.md<cr>
+nnoremap <silent><leader>cn :!mvim ~/Dropbox/notes/coding-notes.md<cr>
 
 " Disable arrows
 for prefix in ['i', 'n', 'v']

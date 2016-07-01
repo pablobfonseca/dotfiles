@@ -8,11 +8,6 @@ alias zshconfig='vim ~/.zshrc'
 alias vimconfig='vim ~/.vimrc'
 alias reload!='source ~/.zshrc'
 alias e='$EDITOR'
-alias sites="cd ~/Sites"
-alias code="cd ~/code"
-alias bizneo="cd ~/code/Bizneo/bizneo"
-alias codetython="cd ~/code/codetython"
-alias study="cd ~/code/Study"
 alias pubkey="cat ~/.ssh/id_rsa.pub | pbcopy | echo \"Public key copied to clipboard\""
 alias update="brew update"
 alias upgrade="brew upgrade && brew cleanup"
@@ -27,16 +22,19 @@ alias vssh="vagrant ssh"
 alias vh="vagrant halt"
 alias :q="exit"
 alias firefox="open -a Firefox"
-alias chrome="open -a Chromium.app"
-alias notes="vim ~/Dropbox/notes/coding-notes.md"
+alias chrome="open -a Google\ Chrome.app"
 alias server="bin/rails server"
-alias vup="BOTS_DIR=../bots/ EXTERNAL_USERS_DIR=../external_users/ vagrant up"
 alias enote="open -a Evernote"
 alias skim="open -a Skim"
 alias vlc="open -a VLC"
 alias github="firefox http://github.com"
 alias em="mutt"
 alias dbox="cd ~/Dropbox"
+alias prettyjson='python -m json.tool'
+alias laliases="vim ~/.zsh/.aliases.local"
+alias mvim="open -a MacVim.app"
+
+source ~/.zsh/.aliases.local
 
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
@@ -51,9 +49,3 @@ alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v exten
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
-
-# Git aliases
-alias st="git st"
-alias gpush="git push"
-alias gcm="git commit"
-alias lg="git lg"

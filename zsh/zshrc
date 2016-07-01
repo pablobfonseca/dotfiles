@@ -7,12 +7,13 @@ ZSH_THEME="fwalch"
 HISTSIZE=20000
 HISTFILE=~/.zsh_history
 SAVEHIST=20000
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=200"
 
 # Enable completion
 autoload -U compinit
 compinit
 
-plugins=(git tmuxinator brew osx zsh-syntax-highlighting)
+plugins=(git brew osx zsh-syntax-highlighting zsh-autosuggestions)
 
 export EDITOR=vim
 export VISUAL=vim
@@ -25,13 +26,19 @@ export PATH="$HOME/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export MANPATH="/usr/local/man:$MANPATH"
 export PATH=/usr/local/share/npm/bin:$PATH
-# Sourcing of other files
+# /usr/local/opt/android-sdk
+export ANDROID_HOME=~/Library/Android/sdk
+export PATH=$ANDROID_HOME/tools:$PATH
+export PATH=$ANDROID_HOME/platform-tools:$PATH
+
+# Source another files
 source $HOME/dotfiles/zsh/aliases
 source $HOME/dotfiles/zsh/functions
 source $HOME/dotfiles/zsh/completion
 source $ZSH/oh-my-zsh.sh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# dont' expand aliases _before_ completion
+# Dont' expand aliases _before_ completion
 setopt complete_aliases
 
 # Add current directory bin
@@ -50,3 +57,5 @@ export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export GOPATH=$HOME/code/go
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

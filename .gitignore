@@ -25,3 +25,4 @@ vim/bundle/neobundle.vim
 vim/plugged
 sessions/
 tmux/plugins
+zsh/.aliases.local
