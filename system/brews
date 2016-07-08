@@ -2,6 +2,7 @@ ack
 brew-cask
 chrome-cli
 ctags
+elasticsearch
 git
 gnu-sed
 grep
