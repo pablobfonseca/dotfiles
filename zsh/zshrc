@@ -1,7 +1,14 @@
+export VISUAL='vim'
+export EDITOR=$VISUAL
+
+export ZSH=/Users/Pablo/.oh-my-zsh
+plugins=(brew zsh-syntax-highlighting zsh-autosuggestions)
+
+ZSH_THEME="cjt"
+source $ZSH/oh-my-zsh.sh
+
 # Allow completing of the remainder of a command
 bindkey "^N" insert-last-word
-
-ZSH_THEME="fwalch"
 
 # Save a ton of history
 HISTSIZE=20000
@@ -13,14 +20,8 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=200"
 autoload -U compinit
 compinit
 
-plugins=(git brew osx zsh-syntax-highlighting zsh-autosuggestions)
-
-export EDITOR=vim
-export VISUAL=vim
-
 # Add paths
 export DOTFILES=$HOME/dotfiles
-export ZSH=/Users/Pablo/.oh-my-zsh
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Pablo/.rvm/bin"
 export PATH="$HOME/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
@@ -32,10 +33,6 @@ export PATH=$ANDROID_HOME/tools:$PATH
 export PATH=$ANDROID_HOME/platform-tools:$PATH
 
 # Source another files
-source $HOME/dotfiles/zsh/aliases
-source $HOME/dotfiles/zsh/functions
-source $HOME/dotfiles/zsh/completion
-source $ZSH/oh-my-zsh.sh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Dont' expand aliases _before_ completion
@@ -52,10 +49,17 @@ export LANG=en_US.UTF-8
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
-# Go
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
-export GOPATH=$HOME/code/go
-
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+for zsh_source in $HOME/.zsh/config/*.zsh; do
+  source $zsh_source
+done
+
+# Edit the current line in $EDITOR
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
+
+attach_to_tmux

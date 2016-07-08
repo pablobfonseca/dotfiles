@@ -1,0 +1,7 @@
+" Git Gutter - Shows a git diff in the gutter (sign column) " and stages/undoes hunks.
+
+Bundle "airblade/vim-gitgutter"
+
+nnoremap <leader>hv <Plug>GitGutterPreviewHunk
+
+" vim:ft=vim

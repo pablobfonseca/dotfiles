@@ -1,0 +1,5 @@
+" Vim Addon MW Utils
+
+Bundle 'marcweber/vim-addon-mw-utils'
+
+" vim:ft=vim

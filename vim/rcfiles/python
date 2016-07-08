@@ -1,0 +1,12 @@
+" Python configurations
+"------------------------
+
+augroup filetype_python
+  " Clear old autocmds in group
+  autocmd!
+  autocmd BufNewFile,BufRead *.py setlocal ai sw=4 sts=4 et fileformat=unix
+  autocmd FileType python nnoremap <leader>py :!python %<Tab><cr>
+  autocmd BufWritePre *.py :%s/\s\+$//e
+augroup END
+
+" vim:ft=vim

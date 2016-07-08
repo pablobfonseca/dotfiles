@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+current_sha = 284aeca561c5be5ec7b81123ac625e02308d09e8.chomp
+
+puts "The current sha is: #{current_sha}"

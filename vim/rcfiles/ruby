@@ -1,0 +1,50 @@
+" Ruby configurations
+"------------------------
+
+let g:ruby_path = system('rvm current')
+
+augroup filetype_ruby
+  " Clear old autocmds in group
+  autocmd!
+  " autoindent with two spaces, always expand tabs
+  autocmd FileType ruby,eruby,yaml setlocal ai sw=2 sts=2 et
+  autocmd FileType ruby,eruby,yaml setlocal path+=lib
+  " Make ?s part of words
+  autocmd FileType ruby,eruby,yaml setlocal iskeyword+=?
+  autocmd FileType gitcommit setlocal spell textwidth=72
+  " Run the current ruby file
+  autocmd FileType ruby nnoremap <leader>r :!ruby %<Tab><cr>
+  " Remove trailing whitespace on save for ruby files.
+  autocmd BufWritePre *.rb :%s/\s\+$//e
+  autocmd BufRead,BufNewFile Vagrantfile, Gemfile, Guardfile set filetype=ruby
+  autocmd BufRead,BufNewFile Gemfile set filetype=ruby
+  autocmd BufRead,BufNewFile Guardfile set filetype=ruby
+  autocmd BufRead,BufNewFile .pryrc set filetype=ruby
+  " Set .erb html files
+  autocmd FileType ebury setl setl sw=2 sts=2 ts=2 " Two spaces per tab
+augroup END
+
+" Convert 1.8 hash syntax to 1.9 syntax
+nnoremap <leader>19 :%s/:\([^ ]*\)\(\s*\)=>/\1:/gc<cr>
+vnoremap <leader>19 :s/:\([^ ]*\)\(\s*\)=>/\1:/g<cr>
+nnoremap <leader>18 :%s/\(\w\+\):\s/:\1 => /gc<cr>
+vnoremap <leader>18 :s/\(\w\+\):\s/:\1 => /g<cr>
+
+nnoremap <leader>vs :vsplit <C-r>=substitute(expand("%"), '^app\(.*\)\.rb$', 'spec\1_spec.rb', "")<cr><cr>
+
+nmap <leader>bp orequire 'pry'; binding.pry<esc>^
+" nmap <leader>bp :echoerr "Use remote pry"<cr>
+nmap <leader>brp orequire 'pry'; binding.remote_pry<esc>^
+nmap <leader>bye ibyebug<esc>^
+
+function! s:FindTagThenService()
+  try
+    normal <C-]>
+  catch /^Vim\%((\a\+)\)\=:E426/	" catch tag not found
+    Ack! '<cword>'
+  endtry
+endfunction
+command! FindTagThenService call <sid>FindTagThenService()
+" nnoremap <cr> :FindTagThenService<cr>
+
+" vim:ft=vim

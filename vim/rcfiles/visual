@@ -1,0 +1,70 @@
+" Visual configurations
+"------------------------
+
+colorscheme hipster
+if has('gui_running')
+    set guioptions-=r "Hide the right side scrollbar
+    set guioptions-=L "Hide the left side scrollbar
+    set guioptions-=T "Hide toolbars...this is vim for craps sake
+    set guioptions-=m "Hide the menu, see above
+
+    " Size and position the window well (only perform on startup)
+    if !exists('g:vimrc_loaded')
+        set columns=85
+        set lines=999
+        winpos 999 5
+    endif
+
+    " Hightlight the current row. Index-guide plugin covers columns
+    set cursorline
+
+    " MacVim is very pretty
+    if has('gui_macvim')
+        " set transparency=8
+
+        " Fullscreen options
+        set fuoptions=maxvert
+        " au GUIEnter * set fullscreen
+    endif
+
+    " Set a pretty font
+    if has('win32')
+        set guifont=Consolas:h10
+    elseif has('mac')
+        if !exists('g:vimrc_loaded')
+          set guifont=Source\ Code\ Pro:h13
+        endif
+    endif
+else
+    set nocursorline nocursorcolumn
+endif
+
+set vb
+
+" Easy access to maximizing
+nnoremap <C-_> <C-w>_
+
+set splitbelow
+set splitright
+
+" Use line cursor in insert mode, block in normal (only in tmux)
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+nnoremap <leader>! :redraw!<cr>
+
+nnoremap <leader>mwh <C-w>H
+nnoremap <leader>mwj <C-w>J
+nnoremap <leader>mwk <C-w>K
+nnoremap <leader>mwl <C-w>L
+
+" zoom a vim pane, <C-w>= to re-balance
+nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
+nnoremap <leader>= :wincmd =<cr>
+
+" vim:ft=vim

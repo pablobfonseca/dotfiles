@@ -1,0 +1,10 @@
+" Vimux
+
+if executable('tmux')
+  Bundle "benmills/vimux"
+endif
+
+nnoremap <silent><leader>vp :VimuxPromptCommand<cr>
+nnoremap <silent><leader>vl :VimuxRunLastCommand<cr>
+
+" vim:ft=vim

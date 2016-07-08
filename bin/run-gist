@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+die() {
+  echo >&2 "$@"
+  exit 1
+}
+
+[ "$#" -eq 1 ] || die "Usage: run-gist <raw-gist-url>"
+
+curl --silent $1 | pbcopy
+
+pbpaste | less
+
+while true; do
+  read -p "Should we run this script? " yn
+  case $yn in
+    [Yy]* ) echo "running"; break;;
+    [Nn]* ) echo "exiting"; exit;;
+    * ) echo "Please answer yes or no.";;
+  esac
+done
+
+ruby -e "$(pbpaste)"

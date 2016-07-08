@@ -1,0 +1,5 @@
+" Supertab - Perform all your vim insert mode completions with Tab
+
+Bundle "ervandew/supertab"
+
+" vim:ft=vim

@@ -1,0 +1,5 @@
+" Unimpaired - pairs of handy bracket mappings
+
+Bundle "tpope/vim-unimpaired"
+
+" vim:ft=vim

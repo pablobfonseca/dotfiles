@@ -1,0 +1,7 @@
+" Python mode
+
+Bundle "klen/python-mode"
+
+let g:pymode_rope = 1
+
+" vim:ft=vim

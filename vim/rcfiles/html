@@ -1,0 +1,11 @@
+" HTML configurations
+"--------------------------
+
+augroup filetype_html
+  " Clear old autocmds in group
+  autocmd!
+  " Install Emmet
+  autocmd FileType html,css EmmetInstall
+augroup END
+
+" vim:ft=vim

@@ -1,0 +1,73 @@
+" General configurations
+"------------------------
+
+set nocompatible                  " Don't maintain compat with Vi.
+set hidden                        " Allow buffer change w/o saving
+set autoread                      " Load file from disk, ie for git reset
+set nocompatible                  " Not concerned with vi compatibility
+set lazyredraw                    " Don't update while executing macros
+set backspace=indent,eol,start    " Sane backspace behavior
+set history=1000                  " Remember last 1000 commands
+set scrolloff=7                   " Start scrolling when we're 7 lines away from margins
+set expandtab                     " Convert <tab> to spaces (2 or 4)
+set tabstop=2                     " Two spaces per tab as default
+set shiftwidth=2                  " Then override with per filteype
+set softtabstop=2                 " Specific settings via autocmd
+set secure                        " Limit what modelines and autocmds can do
+set autowrite                     " Write for me when I take any action
+set autoindent
+set copyindent
+set shell=bash                     " This makes RVM work inside Vim. I have no idea why.
+set textwidth=80
+set colorcolumn=+1
+set viminfo+=!
+
+set relativenumber
+if v:version > 703
+  set number " hybrid relative and absolute for current line
+endif
+
+" Disable sound/visual bell on errors
+" May need additional config about audible bell
+set t_vb=
+
+" Set modeline to 1 to allow rcfiles to be recognized as vim files
+set modelines=1
+
+" I save constantly and hate swap files in my prject dirs
+set nobackup
+set nowritebackup
+set noswapfile
+
+" Setup nice command tab completion
+set wildmenu
+set wildmode=list:longest,full
+set wildignore+=*.pyc
+set wildignore+=tmp/**
+
+" Persistent undo
+let undodir = expand('~/.undo-vim')
+if !isdirectory(undodir)
+  call mkdir(undodir)
+endif
+set undodir=~/.undo-vim
+set undofile " Create FILE.un~ files for persistent undo
+
+" highlight PmenuSel ctermfg=black
+" highlight StatusLine ctermfg=blue ctermbg=yellow
+
+set shiftround " When at 3 spaces and I hit >>, go to 4, not 5.
+
+" (Hopefully) removes the delay when hitting esc in insert mode
+set noesckeys
+set ttimeout
+set ttimeoutlen=1
+
+" Don't wait so long for the next keypress (particularly in ambigious Leader
+" situations.
+set timeoutlen=500
+
+" Make it more obvious which paren I'm on
+hi MatchParen cterm=none ctermbg=black ctermfg=yellow
+
+" vim:ft=vim

@@ -2,7 +2,7 @@
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: July 01, 2016
+" Last Modified: July 07, 2016
 
 " Preamble ---------------------- {{{
 filetype off
@@ -40,6 +40,7 @@ Plug 'klen/python-mode', { 'for': 'python' }
 Plug 'mattn/webapi-vim'
 Plug 'heavenshell/vim-slack'
 Plug 'airblade/vim-gitgutter'
+Plug 'easymotion/vim-easymotion'
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
@@ -125,8 +126,8 @@ set noswapfile  " http://robots.thoughtbot.com/post/18739402579/global-gitignore
 set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
 set dictionary=~/.vim/spell/eng.utf-8.add
-set colorcolumn=80
 set textwidth=80
+set colorcolumn=+1
 
 let g:ruby_path = system('rvm current')
 
@@ -145,9 +146,7 @@ set shiftround " When at 3 spaces and I hit >>, go to 4, not 5.
 nnoremap K <Nop>
 
 " Better? completion on command line
-set wildmenu
-" What to do when I press 'wildchar'. Worth tweaking to see what feels right.
-set wildmode=list:full
+set wildmenu wildmode=list:full
 
 " (Hopefully) removes the delay when hitting esc in insert mode
 set noesckeys
@@ -224,6 +223,9 @@ nnoremap <silent><leader>ev :tabe $MYVIMRC<cr>
 " Toggle paste mode on and off
 nnoremap <leader>pp :setlocal paste!<cr>
 
+" Update plugins
+nnoremap <leader>pu :PlugUpdate<cr>
+
 nnoremap ; :
 " Copy the entire file content to the clipboard
 nnoremap <Leader>co mmggVG"*y`m
@@ -255,8 +257,6 @@ nnoremap <space><space> :ccl<cr>
 " Let's be reasonable, shall we?
 nnoremap k gk
 nnoremap j gj
-
-nnoremap <silent><leader>gb :silent :Gblame<CR>
 
 " Coding notes
 nnoremap <silent><leader>cn :!mvim ~/Dropbox/notes/coding-notes.md<cr>

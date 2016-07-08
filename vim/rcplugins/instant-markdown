@@ -1,0 +1,5 @@
+" Markdown - Syntax file for Markdowm files
+
+Bundle 'suan/vim-instant-markdown'
+
+" vim:ft=vim

@@ -1,0 +1,20 @@
+" Ag - (grep replacement) into vim
+
+Bundle "rking/ag.vim"
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files.
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enouth that CtrlP doesn't need to cache
+  let g:ctrlp_user_caching = 0
+endif
+
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<space>
+
+" vim:ft=vim

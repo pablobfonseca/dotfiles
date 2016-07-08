@@ -1,0 +1,5 @@
+" Text Object Word Column - Adds text-objects for word-based columns in Vim.
+
+Bundle 'coderifous/textobj-word-column.vim'
+
+" vim:ft=vim

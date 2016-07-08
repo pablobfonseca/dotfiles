@@ -1,0 +1,43 @@
+" File: vimrc
+" Author: Pablo <pablofonseca777@gmail.com>
+" Description: VIM Rocks!
+" Source: http://github.com/pablobfonseca/dotfiles
+" Last Modified: July 07, 2016
+
+let mapleader=","
+let maplocalleader="\\"
+
+filetype off
+filetype plugin indent on
+
+autocmd!
+set nocompatible
+
+function! s:SourceConfigFilesIn(directory)
+  let directory_splat = '~/.vim/' . a:directory . '/*'
+  for config_file in split(glob(directory_splat), '\n')
+    if filereadable(config_file)
+      execute 'source' config_file
+    endif
+  endfor
+endfunction
+
+" Setup Plug to manage my plugins
+"-----------------------------------
+set rtp+=~/.vim/bundles/vundle/
+call vundle#rc("~/.vim/bundles/")
+
+" Plugins are each listed in their own file. Loop and source ftw
+" ----------------------------------------------------------------
+call s:SourceConfigFilesIn('rcplugins')
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+" Vimrc is split accross multiple files, so loop over and source each
+"---------------------------------------------------------------------
+call s:SourceConfigFilesIn('rcfiles')"

@@ -1,0 +1,5 @@
+" Webapi
+
+Bundle "mattn/webapi-vim"
+
+" vim:ft=vim

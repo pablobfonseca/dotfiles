@@ -1,0 +1,5 @@
+" Tlib
+
+Bundle "tomtom/tlib_vim"
+
+" vim:ft=vim
