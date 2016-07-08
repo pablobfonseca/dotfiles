@@ -1,11 +1,4 @@
-# **USAGE**
-
-Clone this repo into your home directory. Such as:
-
-```
-git clone git://github.com/pablobfonseca/dotfiles.git ~/dotfiles
-cd ~/dotfiles | sh ./install.sh
-```
+# @pablobfonseca's dotfiles
 
 # **Help Tags**
 At first usage of vim, type “:” while in command mode and execute:
