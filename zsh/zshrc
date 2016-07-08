@@ -1,5 +1,4 @@
-export VISUAL='vim'
-export EDITOR=$VISUAL
+
 
 export ZSH=/Users/Pablo/.oh-my-zsh
 plugins=(brew zsh-syntax-highlighting zsh-autosuggestions)
@@ -33,6 +32,9 @@ export PATH=$ANDROID_HOME/tools:$PATH
 export PATH=$ANDROID_HOME/platform-tools:$PATH
 
 # Source another files
+for zsh_source in $HOME/.zsh/config/*.zsh; do
+  source $zsh_source
+done
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Dont' expand aliases _before_ completion
@@ -52,10 +54,6 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-for zsh_source in $HOME/.zsh/config/*.zsh; do
-  source $zsh_source
-done
 
 # Edit the current line in $EDITOR
 autoload -U edit-command-line
