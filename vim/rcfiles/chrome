@@ -24,4 +24,4 @@ endfunction
 
 command! OpenAndReloadTab call <sid>OpenTab(1)
 command! OpenTab call <sid>OpenTab(0)
-nnoremap gl :OpenAndReloadTab<cr>
+nnoremap rlt :OpenAndReloadTab<cr>

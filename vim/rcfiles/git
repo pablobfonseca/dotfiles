@@ -1,7 +1,6 @@
 " Word Frequency
 "---------------
 
-
 augroup git_file
   " Clear old autocmds in group
   autocmd!
