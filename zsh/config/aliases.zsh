@@ -7,7 +7,6 @@ alias cleanvim="vim -N -u NONE"
 alias zshconfig='vim ~/.zshrc'
 alias vimconfig='vim ~/.vimrc'
 alias reload!='source ~/.zshrc'
-alias e='$EDITOR'
 alias pubkey="cat ~/.ssh/id_rsa.pub | pbcopy | echo \"Public key copied to clipboard\""
 alias update="brew update"
 alias upgrade="brew upgrade && brew cleanup"

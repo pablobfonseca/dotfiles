@@ -7,6 +7,8 @@ source $ZSH/oh-my-zsh.sh
 # Allow completing of the remainder of a command
 bindkey "^N" insert-last-word
 
+export EDITOR=vim
+
 # Save a ton of history
 HISTSIZE=20000
 HISTFILE=~/.zsh_history
