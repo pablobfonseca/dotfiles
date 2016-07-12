@@ -31,7 +31,7 @@ nnoremap <silent><leader>sv :source ~/.vim/vimrc<cr>
 nnoremap <silent><leader>ev :tabe $MYVIMRC<cr>
 
 " Toggle paste mode on and off
-nnoremap <leader>pp :setlocal paste!<cr>
+nnoremap <leader>pp :set paste<cr>o<esc>"*]p:set nopaste<cr>
 
 nnoremap ; :
 " Copy the entire file content to the clipboard
