@@ -4,15 +4,6 @@
 " ----------------------
 nnoremap K :grep! "\b<C-r><C-w>\b"<cr>:cw<cr>
 
-" Resize full horizontally
-nnoremap <leader>fl <C-w>|
-
-" Resize full vertically
-nnoremap <leader>fl <C-w>_
-
-" Resize equal
-nnoremap <leader>= <C-w>=
-
 nnoremap L $
 
 " Open current html file into firefox
@@ -71,24 +62,6 @@ nnoremap <space>ec :e ~/code/
 inoremap <expr> <C-j> ((pumvisible())?("\<C-n>"):("\<C-x><c-n>"))
 inoremap <expr> <C-k> ((pumvisible())?("\<C-p>"):("\<C-x><c-k>"))
 
-" Do not use <Ctrl-c> to break out to normal mode
-" Use C-Space to Esc out of any mode
-nnoremap <C-Space> <Esc>:noh<CR>
-vnoremap <C-Space> <Esc>gV
-onoremap <C-Space> <Esc>
-cnoremap <C-Space> <C-c>
-inoremap <C-Space> <Esc>`^
-" Terminal sees <C-@> as <C-space> WTF, but ok
-nnoremap <C-@> <Esc>:noh<CR>
-vnoremap <C-@> <Esc>gV
-onoremap <C-@> <Esc>
-cnoremap <C-@> <C-c>
-inoremap <C-@> <Esc>`^
-
-" Leader-; to enter command mode. No more holding shift!
-nnoremap <leader>; :
-vnoremap <leader>; :
-
 " Move one line at a time, aka 'fine ajdustment'
 nnoremap j gj
 nnoremap k gk
@@ -98,8 +71,6 @@ nnoremap gp `[v`]
 
 " Go to position of last edit. Mnem: 'Go to Edit'
 nnoremap ge `.
-
-nnoremap <silent><leader><space> :nohl<CR>
 
 " Close the quickfix window
 nnoremap <space><space> :ccl<cr>
@@ -147,3 +118,7 @@ nnoremap <C-ScrollWheelLeft> <nop>
 nnoremap <ScrollWheelRight> <nop>
 nnoremap <S-ScrollWheelRight> <nop>
 nnoremap <C-ScrollWheelRight> <nop>
+
+
+" Coding notes
+nnoremap <silent><leader>cn :!mvim ~/Dropbox/notes/coding-notes.md<cr>

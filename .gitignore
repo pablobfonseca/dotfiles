@@ -22,6 +22,7 @@ log/
 vim/backups
 vim/bundle
 vim/bundle/neobundle.vim
+vim/bundles
 vim/plugged
 sessions/
 tmux/plugins

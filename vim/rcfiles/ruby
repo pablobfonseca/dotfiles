@@ -30,21 +30,4 @@ vnoremap <leader>19 :s/:\([^ ]*\)\(\s*\)=>/\1:/g<cr>
 nnoremap <leader>18 :%s/\(\w\+\):\s/:\1 => /gc<cr>
 vnoremap <leader>18 :s/\(\w\+\):\s/:\1 => /g<cr>
 
-nnoremap <leader>vs :vsplit <C-r>=substitute(expand("%"), '^app\(.*\)\.rb$', 'spec\1_spec.rb', "")<cr><cr>
-
-nmap <leader>bp orequire 'pry'; binding.pry<esc>^
-" nmap <leader>bp :echoerr "Use remote pry"<cr>
-nmap <leader>brp orequire 'pry'; binding.remote_pry<esc>^
-nmap <leader>bye ibyebug<esc>^
-
-function! s:FindTagThenService()
-  try
-    normal <C-]>
-  catch /^Vim\%((\a\+)\)\=:E426/	" catch tag not found
-    Ack! '<cword>'
-  endtry
-endfunction
-command! FindTagThenService call <sid>FindTagThenService()
-" nnoremap <cr> :FindTagThenService<cr>
-
 " vim:ft=vim

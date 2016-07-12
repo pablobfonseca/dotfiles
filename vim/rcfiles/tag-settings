@@ -1,7 +1,10 @@
 " Tags configurations
 "--------------------
 
-au FileType * call EnableTagNavMaps()
+augroup tags_stuff
+  " Clear old autocmds in group
+  autocmd FileType * call EnableTagNavMaps()
+augroup END
 
 function! EnableTagNavMaps()
   if s:BufferIsTagNavigable()

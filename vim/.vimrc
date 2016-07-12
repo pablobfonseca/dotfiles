@@ -2,7 +2,7 @@
 " File: .vimrc
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: This is my amazing .vimrc
-" Last Modified: July 07, 2016
+" Last Modified: July 11, 2016
 
 " Preamble ---------------------- {{{
 filetype off
@@ -21,13 +21,12 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'mattn/emmet-vim'
 Plug 'ervandew/supertab'
-Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-commentary'
 Plug 'coderifous/textobj-word-column.vim'
 Plug 'suan/vim-instant-markdown', { 'for': 'markdown' }
 Plug 'jlanzarotta/bufexplorer'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'slim'] }
 Plug 'tpope/vim-surround'
@@ -38,7 +37,6 @@ Plug 'tomtom/tlib_vim'
 Plug 'slim-template/vim-slim', { 'for': 'slim' }
 Plug 'klen/python-mode', { 'for': 'python' }
 Plug 'mattn/webapi-vim'
-Plug 'heavenshell/vim-slack'
 Plug 'airblade/vim-gitgutter'
 Plug 'easymotion/vim-easymotion'
 
@@ -49,11 +47,6 @@ endif
 
 call plug#end()
 
-" }}}
-
-" Abbreviations settings ---------------------- {{{
-
-iabbrev pry binding.pry
 " }}}
 
 " General settings ---------------------- {{{
@@ -167,9 +160,6 @@ set tags+=.git/tags
 
 " Make it more obvious which paren I'm on
 hi MatchParen cterm=none ctermbg=black ctermfg=yellow
-
-let g:vimrubocop_config = '~/code/Bizneo/bizneo/rubocop.yml'
-
 " }}}
 
 " Mappings ---------------------- {{{

@@ -1,6 +1,5 @@
 " Remote Yank
 "------------
-"
 
 nnoremap <leader>li :call RemoteYank('i')<cr>
 nnoremap <leader>la :call RemoteYank('a')<cr>

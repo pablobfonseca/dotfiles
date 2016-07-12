@@ -53,9 +53,6 @@ endif
 set undodir=~/.undo-vim
 set undofile " Create FILE.un~ files for persistent undo
 
-" highlight PmenuSel ctermfg=black
-" highlight StatusLine ctermfg=blue ctermbg=yellow
-
 set shiftround " When at 3 spaces and I hit >>, go to 4, not 5.
 
 " (Hopefully) removes the delay when hitting esc in insert mode

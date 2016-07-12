@@ -58,13 +58,14 @@ endif
 
 nnoremap <leader>! :redraw!<cr>
 
-nnoremap <leader>mwh <C-w>H
-nnoremap <leader>mwj <C-w>J
-nnoremap <leader>mwk <C-w>K
-nnoremap <leader>mwl <C-w>L
-
 " zoom a vim pane, <C-w>= to re-balance
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
 nnoremap <leader>= :wincmd =<cr>
+
+" Resize full horizontally
+nnoremap <leader>fl <C-w>|
+
+" Resize full vertically
+nnoremap <leader>fl <C-w>_
 
 " vim:ft=vim

@@ -52,11 +52,6 @@ function! VisualSelection(direction) range
   let @" = l:saved_reg
 endfunction
 
-function! RSpec()
-  exec '!bin/rspec %'
-endfunction
-nnoremap <Leader>a :call RSpec()<cr>
-
 function! s:MkNonExDir(file, buf)
   if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
     let dir=fnamemodify(a:file, ':h')
@@ -102,6 +97,5 @@ endfunction
 function! SearchForCallSites(term)
   cexpr system('ag ' . shellescape(a:term) . '\| grep -v def')
 endfunction
-
 
 " vim:ft=vim

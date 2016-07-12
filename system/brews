@@ -3,6 +3,7 @@ brew-cask
 chrome-cli
 ctags
 elasticsearch
+fzf
 git
 gnu-sed
 grep
@@ -35,3 +36,4 @@ watch
 wget
 zsh
 zsh-completions
+zsh-syntax-highlighting
