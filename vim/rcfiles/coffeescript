@@ -1,7 +1,13 @@
 " Coffeescript configurations
 "------------------------
 
-au Filetype coffee setl sw=2 sts=2 ts=2 tw=80 expandtab
+augroup filetype_coffee
+  " Clear old autocmds in group
+  autocmd!
+  autocmd BufRead,BufNewFile *.coffee set filetype=coffee
+  autocmd BufRead,BufNewFile *.coffee set syntax=coffee
+  autocmd Filetype coffee setl sw=2 sts=2 ts=2 tw=80 expandtab
+augroup END
 
 " Demote function. Move private function to bottom of coffeescript file
 nnoremap <leader>dm vipokdGp

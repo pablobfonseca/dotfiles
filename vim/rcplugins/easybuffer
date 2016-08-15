@@ -2,7 +2,7 @@
 
 Bundle "troydm/easybuffer.vim"
 
-nnoremap <leader>be :EasyBufferHorizontal<cr>
+nnoremap <leader>eb :EasyBufferHorizontal<cr>
 
 augroup easybuffer_stuff
   " Clear old autocmds in group

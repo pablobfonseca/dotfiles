@@ -15,13 +15,14 @@ hi User3 ctermbg=lightgray ctermfg=red guifg=#ffff00 guibg=#444444 gui=bold
 set statusline= " Clear the statusline for vimrc reloads
 
 set stl=%*                       " Normal statusline highlight
+set stl=%{fugitive#statusline()} " Current branch
 set stl+=%{InsertSpace()}        " Put a leading space in
 
 set stl+=%1*                     " Red highlight
 set stl+=%{HasPaste()}           " Red show paste
 set stl+=%*                      " Return to normal stl hilight
 
-set stl+=%t                      " Filename
+set stl+=%-40f\                  " Filename
 
 set stl+=%2*                     " Red highlight
 set stl+=%m                      " Modified flag

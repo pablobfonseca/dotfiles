@@ -36,6 +36,7 @@ let rails_ctrlp_mappings = {
       \   'gs': 'spec',
       \   'gv': 'app/views',
       \   'gw': 'app/workers',
+      \   'gh': 'app/helpers',
       \   'gy': 'app/assets/stylesheets',
       \ }
 
@@ -45,7 +46,7 @@ endfor
 
 nmap <leader>rf :CtrlP ~/.vim/rcfiles<cr>
 nmap <leader>rp :CtrlP ~/.vim/rcplugins<cr>
-nmap <leader>ed :CtrlP ~/code/dotfiles<cr>
+nmap <leader>rd :CtrlP ~/dotfiles<cr>
 
 nnoremap <leader>cpt :CtrlPTag<cr>
 

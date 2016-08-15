@@ -2,6 +2,7 @@
 
 Bundle 'tpope/vim-commentary'
 
+vmap cm <Plug>Commentary
 nmap cm <Plug>Commentary
-nmap mcl <Plug>CommentaryLine
+nmap cml <Plug>CommentaryLine
 " vim:ft=vim

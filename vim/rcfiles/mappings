@@ -119,6 +119,8 @@ nnoremap <ScrollWheelRight> <nop>
 nnoremap <S-ScrollWheelRight> <nop>
 nnoremap <C-ScrollWheelRight> <nop>
 
-
 " Coding notes
-nnoremap <silent><leader>cn :!mvim ~/Dropbox/notes/coding-notes.md<cr>
+nnoremap <leader>cn :Sexplore ~/Dropbox/notes/Upcase/<cr>
+
+" Open Gemfile
+nnoremap <leader>og :e Gemfile<cr>

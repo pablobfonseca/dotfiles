@@ -19,13 +19,9 @@ set autoindent
 set copyindent
 set shell=bash                     " This makes RVM work inside Vim. I have no idea why.
 set textwidth=80
-set colorcolumn=+1
 set viminfo+=!
 
 set relativenumber
-if v:version > 703
-  set number " hybrid relative and absolute for current line
-endif
 
 " Disable sound/visual bell on errors
 " May need additional config about audible bell
@@ -58,8 +54,6 @@ set shiftround " When at 3 spaces and I hit >>, go to 4, not 5.
 " (Hopefully) removes the delay when hitting esc in insert mode
 set noesckeys
 set ttimeout
-set ttimeoutlen=1
-
 " Don't wait so long for the next keypress (particularly in ambigious Leader
 " situations.
 set timeoutlen=500

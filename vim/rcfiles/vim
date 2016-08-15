@@ -6,6 +6,9 @@ augroup vim_stuff
   autocmd!
   " automatically rebalance windows on vim resize
   autocmd VimResized * :wincmd =
+  " Execute the vim current vim command line
+  autocmd Filetype vim nnoremap <leader>x :execute getline(".")<cr>
+
   " Wrap the quickfix window
   autocmd FileType qf setlocal wrap linebreak
   autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))

@@ -21,6 +21,9 @@ function! s:BufferIsTagNavigable()
   return is_navigable_filetype && is_normal_buffer
 endfunction
 
+" Generate ctags
+nnoremap <Leader>rt :!ctags --tag-relative --extra=+f -Rf.git/tags --exclude=.git,pkg --languages=-javascript,sql<CR><CR>
+
 set tags+=./git/tags
 
 " vim:ft=vim

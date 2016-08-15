@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function notes {
+  pushd ~/Dropbox/notes/Upcase > /dev/null
+
+  filename=$(find . -type f -name "*$1*")
+  count=$(find . -type f -name "*$1*" | wc -l)
+
+  if [ $count -gt 0 ]; then
+    if [ $count -eq 1]; then
+      less $filename
+    else
+      find . -type f -name "*$1*" | fzf | less
+    fi
+  else
+    echo "No note found with the name: '$1'"
+  fi
+
+  popd > /dev/null
+}

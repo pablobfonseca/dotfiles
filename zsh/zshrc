@@ -36,8 +36,6 @@ for zsh_source in $HOME/.zsh/config/*.zsh; do
   source $zsh_source
 done
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # Dont' expand aliases _before_ completion
 setopt complete_aliases
 
@@ -69,3 +67,4 @@ setopt auto_cd
 cdpath=($HOME/code $HOME/code/Bizneo $HOME/dotfiles)
 
 attach_to_tmux
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

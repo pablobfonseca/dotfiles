@@ -7,8 +7,6 @@ augroup filetype_markdown_and_txt
   autocmd BufNewFile,BufReadPost *.md set filetype=markdown
   " Without this, vim breaks in the middle of words when wrapping
   autocmd FileType markdown setlocal nolist wrap lbr
-  " Source markdown editor
-  autocmd FileType markdown source ~/.vim/writter.vim
   " Turn on spell-checking in markdown and text.
   autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
   " Don't display whitespaces
