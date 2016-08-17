@@ -1,3 +1,10 @@
+export VISUAL='vim'
+export EDITOR=$VISUAL
+
+export BUNDLER_EDITOR='vim'
+
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
 export ZSH=/Users/Pablo/.oh-my-zsh
 plugins=(brew zsh-syntax-highlighting)
 
@@ -6,8 +13,6 @@ source $ZSH/oh-my-zsh.sh
 
 # Allow completing of the remainder of a command
 bindkey "^N" insert-last-word
-
-export EDITOR=vim
 
 # Save a ton of history
 HISTSIZE=20000

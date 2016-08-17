@@ -2,7 +2,7 @@
 " Author: Pablo <pablofonseca777@gmail.com>
 " Description: VIM Rocks!
 " Source: http://github.com/pablobfonseca/dotfiles
-" Last Modified: July 23, 2016
+" Last Modified: August 17, 2016
 
 let mapleader=","
 let maplocalleader="\\"

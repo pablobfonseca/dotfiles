@@ -9,6 +9,7 @@ set lazyredraw                    " Don't update while executing macros
 set backspace=indent,eol,start    " Sane backspace behavior
 set history=1000                  " Remember last 1000 commands
 set scrolloff=7                   " Start scrolling when we're 7 lines away from margins
+set mouse-=a
 set expandtab                     " Convert <tab> to spaces (2 or 4)
 set tabstop=2                     " Two spaces per tab as default
 set shiftwidth=2                  " Then override with per filteype
