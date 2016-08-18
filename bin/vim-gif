@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+
+require 'net/http'
+require 'json'
+require 'open-uri'
+
+SLEEP_TIME = 120
+
+class VimGifs
+  VIM_GIF_URL = 'https://vimgifs.com/gifs.json'.freeze
+
+  def initialize
+    @gifs = []
+  end
+
+  def make_json
+    uri = URI(VIM_GIF_URL)
+    response = Net::HTTP.get(uri)
+    @gifs = JSON.parse(response)
+  end
+
+  def random_gif
+    passed = true
+
+    begin
+      gif = @gifs.sample
+      puts "Title: #{gif['title']}"
+      system "imgcat #{open(gif['awslink']).path}"
+    rescue
+      passed = false
+    end
+    passed
+  end
+end
+
+vim_gif = VimGifs.new
+vim_gif.make_json
+
+if ARGV[0] == '-c'
+  # Pass -c into the script to make an infinite loop of gifs that refreshes
+  # every N amount of time
+  begin
+    loop do
+      system 'clear'
+      passed = vim_gif.random_gif
+      sleep SLEEP_TIME if passed
+    end
+  rescue SystemExit, Interrupt
+    puts 'Exiting...'
+  end
+else
+  # Else just pull out a random gif once
+  vim_gif.random_gif
+end
+
+

@@ -1,8 +1,7 @@
 # vim: syntax=sh
 
-function conflicted {
-  vim +Conflicted
-}
+function conflicted { vim +Conflicted }
+function vimup { vim +BundleUpdate }
 
 function git-new-remote-tracking {
   git checkout -b $1 && git push -u origin $1
@@ -40,7 +39,7 @@ function g {
 
 # Search for an especific route on rails
 # Usage:
-# rrg users
+# search_route users
 function search_route {
   bin/rake routes | grep $1
 }
@@ -58,10 +57,10 @@ function gc {
   git commit -m "$*"
 }
 
-function trash() {
+function trash {
   mv $1 ~/.Trash
 }
 
-function clean_trash() {
-  cd ~/.Trash && rm -Rf .
+function clean_trash {
+  cd ~/.Trash && rm -Rf *
 }
