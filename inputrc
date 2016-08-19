@@ -1,0 +1,7 @@
+set editing-mode vi
+set keymap vi
+set expand-tilde on
+set bell-style visible
+
+"\C-n": menu-complete
+"\e3": "#"
