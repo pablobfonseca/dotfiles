@@ -1,7 +1,6 @@
 " General configurations
 "------------------------
 
-set nocompatible                  " Don't maintain compat with Vi.
 set hidden                        " Allow buffer change w/o saving
 set autoread                      " Load file from disk, ie for git reset
 set nocompatible                  " Not concerned with vi compatibility
@@ -18,7 +17,7 @@ set secure                        " Limit what modelines and autocmds can do
 set autowrite                     " Write for me when I take any action
 set autoindent
 set copyindent
-set shell=bash                     " This makes RVM work inside Vim. I have no idea why.
+set shell=bash                    " This makes RVM work inside Vim. I have no idea why.
 set textwidth=80
 set viminfo+=!
 

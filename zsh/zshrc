@@ -37,7 +37,7 @@ export PATH=$ANDROID_HOME/tools:$PATH
 export PATH=$ANDROID_HOME/platform-tools:$PATH
 
 # Source another files
-for zsh_source in $HOME/.zsh/config/*.zsh; do
+for zsh_source in /Users/Pablo/.zsh/config/*.zsh; do
   source $zsh_source
 done
 
@@ -69,7 +69,7 @@ bindkey '^x^e' edit-command-line
 
 # Cdpath for quick navigation
 setopt auto_cd
-cdpath=($HOME/code $HOME/code/Bizneo $HOME/dotfiles)
+cdpath=($HOME/code $HOME/dotfiles)
 
 attach_to_tmux
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

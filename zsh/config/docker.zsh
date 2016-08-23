@@ -1,4 +1,4 @@
 function docker_ip {
-  docker-machine ip $1 | pbcopy
+  docker-machine ip bziineo | pbcopy
   echo "Machine ip copied!"
 }
