@@ -1,5 +1,5 @@
 module Environment
-  module Shell
+  class Shell
     include Environment::Utils
 
     attr_reader :path
@@ -19,7 +19,7 @@ module Environment
         case STDIN.gets.chomp
         when 'y'
           say "Installing oh-my-zsh"
-          system %{git clone https://github.com/robbyrussell/oh-my-zsh.git #{path}}
+          system %{git clone https://github.com/robbyrussel/oh-my-zsh.git #{path}}
         when 'q'
           exit
         else
@@ -29,7 +29,7 @@ module Environment
     end
 
     def update
-      say "Updating Oh-My-Zsh"
+      say "Updating Oh-my-zsh"
 
       zsh_path = ENV['ZSH']
       update_action = 'git pull origin master'
@@ -46,16 +46,18 @@ module Environment
         say "Using zsh"
       else
         prompt "Switch to zsh? (recommended) [ynq]"
+
         case STDIN.gets.chomp
         when 'y'
-          say 'Switching to zsh'
+          say "Switching to zsh"
           system "chsh -s `which zsh`"
         when 'q'
           exit
         else
-          say 'Skipping zsh'
+          say "Skipping zsh"
         end
       end
     end
   end
 end
+

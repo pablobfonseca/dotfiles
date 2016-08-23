@@ -1,10 +1,8 @@
 module Environment
-  module Vim
+  class Vim
     include Environment::Utils
 
     attr_reader :path
-
-    UPDATE_COMMAND = 'rake default'
 
     def initialize(options={})
       @path = options.fetch('path') do
@@ -13,29 +11,30 @@ module Environment
     end
 
     def install
-      prompt "Install VIM? [ynq]"
+      prompt "Install Vundle? [ynq]"
 
       case STDIN.gets.chomp
       when 'y'
-        say "Installing VIM"
+        say "Installing Vundle"
 
         backup_file(path) if File.exists?(path)
 
-        system %{brew install vim}
-        system %{cd "$HOME/.vim" && rake}
         system %{export VIM_FILES="#{path}"}
+        system %{mkdir -p #{path}/_temp}
+        system %{mkdir -p #{path}/_backup}
+        system %{git clone https://github.com/VundleVim/Vundle.vim.git #{path}}
       when 'q'
         exit
       else
-        say "Skipping VIM"
+        say "Skipping Vundle"
       end
     end
 
     def update
-      say 'Updating VIM'
+      say "Updating Vundle and plugins"
 
       if path && File.exists?(path)
-        system %{cd "#{path}" && #{UPDATE_COMMAND}}
+        system %{vim -c ':BundleUpdate | qall!'}
       else
         say "VIM_FILES not found", :error
       end
