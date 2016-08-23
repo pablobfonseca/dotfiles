@@ -7,42 +7,24 @@ module Environment
 
       case STDIN.gets.chomp
       when 'y'
-        install_neo_bundle
+        sync_vim_plugins
       when 'q'
         exit
       else
-        say "Skipping Vim plugins"
+        say "Skipping vim plugins"
       end
     end
 
     def update
-      say "Updating Vim plugins"
+      say "Updating vim plugins"
 
-      update_neo_bundle
+      sync_vim_plugins
     end
 
     private
 
-    def install_neo_bundle
-      prompt "Installing NeoBundle..."
-
-      system "cd"
-      system "curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh > install.sh " 
-      system "sh ./install.sh"
-      system "rm install.sh"
-      install_plugins
-    end
-
-    def install_plugins
-      prompt "Installing plugins..."
-
-      system "vim +NeoBundleInstall"
-    end
-
-    def update_plugins
-      prompt "Updating plugins..."
-
-      system "vim +NeoBundleUpdate"
+    def sync_vim_plugins
+      system %{vim -c ':BundleUpdate | qa!'}
     end
   end
 end

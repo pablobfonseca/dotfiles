@@ -19,6 +19,26 @@ Visit the following sites to learn more about Vim:
 There are many sites teaching Vim, if you know of any other that are easy
 to follow for newcomers, let me know.
 
+## Installation
+```sh
+mkdir ~/work
+git clone https://github.com/pablobfonseca/dotfiles.git ~/work/dotfiles
+cd ~/work/dotfiles
+rake install
+```
+
+### All tasks: Install & Update
+```ruby
+rake dotfiles:install  # Install dotfiles
+rake dotfiles:update   # Update dotfiles
+rake install           # Install dotfiles and related libraries
+rake shell:install     # Install Oh-My-Zsh and change default shell
+rake shell:update      # Update Oh-My-Zsh
+rake update            # Update dotfiles, vim and shell libraries
+rake vim:install       # Install Vim plugins
+rake vim:update        # Update Vim plugins
+```
+
 
 ## Customize tmux
 

@@ -1,47 +1,51 @@
+$:.push File.expand_path("../lib", __FILE__)
+
 require 'rake'
+require 'environment'
 
-desc "Install the dotfiles into $HOME"
-task :install do
-  replace_all = false
-  Dir['*'].each do |file|
-    next if %w[Rakefile README.md LICENCE id_rsa.pub].includ? file
+desc "Install dotfiles and related libraries"
+task install: %w(dotfiles:install shell:install vim:install)
 
-    if File.exist?(File.join(ENV['HOME'], "#{file}"))
-      if replace_all
-        replace_file(file)
-      else
-        print "Overwrite ~/.#{file}? [ynaq]"
-        case $stdin.gets.chomp
-        when 'a'
-          replace_all = true
-          replace_file(file)
-        when 'y'
-          replace_file(file)
-        when 'q'
-          exit
-        else
-          puts "Skipping ~/.#{file}"
-        end
-      end
-    else
-      link_file(file)
-    end
+desc "Update dotfiles and related libraries"
+task update: %w(dotfiles:update shell:update vim:update)
+
+task default: :update
+
+namespace :dotfiles do
+  desc "Install dotfiles"
+  task :install do
+    Environment::Dotfiles.new(path: ENV['DOTFILES']).install
   end
 
-  # Handle ssh pubkey on its own
-  puts "Linking public ssh key"
-  system %Q{rm "$HOME/.ssh/id_dsa.pub"}
-  system %Q{ln -s "$PWD/id_dsa.pub" "$HOME/.ssh/id_dsa.pub"}
-
-  system %Q{ mkdir ~/.tmp }
+  desc "Update dotfiles"
+  task :update do
+    Environment::Dotfiles.new(path: ENV['DOTFILES']).update
+  end
 end
 
-def replace_file file
-  system %Q{ rm "$HOME/.#{file}" }
-  link_file file
+namespace :shell do
+  desc "Install vim plugins"
+  task :install do 
+    Environment::Vim.new.install
+    Environment::Vim::Plugins.new.install
+  end
+
+  desc "Update vim plugins"
+  task :install do 
+    Environment::Vim.new.update
+    Environment::Vim::Plugins.new.update
+  end
 end
 
-def link_file file
-  puts "Linking ~/.#{file}"
-  system %Q{ ln -s "$PWD/#{file}" "$HOME/.#{file}"}
+namespace :shell do
+  desc "Install Oh-my-zsh and change default shell"
+  task :install do
+    Environment::Shell.new.install
+    Environment::Shell.new.setup
+  end
+
+  desc "Update Oh-my-zsh"
+  task :update do
+    Environment::Shell.new.update
+  end
 end
