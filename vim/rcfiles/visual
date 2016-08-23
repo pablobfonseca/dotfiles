@@ -2,6 +2,10 @@
 "------------------------
 
 colorscheme hipster
+
+" Hightlight the current row. Index-guide plugin covers columns
+set cursorline
+
 if has('gui_running')
     set guioptions-=r "Hide the right side scrollbar
     set guioptions-=L "Hide the left side scrollbar
@@ -14,9 +18,6 @@ if has('gui_running')
         set lines=999
         winpos 999 5
     endif
-
-    " Hightlight the current row. Index-guide plugin covers columns
-    set cursorline
 
     " MacVim is very pretty
     if has('gui_macvim')
