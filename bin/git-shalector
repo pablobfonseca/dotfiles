@@ -4,8 +4,8 @@ set -e
 
 target_commit=$(
   git log -75 --oneline --decorate --graph --all --color=always | \
-  fzf --ansi --no-short --reverse --tiebreak=index | \
-  sef -E 's/.* ([0-9a-f]{7}) .*/\1/' | \
+  fzf --ansi --no-sort --reverse --tiebreak=index | \
+  sed -E 's/.* ([0-9a-f]{7}) .*/\1/' | \
   tr -d '\n'
 )
 
