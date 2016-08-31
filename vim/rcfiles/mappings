@@ -4,9 +4,6 @@
 " ----------------------
 nnoremap K :grep! "\b<C-r><C-w>\b"<cr>:cw<cr>
 
-nnoremap L $
-
-" Open current html file into firefox
 nnoremap <leader>of :!open -a "Firefox" %<tab><cr>
 
 " select last paste in visual mode
@@ -124,3 +121,6 @@ nnoremap <leader>cn :Sexplore ~/Dropbox/notes/Upcase/<cr>
 
 " Open Gemfile
 nnoremap <leader>og :e Gemfile<cr>
+
+" Map jk as Esc
+inoremap jk <Esc>
