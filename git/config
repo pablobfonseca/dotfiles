@@ -13,6 +13,7 @@
 [user]
   name                    = Pablo Fonseca
   email                   = pablofonseca777@gmail.com
+  signingkey              = D3193F6E
 [branch]
   autosetupmerge          = always
   autosetuprebase         = always
@@ -37,6 +38,12 @@
   changed                 = yellow
   untracked               = cyan
   deleted                 = red
+[color "diff"]
+  meta                    = bold cyan
+[color "grep"]
+  filename                = magenta
+  match                   = bold red
+  linenumber              = bold blue
 [alias]
   glog                    = log -E -i --grep
   sla                     = log --oneline --decorate --graph --all -20
