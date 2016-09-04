@@ -64,3 +64,7 @@ function trash {
 function clean_trash {
   cd ~/.Trash && rm -Rf *
 }
+
+function bundle_search() {
+  ag $1 $(bundle show --paths)
+}
