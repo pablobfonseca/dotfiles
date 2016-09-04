@@ -1,5 +1,5 @@
 " Haml - Syntax support for haml & sass
 
-Bundle "tpope/vim-haml"
+Plug 'tpope/vim-haml', {'for': 'haml'}
 
 " vim:ft=vim

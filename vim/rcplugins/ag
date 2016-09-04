@@ -1,6 +1,6 @@
 " Ag - (grep replacement) into vim
 
-Bundle "rking/ag.vim"
+Plug 'rking/ag.vim'
 
 " The Silver Searcher
 if executable('ag')

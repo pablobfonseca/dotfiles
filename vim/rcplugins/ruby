@@ -1,5 +1,5 @@
 " Ruby.vim
 
-Bundle 'vim-ruby/vim-ruby'
+Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
 
 " vim:ft=vim

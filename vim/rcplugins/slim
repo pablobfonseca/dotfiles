@@ -1,5 +1,5 @@
 " Slim - Syntax support for slim
 
-Bundle "slim-template/vim-slim"
+Plug 'slim-template/vim-slim', {'for': 'slim'}
 
 " vim:ft=vim

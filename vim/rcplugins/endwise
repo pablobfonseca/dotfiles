@@ -1,5 +1,5 @@
 " Endwise - Intelligently insert ends, endifs, etc
 
-Bundle 'tpope/vim-endwise'
+Plug 'tpope/vim-endwise'
 
 " vim:ft=vim

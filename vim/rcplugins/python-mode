@@ -1,6 +1,6 @@
 " Python mode
 
-Bundle "klen/python-mode"
+Plug 'klen/python-mode', {'for': 'python'}
 
 let g:pymode_rope = 1
 

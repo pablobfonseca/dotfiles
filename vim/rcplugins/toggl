@@ -1,6 +1,6 @@
 " Toggl - Toggl client
 
-Bundle 'termoshtt/toggl.vim'
+Plug 'termoshtt/toggl.vim'
 
 let g:toggl_api_token = "REMOVED"
 

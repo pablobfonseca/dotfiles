@@ -1,6 +1,6 @@
 " Snipmate - aims to provide support for textual snippets
 
-Bundle "garbas/vim-snipmate"
+Plug 'garbas/vim-snipmate'
 
 nnoremap <leader>sn :e ~/.vim/snippets/
 

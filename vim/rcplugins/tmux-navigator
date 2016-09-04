@@ -1,7 +1,7 @@
 " VTR - Vim tmux integration
 
 if executable('tmux')
-  Bundle "christoomey/vim-tmux-navigator"
+  Plug 'christoomey/vim-tmux-navigator'
 endif
 
 " Quicker window movement
