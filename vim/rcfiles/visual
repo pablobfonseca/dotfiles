@@ -41,6 +41,11 @@ nnoremap <C-_> <C-w>_
 set splitbelow
 set splitright
 
+" Colors
+set t_Co=256
+hi Search guifg=#000000 guibg=#8dabcd guisp=#8dabcd gui=NONE ctermfg=NONE ctermbg=110 cterm=NONE
+hi! link Search CursorLine
+
 " Use line cursor in insert mode, block in normal (only in tmux)
 if exists('$TMUX')
     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
