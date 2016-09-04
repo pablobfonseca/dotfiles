@@ -1,7 +1,7 @@
 " Vimux
 
 if executable('tmux')
-  Bundle "benmills/vimux"
+  Plug 'benmills/vimux'
 endif
 
 nnoremap <silent><leader>vp :VimuxPromptCommand<cr>

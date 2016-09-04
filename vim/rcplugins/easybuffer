@@ -1,6 +1,6 @@
 " Easy Buffer - Buffer list
 
-Bundle "troydm/easybuffer.vim"
+Plug 'troydm/easybuffer.vim'
 
 nnoremap <leader>eb :EasyBufferHorizontal<cr>
 

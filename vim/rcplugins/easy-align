@@ -1,6 +1,6 @@
 " easy align - Align by motion for tables and other structured content
 
-Bundle "junegunn/vim-easy-align"
+Plug 'junegunn/vim-easy-align'
 
 command! ReformatTable normal vip<cr>**|
 nmap <leader>rtb :ReformatTable<cr>

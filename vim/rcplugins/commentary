@@ -1,6 +1,6 @@
 " Commentary - Motion aware commenting
 
-Bundle 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary'
 
 vmap cm <Plug>Commentary
 nmap cm <Plug>Commentary

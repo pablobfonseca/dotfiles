@@ -1,7 +1,7 @@
 " i18n - Helpers to extract translations
 "---------------------------------------
 
-Bundle 'stefanoverna/vim-i18n'
+Plug 'stefanoverna/vim-i18n'
 
 vmap <Leader>et :call I18nTranslateString()<CR>
 
