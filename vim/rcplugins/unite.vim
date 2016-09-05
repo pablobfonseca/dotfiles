@@ -2,7 +2,7 @@
 
 Plug 'Shougo/unite.vim'
 
-nnoremap <C-p> :Unite -no-split -buffer-name=files -start-insert -auto-highlight -auto-preview file_rec/async:!<cr>
+nnoremap <C-p> :Unite -no-split -buffer-name=files -start-insert -auto-preview file_rec/async:!<cr>
 
 " Grep
 nnoremap <space>/ :Unite grep:.<cr>
