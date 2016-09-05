@@ -1,7 +1,7 @@
 # vim: syntax=sh
 
 function conflicted { vim +Conflicted }
-function vimup { vim +BundleUpdate }
+function vimup { vim +PlugUpdate }
 
 function git-new-remote-tracking {
   git checkout -b $1 && git push -u origin $1
