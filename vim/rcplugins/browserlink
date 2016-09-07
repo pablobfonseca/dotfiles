@@ -1,5 +1,0 @@
-" Browserlink - Live browser editing for Vim
-
-Plug 'jaxbot/browserlink.vim'
-
-" vim:ft=vim

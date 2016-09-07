@@ -1,7 +1,0 @@
-" Toggl - Toggl client
-
-Plug 'termoshtt/toggl.vim'
-
-let g:toggl_api_token = "REMOVED"
-
-" vim:ft=vim
