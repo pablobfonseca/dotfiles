@@ -1,7 +1,0 @@
-" Toggl - Toggl client
-
-Plug 'termoshtt/toggl.vim'
-
-let g:toggl_api_token = "da96069d7786e04eb9021d578edb6fc6"
-
-" vim:ft=vim
