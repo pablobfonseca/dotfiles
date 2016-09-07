@@ -63,4 +63,4 @@ tm_hour="#[fg=$tm_color_inactive] %I:%M"
 tm_session_name="#[fg=white]$tm_icon #S"
 
 set -g status-left $tm_session_name' '
-set -g status-right "Battery: #{battery_icon} #{battery_percentage} #{battery_remain}"' '$tm_date' '$tm_hour' '$tm_spotify' '$tm_itunes
+set -g status-right "Battery: #{battery_icon} #{battery_percentage} #{battery_remain}"' '$tm_date' '$tm_hour
