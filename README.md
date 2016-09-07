@@ -14,7 +14,7 @@ Visit the following sites to learn more about Vim:
 * [Byte of Vim](http://www.swaroopch.com/notes/Vim)
 * [Screencast "17 tips for Vim" (in portuguese)](http://blog.lucascaton.com.br/?p=1081)
 * [MinuteVim Tricks](https://www.youtube.com/user/MinuteVimTricks)
-* [Join the Church of Vim, and you too can be a saint!](http://www.avelino.xxx/2015/03/church-vim)
+* [Vim Golf](http://vimgolf.com/)
 
 There are many sites teaching Vim, if you know of any other that are easy
 to follow for newcomers, let me know.
