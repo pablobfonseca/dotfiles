@@ -2,9 +2,10 @@
 
 " Mappings
 " ----------------------
-nnoremap K :grep! "\b<C-r><C-w>\b"<cr>:cw<cr>
+nnoremap K :exe 'Ag' expand('<cword>')<cr>
 
-nnoremap <leader>of :!open -a "Firefox" %<tab><cr>
+" Opens the file explorer in a split window
+nnoremap <leader>of :Sex<cr>
 
 " select last paste in visual mode
 nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]''`']`
