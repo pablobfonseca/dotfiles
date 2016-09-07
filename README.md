@@ -1,7 +1,8 @@
 # @pablobfonseca's dotfiles
 
 # **Help Tags**
-At first usage of vim, type “:” while in command mode and execute:
+Everything you need to know about vim is in the vim inner documentation, so go
+ahead and type `:help` inside vim!
 
 # **Learn VIM**
 Visit the following sites to learn more about Vim:
