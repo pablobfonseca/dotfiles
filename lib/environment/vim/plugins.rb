@@ -24,7 +24,7 @@ module Environment
     private
 
     def sync_vim_plugins
-      system %{vim -c ':BundleUpdate | qa!'}
+      system %{vim -c ':PlugUpdate | qa!'}
     end
   end
 end

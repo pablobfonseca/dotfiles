@@ -22,19 +22,21 @@ module Environment
         system %{export VIM_FILES="#{path}"}
         system %{mkdir -p #{path}/_temp}
         system %{mkdir -p #{path}/_backup}
-        system %{git clone https://github.com/VundleVim/Vundle.vim.git #{path}}
+
+        # Install Vim-plug
+        system %{curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim}
       when 'q'
         exit
       else
-        say "Skipping Vundle"
+        say "Skipping Vim-Plug"
       end
     end
 
     def update
-      say "Updating Vundle and plugins"
+      say "Updating Vim-Plug and plugins"
 
       if path && File.exists?(path)
-        system %{vim -c ':BundleUpdate | qall!'}
+        system %{vim -c ':PlugUpdate | qall!'}
       else
         say "VIM_FILES not found", :error
       end
