@@ -2,7 +2,11 @@
 
 Plug 'Shougo/unite.vim'
 
-nnoremap <C-p> :Unite -no-split -buffer-name=files -start-insert -auto-preview file_rec/async:!<cr>
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts =
+      \ '-i --vimgrep --hidden --ignore ' .
+      \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+let g:unite_source_grep_recursive_opt = ''
 
 " Grep
 nnoremap <space>/ :Unite grep:.<cr>
