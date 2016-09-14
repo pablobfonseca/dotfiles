@@ -66,5 +66,6 @@ function clean_trash {
 }
 
 function bundle_search() {
-  ag $1 $(bundle show --paths)
+  pattern="$1"; shift
+  ag $pattern $(bundle show --paths "$@")
 }

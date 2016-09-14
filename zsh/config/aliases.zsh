@@ -2,6 +2,7 @@
 alias cp="rsync --archive --human-readable --progress --verbose --whole-file"
 alias scp="rsync --archive --progress --checksum --compress --human-readable --itemize-changes --rsh=ssh --stats --verbose"
 
+alias vim="nvim"
 alias pat="pygmentize -O style=monokai -f console256 -g"
 alias cleanvim="vim -N -u NONE"
 alias zshconfig='vim ~/.zshrc'
@@ -15,7 +16,7 @@ alias cinstall="brew cask install"
 alias doctor="brew doctor"
 alias cleanup="brew cleanup"
 alias weather="curl -4 http://wttr.in/"
-alias aliases="vim ~/dotfiles/zsh/config/aliases.zsh"
+alias aliases="vim ~/.dotfiles/zsh/config/aliases.zsh"
 alias :q="exit"
 alias server="bin/rails server"
 alias em="mutt"
