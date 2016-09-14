@@ -35,7 +35,7 @@ nnoremap ; :
 " Copy the entire file content to the clipboard
 nnoremap <Leader>co mmggVG"*y`m
 " Open code directory
-nnoremap <Leader>ec :e ~/code/
+nnoremap <Leader>oc :e ~/code <cr>
 " Indent the whole file
 nnoremap <Leader>i mmgg=G`m
 " Join all the lines
@@ -54,7 +54,6 @@ nnoremap <space>v :vsplit <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 nnoremap <space>r :r <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 nnoremap <space>t :tabe <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 nnoremap <space>sav :sav <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
-nnoremap <space>ec :e ~/code/
 
 " Use j/k to start, then scroll through autocomplete options
 inoremap <expr> <C-j> ((pumvisible())?("\<C-n>"):("\<C-x><c-n>"))

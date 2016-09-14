@@ -16,8 +16,8 @@ if has('gui_running')
 
     " MacVim is very pretty
     if has('gui_macvim')
+        set bg=dark
         " set transparency=8
-
         " Fullscreen options
         set fuoptions=maxvert
         " au GUIEnter * set fullscreen
@@ -38,7 +38,8 @@ set vb
 " Easy access to maximizing
 nnoremap <C-_> <C-w>_
 
-set splitbelow splitright
+set splitbelow
+set splitright
 
 " Colors
 set t_Co=256
