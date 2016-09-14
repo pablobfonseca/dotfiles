@@ -1,5 +1,7 @@
-" Markdown - Syntax file for Markdowm files
+" Vim Instant Markdown - Instant Markdown previews from VIm!
 
 Plug 'suan/vim-instant-markdown', {'for': 'markdown' }
+
+let g:instant_markdown_autostart = 0
 
 " vim:ft=vim
