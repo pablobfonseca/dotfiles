@@ -41,7 +41,7 @@ function g {
 # Usage:
 # search_route users
 function search_route {
-  bin/rake routes | grep $1
+  bin/rake routes | ag $1
 }
 
 # Create and enter in a folder
