@@ -2,7 +2,6 @@
 alias cp="rsync --archive --human-readable --progress --verbose --whole-file"
 alias scp="rsync --archive --progress --checksum --compress --human-readable --itemize-changes --rsh=ssh --stats --verbose"
 
-alias vim="nvim"
 alias pat="pygmentize -O style=monokai -f console256 -g"
 alias cleanvim="vim -N -u NONE"
 alias zshconfig='vim ~/.zshrc'
