@@ -119,6 +119,9 @@ nnoremap <C-ScrollWheelRight> <nop>
 " Coding notes
 nnoremap <leader>cn :Sexplore ~/Dropbox/notes/Upcase/<cr>
 
+" Thought notes
+nnoremap <leader>tn :e ~/Dropbox/notes/thoughts.txt<cr>
+
 " Open Gemfile
 nnoremap <leader>og :e Gemfile<cr>
 
