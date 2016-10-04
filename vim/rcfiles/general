@@ -20,6 +20,7 @@ set copyindent
 set shell=bash                    " This makes RVM work inside Vim. I have no idea why.
 set textwidth=80
 set viminfo+=!
+set rtp+=/usr/local/opt/fzf
 
 set relativenumber
 
