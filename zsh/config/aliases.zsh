@@ -17,7 +17,6 @@ alias cleanup="brew cleanup && brew cask cleanup"
 alias weather="curl -4 http://wttr.in/"
 alias aliases="vim ~/.dotfiles/zsh/config/aliases.zsh"
 alias :q="exit"
-alias server="bin/rails server"
 alias em="mutt"
 alias prettyjson='python -m json.tool'
 alias laliases="vim ~/.zsh/.aliases.local"
