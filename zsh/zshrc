@@ -5,7 +5,7 @@ export BUNDLER_EDITOR='vim'
 
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
-export ZSH=/Users/Pablo/.oh-my-zsh
+export ZSH=/Users/pablobfonseca/.oh-my-zsh
 plugins=(brew zsh-syntax-highlighting)
 
 ZSH_THEME="cjt"
@@ -26,7 +26,7 @@ compinit
 
 # Add paths
 export DOTFILES=$HOME/dotfiles
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Pablo/.rvm/bin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/pablobfonseca/.rvm/bin"
 export PATH="$HOME/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export MANPATH="/usr/local/man:$MANPATH"
@@ -37,7 +37,7 @@ export PATH=$ANDROID_HOME/tools:$PATH
 export PATH=$ANDROID_HOME/platform-tools:$PATH
 
 # Source another files
-for zsh_source in /Users/Pablo/.zsh/config/*.zsh; do
+for zsh_source in /Users/pablobfonseca/.zsh/config/*.zsh; do
   source $zsh_source
 done
 
