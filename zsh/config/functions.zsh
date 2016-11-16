@@ -30,11 +30,11 @@ function git-on-master {
 }
 
 function g {
-  if [[ $# > 0 ]]; then
-    git $@
-  else
-    git status
-  fi
+if [[ $# > 0 ]]; then
+  git $@
+else
+  git status
+fi
 }
 
 # Search for an especific route on rails
@@ -68,4 +68,8 @@ function clean_trash {
 function bundle_search() {
   pattern="$1"; shift
   ag $pattern $(bundle show --paths "$@")
+}
+
+function branch_clean() {
+  git branch --merged | egrep -v "(^\*|master)" | xargs git branch -d
 }
