@@ -30,18 +30,18 @@ function git-on-master {
 }
 
 function g {
-  if [[ $# > 0 ]]; then
-    git $@
-  else
-    git status
-  fi
+if [[ $# > 0 ]]; then
+  git $@
+else
+  git status
+fi
 }
 
 # Search for an especific route on rails
 # Usage:
 # search_route users
 function search_route {
-  bin/rake routes | grep $1
+  bin/rake routes | ag $1
 }
 
 # Create and enter in a folder
@@ -66,5 +66,10 @@ function clean_trash {
 }
 
 function bundle_search() {
-  ag $1 $(bundle show --paths)
+  pattern="$1"; shift
+  ag $pattern $(bundle show --paths "$@")
+}
+
+function branch_clean() {
+  git branch --merged | egrep -v "(^\*|master)" | xargs git branch -d
 }

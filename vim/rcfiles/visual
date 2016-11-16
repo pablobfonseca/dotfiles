@@ -2,35 +2,35 @@
 "------------------------
 
 if has('gui_running')
-    set guioptions-=r "Hide the right side scrollbar
-    set guioptions-=L "Hide the left side scrollbar
-    set guioptions-=T "Hide toolbars...this is vim for craps sake
-    set guioptions-=m "Hide the menu, see above
+  set guioptions-=r "Hide the right side scrollbar
+  set guioptions-=L "Hide the left side scrollbar
+  set guioptions-=T "Hide toolbars...this is vim for craps sake
+  set guioptions-=m "Hide the menu, see above
 
-    " Size and position the window well (only perform on startup)
+  " Size and position the window well (only perform on startup)
+  if !exists('g:vimrc_loaded')
+    set columns=85
+    set lines=999
+    winpos 999 5
+  endif
+
+  " MacVim is very pretty
+  if has('gui_macvim')
+    set bg=dark
+    " set transparency=8
+    " Fullscreen options
+    set fuoptions=maxvert
+    " au GUIEnter * set fullscreen
+  endif
+
+  " Set a pretty font
+  if has('win32')
+    set guifont=Consolas:h10
+  elseif has('mac')
     if !exists('g:vimrc_loaded')
-        set columns=85
-        set lines=999
-        winpos 999 5
+      set guifont=Source\ Code\ Pro:h13
     endif
-
-    " MacVim is very pretty
-    if has('gui_macvim')
-        " set transparency=8
-
-        " Fullscreen options
-        set fuoptions=maxvert
-        " au GUIEnter * set fullscreen
-    endif
-
-    " Set a pretty font
-    if has('win32')
-        set guifont=Consolas:h10
-    elseif has('mac')
-        if !exists('g:vimrc_loaded')
-          set guifont=Source\ Code\ Pro:h13
-        endif
-    endif
+  endif
 endif
 
 set vb
@@ -38,7 +38,8 @@ set vb
 " Easy access to maximizing
 nnoremap <C-_> <C-w>_
 
-set splitbelow splitright
+set splitbelow
+set splitright
 
 " Colors
 set t_Co=256
@@ -54,11 +55,11 @@ hi! link Error ErrorMsg
 
 " Use line cursor in insert mode, block in normal (only in tmux)
 if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 else
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
 nnoremap <leader>! :redraw!<cr>

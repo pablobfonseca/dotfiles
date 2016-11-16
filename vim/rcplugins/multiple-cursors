@@ -1,5 +1,0 @@
-" Multiple cursors - Multiple selections for Vim
-
-Plug 'terryma/vim-multiple-cursors'
-
-" vim:ft=vim

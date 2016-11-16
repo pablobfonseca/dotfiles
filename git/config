@@ -97,6 +97,7 @@
   upstream                = rev-parse --abbrev-ref --symbolic-full-name @{u}
   ureset                  = !git upstream && git reset --hard $(git upstream)
   fop                     = !git fetch origin && git pl
+	users                   = !/usr/local/lib/node_modules/git-pair/users.js
 [diff "ruby"]
   funcname                = "^ *\\(\\(def\\) .*\\)"
 [diff]
@@ -123,3 +124,5 @@
   default                 = cyan
   untracked               = yellow
   modified                = red
+[git-pair]
+	scope                   = global
