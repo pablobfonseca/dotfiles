@@ -11,11 +11,11 @@ module Environment
     end
 
     def install
-      prompt "Install Vundle? [ynq]"
+      prompt "Install Vim-Plug [ynq]"
 
       case STDIN.gets.chomp
       when 'y'
-        say "Installing Vundle"
+        say "Installing Vim-Plug"
 
         backup_file(path) if File.exists?(path)
 
