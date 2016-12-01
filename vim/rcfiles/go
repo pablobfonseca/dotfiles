@@ -1,0 +1,14 @@
+" Go configurations
+"------------------------
+
+augroup filetype_go
+  " Clear old autocmds in group
+  autocmd!
+  " autoindent with two spaces, always expand tabs
+  autocmd Filetype go nmap <localleader>r <Plug>(go-run)
+  autocmd Filetype go nmap <localleader>b <Plug>(go-build)
+  autocmd Filetype go nmap <localleader>t <Plug>(go-test)
+  autocmd Filetype go nmap <localleader>c <Plug>(go-coverage)
+augroup END
+
+" vim:ft=vim

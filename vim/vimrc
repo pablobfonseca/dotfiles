@@ -2,10 +2,10 @@
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: VIM Rocks!
 " Source: http://github.com/pablobfonseca/dotfiles
-" Last Modified: October 03, 2016
+" Last Modified: December 01, 2016
 
 let mapleader=","
-let maplocalleader="\\"
+let maplocalleader="-"
 
 filetype off
 filetype plugin indent on
