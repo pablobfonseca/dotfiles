@@ -98,6 +98,7 @@
   ureset                  = !git upstream && git reset --hard $(git upstream)
   fop                     = !git fetch origin && git pl
 	users                   = !/usr/local/lib/node_modules/git-pair/users.js
+  branch-status           = !~/bin/git-bstats
 [diff "ruby"]
   funcname                = "^ *\\(\\(def\\) .*\\)"
 [diff]

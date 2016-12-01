@@ -73,3 +73,7 @@ function bundle_search() {
 function branch_clean() {
   git branch --merged | egrep -v "(^\*|master)" | xargs git branch -d
 }
+
+function rspecoverage() {
+  COVERAGE=on rspec spec
+}
