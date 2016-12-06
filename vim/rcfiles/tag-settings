@@ -1,6 +1,8 @@
 " Tags configurations
 "--------------------
 
+set tags+=./git/tags
+
 augroup tags_stuff
   " Clear old autocmds in group
   autocmd FileType * call EnableTagNavMaps()
@@ -24,6 +26,9 @@ endfunction
 " Generate ctags
 nnoremap <Leader>rt :!ctags --tag-relative --extra=+f -Rf .git/tags --exclude=.git,pkg --languages=-javascript,sql<CR>
 
-set tags+=./git/tags
+function! s:RebuildTagsFile()
+  !ctags -R --exclude=coverage --exclude=files --exclude=public --exclude=log --exclude=tmp --exclude=vendor *
+endfunction
+command! -nargs=0 RebuildTagsFile call s:RebuildTagsFile()
 
 " vim:ft=vim
