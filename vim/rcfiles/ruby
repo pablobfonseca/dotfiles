@@ -2,6 +2,7 @@
 "------------------------
 
 let g:ruby_path = system('rvm current')
+let ruby_operators = 1
 
 augroup filetype_ruby
   " Clear old autocmds in group
