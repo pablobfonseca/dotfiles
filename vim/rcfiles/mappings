@@ -132,3 +132,11 @@ nnoremap <leader>v V`]
 
 " Open vim folder splitted
 nnoremap <leader>ev <C-w><C-v><C-l>:Ex ~/.vim<cr>
+
+" Change colorscheme quickly
+nnoremap <leader>1 :colorscheme default<cr>
+nnoremap <leader>2 :colorscheme vividchalk<cr>
+nnoremap <leader>3 :colorscheme hipster<cr>
+nnoremap <leader>4 :colorscheme vendetta<cr>
+nnoremap <leader>5 :colorscheme mustang<cr>
+
