@@ -59,10 +59,6 @@ nnoremap <space>sav :sav <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 inoremap <expr> <C-j> ((pumvisible())?("\<C-n>"):("\<C-x><c-n>"))
 inoremap <expr> <C-k> ((pumvisible())?("\<C-p>"):("\<C-x><c-k>"))
 
-" Move one line at a time, aka 'fine ajdustment'
-nnoremap j gj
-nnoremap k gk
-
 " Reselect pasted text. Mnem: 'Get pasted'
 nnoremap gp `[v`]
 
@@ -127,3 +123,12 @@ nnoremap <leader>og :e Gemfile<cr>
 
 " Map jk as Esc
 inoremap jk <Esc>
+
+" Jump to start and end of line using the home row keys
+nmap 0 ^
+
+" Reselect the recent pasted text
+nnoremap <leader>v V`]
+
+" Open vim folder splitted
+nnoremap <leader>ev <C-w><C-v><C-l>:Ex ~/.vim<cr>
