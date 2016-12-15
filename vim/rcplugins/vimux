@@ -6,5 +6,9 @@ endif
 
 nnoremap <silent><leader>vp :VimuxPromptCommand<cr>
 nnoremap <silent><leader>vl :VimuxRunLastCommand<cr>
+nnoremap <leader>rb :call VimuxRunCommand("clear; rspec " . bufname("%"))<CR>
+nnoremap <leader>vz :VimuxZoomRunner<cr>
+nnoremap <leader>vq :VimuxCloseRunner<cr>
+nnoremap <C-c><C-c> :call VimuxRunCommand(getline("."))<cr>
 
 " vim:ft=vim
