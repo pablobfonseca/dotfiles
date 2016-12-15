@@ -134,9 +134,8 @@ nnoremap <leader>v V`]
 nnoremap <leader>ev <C-w><C-v><C-l>:Ex ~/.vim<cr>
 
 " Change colorscheme quickly
-nnoremap <leader>1 :colorscheme default<cr>
-nnoremap <leader>2 :colorscheme vividchalk<cr>
-nnoremap <leader>3 :colorscheme hipster<cr>
-nnoremap <leader>4 :colorscheme vendetta<cr>
-nnoremap <leader>5 :colorscheme mustang<cr>
-
+nnoremap <silent><leader>1 :colorscheme default<cr>
+nnoremap <silent><leader>2 :colorscheme vividchalk<cr>
+nnoremap <silent><leader>3 :colorscheme hipster<cr>
+nnoremap <silent><leader>4 :colorscheme vendetta<cr>
+nnoremap <silent><leader>5 :colorscheme mustang<cr>
