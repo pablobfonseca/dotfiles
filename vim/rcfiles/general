@@ -18,11 +18,12 @@ set autowrite                     " Write for me when I take any action
 set autoindent
 set copyindent
 set shell=bash                    " This makes RVM work inside Vim. I have no idea why.
-set textwidth=80
+set textwidth=79
 set viminfo+=!
 set rtp+=/usr/local/opt/fzf
 
 set relativenumber
+set number
 
 " Disable sound/visual bell on errors
 " May need additional config about audible bell
