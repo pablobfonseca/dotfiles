@@ -6,7 +6,6 @@ augroup filetype_javascript
   " Clear old autocmds in group
   autocmd!
   " Set syntax javascript to coffee script files
-  autocmd BufNewFile,BufReadPost *.coffee setlocal syntax=javascript
   autocmd FileType javascript nnoremap <leader>n :!node %<Tab><cr>
 augroup END
 
