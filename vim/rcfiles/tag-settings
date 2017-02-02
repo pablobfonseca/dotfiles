@@ -10,7 +10,6 @@ augroup END
 
 function! EnableTagNavMaps()
   if s:BufferIsTagNavigable()
-    nmap <buffer> <cr> <c-]>
     nmap <buffer> <bs> <c-t>
   endif
 endfunction

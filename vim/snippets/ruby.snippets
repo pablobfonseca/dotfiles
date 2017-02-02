@@ -1,8 +1,14 @@
 # #!/urs/bin/ruby
 snippet #!
 	#!/usr/bin/ruby
+
 snippet req
 	require "${1}"${2}
+snippet req feature..end
+	require "rails_helper"
+
+	feature '${1:feature_story}' do
+	end
 snippet =b
 	=begin rdoc
 		${1}

@@ -29,5 +29,6 @@ nnoremap <leader>18 :%s/\(\w\+\):\s/:\1 => /gc<cr>
 vnoremap <leader>18 :s/\(\w\+\):\s/:\1 => /g<cr>
 
 nnoremap <leader>or :tabe config/routes.rb<cr>
+nnoremap <leader>ol :tabe config/locales<cr>
 
 " vim:ft=vim

@@ -22,6 +22,7 @@ alias prettyjson='python -m json.tool'
 alias laliases="vim ~/.zsh/.aliases.local"
 alias mvim="open -a MacVim.app"
 alias e="vim"
+alias startredis="redis-server /usr/local/etc/redis.conf"
 
 source ~/.zsh/.aliases.local
 
@@ -38,6 +39,7 @@ alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v exten
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
+alias modemip="netstat -rn | grep default"
 
 # Git aliases
 alias st="git st"
