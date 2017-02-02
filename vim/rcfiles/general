@@ -21,6 +21,7 @@ set shell=bash                    " This makes RVM work inside Vim. I have no id
 set textwidth=79
 set viminfo+=!
 set rtp+=/usr/local/opt/fzf
+set cmdheight=2
 
 set relativenumber
 set number
@@ -40,8 +41,7 @@ set noswapfile
 " Setup nice command tab completion
 set wildmenu
 set wildmode=list:longest,full
-set wildignore+=*.pyc
-set wildignore+=tmp/**
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc
 
 " Persistent undo
 let undodir = expand('~/.undo-vim')
@@ -59,8 +59,5 @@ set ttimeout
 " Don't wait so long for the next keypress (particularly in ambigious Leader
 " situations.
 set timeoutlen=500
-
-" Make it more obvious which paren I'm on
-hi MatchParen cterm=none ctermbg=black ctermfg=yellow
 
 " vim:ft=vim
