@@ -1,7 +1,7 @@
 " Visual configurations
 "------------------------
 
-colorscheme hipster
+colorscheme vendetta
 
 if has('gui_running')
   set guioptions-=r "Hide the right side scrollbar
@@ -49,6 +49,8 @@ hi Search guifg=#000000 guibg=#8dabcd guisp=#8dabcd gui=NONE ctermfg=NONE ctermb
 hi WarningMsg guifg=#bd4848 guibg=#f9f8ff guisp=#f9f8ff gui=bold ctermfg=131 ctermbg=15 cterm=bold
 hi ErrorMsg guifg=#bd5353 guibg=NONE guisp=NONE gui=NONE ctermfg=131 ctermbg=NONE cterm=NONE
 
+" Make it more obvious which paren I'm on
+hi MatchParen cterm=none ctermbg=black ctermfg=yellow
 
 hi! link Search CursorLine
 hi! link SpellBad ErrorMsg

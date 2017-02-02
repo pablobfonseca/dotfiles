@@ -10,3 +10,7 @@ snippet else
 	<% else %>
 snippet end
 	<% end %>
+snippet each
+	<% @${1:things}.each do |$1| %>
+			${0:// your code }
+	<% end %>

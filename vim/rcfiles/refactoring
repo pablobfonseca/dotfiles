@@ -39,4 +39,15 @@ function! InlineVariable()
 endfunction
 nnoremap <leader>ve :call InlineVariable()<cr>
 
-" vim:ft=vim
+" Promote variable to rspec let
+function! PromoteToLet()
+  :normal! dd
+  " :exec '?^\s*it\>'
+  :normal! P
+  :.s/\(\w\+\) = \(.*\)$/let(:\1) { \2 }/
+  :normal ==
+endfunction
+:command! PromoteToLet :call PromoteToLet()
+map <leader>p :PromoteToLet<cr>
+
+" vim: ft=vim
