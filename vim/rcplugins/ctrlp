@@ -52,7 +52,7 @@ let g:ctrlp_custom_ignore = {
 
 nmap <leader>rf :CtrlP ~/.vim/rcfiles<cr>
 nmap <leader>rp :CtrlP ~/.vim/rcplugins<cr>
-nmap <leader>rd :CtrlP ~/.dotfiles<cr>
+nmap <leader>df :CtrlP ~/.dotfiles/vim<cr>
 
 " Fuzzy finder through tags
 nnoremap <leader>cpt :CtrlPTag<cr>
