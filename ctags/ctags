@@ -1,8 +1,13 @@
-ort=yes
+--sort=yes
 --tag-relative
---recurse
+--recurse=yes
+--exclude=.git
+--exclude=vendor
 --exclude=node_modules
 --exclude=bower_components
+--exclude=coverage
+--exclude=db/*
+--exclude=log/*
 
 --langdef=js
 --langmap=js:.js
