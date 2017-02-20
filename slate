@@ -43,19 +43,17 @@ alias bottomRightQuarter ${sox}+${ssx}/2;${soy}+${ssy}/2 ${ssx}/2;${ssy}/2
 
 # Layouts
 layout default 'Google Chrome'                move ${fullscreen}
-layout default 'iTerm'                        move ${fullscreen}
+layout default 'iTerm2'                        move ${fullscreen}
 layout default 'Finder'                       move ${rightHalf}
 layout default 'iTunes'                       move ${centered}
-layout default 'Adium':TITLE_ORDER='Contacts' move ${sox};${soy} ${ssx}/9;${ssy}
 layout split 'Google Chrome'                  move ${leftHalf}
-layout split 'iTerm'                          move ${rightHalf}
+layout split 'iTerm2'                          move ${rightHalf}
 layout split 'Finder'                         move ${rightHalf}
 
 # Bindings
 bind b:${master} focus 'Google Chrome'
-bind t:${master} focus 'iTerm'
+bind t:${master} focus 'iTerm2'
 bind f:${master} focus 'Finder'
-bind v:${master} focus 'VirtualBox'
 
 bind g:${master} move ${centered}
 bind o:${master} move ${fullscreen}
