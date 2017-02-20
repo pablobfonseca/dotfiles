@@ -1,2 +1,19 @@
 tags
 .DS_Store
+*~
+*.swp
+.sass-cache/
+
+zeus.json
+zeus_custom.rb
+
+# Python related
+*.pyc
+
+.vagrant
+
+.env
+
+.project-notes
+.ctags
+.vimrc.local

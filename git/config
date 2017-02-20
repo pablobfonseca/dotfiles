@@ -4,7 +4,7 @@
   bare                    = false
   logallrefupdates        = true
   editor                  = vim -v
-  excludesfile            = ~/.gitignore
+  excludesfile            = ~/.global_ignore
   pager                   = less -F -X
 [github]
   user                    = pablobfonseca
