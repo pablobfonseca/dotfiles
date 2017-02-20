@@ -77,3 +77,7 @@ function branch_clean() {
 function rspecoverage() {
   COVERAGE=on rspec spec
 }
+
+function generate_password() {
+  openssl rand -hex 8
+}
