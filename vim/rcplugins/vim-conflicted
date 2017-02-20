@@ -1,5 +1,0 @@
-" Vim Conflicted - Easy git merge conflict resolution in Vim
-
-Plug 'christoomey/vim-conflicted'
-
-" vim:ft=vim
