@@ -8,7 +8,7 @@ nnoremap K :exe 'Ag' expand('<cword>')<cr>
 nnoremap <leader>of :Sex<cr>
 
 " select last paste in visual mode
-nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]''`']`
+nnoremap gp `[v`]
 
 " Change vertically split to horizonally
 nnoremap <leader>fh <C-w>t<C-w>K
@@ -139,3 +139,4 @@ nnoremap <leader>2 :colorscheme vividchalk<cr>
 nnoremap <leader>3 :colorscheme hipster<cr>
 nnoremap <leader>4 :colorscheme vendetta<cr>
 nnoremap <leader>5 :colorscheme mustang<cr>
+nnoremap <leader>6 :colorscheme solarized8_light<cr>
