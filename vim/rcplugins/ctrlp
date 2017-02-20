@@ -38,6 +38,7 @@ let rails_ctrlp_mappings = {
       \   'gw': 'app/workers',
       \   'gh': 'app/helpers',
       \   'gy': 'app/assets/stylesheets',
+      \   'gf': 'spec/factories',
       \ }
 
 for [mapping, directory] in items(rails_ctrlp_mappings)
