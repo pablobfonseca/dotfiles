@@ -17,12 +17,11 @@ set secure                        " Limit what modelines and autocmds can do
 set autowrite                     " Write for me when I take any action
 set autoindent
 set copyindent
-set shell=bash                    " This makes RVM work inside Vim. I have no idea why.
 set textwidth=79
 set viminfo+=!
 set rtp+=/usr/local/opt/fzf
 set cmdheight=2
-
+set formatoptions-=r              " Stop vim to keep adding comments on carriage return
 set relativenumber
 set number
 
