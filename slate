@@ -43,17 +43,19 @@ alias bottomRightQuarter ${sox}+${ssx}/2;${soy}+${ssy}/2 ${ssx}/2;${ssy}/2
 
 # Layouts
 layout default 'Google Chrome'                move ${fullscreen}
-layout default 'iTerm2'                        move ${fullscreen}
+layout default 'iTerm2'                       move ${fullscreen}
 layout default 'Finder'                       move ${rightHalf}
-layout default 'iTunes'                       move ${centered}
+layout default 'Evernote'                     move ${centered}
 layout split 'Google Chrome'                  move ${leftHalf}
-layout split 'iTerm2'                          move ${rightHalf}
+layout split 'iTerm2'                         move ${rightHalf}
 layout split 'Finder'                         move ${rightHalf}
+layout split 'Evernote'                       move ${rightHalf}
 
 # Bindings
 bind b:${master} focus 'Google Chrome'
 bind t:${master} focus 'iTerm2'
 bind f:${master} focus 'Finder'
+bind e:${master} focus 'Evernote'
 
 bind g:${master} move ${centered}
 bind o:${master} move ${fullscreen}
