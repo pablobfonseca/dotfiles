@@ -2,10 +2,8 @@
 snippet #!
 	#!/usr/bin/ruby
 
-snippet req
-	require "${1}"${2}
 snippet req feature..end
-	require "rails_helper"
+	require 'rails_helper'
 
 	feature '${1:feature_story}' do
 	end
@@ -98,20 +96,23 @@ snippet mod module .. ClassMethods .. end
 			receiver.send :include, InstanceMethods
 		end
 	end
-snippet bef before_filter
-	before_filter :${1:method_name}
-
-	def ${1:method_name}
-
-	end
 snippet desc describe .. end
-	describe ${1:`substitute(Filename(), '^.', '\u&', '')`} do
-
+	describe "${2:method}" do
+		it "${3:docstring}"
 	end
+
+snippet desc describe .. end
+	describe ${1:Klass} do
+	end
+
 snippet it it .. end
 	it '${1:something}' do
 
 	end
+snippet exp expect block end
+	expect {
+		${1:tested_value}
+	}.to change(${2:expected_value}).to(${3:changed_value})
 snippet exp expect .. end
 	expect(${1:tested_value}).to eq(${2:expected_value})
 snippet feat feature .. end
@@ -124,9 +125,3 @@ snippet scen scenario .. end
 	end
 snippet deb p method(:method).source_location
 	p method(:${1:method_name}).source_location
-
-snippet require rails_helper
-	require 'rails_helper'
-	
-snippet require rails_helper_feature
-	require 'rails_helper_feature'
