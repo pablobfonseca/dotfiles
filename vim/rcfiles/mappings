@@ -143,3 +143,6 @@ nnoremap <leader>6 :colorscheme solarized8_light<cr>
 
 " Open Unite mapping
 nnoremap <leader>um :Unite mapping<cr>
+
+" Dispath
+nnoremap d<cr> :Dispatch 
