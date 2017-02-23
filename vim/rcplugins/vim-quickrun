@@ -1,0 +1,3 @@
+" Vim Quick Run
+Plug 'thinca/vim-quickrun'
+" vim: ft=vim
