@@ -14,7 +14,7 @@ augroup filetype_ruby
   autocmd FileType ruby,eruby,yaml setlocal iskeyword+=?
   autocmd FileType gitcommit setlocal spell textwidth=72
   " Run the current ruby file
-  autocmd FileType ruby nnoremap <leader>r :!ruby %<Tab><cr>
+  autocmd FileType ruby nnoremap <leader>r :QuickRun ruby<cr>
   " Remove trailing whitespace on save for ruby files.
   autocmd BufWritePre *.rb :%s/\s\+$//e
   autocmd BufRead,BufNewFile {Vagrantfile,Gemfile,Guardfile,Thorfile,Procfile,config.ru,*.rake,.pryrc} set filetype=ruby
