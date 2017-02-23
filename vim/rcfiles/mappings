@@ -140,3 +140,6 @@ nnoremap <leader>3 :colorscheme hipster<cr>
 nnoremap <leader>4 :colorscheme vendetta<cr>
 nnoremap <leader>5 :colorscheme mustang<cr>
 nnoremap <leader>6 :colorscheme solarized8_light<cr>
+
+" Open Unite mapping
+nnoremap <leader>um :Unite mapping<cr>
