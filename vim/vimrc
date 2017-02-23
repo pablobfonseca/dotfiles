@@ -42,6 +42,3 @@ call plug#end()
 " Vimrc is split accross multiple files, so loop over and source each
 "---------------------------------------------------------------------
 call s:SourceConfigFilesIn('rcfiles')"
-
-" Fuzzy matcher for Unite
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
