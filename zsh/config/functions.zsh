@@ -1,6 +1,5 @@
 # vim: syntax=sh
 
-function conflicted { vim +Conflicted }
 function vimup { vim +PlugUpdate }
 
 function git-new-remote-tracking {
@@ -10,11 +9,6 @@ function git-new-remote-tracking {
 function git_branch_name {
   val=`git branch 2>/dev/null | grep '^*' | colrm 1 2`
   echo "$val"
-}
-
-function git-done {
-  branch=`git_branch_name`
-  killruby ; spring stop ; git checkout master && git merge $branch --ff-only && bundle install && prepdb && bin/rspec && git push && git branch -D $branch && git push origin :$branch
 }
 
 function git-nuke {
@@ -27,14 +21,6 @@ function git-on-master {
   git checkout master && git pull --rebase 
   git checkout $branch
   git rebase master
-}
-
-function g {
-if [[ $# > 0 ]]; then
-  git $@
-else
-  git status
-fi
 }
 
 # Search for an especific route on rails
@@ -52,19 +38,6 @@ function take {
   cd $1
 }
 
-# Allows commit message without typing quotes (can't have quotes in the commit msg though).
-function gc {
-  git commit -m "$*"
-}
-
-function trash {
-  mv $1 ~/.Trash
-}
-
-function clean_trash {
-  cd ~/.Trash && rm -Rf *
-}
-
 function bundle_search() {
   pattern="$1"; shift
   ag $pattern $(bundle show --paths "$@")
@@ -72,10 +45,6 @@ function bundle_search() {
 
 function branch_clean() {
   git branch --merged | egrep -v "(^\*|master)" | xargs git branch -d
-}
-
-function rspecoverage() {
-  COVERAGE=on rspec spec
 }
 
 function generate_password() {
