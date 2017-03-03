@@ -1,4 +1,0 @@
-" Goyo - Distraction-free writing in Vim
-Plug 'junegunn/goyo.vim'
-" vim: ft=vim
-

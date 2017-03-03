@@ -50,3 +50,15 @@ function branch_clean() {
 function generate_password() {
   openssl rand -hex 8
 }
+
+freethousand() {
+  port="${1:-3000}"
+  pid="$(lsof -Fp -i tcp:$port | sed 's/p//')"
+
+  if [ -n "$pid" ]; then
+    echo "Killing process with PID $pid listening on port $port..." >&2
+    kill $pid
+  else
+    echo "No process listening on port $port" >&2
+  fi
+}

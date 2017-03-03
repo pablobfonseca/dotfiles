@@ -3,7 +3,7 @@
 
 colorscheme vendetta
 
-set vb
+set visualbell
 
 " Easy access to maximizing
 nnoremap <C-_> <C-w>_
@@ -39,11 +39,5 @@ nnoremap <leader>! :redraw!<cr>
 " zoom a vim pane, <C-w>= to re-balance
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
 nnoremap <leader>= :wincmd =<cr>
-
-" Resize full horizontally
-nnoremap <leader>fl <C-w>|
-
-" Resize full vertically
-nnoremap <leader>fl <C-w>_
 
 " vim:ft=vim

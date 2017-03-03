@@ -1,3 +1,5 @@
 " Thesaurus Query - Multi-language Thesaurus Query
+
 Plug 'ron89/thesaurus_query.vim'
+
 " vim: ft=vim

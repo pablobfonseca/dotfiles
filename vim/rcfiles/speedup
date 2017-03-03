@@ -1,6 +1,0 @@
-" Speedup Configurations
-
-" Quick toggle between two files
-nnoremap <leader><leader> <C-^>
-
-" vim: ft=vim

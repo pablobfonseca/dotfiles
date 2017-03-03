@@ -2,11 +2,8 @@
 snippet #!
 	#!/usr/bin/ruby
 
-snippet req feature..end
+snippet rrh
 	require 'rails_helper'
-
-	feature '${1:feature_story}' do
-	end
 snippet =b
 	=begin rdoc
 		${1}
@@ -125,3 +122,7 @@ snippet scen scenario .. end
 	end
 snippet deb p method(:method).source_location
 	p method(:${1:method_name}).source_location
+snippet pry
+	binding.pry
+snippet bug
+	byebug

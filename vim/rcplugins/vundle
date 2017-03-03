@@ -1,6 +1,0 @@
-" Vundle - Manages plugin & filetype bundles.
-
-" Bundle 'VundleVim/Vundle.vim'
-" nnoremap <leader>bi :BundleInstall<cr>
-
-" vim:ft=vim
