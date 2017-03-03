@@ -1,0 +1,75 @@
+#!/usr/bin/env sh
+
+# Check more configs at: https://github.com/nicksp/dotfiles/blob/master/osx/set-defaults.sh
+
+# Set computer name
+COMPUTERNAME='vimmer'
+HOSTNAME='mbp'
+LOCALHOSTNAME='mbp'
+
+####################################
+# General Ui/UNIX
+####################################
+# Set computer name (as done via System Preferences -> Sharing)
+# sudo scutil --set ComputerName $COMPUTERNAME
+# sudo scutil --set HostName $HOSTNAME
+# sudo scutil --set LocalHostName $LOCALHOSTNAME
+# sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $LOCALHOSTNAME
+
+##############################################
+# Apple software: Safari, Updater, iTunes, etc
+##############################################
+# Hide Safari's bookmark bar.
+defaults write com.apple.Safari ShowFavoritesBar -bool false
+
+echo "Setting up safari for development"
+defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
+defaults write -g WebKitDeveloperExtras -bool true
+
+echo "Setting to don't send seach queries to Apple"
+defaults write com.apple.Safari UniversalSearchEnabled -bool false
+defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+
+echo "Preventing Safari from opening ‘safe’ files automatically after downloading"
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+
+# Set Safari’s home page to `about:blank` for faster loading
+defaults write com.apple.Safari HomePage -string "about:blank"
+
+echo "Automatically illuminate built-in MacBook keyboard in low light"
+defaults write com.apple.BezelServices kDim -bool true
+echo "Turn off keyboard illumination when computer is not used for 5 minutes"
+defaults write com.apple.BezelServices kDimTime -int 300
+
+echo "Finder: show hidden files by default"
+defaults write com.apple.finder AppleShowAllFiles -bool true
+
+echo "Show all filename extensions in Finder"
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+echo "Use current directory as default search scope in Finder"
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+echo "Disable press-and-hold for keys in favor of key repeat"
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+echo "Set a blazingly fast keyboard repeat rate"
+defaults write NSGlobalDomain KeyRepeat -int 0.02
+
+echo "Set a shorter Delay until key repeat"
+defaults write NSGlobalDomain InitialKeyRepeat -int 12
+
+echo "Avoid creating .DS_Store files on network volumes"
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+echo "Enable snap-to-grid for desktop icons"
+/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+
+echo "Disable the warning before emptying the Trash"
+defaults write com.apple.finder WarnOnEmptyTrash -bool false
+
+echo "Show the ~/Library folder"
+chflags nohidden ~/Library
