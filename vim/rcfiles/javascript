@@ -6,7 +6,7 @@ augroup filetype_javascript
   " Clear old autocmds in group
   autocmd!
   " Set syntax javascript to coffee script files
-  autocmd FileType javascript nnoremap <leader>n :!node %<Tab><cr>
+  autocmd FileType javascript nnoremap <leader>n :Dispatch node %<cr>
 augroup END
 
 " vim:ft=vim

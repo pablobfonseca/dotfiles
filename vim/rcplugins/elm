@@ -1,3 +1,0 @@
-" Elm.vim - Vim plugin for the Elm programming language
-Plug 'lambdatoast/elm.vim'
-" vim: ft=vim

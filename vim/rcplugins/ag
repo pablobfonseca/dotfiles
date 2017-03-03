@@ -5,7 +5,7 @@ Plug 'rking/ag.vim'
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
-      set grepprg=ag\ --nogroup\ --nocolor
+      set grepprg=rg\ --vimgrep
     endif
 
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!

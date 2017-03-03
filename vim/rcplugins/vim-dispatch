@@ -1,3 +1,8 @@
 " dispatch.vim: asynchronous build and test dispatcher 
+
 Plug 'tpope/vim-dispatch'
+
+nnoremap d<cr> :Dispatch 
+nnoremap <leader>co :Copen<cr>
+nnoremap <leader>cop :Copen!<cr>
 " vim: ft=vim

@@ -28,6 +28,9 @@ augroup git_stuff
   autocmd FileType gitcommit nmap <buffer> <S-Tab> <C-p>
   autocmd FileType gitcommit nmap <buffer> <Tab> <C-n>
   autocmd BufRead,BufNewFile */.git/COMMIT_EDITMSG wincmd _
+  autocmd BufEnter PULLREQ_EDITMSG setlocal filetype=gitcommit
+
+  autocmd BufEnter COMMIT_EDITMSG call OpenCommitMessageDiff()
 augroup END
 
 command! GitDiff call s:GitDiff()

@@ -9,3 +9,4 @@ public/assets
 *.svg
 public/fonts
 bower_components
+node_modules

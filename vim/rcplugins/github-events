@@ -1,0 +1,5 @@
+" vim-github-dashbaord - Browse GitHub events in Vim
+
+Plug 'junegunn/vim-github-dashboard'
+
+" vim: ft=vim

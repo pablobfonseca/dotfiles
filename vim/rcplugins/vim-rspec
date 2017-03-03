@@ -1,4 +1,5 @@
 " Vim-rspec - Run Rspec specs from Vim
+
 Plug 'thoughtbot/vim-rspec'
 
 let g:rspec_runner = "os_x_iterm2"

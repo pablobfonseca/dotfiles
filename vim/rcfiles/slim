@@ -1,9 +1,0 @@
-" Slim template
-
-augroup filetype_slim
-  " Clear old autocmds in group
-  autocmd!
-  autocmd BufRead,BufNewFile *.slim set filetype=slim
-augroup END
-
-" vim:ft=vim

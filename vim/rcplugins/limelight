@@ -1,0 +1,5 @@
+" Limelight - All the world's indeed a stage and we are merely players
+
+Plug 'junegunn/limelight.vim'
+
+" vim: ft=vim

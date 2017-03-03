@@ -25,26 +25,13 @@ nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
 " Source vimrc
 nnoremap <silent><leader>sv :source ~/.vim/vimrc<cr>
 
-" Edit vimrc
-nnoremap <silent><leader>ev :tabe $MYVIMRC<cr>
-
 " Toggle paste mode on and off
 nnoremap <leader>pp :set paste<cr>o<esc>"*]p:set nopaste<cr>
 
 nnoremap ; :
-" Copy the entire file content to the clipboard
-nnoremap <Leader>co mmggVG"*y`m
-" Open code directory
-nnoremap <Leader>oc :e ~/code <cr>
+
 " Indent the whole file
 nnoremap <Leader>i mmgg=G`m
-" Join all the lines
-nnoremap <Leader>mf mmgqap`m:w<cr>
-
-function! CurrenRelativeDirectory()
-  let relative_dir = substitute(expand("%:p:h"), getcwd()."/", "", "")."/"
-  return escape(relative_dir, " ")
-endfunction
 
 " Edit another file in the same directory as the current file
 " uses expression to extract path from current file's path
@@ -58,12 +45,6 @@ nnoremap <space>sav :sav <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 " Use j/k to start, then scroll through autocomplete options
 inoremap <expr> <C-j> ((pumvisible())?("\<C-n>"):("\<C-x><c-n>"))
 inoremap <expr> <C-k> ((pumvisible())?("\<C-p>"):("\<C-x><c-k>"))
-
-" Reselect pasted text. Mnem: 'Get pasted'
-nnoremap gp `[v`]
-
-" Go to position of last edit. Mnem: 'Go to Edit'
-nnoremap ge `.
 
 " Close the quickfix window
 nnoremap <space><space> :ccl<cr>
@@ -127,19 +108,10 @@ inoremap jk <Esc>
 " Jump to start and end of line using the home row keys
 nmap 0 ^
 
-" Reselect the recent pasted text
-nnoremap <leader>v V`]
+" Tab/shift-tab to indent/outdent in visual mode.
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
 
-" Open vim folder splitted
-nnoremap <leader>ev <C-w><C-v><C-l>:Ex ~/.vim<cr>
-
-" Change colorscheme quickly
-nnoremap <leader>1 :colorscheme default<cr>
-nnoremap <leader>2 :colorscheme vividchalk<cr>
-nnoremap <leader>3 :colorscheme hipster<cr>
-nnoremap <leader>4 :colorscheme vendetta<cr>
-nnoremap <leader>5 :colorscheme mustang<cr>
-nnoremap <leader>6 :colorscheme solarized8_light<cr>
-
-" Dispath
-nnoremap d<cr> :Dispatch 
+" Keep selection when indenting/outdenting.
+vnoremap > >gv
+vnoremap < <gv
