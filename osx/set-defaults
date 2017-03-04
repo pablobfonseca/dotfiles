@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
-# Check more configs at: https://github.com/nicksp/dotfiles/blob/master/osx/set-defaults.sh
+# Check more configs at:
+# https://github.com/nicksp/dotfiles/blob/master/osx/set-defaults.sh
+# https://github.com/mathiasbynens/dotfiles/blob/master/.macos
 
 # Set computer name
 COMPUTERNAME='vimmer'
