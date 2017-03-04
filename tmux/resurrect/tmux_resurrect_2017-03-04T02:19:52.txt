@@ -1,0 +1,8 @@
+pane	Personal	1	:zsh	1	:*	1	:/Users/pablobfonseca/.dotfiles	1	zsh	:
+pane	Study	1	:vim	1	:*	1	:/Users/pablobfonseca/code/Study	1	vim	:vim CSS/bootstrap.md
+pane	Study	1	:vim	1	:*	2	:/Users/pablobfonseca/code/Study/Python	0	vim	:vim validate_pin.py
+pane	Work	1	:vim	1	:*	1	:/Users/pablobfonseca/code/Quez/ehv3	1	vim	:vim Gemfile
+window	Personal	1	1	:*	c3bd,158x45,0,0,0
+window	Study	1	1	:*	fa69,158x46,0,0[158x33,0,0,3,158x12,0,34,4]
+window	Work	1	1	:*	c3be,158x45,0,0,1
+state	Personal	Study

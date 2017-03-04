@@ -1,9 +1,11 @@
+# Check more at: https://github.com/nicksp/dotfiles/blob/master/shell/shell_aliases
+#
 # Human readable copy
 alias cp="rsync --archive --human-readable --progress --verbose --whole-file"
 alias scp="rsync --archive --progress --checksum --compress --human-readable --itemize-changes --rsh=ssh --stats --verbose"
 
 alias path="echo $PATH | tr -s ':' '\n'"
-alias pat="pygmentize -O style=monokai -f console256 -g"
+alias pat="pygmentize -O style=monokad -f console256 -g"
 alias cleanvim="vim -N -u NONE"
 alias zshconfig='vim ~/.zshrc'
 alias vimconfig='vim ~/.vimrc'

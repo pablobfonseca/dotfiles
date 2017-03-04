@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 --skip-test-unit
 --skip-bundle
---database=postgresql
 
 def change_log(stream)
   ActiveRecord::Base.logger = Logger.new(stream)
