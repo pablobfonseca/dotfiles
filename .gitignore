@@ -26,4 +26,5 @@ vim/bundles
 vim/plugged
 sessions/
 tmux/plugins
+tmux/resurrect/*
 zsh/.aliases.local
