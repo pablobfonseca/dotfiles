@@ -29,6 +29,7 @@ nnoremap gs :FzfGFiles?<cr>
 nnoremap <leader>bl :FzfBLines<cr>
 nnoremap <leader>fl :FzfLines<cr>
 nnoremap <leader>fh :FzfHelpTags<cr>
+nnoremap <leader>fa :FzfAg<cr>
 
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
