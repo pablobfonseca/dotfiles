@@ -111,7 +111,3 @@ nmap 0 ^
 " Tab/shift-tab to indent/outdent in visual mode.
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
-
-" Keep selection when indenting/outdenting.
-vnoremap > >gv
-vnoremap < <gv
