@@ -2,8 +2,8 @@
 
 answer_is_yes() {
   [[ "$REPLY" =~ ^[Yy]$ ]] \
-    && return 0 \ 
-  || return 1
+    && return 0 \
+    || return 1
 }
 
 ask() {
