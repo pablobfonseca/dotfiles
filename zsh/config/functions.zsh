@@ -71,3 +71,10 @@ function server() {
   python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
 
 }
+
+rvmlist() {
+  local rb
+  rb=$((echo system; rvm list | grep ruby | cut -c 4-) |
+  awk '{print $1}' |
+  fzf-tmux -l 30 +m --reverse) && rvm use $rb
+}
