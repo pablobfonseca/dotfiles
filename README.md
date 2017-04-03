@@ -22,9 +22,8 @@ to follow for newcomers, let me know.
 
 ## Installation
 ```sh
-mkdir ~/code
-git clone https://github.com/pablobfonseca/dotfiles.git ~/code/dotfiles
-cd ~/code/dotfiles
+git clone https://github.com/pablobfonseca/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 rake install
 ```
 
