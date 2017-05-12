@@ -4,6 +4,13 @@ snippet #!
 
 snippet rrh
 	require 'rails_helper'
+snippet rm
+	require 'minitest/autorun'
+
+	class ${1:class}Test < Minitest::Test
+		def test_${2:method_name}
+		end
+	end
 snippet =b
 	=begin rdoc
 		${1}
