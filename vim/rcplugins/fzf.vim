@@ -7,6 +7,7 @@ let g:fzf_files_options =
       \ '--preview "(coderay {} || cat {}) 2> /dev/null | head -'.&lines.'"'
 
 nnoremap <leader>f :Find<cr>
+nnoremap <C-p> :FzfFiles<cr>
 nnoremap <leader>gc :FzfFiles app/controllers<cr>
 nnoremap <leader>gj :FzfFiles app/assets/javascripts<cr>
 nnoremap <leader>gl :FzfFiles lib<cr>
@@ -15,6 +16,8 @@ nnoremap <leader>gs :FzfFiles spec<cr>
 nnoremap <leader>gv :FzfFiles app/views<cr>
 nnoremap <leader>gw :FzfFiles app/workers<cr>
 nnoremap <leader>gh :FzfFiles app/helpers<cr>
+nnoremap <leader>gsv :FzfFiles app/services<cr>
+nnoremap <leader>gpr :FzfFiles app/presenters<cr>
 nnoremap <leader>gy :FzfFiles app/assets/stylesheets<cr>
 nnoremap <leader>gf :FzfFiles spec/factories<cr>
 
@@ -27,7 +30,6 @@ nnoremap <leader>fm :FzfMaps<cr>
 nnoremap <leader>fc :FzfCommits<cr>
 nnoremap gs :FzfGFiles?<cr>
 nnoremap <leader>bl :FzfBLines<cr>
-nnoremap <leader>fl :FzfLines<cr>
 nnoremap <leader>fh :FzfHelpTags<cr>
 nnoremap <leader>fa :FzfAg<cr>
 
