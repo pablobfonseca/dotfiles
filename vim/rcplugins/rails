@@ -1,5 +1,5 @@
 " Rails.vim - Help for working with Rails projects in vim
 
-Plug 'tpope/vim-rails', {'for': ['ruby', 'eruby'] }
+Plug 'tpope/vim-rails'
 
 " vim:ft=vim

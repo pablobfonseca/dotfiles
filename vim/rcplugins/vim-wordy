@@ -1,5 +1,0 @@
-" Vim Wordy - Uncover usage problems in your writing
-
-Plug 'reedes/vim-wordy'
-
-" vim: ft=vim

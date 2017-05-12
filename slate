@@ -49,12 +49,14 @@ layout default 'Slack'                        move ${fullscreen}
 layout default 'VLC'                          move ${fullscreen}
 layout default 'Finder'                       move ${rightHalf}
 layout default 'Evernote'                     move ${centered}
+layout default 'PDF Expert'                   move ${fullscreen}
 layout split 'Google Chrome'                  move ${leftHalf}
 layout split 'Safari'                         move ${leftHalf}
 layout split 'iTerm2'                         move ${rightHalf}
 layout split 'Finder'                         move ${rightHalf}
 layout split 'Evernote'                       move ${rightHalf}
 layout split 'Slack'                          move ${rightHalf}
+layout split 'PDF Expert'                     move ${leftHalf}
 
 # Bindings
 bind b:${master} focus 'Google Chrome'
@@ -64,6 +66,7 @@ bind f:${master} focus 'Finder'
 bind e:${master} focus 'Evernote'
 bind s:${master} focus 'Slack'
 bind v:${master} focus 'VLC'
+bind p:${master} focus 'PDF Expert'
 
 bind g:${master} move ${centered}
 bind o:${master} move ${fullscreen}
