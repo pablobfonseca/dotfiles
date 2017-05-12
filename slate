@@ -82,15 +82,15 @@ bind m:${master} move ${bottomRightQuarter}
 bind 7:${master} hint ASDFJKLGH
 bind ,:${master} throw previous
 
-bind right:${master} resize +10% +0
-bind left:${master}  resize -10% +0
-bind up:${master}    resize +0 -10%
-bind down:${master}  resize +0 +10%
+bind right:${master} resize +5% +0
+bind left:${master}  resize -5% +0
+bind up:${master}    resize +0 -5%
+bind down:${master}  resize +0 +5%
 
-bind right:${alt} nudge +10% +0
-bind left:${alt}  nudge -10% +0
-bind up:${alt}    nudge +0 -10%
-bind down:${alt}  nudge +0 +10%
+bind right:${alt} nudge +5% +0
+bind left:${alt}  nudge -5% +0
+bind up:${alt}    nudge +0 -5%
+bind down:${alt}  nudge +0 +5%
 
 bind d:${hyper} layout default
 bind s:${hyper} layout split
