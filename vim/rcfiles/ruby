@@ -15,6 +15,8 @@ augroup filetype_ruby
   autocmd FileType gitcommit setlocal spell textwidth=72
   " Run the current ruby file
   autocmd FileType ruby nnoremap <leader>r :Dispatch ruby %<cr>
+  " Generage tags for ruby files
+  autocmd FileType ruby nnoremap <Leader>rt :!ctags -R --languages=ruby --exclude=.git --exclude=log .<cr>
   " Remove trailing whitespace on save for ruby files.
   autocmd BufWritePre *.rb :%s/\s\+$//e
   autocmd BufRead,BufNewFile {Vagrantfile,Gemfile,Guardfile,Thorfile,Procfile,config.ru,*.rake,.pryrc} set filetype=ruby
@@ -26,9 +28,19 @@ augroup filetype_ruby
         \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
         \ if expand('%') =~# '_spec\.rb$' |
         \   let b:dispatch = 'rspec %' |
+        \ elseif expand('%') =~# '_test\.rb$' |
+        \   let b:dispatch = 'ruby -Ilib:test %' |
         \ elseif !exists('b:dispatch') |
         \   let b:dispatch = 'ruby -wc %' |
         \ endif
+
+  " Clean comments
+  autocmd FileType ruby nnoremap <leader>cc :g/#/d<cr>
+  nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
+  nnoremap <Leader>s :call RunNearestSpec()<CR>
+  nnoremap <Leader>l :call RunLastSpec()<CR>
+  nnoremap <leader>or :tabe config/routes.rb<cr>
+  nnoremap <leader>ol :tabe config/locales<cr>
 augroup END
 
 " Convert 1.8 hash syntax to 1.9 syntax
@@ -36,8 +48,5 @@ nnoremap <leader>19 :%s/:\([^ ]*\)\(\s*\)=>/\1:/gc<cr>
 vnoremap <leader>19 :s/:\([^ ]*\)\(\s*\)=>/\1:/g<cr>
 nnoremap <leader>18 :%s/\(\w\+\):\s/:\1 => /gc<cr>
 vnoremap <leader>18 :s/\(\w\+\):\s/:\1 => /g<cr>
-
-nnoremap <leader>or :tabe config/routes.rb<cr>
-nnoremap <leader>ol :tabe config/locales<cr>
 
 " vim:ft=vim

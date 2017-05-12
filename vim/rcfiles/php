@@ -1,0 +1,17 @@
+" PHP configurations
+"------------------------
+
+augroup filetype_php
+  " Clear old autocmds in group
+  autocmd!
+  " autoindent with two spaces, always expand tabs
+  autocmd FileType php setlocal ai sw=4 sts=4 et
+  " Run the current php file
+  autocmd FileType php nnoremap <leader>p :Dispatch php %<cr>
+  " Generage tags for php files
+  autocmd FileType php nnoremap <Leader>rt :!ctags -R --languages=php --exclude=.git --exclude=log .<cr>
+
+  nnoremap <leader>t :!phpunit %<cr>
+augroup END
+
+" vim: ft=vim
