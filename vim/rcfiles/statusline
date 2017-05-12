@@ -65,7 +65,7 @@ function! HasPaste()
 endfunction
 
 function! CurDir()
-  let curdir = substitute(getcwd(), '/Users/nation/', "~/", "g")
+  let curdir = substitute(getcwd(), '/Users/pablobfonseca/', "~/", "g")
   return curdir
 endfunction
 

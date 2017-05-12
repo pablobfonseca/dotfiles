@@ -2,10 +2,11 @@
 
 " Mappings
 " ----------------------
-nnoremap K :exe 'Ag' expand('<cword>')<cr>
 
-" Opens the file explorer in a split window
-nnoremap <leader>of :Sex<cr>
+nnoremap K :exe 'FzfAg' expand('<cword>')<cr>
+
+" Opens help the word under the cursor
+nnoremap <leader>h :exe 'help' expand('<cword>')<cr>
 
 " select last paste in visual mode
 nnoremap gp `[v`]
@@ -93,12 +94,6 @@ nnoremap <ScrollWheelRight> <nop>
 nnoremap <S-ScrollWheelRight> <nop>
 nnoremap <C-ScrollWheelRight> <nop>
 
-" Coding notes
-nnoremap <leader>cn :Sexplore ~/Dropbox/notes/Upcase/<cr>
-
-" Thought notes
-nnoremap <leader>tn :e ~/Dropbox/notes/thoughts.txt<cr>
-
 " Open Gemfile
 nnoremap <leader>og :e Gemfile<cr>
 
@@ -111,3 +106,9 @@ nmap 0 ^
 " Tab/shift-tab to indent/outdent in visual mode.
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
+
+" Quickly browse to any tag/symbol in the project
+nmap <leader>ot :tag<space>
+
+" Save file as sudo
+cmap w!! w !sudo tee % >/dev/null

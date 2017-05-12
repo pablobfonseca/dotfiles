@@ -90,6 +90,7 @@ function! AlignLine(line, sep, maxpos, extra)
   return m[1] . spaces . m[2]
 endfunction
 
+" TODO: Create a function to search gems right from vim
 function! SearchForCallSitesCursor()
   let searchTerm = expand("<cword>")
   call SearchForCallSites(searchTerm)
