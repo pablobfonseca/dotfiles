@@ -40,7 +40,7 @@ alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v exten
 
 # IP address
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en1"
+alias localip="ipconfig getifaddr en0"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias modemip="netstat -rn | grep default"
 
@@ -48,6 +48,9 @@ alias modemip="netstat -rn | grep default"
 alias st="git st"
 alias gitlog="git log --all -p --"
 alias bselect="git bselect"
+
+# Check port 3000
+alias check3000='lsof -i :3000'
 
 # Linux
 alias nocaps="/usr/bin/setxkbmap -option 'ctrl:nocaps'"
