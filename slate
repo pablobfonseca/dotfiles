@@ -45,9 +45,7 @@ alias bottomRightQuarter ${sox}+${ssx}/2;${soy}+${ssy}/2 ${ssx}/2;${ssy}/2
 layout default 'Google Chrome'                move ${fullscreen}
 layout default 'Safari'                       move ${fullscreen}
 layout default 'iTerm2'                       move ${fullscreen}
-layout default 'Slack'                        move ${fullscreen}
 layout default 'VLC'                          move ${fullscreen}
-layout default 'Finder'                       move ${rightHalf}
 layout default 'Evernote'                     move ${centered}
 layout default 'PDF Expert'                   move ${fullscreen}
 layout split 'Google Chrome'                  move ${leftHalf}
