@@ -7,8 +7,7 @@ function git-new-remote-tracking {
 }
 
 function git_branch_name {
-  val=`git branch 2>/dev/null | grep '^*' | colrm 1 2`
-  echo "$val"
+  echo $(git branch 2>/dev/null | grep '^*' | colrm 1 2)
 }
 
 function git-nuke {
@@ -45,6 +44,12 @@ function bundle_search() {
 
 function branch_clean() {
   git branch --merged | egrep -v "(^\*|master)" | xargs git branch -d
+}
+
+function branch_remote_clean() {
+  git branch -r --merged origin/master \
+    | awk -F/ '/^\s*origin/ {if (!match($0, /origin\/master/)) {sub("^\\s*origin/", ""); print}}' \
+    | xargs -rpn1 git push origin --delete
 }
 
 function generate_password() {
