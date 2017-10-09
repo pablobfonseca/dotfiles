@@ -2,7 +2,7 @@
 
 Plug 'junegunn/vim-easy-align'
 
-vmap <cr> <Plug>(EasyAlign)
+vmap <leader>ea <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
