@@ -10,7 +10,7 @@ nnoremap <leader>f :Find<cr>
 nnoremap <C-p> :FzfFiles<cr>
 nnoremap <leader>gc :FzfFiles app/controllers<cr>
 nnoremap <leader>gj :FzfFiles app/assets/javascripts<cr>
-nnoremap <leader>gl :FzfFiles lib<cr>
+nnoremap <leader>gl :FzfFiles config/locales<cr>
 nnoremap <leader>gm :FzfFiles app/models<cr>
 nnoremap <leader>gs :FzfFiles spec<cr>
 nnoremap <leader>gv :FzfFiles app/views<cr>
