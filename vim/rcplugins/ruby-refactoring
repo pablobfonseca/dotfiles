@@ -2,4 +2,6 @@
 
 Plug 'pablobfonseca/vim-ruby-refactoring', {'for': 'ruby'}
 
+nnoremap <leader>p :RExtractLet<cr>
+
 " vim:ft=vim
