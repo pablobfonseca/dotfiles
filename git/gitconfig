@@ -131,3 +131,5 @@
   modified                = red
 [git-pair]
 	scope                   = global
+[http]
+	postBuffer = 524288000
