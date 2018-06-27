@@ -55,7 +55,6 @@ set-option -g display-panes-colour $tm_color_inactive
 # clock
 set-window-option -g clock-mode-colour $tm_color_active
 
-tm_spotify="#[fg=$tm_color_music]#(osascript ~/.tmux/applescripts/spotify.scpt)"
 tm_itunes="#[fg=$tm_color_music]#(osascript ~/.tmux/applescripts/itunes.scpt)"
 
 tm_date="#[fg=$tm_color_inactive] %a, %b, %d"

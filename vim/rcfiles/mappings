@@ -24,7 +24,7 @@ nmap Y y$
 nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
 
 " Source vimrc
-nnoremap <silent><leader>sv :source ~/.vim/vimrc<cr>
+nnoremap <leader>sv :source ~/.vim/vimrc<cr>
 
 " Toggle paste mode on and off
 nnoremap <leader>pp :set paste<cr>o<esc>"*]p:set nopaste<cr>
@@ -113,3 +113,12 @@ nmap <leader>ot :tag<space>
 
 " Save file as sudo
 cmap w!! w !sudo tee % >/dev/null
+
+" Move split to tab
+noremap <leader>mt <c-w><s-t>
+
+" Map to increment and decrement
+nnoremap + <C-a>
+nnoremap - <C-x>
+xnoremap + g<C-a>
+xnoremap - g<C-x>

@@ -43,6 +43,7 @@ alias bottomRightQuarter ${sox}+${ssx}/2;${soy}+${ssy}/2 ${ssx}/2;${ssy}/2
 
 # Layouts
 layout default 'Google Chrome'                move ${fullscreen}
+layout default 'Firefox'                      move ${fullscreen}
 layout default 'Safari'                       move ${fullscreen}
 layout default 'iTerm2'                       move ${fullscreen}
 layout default 'VLC'                          move ${fullscreen}
@@ -51,7 +52,7 @@ layout default 'PDF Expert'                   move ${fullscreen}
 layout split 'Google Chrome'                  move ${leftHalf}
 layout split 'Safari'                         move ${leftHalf}
 layout split 'iTerm2'                         move ${rightHalf}
-layout split 'Finder'                         move ${rightHalf}
+layout split 'Firefox'                        move ${leftHalf}
 layout split 'Evernote'                       move ${rightHalf}
 layout split 'PDF Expert'                     move ${leftHalf}
 
@@ -59,11 +60,13 @@ layout split 'PDF Expert'                     move ${leftHalf}
 bind b:${master} focus 'Google Chrome'
 bind q:${master} focus 'Safari'
 bind t:${master} focus 'iTerm2'
-bind f:${master} focus 'Finder'
+bind c:${master} focus 'Terminal'
+bind f:${master} focus 'Firefox'
 bind e:${master} focus 'Evernote'
 bind s:${master} focus 'Slack'
 bind v:${master} focus 'VLC'
 bind p:${master} focus 'PDF Expert'
+bind z:${master} focus 'zoom.us'
 
 bind g:${master} move ${centered}
 bind o:${master} move ${fullscreen}

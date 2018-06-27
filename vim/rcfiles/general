@@ -24,7 +24,9 @@ set cmdheight=2
 set formatoptions-=r              " Stop vim to keep adding comments on carriage return
 set relativenumber
 set number
+set re=1
 scriptencoding utf-16             " Allow emoji in vimrc
+set nrformats+=alpha             " Force decimal-based arithmetic
 
 " Disable sound/visual bell on errors
 " May need additional config about audible bell

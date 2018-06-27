@@ -1,0 +1,3 @@
+" Vim-Elixir - Vim configuration for Elixir
+Plug 'elixir-editors/vim-elixir', {'for': 'elixir'}
+" vim: ft=vim

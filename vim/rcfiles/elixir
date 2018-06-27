@@ -1,0 +1,8 @@
+" Elixir configurations
+augroup filetype_elixir
+  " Clear old autocmds in group
+  autocmd!
+
+  autocmd FileType elixir nnoremap <leader>e :Dispatch elixir %<cr>
+augroup END
+" vim: ft=vim
