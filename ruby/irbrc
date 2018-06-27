@@ -71,3 +71,15 @@ class Object
     (methods - Object.instance_methods).sort
   end
 end
+
+class Array
+  def self.test_list(x=10)
+    Array(1..x)
+  end
+end
+
+class Hash
+  def self.test_list
+    Array(:a..:z).each_with_object({}) {|x,h| h[x] = rand(100)}
+  end
+end

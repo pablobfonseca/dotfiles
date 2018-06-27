@@ -9,7 +9,7 @@
 " Author: Pablo Fonseca <pablofonseca777@gmail.com>
 " Description: VIM Rocks!
 " Source: http://github.com/pablobfonseca/dotfiles
-" Last Modified: February 20, 2017
+" Last Modified: December 01, 2017
 
 let mapleader=","
 let maplocalleader="-"

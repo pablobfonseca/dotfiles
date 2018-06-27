@@ -1,7 +1,0 @@
-" Ruby refactoring - Refactoring tool for Ruby in vim!
-
-Plug 'pablobfonseca/vim-ruby-refactoring', {'for': 'ruby'}
-
-nnoremap <leader>p :RExtractLet<cr>
-
-" vim:ft=vim

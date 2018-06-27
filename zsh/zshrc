@@ -14,12 +14,11 @@ export EDITOR=$VISUAL
 export BUNDLER_EDITOR='vim'
 
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-export XIKI_DIR="~/xiki_project/"
 
 export ZSH=/Users/pablobfonseca/.oh-my-zsh
 plugins=(brew zsh-syntax-highlighting osx)
 
-ZSH_THEME="cjt"
+ZSH_THEME="powerlevel9k/powerlevel9k"
 source $ZSH/oh-my-zsh.sh
 
 # Allow completing of the remainder of a command

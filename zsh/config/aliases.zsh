@@ -54,3 +54,8 @@ alias check3000='lsof -i :3000'
 
 # Linux
 alias nocaps="/usr/bin/setxkbmap -option 'ctrl:nocaps'"
+
+# EHV Prod
+alias ehvprod="cx ssh -s 'ehv-stage' -e production Jaguar"
+
+alias mux="tmuxinator"
