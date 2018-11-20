@@ -58,15 +58,12 @@ layout split 'PDF Expert'                     move ${leftHalf}
 
 # Bindings
 bind b:${master} focus 'Google Chrome'
-bind q:${master} focus 'Safari'
 bind t:${master} focus 'iTerm2'
-bind c:${master} focus 'Terminal'
 bind f:${master} focus 'Firefox'
 bind e:${master} focus 'Evernote'
 bind s:${master} focus 'Slack'
-bind v:${master} focus 'VLC'
 bind p:${master} focus 'PDF Expert'
-bind z:${master} focus 'zoom.us'
+bind c:${master} focus 'Skype'
 
 bind g:${master} move ${centered}
 bind o:${master} move ${fullscreen}

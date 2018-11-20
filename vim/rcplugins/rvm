@@ -1,0 +1,4 @@
+" Vim RVM - Switch ruby versions from inside vim
+Plug 'tpope/vim-rvm'
+
+" vim: ft=vim

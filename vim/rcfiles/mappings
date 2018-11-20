@@ -98,9 +98,6 @@ nnoremap <C-ScrollWheelRight> <nop>
 " Open Gemfile
 nnoremap <leader>og :e Gemfile<cr>
 
-" Map jk as Esc
-inoremap jk <Esc>
-
 " Jump to start and end of line using the home row keys
 nmap 0 ^
 
@@ -122,3 +119,14 @@ nnoremap + <C-a>
 nnoremap - <C-x>
 xnoremap + g<C-a>
 xnoremap - g<C-x>
+
+function! PromoteToLet()
+  :normal! dd
+  " :exec '?^\s*it\>'
+  :normal! P
+  :.s/\(\w\+\) = \(.*\)$/let(:\1){ \2 }/
+  :normal ==
+endfunction
+
+command! PromoteToLet :call PromoteToLet()
+map <leader>let :PromoteToLet<cr>

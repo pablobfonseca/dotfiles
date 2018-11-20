@@ -36,7 +36,7 @@ augroup filetype_ruby
 
   " Clean comments
   autocmd FileType ruby nnoremap <leader>cc :g/#/d<cr>
-  nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
+  nnoremap <Leader>t :w<cr>:call RunCurrentSpecFile()<CR>
   nnoremap <Leader>s :call RunNearestSpec()<CR>
   nnoremap <Leader>l :call RunLastSpec()<CR>
   nnoremap <leader>or :tabe config/routes.rb<cr>

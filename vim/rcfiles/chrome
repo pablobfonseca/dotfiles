@@ -28,4 +28,6 @@ command! OpenTab call <sid>OpenTab(0, 0)
 command! OpenTabDetached call <sid>OpenTab(0, 1)
 nnoremap gl <silent> :OpenAndReloadTab<cr>
 nnoremap gL <silent> :OpenTabDetached<cr>
+
+nnoremap <leader>gr :!chrome-cli reload<cr><cr>
 " vim: ft=vim
