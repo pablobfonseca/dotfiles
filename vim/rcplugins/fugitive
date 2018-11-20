@@ -6,7 +6,6 @@ nmap <leader>st :call <sid>SaveSessionAndShowGitStatus()<cr>
 nmap <leader>ST :call <sid>RestoreSession()<cr>
 nmap <leader>gd :Gdiff<cr>
 nmap <leader>gb :Gblame<CR>
-nmap <leader>gr :Gread<CR>
 
 function! s:SaveSessionAndShowGitStatus()
   let session_name = split(getcwd(), "/")[-1]

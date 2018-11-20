@@ -1,0 +1,5 @@
+" Vim Github Dashboard - Browse GitHub events in Vim
+Plug 'junegunn/vim-github-dashboard'
+
+let g:github_dashboard = { 'username': 'pablobfonseca', 'password': $GITHUB_TOKEN  }
+" vim: ft=vim

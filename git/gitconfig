@@ -16,7 +16,7 @@
   email                   = pablofonseca777@gmail.com
   signingkey              = D3193F6E
 [branch]
-  autosetupmerge          = always
+  autosetupmerge          = true
   autosetuprebase         = always
 [branch "master"]
   remote                  = origin
@@ -100,6 +100,8 @@
   fop                     = !git fetch origin && git pl
 	users                   = !/usr/local/lib/node_modules/git-pair/users.js
   branch-status           = !~/bin/git-bstats
+  lg                      = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+
 [diff "ruby"]
   funcname                = "^ *\\(\\(def\\) .*\\)"
 [diff]
@@ -110,6 +112,7 @@
   name                    = bundle
   driver                  = bundle
 [merge]
+  ff                      = only
   tool                    = fugitive
 [mergetool "fugitive"]
   cmd                     = vim -f -c \"Gdiff\" \"$MERGED\"
@@ -119,7 +122,7 @@
 [credential]
   helper                  = osxkeychain
 [rerere]
-  enabled                 = true
+  enabled                 = 1
 [commit]
   template                = ~/.gitmessage
 [gitsh]

@@ -1,0 +1,4 @@
+" Vim Cucumber
+Plug 'tpope/vim-cucumber'
+
+nnoremap <leader>cc :Dispatch cucumber %<cr>

@@ -7,18 +7,38 @@
 #                
 # 
 
-set -o vi
+# set -o vi
+source ~/.dotfiles/zsh/env_variables.zsh
+
 export VISUAL='vim'
 export EDITOR=$VISUAL
 
 export BUNDLER_EDITOR='vim'
 
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+export GOPATH=$(go env GOPATH)
+
+ZSH_THEME="spaceship"
+
+bgnotify_threshold=4
+function bgnotify_formatted {
+  ## $1=exit_status, $2=command, $3=elapsed_time
+  [ $1 -eq 0 ] && title="Command has been executed "
+  bgnotify "$title -- after $3 s" "$2";
+}
 
 export ZSH=/Users/pablobfonseca/.oh-my-zsh
-plugins=(brew zsh-syntax-highlighting osx)
+plugins=(
+  brew
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  osx
+  zsh-interactive-cd
+  bgnotify
+  web-search
+  z
+)
 
-ZSH_THEME="powerlevel9k/powerlevel9k"
 source $ZSH/oh-my-zsh.sh
 
 # Allow completing of the remainder of a command
@@ -28,14 +48,13 @@ bindkey "^N" insert-last-word
 HISTSIZE=20000
 HISTFILE=~/.zsh_history
 SAVEHIST=20000
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=200"
 
 # Enable completion
 autoload -U compinit
 compinit
 
 # Add paths
-export DOTFILES=$HOME/dotfiles
+export DOTFILES=$HOME/.dotfiles
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/pablobfonseca/.rvm/bin"
 export PATH="$HOME/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
@@ -60,10 +79,12 @@ export PATH=$PATH:bin
 # Heroku toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
+# Composer
+export PATH="$HOME/.composer/vendor/bin:$PATH"
+
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 
@@ -82,9 +103,18 @@ setopt auto_cd
 cdpath=($HOME/code $HOME/dotfiles)
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/plugins/*
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+source ~/.zsh/plugins/zsh-interactive-cd.plugin.zsh
 
 source ~/bin/tmuxinator
-source ~/.xsh
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+MYSQL=/usr/local/mysql/bin
+export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
+export PATH=$PATH:$MYSQL
+export DYLD_LIBRARY_PATH=/usr/local/mysql/lib:$DYLD_LIBRARY_PATH
+export PATH="$(brew --prefix qt@5.5)/bin:$PATH"
+
+# Set Spaceship ZSH as a prompt
+autoload -U promptinit; promptinit
+prompt spaceship

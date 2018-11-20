@@ -16,7 +16,6 @@ alias upgrade="brew upgrade && brew cleanup"
 alias install="brew install"
 alias cinstall="brew cask install"
 alias doctor="brew doctor"
-alias cleanup="brew cleanup && brew cask cleanup"
 alias weather="curl -4 http://wttr.in/"
 alias aliases="vim ~/.dotfiles/zsh/config/aliases.zsh"
 alias :q="exit"
@@ -26,6 +25,10 @@ alias laliases="vim ~/.zsh/.aliases.local"
 alias mvim="open -a MacVim.app"
 alias e="vim"
 alias startredis="redis-server /usr/local/etc/redis.conf"
+alias railscs="rails c -s"
+alias hp='heroku accounts:set personal'
+alias hw='heroku accounts:set work'
+alias lg='lazygit'
 
 source ~/.zsh/.aliases.local
 
