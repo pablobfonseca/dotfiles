@@ -28,3 +28,5 @@ sessions/
 tmux/plugins
 tmux/resurrect/*
 zsh/.aliases.local
+
+zsh/env_variables.zsh
