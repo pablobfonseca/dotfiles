@@ -112,7 +112,7 @@
   name                    = bundle
   driver                  = bundle
 [merge]
-  ff                      = only
+  ; ff                      = only
   tool                    = fugitive
 [mergetool "fugitive"]
   cmd                     = vim -f -c \"Gdiff\" \"$MERGED\"
