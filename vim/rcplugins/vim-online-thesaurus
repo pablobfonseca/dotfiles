@@ -1,4 +1,0 @@
-" Vim Online Thesaurus - A vim plugin for looking up words in an online thesaurus
-Plug 'junegunn/vim-online-thesaurus'
-
-" vim: ft=vim

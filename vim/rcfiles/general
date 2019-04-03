@@ -26,7 +26,7 @@ set relativenumber
 set number
 set re=1
 scriptencoding utf-16             " Allow emoji in vimrc
-set nrformats+=alpha             " Force decimal-based arithmetic
+set nrformats+=alpha              " Force decimal-based arithmetic
 
 " Disable sound/visual bell on errors
 " May need additional config about audible bell
@@ -56,7 +56,7 @@ set undofile " Create FILE.un~ files for persistent undo
 set shiftround " When at 3 spaces and I hit >>, go to 4, not 5.
 
 " (Hopefully) removes the delay when hitting esc in insert mode
-set noesckeys
+" set noesckeys " do not work on neovim
 set ttimeout
 " Don't wait so long for the next keypress (particularly in ambigious Leader
 " situations.

@@ -1,0 +1,5 @@
+" Vim-test - Run your tests at the speed of thought
+Plug 'janko-m/vim-test'
+
+let test#strategy = 'dispatch'
+" vim: ft=vim
