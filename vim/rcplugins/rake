@@ -1,0 +1,5 @@
+" Rake.vim: it's like rails.vim without the rails
+
+Plug 'tpope/vim-rake', { 'for': 'ruby' }
+
+" vim: ft=vim
