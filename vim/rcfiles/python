@@ -5,7 +5,7 @@ augroup filetype_python
   " Clear old autocmds in group
   autocmd!
   autocmd BufNewFile,BufRead *.py setlocal ai sw=4 ts=4 sts=4 et fileformat=unix
-  autocmd FileType python nnoremap <leader>py :!python %<Tab><cr>
+  autocmd FileType python nnoremap <leader>py :Dispatch python3 %<Tab><cr>
   autocmd FileType python nnoremap <leader>pt :TestFile<cr>
   autocmd BufWritePre *.py :%s/\s\+$//e
 augroup END
