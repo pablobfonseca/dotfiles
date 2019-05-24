@@ -130,6 +130,9 @@ snippet scen scenario .. end
 snippet deb p method(:method).source_location
 	p method(:${1:method_name}).source_location
 snippet pry
-	binding.pry
+	require 'pry'; binding.pry
 snippet bug
-	byebug
+	require 'byebug'; byebug
+
+snippet let
+	let(:${1:name}) { double(:${1:name}) }
