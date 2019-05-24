@@ -100,7 +100,7 @@ bindkey '^x^e' edit-command-line
 
 # Cdpath for quick navigation
 setopt auto_cd
-cdpath=($HOME/code $HOME/dotfiles)
+cdpath=($HOME/code $DOTFILES)
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/plugins/zsh-interactive-cd.plugin.zsh
