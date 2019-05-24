@@ -83,3 +83,7 @@ rvmlist() {
   awk '{print $1}' |
   fzf-tmux -l 30 +m --reverse) && rvm use $rb
 }
+
+generate_tags() {
+  ctags --tag-relative --extra=+f -Rf .git/tags --languages=-javascript,sql && bundle show --paths | xargs ctags --tag-relative --extra=+f -Raf .git/tags --languages=-javascript,sql
+}
