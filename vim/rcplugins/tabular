@@ -1,6 +1,0 @@
-" Tabular - Vim script for text filtering and alignment
-Plug 'godlygeek/tabular'
-
-vnoremap <leader>at :Tab<space>
-
-" vim: ft=vim
