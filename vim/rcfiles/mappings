@@ -50,6 +50,9 @@ inoremap <expr> <C-k> ((pumvisible())?("\<C-p>"):("\<C-x><c-k>"))
 " Close the quickfix window
 nnoremap <space><space> :ccl<cr>
 
+" Increase and decrease numbers
+nnoremap <C-b> <C-a>
+
 " Let's be reasonable, shall we?
 nnoremap k gk
 nnoremap j gj
@@ -119,14 +122,3 @@ nnoremap + <C-a>
 nnoremap - <C-x>
 xnoremap + g<C-a>
 xnoremap - g<C-x>
-
-function! PromoteToLet()
-  :normal! dd
-  " :exec '?^\s*it\>'
-  :normal! P
-  :.s/\(\w\+\) = \(.*\)$/let(:\1){ \2 }/
-  :normal ==
-endfunction
-
-command! PromoteToLet :call PromoteToLet()
-map <leader>let :PromoteToLet<cr>
