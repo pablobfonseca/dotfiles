@@ -1,0 +1,3 @@
+" vim-slim - Syntax highlighting for VIM
+Plug 'slim-template/vim-slim'
+" vim: ft=vim

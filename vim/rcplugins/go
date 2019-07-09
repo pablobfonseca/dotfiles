@@ -1,0 +1,3 @@
+" vim-go - Go development plugin for Vim
+Plug 'fatih/vim-go', { 'for': 'go' }
+" vim:ft=vim

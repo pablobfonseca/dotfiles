@@ -2,6 +2,6 @@
 
 Plug 'garbas/vim-snipmate'
 
-nnoremap <leader>sn :e ~/.vim/snippets/
+nnoremap <leader>sn :FzfFiles ~/.vim/snippets<cr>
 
 " vim:ft=vim

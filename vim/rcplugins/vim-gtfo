@@ -1,6 +1,0 @@
-" vim-gtfo - Go to Terminal or File manager
-Plug 'justinmk/vim-gtfo'
-
-let g:gtfo#terminals = { 'mac': 'iterm' }
-
-" vim: ft=vim
