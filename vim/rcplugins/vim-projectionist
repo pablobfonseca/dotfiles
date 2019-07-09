@@ -1,0 +1,3 @@
+" projectionist.vim - Granular project configuration
+Plug 'tpope/vim-projectionist'
+" vim:ft=vim
