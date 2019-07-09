@@ -23,7 +23,7 @@ namespace :dotfiles do
   end
 end
 
-namespace :shell do
+namespace :vim do
   desc "Install vim plugins"
   task :install do 
     Environment::Vim.new.install
@@ -31,7 +31,7 @@ namespace :shell do
   end
 
   desc "Update vim plugins"
-  task :install do 
+  task :update do 
     Environment::Vim.new.update
     Environment::Vim::Plugins.new.update
   end
