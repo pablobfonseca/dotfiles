@@ -15,7 +15,7 @@ hi User3 ctermbg=lightgray ctermfg=red guifg=#ffff00 guibg=#444444 gui=bold
 set statusline= " Clear the statusline for vimrc reloads
 
 set stl=%*                        " Normal statusline highlight
-set stl=%{rvm#statusline()}       " Ruby version
+" set stl=%{rvm#statusline()}       " Ruby version
 set stl+=%{fugitive#statusline()} " Current branch
 set stl+=%{InsertSpace()}         " Put a leading space in
 
