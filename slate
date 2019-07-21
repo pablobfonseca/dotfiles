@@ -63,7 +63,7 @@ bind f:${master} focus 'Firefox'
 bind e:${master} focus 'Evernote'
 bind s:${master} focus 'Slack'
 bind p:${master} focus 'PDF Expert'
-bind c:${master} focus 'Skype'
+bind c:${master} focus 'Terminal'
 
 bind g:${master} move ${centered}
 bind o:${master} move ${fullscreen}
