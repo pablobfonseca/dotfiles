@@ -19,7 +19,7 @@ module Environment
         case STDIN.gets.chomp
         when 'y'
           say "Installing oh-my-zsh"
-          system %{git clone https://github.com/robbyrussel/oh-my-zsh.git #{path}}
+          system %{sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"}
         when 'q'
           exit
         else
