@@ -1,0 +1,78 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/Users/pablobfonseca/.emacs.d/" . "config/")
+ ("/Users/pablobfonseca/code/Nexaas/emites-ruby/app/controllers/api/" . "v1/")
+ ("/Users/pablobfonseca/code/Nexaas/emites-ruby/app/controllers/" . "api/")
+ ("/Users/pablobfonseca/code/Nexaas/emites-ruby/app/" . "controllers/")
+ ("/Users/pablobfonseca/code/Nexaas/" . "emites-ruby/")
+ ("/Users/pablobfonseca/code/" . "Study/")
+ ("/Users/pablobfonseca/" . ".emacs.d/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/Users/pablobfonseca/.emacs.d/"
+ "/Users/pablobfonseca/Downloads/"
+ "/Users/pablobfonseca/code/"
+ "/Users/pablobfonseca/code/Study/"
+ "/Users/pablobfonseca/code/Nexaas/emites-ruby/"
+ "/Users/pablobfonseca/.emacs.d/config/"
+ "/Users/pablobfonseca/code/Nexaas/emites-ruby/app/controllers/api/v1/"
+ "/Users/pablobfonseca/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "init.el"
+ "Mastering emacs.pdf"
+ "animal.py"
+ "request (1).json"
+ "emacs.org"
+ "DOCKER.md"
+ "evil-config.el"
+ "general-config.el"
+ "animal.rb"
+ "animal.php"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/Users/pablobfonseca/.emacs.d/config/" (23881 35992 648550 939000) "general-config.el" "evil-config.el" "general-config.el~" "config" "config~" "../" "./")
+
+ ("/Users/pablobfonseca/.emacs.d/" (23881 37830 777431 331000) "elpa/" "recentf" ".emacs.d/" "init.el" "auto-save-list/" "recentf~" "transient/" "ido.last~" "config/" "evil/" "init.el~" "ido.last" "../" "./")
+
+ ("/Users/pablobfonseca/" (23881 37828 368498 502000) ".zsh/" ".zlogin" ".viminfo" ".bash_history" ".gitconfig" ".aws/" ".inputrc" "Downloads/" ".oh-my-zsh/" ".gem/" ".pry_history" ".bash_profile" ".ctags/" ".ag/" ".git/" ".tmux/" ".pyenv/" ".gitmessage" "Documents/" ".npm/" ".zcompdump" ".global_ignore" ".Trash/" ".screenrc" ".setup-new-machine.sh" ".slate" ".profile" "Applications/" "Movies/" ".ssh/" ".mutt" ".setup.sh" ".undo-vim/" ".fzf.bash" ".ruby/" "Public/" ".iTerm2/" ".fzf.zsh" ".sqlite_history" ".bash_sessions/" ".shell/" ".install.sh" ".railsrc" ".node_repl_history" ".emacs.d/" ".dotfiles/" ".erlang.cookie" ".rvmrc" ".lesshst" ".chromedriver-helper/" ".mkshrc" ".irb-history" "Library/" "Desktop/" ".rvm/" ".Brewfile" ".zsh_history" ".asdf/" "code/" "Postman/" ".bundle/" ".nvm/" ".tool-versions" ".shell.pre-oh-my-zsh" ".cjt.zsh-theme" "Pictures/" ".psql_history" ".irbrc" ".local/" ".zshrc" ".bashrc" ".subversion/" ".netrc" ".rbenv/" ".z" "bin/" ".angular-config.json" ".CFUserTextEncoding" ".yarnrc" ".tmux.conf" ".gnupg/" ".DS_Store" ".ranger/" ".pyenv-repository/" ".vim/" "*message*-20190802-232118" ".z.31287" ".zcompdump-Pablo’s MacBook Pro-5.3" ".gemrc" ".osx/" ".install/" "Music/" ".z.1481" ".config/" "../" "./")
+
+ ("/Users/pablobfonseca/.emacs.d/elpa/" (23881 36162 14246 925000) "with-editor-20190715.2007/" "gnupg/" "tablist-20190414.643/" "dash-20190424.1804/" "restclient-20190502.2214/" "pdf-tools-20190701.202/" "archives/" "dracula-theme-20190107.2016/" "async-20190503.656/" "../" "./")
+
+ ("/Users/pablobfonseca/.emacs.d/elpa/pdf-tools-20190701.202/" (23881 36166 810367 92000) "pdf-tools-pkg.el" "pdf-cache.elc" "pdf-isearch.el" "pdf-outline.el" "pdf-util.elc" "pdf-util.el" "pdf-tools.elc" "build/" "pdf-annot.elc" "pdf-misc.elc" "pdf-occur.elc" "pdf-tools-autoloads.el" "pdf-misc.el" "pdf-outline.elc" "pdf-occur.el" "pdf-sync.el" "pdf-sync.elc" "pdf-history.elc" "pdf-history.el" "pdf-view.elc" "pdf-dev.elc" "pdf-virtual.elc" "pdf-dev.el" "pdf-info.el" "README" "pdf-isearch.elc" "pdf-links.elc" "pdf-loader.el" "pdf-virtual.el" "pdf-tools.el" "pdf-loader.elc" "pdf-view.el" "pdf-annot.el" "pdf-info.elc" "pdf-links.el" "pdf-cache.el" "../" "./")
+
+ ("/Users/pablobfonseca/.emacs.d/elpa/pdf-tools-20190701.202/build/" (23881 36162 26607 662000) "server/" "Makefile" "../" "./")
+
+ ("/Users/pablobfonseca/.emacs.d/elpa/pdf-tools-20190701.202/build/server/" (23881 36162 50795 418000) "autogen.sh" "synctex_parser.c" "synctex_parser_readme.txt" "synctex_parser_utils.h" "synctex_parser_version.txt" "epdfinfo.c" "m4/" ".gitignore" "autobuild" "Makefile.am" "synctex_parser.h" "epdfinfo.h" "synctex_parser_utils.c" "poppler-versions" "poppler-hack.cc" "test/" "synctex_parser_local.h" "configure.ac" "../" "./")
+
+ ("/Users/pablobfonseca/Downloads/" (23881 35753 359860 171000) "Manual_de_Especificações_Técnicas_do_DANFE_NFC-e_QR_Code - versão 5.0.pdf" "#request (1).json#" "CFE-request.json" "SIMPLES NACIONAL 062019.pdf" "Firefox 68.0.1.dmg" "extravio-113.json" "generate.zip" "Projeto para Refatoração do Emites Server.pdf" "Mastering emacs.pdf" "teste_1.json" "request (1).json" "EF SET Certificate.pdf" "Senior RoR Developer - JT.pdf" "request1.json" "reestruturacao-emites-server.pdf" "67_4a_5537_e2c1_4163_8afd_a4186f13b3c6_master/" "Composing Software.pdf" "EF SET Certificate(2).pdf" "emacs.d/" "evil.pdf" "DDB_NFCe_A1.pfx" "foo.json" "67_4a_5537_e2c1_4163_8afd_a4186f13b3c6_master.zip" "aaaafoo.json" "simples pablo (1).pdf" "Resume.pdf" "emissao.txt" "log.json" "accessKeys.csv" "simples pablo.pdf" ".localized" "cfe_request.json" ".DS_Store" "Manual_de_Orientacao_Contribuinte_v_6.00.pdf" "request.json" "../" "./")
+
+ ("/Users/pablobfonseca/code/" (23881 35859 36722 65000) "Quez/" "player/" "editdojo/" "#animal.php#" "rocaccion/" "foo.org" "learning-elixir/" "animal.php" "freela/" "data/" "tarmac_rails_challenge/" "url_shortener/" "fruits-app/" "htmltoimage/" "foo.tex" "pablobfonseca.github.io/" "dotfiles-private/" ".#animal.py" "foo/" "sistemasalao/" "open source/" "exercism/" "ice_and_fire_api/" "animal.rb" "pizzabot/" "iot/" "recrutamento-ruby-jya-pablobfonseca/" "be_vimmer/" "foo.html" "bootcamp-cambara/" "utils/" "pg_partman/" "animal.py" "animal.rb~" ".byebug_history" "code-playground/" "Nexaas/" "animal.js" "desafio-programacao-1/" ".DS_Store" "#animal.js#" "Study/" "bookmarker/" "routersploit/" "pizzabot.tbz2" "publitas/" "../" "./")
+
+ ("/Users/pablobfonseca/code/Study/" (23881 26609 754940 334000) "Ruby/" "#emacs.org_archive#" "emacs.md~" "list-of-ingredients/" "Javascript/" "Emacs-TUTORIAL~" "emacs.org~" "sitepoint/" "Free Code Camp/" "go_study/" "emacs.org" "emacs.html" "code_saga/" "Scala/" "Lynda/" "the_odin_project/" "Organizando Javascript/" "Emacs-TUTORIAL" "Java/" "angular/" "Rust/" "resources/" "machine_learning/" "Python/" ".DS_Store" "Udemy/" "../" "./")
+
+ ("/Users/pablobfonseca/code/Nexaas/emites-ruby/app/controllers/api/v1/" (23880 44875 867248 613000) "emit_batch_controller.rb" "nfe_disablements_controller.rb" "tax_calculator_controller.rb" "nfe_controller.rb" "users_controller.rb" "nfce_disablements_controller.rb" "nfe_batch_controller.rb" "cfe_controller.rb" "status_endpoint_controller.rb" "certificates_controller.rb" "nfce_controller.rb" "emit_nfce_controller.rb" "document_batch_controller.rb" "organizations_controller.rb" "disablement_controller.rb" "nfce_batch_controller.rb" "monitor/" "document_controller.rb" "emit_nfe_controller.rb" "../" "./")
+
+ ("/Users/pablobfonseca/code/Nexaas/emites-ruby/app/controllers/api/" (23876 34683 871897 552000) "application_controller.rb" "v1/" "../" "./")
+
+ ("/Users/pablobfonseca/code/Nexaas/emites-ruby/app/controllers/" (23880 44875 868377 639000) "concerns/" "dashboard_controller.rb" "nfe_disablements_controller.rb" "files_controller.rb" "accounts_controller.rb" "single_document_controller.rb" "nfce_numerations_controller.rb" "consumer/" "nfse_controller.rb" "cest_controller.rb" "cte_templates_controller.rb" "api/" "nfe_controller.rb" "numerations_base_controller.rb" "cte_controller.rb" "sessions_controller.rb" "services_controller.rb" "retry_webhooks_controller.rb" "nfce_disablements_controller.rb" "numerations_controller.rb" "products_controller.rb" "cfe_controller.rb" "product/" "o_auth/" "taxation_rules/" "disablements_controller.rb" "webhook_logs_controller.rb" "webhooks_controller.rb" "nfe_numerations_controller.rb" "nfce_controller.rb" "nfce_templates_controller.rb" "disablements_base_controller.rb" "notifications_controller.rb" "customers_controller.rb" "nfse_templates_controller.rb" "health_check_controller.rb" "nfe_templates_controller.rb" "extipi_controller.rb" "organizations_controller.rb" "application_controller.rb" "organizations/" "taxation_rules_controller.rb" "../" "./")
+
+ ("/Users/pablobfonseca/code/Nexaas/emites-ruby/app/" (23876 34683 822237 723000) "channels/" "services/" "helpers/" "assets/" "views/" "collections/" "controllers/" "jobs/" "validators/" "mappers/" "calculators/" "params/" "serializers/" "attributes/" "form_objects/" "models/" "repositories/" "queries/" "managers/" "strategies/" "decorators/" "builders/" "mailers/" "loggers/" "../" "./")
+
+ ("/Users/pablobfonseca/code/Nexaas/emites-ruby/" (23880 44897 731925 2000) "vendor/" ".codeclimate.yml" "coverage/" "tmp/" ".git/" "DOCKER.md" ".env.example" "Procfile" "config.rb" "docker-compose.yml" "Gemfile.lock" "log/" ".rubocop.yml" "Gemfile" "db/" "lib/" "Procfile.development" ".rspec_persistence" ".ebextensions/" ".env" "package.json" "package-lock.json" ".gitignore" "public/" "yarn.lock" "Rakefile" "README.md" "tags" "Procfile.docker" "script/" ".elasticbeanstalk/" "spec/" "node_modules/" "config.ru" "Dockerfile" "config/" "bin/" "app/" ".DS_Store" ".rspec" "../" "./")
+
+ ("/Users/pablobfonseca/code/Nexaas/" (23791 48976 0 0) "update_organizations.rb" "emites-emission_manager/" "emites-consumer_ruby/" "emites-ruby/" "emites-product_ruby/" "update_organizations.csv" "emites-monitor/" "emites-api-docs/" ".DS_Store" "../" "./")
+
+ ("/Users/" (23859 55760 630084 770000) "pablobfonseca/" "Shared/" ".localized" "../" "./")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t
