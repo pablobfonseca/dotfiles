@@ -1,1 +1,0 @@
-("~/.dotfiles/" "~/code/Nexaas/emites-ruby/" "~/" "~/code/freela/99aulas/99aulasapp/" "~/code/Nexaas/emites-emission_manager/" "~/code/Nexaas/emites-product_ruby/" "~/code/Nexaas/emites-consumer_ruby/")
