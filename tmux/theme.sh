@@ -23,30 +23,28 @@ set -g status-justify left
 
 # default statusbar colors
 # set-option -g status-bg colour0
-set-option -g status-fg white
-set-option -g status-bg $tm_color_bg
-set-option -g status-attr default
+set-option -g status-style fg=white,bg=$tm_color_bg,default
+# set-option -g status-fg white
+# set-option -g status-bg $tm_color_bg
+# set-option -g status-attr default
 
 # default window title colors
-set-window-option -g window-status-fg $tm_color_inactive
-set-window-option -g window-status-bg default
+# set-window-option -g window-status-fg $tm_color_inactive
+# set-window-option -g window-status-bg default
+set-window-option -g window-status-style fg=$tm_color_inactive,bg=default
 set -g window-status-format "#I #W"
 
 # active window title colors
-set-window-option -g window-status-current-fg $tm_color_active
-set-window-option -g window-status-current-bg default
-set-window-option -g  window-status-current-format "#[bold]#I #W"
+# set-window-option -g window-status-current-fg $tm_color_active
+# set-window-option -g window-status-current-bg default
+# set-window-option -g  window-status-current-format "#[bold]#I #W"
 
 # pane border
-set-option -g pane-border-fg colour235
-set-option -g pane-border-bg black
-set -g pane-active-border-fg green
-set -g pane-active-border-bg black
-set-option -g pane-active-border-fg $tm_active_border_color
+set-option -g pane-border-style fg=colour235,bg=black
+set -g pane-active-border-style fg=$tm_active_border_color,bg=black
 
 # message text
-set-option -g message-bg default
-set-option -g message-fg $tm_color_active
+set-option -g message-style fg=$tm_color_active,bg=default
 
 # pane number display
 set-option -g display-panes-active-colour $tm_color_active

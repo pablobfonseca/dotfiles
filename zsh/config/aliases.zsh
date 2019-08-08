@@ -31,8 +31,7 @@ alias hw='heroku accounts:set work'
 alias lg='lazygit'
 alias cleanelastic="curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": null}'"
 alias cat="bat"
-
-source ~/.zsh/.aliases.local
+alias code="cd ~/code"
 
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
