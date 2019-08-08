@@ -1,5 +1,6 @@
 " fzf.vim 
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 let g:fzf_command_prefix = 'Fzf'
 

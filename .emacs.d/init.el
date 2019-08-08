@@ -43,8 +43,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("d91ef4e714f05fff2070da7ca452980999f5361209e679ee988e3c432df24347" "274fa62b00d732d093fc3f120aca1b31a6bb484492f31081c1814a858e25c72e" default))
  '(package-selected-packages
    '(linum-relative yasnippet-snippets yasnippet bundler markdown-mode emmet-mode company-web impatient-mode solarized-theme yaml-mode slim-mode web-mode multiple-cursors exec-path-from-shell company helm-ag evil-leader which-key projectile-ripgrep ivy rvm helm-dash helm-ls-git helm-projectile helm rspec-mode projectile-rails projectile magit dracula-theme restclient)))
 (custom-set-faces

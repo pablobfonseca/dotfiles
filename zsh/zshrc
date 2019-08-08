@@ -8,15 +8,12 @@
 # 
 
 # set -o vi
-source ~/.dotfiles/zsh/env_variables.zsh
-
 export VISUAL='vim'
 export EDITOR=$VISUAL
 
 export BUNDLER_EDITOR='vim'
 
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-export GOPATH=$(go env GOPATH)
 
 ZSH_THEME="spaceship"
 
@@ -30,10 +27,7 @@ function bgnotify_formatted {
 export ZSH=/Users/pablobfonseca/.oh-my-zsh
 plugins=(
   brew
-  zsh-syntax-highlighting
-  zsh-autosuggestions
   osx
-  zsh-interactive-cd
   bgnotify
   web-search
   z
@@ -55,15 +49,11 @@ compinit
 
 # Add paths
 export DOTFILES=$HOME/.dotfiles
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/pablobfonseca/.rvm/bin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$HOME/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export MANPATH="/usr/local/man:$MANPATH"
 export PATH=/usr/local/share/npm/bin:$PATH
-# /usr/local/opt/android-sdk
-export ANDROID_HOME=~/Library/Android/sdk
-export PATH=$ANDROID_HOME/tools:$PATH
-export PATH=$ANDROID_HOME/platform-tools:$PATH
 
 # Source another files
 for zsh_source in /Users/pablobfonseca/.zsh/config/*.zsh; do
@@ -79,9 +69,6 @@ export PATH=$PATH:bin
 # Heroku toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-# Composer
-export PATH="$HOME/.composer/vendor/bin:$PATH"
-
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
@@ -89,6 +76,11 @@ export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# Postgres
+export PATH="/Applications/Postgres.app/Contents/Versions/10/bin:$PATH"
+
+export PATH="/Users/pablobfonseca/code/publitas/revolution/bin:$PATH"
 
 # Edit the current line in $EDITOR
 autoload -U edit-command-line
@@ -105,16 +97,17 @@ cdpath=($HOME/code $DOTFILES)
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/plugins/zsh-interactive-cd.plugin.zsh
 
-source ~/bin/tmuxinator
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-MYSQL=/usr/local/mysql/bin
-export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
-export PATH=$PATH:$MYSQL
-export DYLD_LIBRARY_PATH=/usr/local/mysql/lib:$DYLD_LIBRARY_PATH
-export PATH="$(brew --prefix qt@5.5)/bin:$PATH"
+
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Set Spaceship ZSH as a prompt
 autoload -U promptinit; promptinit
-prompt spaceship
+# prompt spaceship
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

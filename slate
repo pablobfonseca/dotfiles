@@ -47,6 +47,7 @@ layout default 'Firefox'                      move ${fullscreen}
 layout default 'Safari'                       move ${fullscreen}
 layout default 'iTerm2'                       move ${fullscreen}
 layout default 'VLC'                          move ${fullscreen}
+layout default 'Emacs'                        move ${fullscreen}
 layout default 'Evernote'                     move ${centered}
 layout default 'PDF Expert'                   move ${fullscreen}
 layout split 'Google Chrome'                  move ${leftHalf}
@@ -60,10 +61,10 @@ layout split 'PDF Expert'                     move ${leftHalf}
 bind b:${master} focus 'Google Chrome'
 bind t:${master} focus 'iTerm2'
 bind f:${master} focus 'Firefox'
-bind e:${master} focus 'Evernote'
 bind s:${master} focus 'Slack'
 bind p:${master} focus 'PDF Expert'
 bind c:${master} focus 'Terminal'
+bind e:${master} focus 'Emacs'
 
 bind g:${master} move ${centered}
 bind o:${master} move ${fullscreen}
