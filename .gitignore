@@ -29,4 +29,13 @@ tmux/plugins
 tmux/resurrect/*
 zsh/.aliases.local
 
+.emacs.d/recentf
+.emacs.d/ido.last
+.emacs.d/network-security.data
+.emacs.d/projectile-bookmarks.eld
+.emacs.d/rake.cache
+.emacs.d/transient/
+.emacs.d/eshell/
+.emacs.d/.mc-lists.el
+
 zsh/env_variables.zsh
