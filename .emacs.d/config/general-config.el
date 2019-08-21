@@ -3,8 +3,17 @@
 (setq user-full-name "Pablo Fonseca")
 (setq user-mail-address "pablofonseca777@gmail.com")
 
+;; Tabs
+(setq tab-width 4)
+
 ;; UTF-8 encoding
 (prefer-coding-system 'utf-8)
+
+;; Turn on the pairing like {}
+(setq eletric-pair-mode t)
+
+;; Font size
+(set-face-attribute 'default nil :height 125)
 
 ;; Relative numbers
 (setq linum-relative-mode t)
@@ -19,7 +28,7 @@
 (global-auto-revert-mode 1)
 
 (tool-bar-mode -1)
-(global-linum-mode 1)
+(linum-relative-global-mode 1)
 
 ;; Show line and column in the mode-line
 (line-number-mode 1)
@@ -101,3 +110,9 @@
 
 ;; Fix weird color escape sequences
 (setq system-uses-terminfo nil)
+
+;; Matchit
+(global-evil-matchit-mode 1)
+
+;; Surround
+(global-evil-surround-mode 1)

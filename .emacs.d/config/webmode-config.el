@@ -7,6 +7,10 @@
 (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ts?\\'" . web-mode))
 
+;; Js2-mode
+(add-to-list 'auto-mode-alist '("\\.js?\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.ts?\\'" . js2-mode))
+
 (setq web-mode-enable-auto-closing t)
 
 (setq web-mode-enable-current-column-highlight t)
