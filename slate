@@ -47,6 +47,7 @@ layout default 'Firefox'                      move ${fullscreen}
 layout default 'Safari'                       move ${fullscreen}
 layout default 'iTerm2'                       move ${fullscreen}
 layout default 'VLC'                          move ${fullscreen}
+layout default 'Stremio'                      move ${fullscreen}
 layout default 'Emacs'                        move ${fullscreen}
 layout default 'Evernote'                     move ${centered}
 layout default 'PDF Expert'                   move ${fullscreen}
@@ -65,6 +66,7 @@ bind s:${master} focus 'Slack'
 bind p:${master} focus 'PDF Expert'
 bind c:${master} focus 'Terminal'
 bind e:${master} focus 'Emacs'
+bind v:${master} focus 'Stremio'
 
 bind g:${master} move ${centered}
 bind o:${master} move ${fullscreen}
