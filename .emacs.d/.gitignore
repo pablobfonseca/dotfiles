@@ -28,3 +28,7 @@ tramp
 custom.el
 magithub
 snippets
+abbrev_defs
+projectile.cache
+smex-items
+.flycheck_init
