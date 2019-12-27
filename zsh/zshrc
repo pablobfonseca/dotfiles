@@ -1,11 +1,11 @@
-# 
-#          _     
-#  _______| |__  
-# |_  / __| '_ \ 
+#
+#          _
+#  _______| |__
+# |_  / __| '_ \
 #  / /\__ \ | | |
 # /___|___/_| |_|
-#                
-# 
+#
+#
 
 # set -o vi
 export VISUAL='vim'
@@ -117,3 +117,11 @@ export GOROOT=/usr/local/opt/go/libexec
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
+
+# Android
+export ANDROID_HOME=~/Android/Sdk
+export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH="$HOME/.plenv/bin:$PATH"
+eval "$(plenv init -)"
