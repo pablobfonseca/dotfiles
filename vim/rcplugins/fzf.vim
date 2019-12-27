@@ -8,7 +8,7 @@ let g:fzf_files_options =
       \ '--preview "(coderay {} || cat {}) 2> /dev/null | head -'.&lines.'"'
 
 nnoremap <leader>f :Find<cr>
-nnoremap <C-p> :FzfFiles<cr>
+nnoremap <C-p> :FzfGitFiles<cr>
 nnoremap <leader>gc :FzfFiles app/controllers<cr>
 nnoremap <leader>gj :FzfFiles app/assets/javascripts<cr>
 nnoremap <leader>gl :FzfFiles config/locales<cr>

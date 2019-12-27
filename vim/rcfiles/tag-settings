@@ -1,7 +1,7 @@
 " Tags configurations
 "--------------------
 
-set tags+=./git/tags
+set tags^=./.git/tags
 
 augroup tags_stuff
   " Clear old autocmds in group
