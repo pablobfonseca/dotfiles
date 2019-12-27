@@ -1,0 +1,48 @@
+# ZSH envs
+
+export VISUAL='vim'
+export EDITOR=$VISUAL
+
+export BUNDLER_EDITOR='vim'
+
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+ZSH_THEME="spaceship"
+
+export ZSH=/Users/pablobfonseca/.oh-my-zsh
+
+# Add paths
+export DOTFILES=$HOME/.dotfiles
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="$HOME/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export MANPATH="/usr/local/man:$MANPATH"
+export PATH=/usr/local/share/npm/bin:$PATH
+
+# Add current directory bin
+export PATH=$PATH:bin
+
+# Heroku toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+
+# Postgres
+export PATH="/Applications/Postgres.app/Contents/Versions/10/bin:$PATH"
+
+export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
+export NVM_DIR="$HOME/.nvm"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# Go
+export GOPATH=$HOME/code/go-workspace
+export GOROOT=/usr/local/opt/go/libexec
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
