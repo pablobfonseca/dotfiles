@@ -1,3 +1,0 @@
-" VIM-PyDjango - Ultimate VIM for Python & Django development.
-Plug 'yodiaditya/vim-pydjango', { 'for': ['python'] }
-" vim: ft=vim
