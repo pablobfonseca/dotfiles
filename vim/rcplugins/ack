@@ -1,9 +1,9 @@
-" Ag - (grep replacement) into vim
+" ack.vim - Vim plugin for the Perl module / CLI script 'ack'
 
-Plug 'rking/ag.vim'
+Plug 'mileszs/ack.vim'
 
 " The Silver Searcher
-if executable('ag')
+if executable('rg')
   " Use ag over grep
       set grepprg=rg\ --vimgrep
     endif
