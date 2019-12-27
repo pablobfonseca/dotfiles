@@ -1,0 +1,3 @@
+" vim-crystal - Vim filetype and tools support for Crystal language
+Plug 'rhysd/vim-crystal'
+" vim: ft=vim
