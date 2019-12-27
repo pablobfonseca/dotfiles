@@ -1,0 +1,5 @@
+" typescript-vim - Typescript syntax files for Vim
+Plug 'leafgarland/typescript-vim'
+
+let g:typescript_compiler_binary='tsc'
+" vim: ft=vim
