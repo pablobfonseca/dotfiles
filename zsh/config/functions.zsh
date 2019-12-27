@@ -84,6 +84,11 @@ rvmlist() {
   fzf-tmux -l 30 +m --reverse) && rvm use $rb
 }
 
+nvmlist() {
+  local njs
+  njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf-tmux -l 30 +m --reverse) && nvm use $njs
+}
+
 generate_tags() {
   ctags --tag-relative --extra=+f -Rf .git/tags --languages=-javascript,sql && bundle show --paths | xargs ctags --tag-relative --extra=+f -Raf .git/tags --languages=-javascript,sql
 }
