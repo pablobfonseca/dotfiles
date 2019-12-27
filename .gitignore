@@ -36,6 +36,7 @@ zsh/.aliases.local
 .emacs.d/.mc-lists.el
 .emacs.d/bookmarks
 .emacs.d/*~
+.emacs.d/#init.el#
 .emacs.d/*.elc
 .emacs.d/auto-save-list
 .emacs.d/recentf
