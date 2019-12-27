@@ -4,6 +4,7 @@
 alias cp="rsync --archive --human-readable --progress --verbose --whole-file"
 alias scp="rsync --archive --progress --checksum --compress --human-readable --itemize-changes --rsh=ssh --stats --verbose"
 
+alias vim="nvim"
 alias path="echo $PATH | tr -s ':' '\n'"
 alias pat="pygmentize -O style=monokad -f console256 -g"
 alias cleanvim="vim -N -u NONE"
@@ -32,6 +33,9 @@ alias lg='lazygit'
 alias cleanelastic="curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": null}'"
 alias cat="bat"
 alias code="cd ~/code"
+alias ems="emacs --daemon"
+alias emc="emacsclient -n -c"
+alias fvim="fzf | xargs nvim"
 
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
