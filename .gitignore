@@ -58,5 +58,6 @@ zsh/.aliases.local
 .emacs.d/tramp
 .emacs.d//var/pcache
 .emacs.d/custom.el
+.emacs.d/elpy/
 
 zsh/env_variables.zsh
