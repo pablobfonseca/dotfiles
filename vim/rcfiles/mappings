@@ -3,7 +3,18 @@
 " Mappings
 " ----------------------
 
-nnoremap K :exe 'FzfAg' expand('<cword>')<cr>
+" Emacs-like saving file
+nmap <C-x><C-s> :w<cr>
+
+nnoremap <silent> K :call <SID>show_documentation()<cr>
+
+function! s:show_documentation()
+  if (index(['vim', 'help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 " Opens help the word under the cursor
 nnoremap <leader>h :exe 'help' expand('<cword>')<cr>
@@ -37,6 +48,7 @@ nnoremap <Leader>i mmgg=G`m
 " Edit another file in the same directory as the current file
 " uses expression to extract path from current file's path
 nnoremap <space>e :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
+nnoremap <C-x><C-f> :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
 nnoremap <space>s :split <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 nnoremap <space>v :vsplit <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 nnoremap <space>r :r <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>

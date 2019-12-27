@@ -27,6 +27,9 @@ set number
 set re=1
 scriptencoding utf-16             " Allow emoji in vimrc
 set nrformats+=alpha              " Force decimal-based arithmetic
+set shortmess+=c                  " don't give |ins-completion-menu| messages
+set updatetime=300                " You will have a bad experience for diagnostic messages when it's default 4000
+set signcolumn=yes                " always show signcolumns
 
 " Disable sound/visual bell on errors
 " May need additional config about audible bell
@@ -39,6 +42,14 @@ set modelines=1
 set nobackup
 set nowritebackup
 set noswapfile
+
+" Completions
+set completeopt-=menu
+set completeopt+=menuone   " Show the completions UI even with only 1 item
+set completeopt-=longest   " Don't insert the longest common text
+set completeopt-=preview   " Hide the documentation preview window
+set completeopt+=noinsert  " Don't insert text automatically
+set completeopt-=noselect  " Highlight the first completion automatically
 
 " Setup nice command tab completion
 set wildmenu
