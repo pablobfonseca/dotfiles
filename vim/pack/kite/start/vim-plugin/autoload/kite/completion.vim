@@ -45,7 +45,7 @@ function! kite#completion#replace_range()
   " restore cursor position
   if col != _col
     execute 'normal!' (col+1).'|'
-    call feedkeys("\<Esc>la")
+    call s:feedkeys("\<Esc>la")
   endif
 endfunction
 
@@ -59,7 +59,7 @@ function! kite#completion#expand_newlines()
   call append(line('.')-1, parts)
   -1
   " startinsert! doesn't seem to work with: package main^@import ""^@
-  call feedkeys("\<Esc>A")
+  call s:feedkeys("\<Esc>A")
 endfunction
 
 
@@ -91,19 +91,19 @@ function! kite#completion#autocomplete()
 
   if s:should_trigger_completion
     let s:should_trigger_completion = 0
-    call feedkeys("\<C-X>\<C-U>")
+    call s:feedkeys("\<C-X>\<C-U>")
   endif
 endfunction
 
 
 " Manual invocation calls this method.
 function! kite#completion#complete(findstart, base)
-  if !s:completeopt_suitable()
-    let g:kite_auto_complete = 0
-    return -3
-  endif
-
   if a:findstart
+    if !s:completeopt_suitable()
+      let g:kite_auto_complete = 0
+      return -3
+    endif
+
     " Store the buffer contents and cursor position here because when Vim
     " calls this function the second time (with a:findstart == 0) Vim has
     " already deleted the text between `start` and the cursor position.
@@ -114,18 +114,14 @@ function! kite#completion#complete(findstart, base)
     return s:startcol
   else
     " Leave CTRL-X submode so user can invoke other completion methods.
-    call feedkeys("\<C-e>")
+    call s:feedkeys("\<C-e>")
     call s:get_completions()
-    return []
+    if has('patch-8.1.0716')
+      return v:none
+    else
+      return []
+    endif
   endif
-endfunction
-
-
-function! kite#completion#snippet(begin, end)
-  let s:begin = a:begin
-  let s:end = a:end
-  " call kite#completion#autocomplete()
-  call feedkeys("\<C-X>\<C-U>")
 endfunction
 
 
@@ -190,11 +186,6 @@ endfunction
 
 function! kite#completion#handler(counter, startcol, response) abort
   call kite#utils#log('completion: '.a:response.status)
-
-  " Ignore old completion results.
-  if a:counter != s:completion_counter
-    return
-  endif
 
   " Ignore old completion results.
   if a:counter != s:completion_counter
@@ -398,4 +389,14 @@ function! s:completeopt_suitable()
   if index(copts, 'noinsert') == -1 | call kite#utils#warn("completeopt must contain 'noinsert'")    | return 0 | endif
 
   return 1
+endfunction
+
+
+" feedkeys() by default adds keys to the end of the typeahead buffer.  Any
+" keys already in the buffer will be processed first and may change Vim's
+" state, making the queued keys no longer appropriate (e.g. an insert mode key
+" combo being applied in normal mode).  To avoid this we use the 'i' flag
+" which ensures the keys are processed immediately.
+function s:feedkeys(keys)
+  call feedkeys(a:keys, 'i')
 endfunction

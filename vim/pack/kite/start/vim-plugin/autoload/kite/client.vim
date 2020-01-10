@@ -159,14 +159,14 @@ function! s:internal_http(path, timeout, ...)
           \   'callback': function('s:on_std_out', options)
           \ })
   catch /E898\|E901\|E902/
-    call kite#utils#log('Cannot open channel: '.str)
+    call kite#utils#log('| Cannot open channel: '.str)
     return ''
   endtry
 
   try
     call ch_sendraw(channel, str)
   catch /E630\|E631\|E906/
-    call kite#utils#log('Cannot send over channel: '.str)
+    call kite#utils#log('| Cannot send over channel: '.str)
     return ''
   endtry
 
@@ -227,16 +227,16 @@ endfunction
 "
 " lines - either a list (from async commands) or a string (from sync)
 function! s:parse_response(lines)
+  if empty(a:lines)
+    return {'status': 0, 'body': ''}
+  endif
+
   if type(a:lines) == v:t_string
     let lines = split(a:lines, '\r\?\n', 1)
   else
     let lines = a:lines
   endif
   call kite#utils#log(map(copy(lines), '"< ".v:val'))
-
-  if empty(a:lines)
-    return {'status': 0, 'body': ''}
-  endif
 
   if type(a:lines) == v:t_string
     let lines = split(a:lines, '\r\?\n')
