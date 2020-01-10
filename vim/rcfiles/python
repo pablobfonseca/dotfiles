@@ -1,6 +1,9 @@
 " Python configurations
 "------------------------
 
+let g:python_host_prog='/usr/bin/python'
+let g:python3_host_prog='/usr/local/bin/python3'
+
 augroup filetype_python
   " Clear old autocmds in group
   autocmd!
