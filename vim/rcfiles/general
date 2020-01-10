@@ -31,6 +31,11 @@ set shortmess+=c                  " don't give |ins-completion-menu| messages
 set updatetime=300                " You will have a bad experience for diagnostic messages when it's default 4000
 set signcolumn=yes                " always show signcolumns
 
+set termguicolors
+
+" Fix netrw buffer issue
+let g:netrw_fastbrowse = 0
+
 " Disable sound/visual bell on errors
 " May need additional config about audible bell
 set t_vb=
