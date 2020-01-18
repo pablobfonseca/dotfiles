@@ -1,7 +1,6 @@
 {
   "suggest.echodocSupport": true,
   "suggest.maxCompleteItemCount": 20,
-  "solargraph.useBundler": true,
   "tsserver.enableJavascript": true,
   "languageserver": {
     "cquery": {
@@ -12,6 +11,11 @@
       "initializationOptions": {
         "cacheDirectory": "/tmp/cquery"
       }
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod"],
+      "filetypes": ["go"]
     }
   }
 }
