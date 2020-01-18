@@ -103,6 +103,8 @@ endfunction
 function! ToggleLazyGit()
   call ToggleTerm('lazygit')
 endfunction
+command! ToggleLazyGit call ToggleLazyGit()
+nnoremap <leader>tlg :ToggleLazyGit<cr>
 
 function! ToggleScratchTerm()
   call ToggleTerm('zsh')
