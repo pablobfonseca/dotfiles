@@ -2,14 +2,14 @@
 
 bind \co '__fzf_find_file'
 bind \cr '__fzf_reverse_isearch'
-bind \cp '__fzf_open --editor'
+bind \ct '__fzf_open --editor'
 bind \ec '__fzf_cd'
 bind \eC '__fzf_cd --hidden'
 bind \eo '__fzf_open'
 
 if bind -M insert >/dev/null 2>/dev/null
   bind -M insert \co '__fzf_find_file'
-  bind -M insert \cp '__fzf_open --editor'
+  bind -M insert \ct '__fzf_open --editor'
   bind -M insert \cr '__fzf_reverse_isearch'
   bind -M insert \ec '__fzf_cd'
   bind -M insert \eC '__fzf_cd --hidden'

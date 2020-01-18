@@ -28,7 +28,6 @@ set -x PATH $PATH /usr/local/share/npm/bin
 set -x PATH $PATH bin
 set -x PATH $PATH /usr/local/opt/go/libexec/bin
 set -x PATH $PATH /Applications/Postgres.app/Contents/Versions/10/bin
-set -x PATH $PATH $HOME/.nvm/versions/node/v12.10.0/bin
 set -x PATH $PATH /usr/local/opt/imagemagick@6/bin
 set -x PATH $PATH $HOME/.rvm/bin
 
@@ -56,3 +55,4 @@ end
 
 # virtualfish
 eval (python3 -m virtualfish)
+rvm default
