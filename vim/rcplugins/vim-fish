@@ -1,0 +1,3 @@
+" vim-fish - Vim support for editing fish scripts
+Plug 'dag/vim-fish'
+" vim: ft=vim
