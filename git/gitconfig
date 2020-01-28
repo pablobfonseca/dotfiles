@@ -3,7 +3,7 @@
   filemode                = true
   bare                    = false
   logallrefupdates        = true
-  editor                  = vim -v
+	editor                  = nvim
   excludesfile            = ~/.global_ignore
   pager                   = less -F -X
   whitespace              = warn
