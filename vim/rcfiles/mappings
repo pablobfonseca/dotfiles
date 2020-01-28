@@ -6,7 +6,8 @@
 " Emacs-like saving file
 nmap <C-x><C-s> :w<cr>
 
-nnoremap <silent> K :call <SID>show_documentation()<cr>
+nnoremap <silent> H :call <SID>show_documentation()<cr>
+nnoremap <silent> K :exe 'FzfRg' expand('<cword>')<cr>
 
 function! s:show_documentation()
   if (index(['vim', 'help'], &filetype) >= 0)
@@ -89,7 +90,6 @@ nnoremap <silent> <Right> :vertical resize -5<cr>
 nnoremap <silent> <Up> :resize +5<cr>
 nnoremap <silent> <Down> :resize -5<cr>
 
-
 " Scroll the viewport faster
 nnoremap <C-e> 7<C-e>
 nnoremap <C-y> 7<C-y>
@@ -137,6 +137,3 @@ xnoremap - g<C-x>
 
 " Open lazygit
 nnoremap <silent> <leader>' :call ToggleLazyGit()<cr>
-
-" Quit term buffer with Esc
-tnoremap <silent> <Esc> <C-\><C-n><cr>
