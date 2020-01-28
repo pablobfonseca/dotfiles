@@ -5,6 +5,7 @@ alias cp="rsync --archive --human-readable --progress --verbose --whole-file"
 alias scp="rsync --archive --progress --checksum --compress --human-readable --itemize-changes --rsh=ssh --stats --verbose"
 
 alias vim="nvim"
+alias vi="nvim"
 alias path="echo $PATH | tr -s ':' '\n'"
 alias pat="pygmentize -O style=monokad -f console256 -g"
 alias cleanvim="vim -N -u NONE"
