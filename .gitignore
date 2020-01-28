@@ -61,3 +61,4 @@ zsh/.aliases.local
 .emacs.d/elpy/
 
 zsh/env_variables.zsh
+fish/fish_variables
