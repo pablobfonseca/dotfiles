@@ -8,15 +8,14 @@
 # Starhip Theme
 starship init fish | source
 
-set -U EDITOR vim
+set -U EDITOR nvim
 set -U VISUAL $EDITOR
 set -U BUNDLER_EDITOR $EDITOR
 set -U HOMEBREW_CASK_OPTS --appdir=/Applications
 set -U DOTFILES $HOME/.dotfiles
-set -U LC_ALL en_US.UTF-8
-set -U LANG en_US.UTF-8
 set -U FZF_DEFAULT_COMMAND 'rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 set -U NVM_DIR $HOME/.nvm
+set -U SHELL /usr/local/bin/fish 
 
 for path in $HOME/bin /usr/local/bin /usr/bin /bin /usr/sbin /sbin
   if test -e $path; and not contains $path $PATH
