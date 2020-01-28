@@ -131,6 +131,7 @@ if has('nvim')
   " Turn off line numbers etc
   autocmd TermOpen * setlocal listchars= nonumber norelativenumber
 endif
+
 " Remove current file - Extracted from tpope's vim-eunuch plugin
 command! -bar -bang Remove
       \ let s:file = fnamemodify(bufname(<q-args>),':p') |
@@ -139,5 +140,14 @@ command! -bar -bang Remove
       \   echoerr 'Failed to delete "'.s:file.'"' |
       \ endif |
       \ unlet s:file
+
+" Create new plugin file
+function! s:NewPlugin()
+  echohl String | let text = input('Plugin name: ') | echohl None
+  if text ==# '' | return | endif
+  execute 'e ~/.vim/rcplugins/' . text
+  execute 'set filetype=vim'
+endfunction
+command! NewPlugin call <sid>NewPlugin()
 
 " vim:ft=vim
