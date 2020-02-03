@@ -134,6 +134,3 @@ nnoremap + <C-a>
 nnoremap - <C-x>
 xnoremap + g<C-a>
 xnoremap - g<C-x>
-
-" Open lazygit
-nnoremap <silent> <leader>' :call ToggleLazyGit()<cr>
