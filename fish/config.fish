@@ -29,6 +29,8 @@ set -x PATH $PATH /usr/local/opt/go/libexec/bin
 set -x PATH $PATH /Applications/Postgres.app/Contents/Versions/10/bin
 set -x PATH $PATH /usr/local/opt/imagemagick@6/bin
 set -x PATH $PATH $HOME/.rvm/bin
+set -x PATH $PATH /Users/pablobfonseca/Library/Python/3.7/bin
+set -x PATH $PATH /Users/pablobfonseca/.cargo/bin
 
 # Go
 set -x GOPATH $HOME/code/go-workspace
@@ -54,4 +56,3 @@ end
 
 # virtualfish
 eval (python3 -m virtualfish)
-rvm default
