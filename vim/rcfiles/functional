@@ -82,7 +82,7 @@ function! DeleteUnlistedBuffers()
         let name = bufname(n)
         if name == '[Scratch]' ||
               \ matchend(name, ":bash") ||
-              \ matchend(name, ":zsh") ||
+              \ matchend(name, ":fish") ||
               \ matchend(name, ":lazygit")
           call CleanupBuffer(n)
         endif
@@ -120,9 +120,10 @@ nnoremap <leader>tlg :ToggleLazyGit<cr>
 
 function! ToggleScratchTerm()
   if has('nvim')
-    call ToggleTerm('zsh')
+    call ToggleTerm('fish')
   endif
 endfunction
+command! ToggleScratchTerm call ToggleScratchTerm()
 
 " When term starts, auto go into insert mode
 if has('nvim')
@@ -149,5 +150,14 @@ function! s:NewPlugin()
   execute 'set filetype=vim'
 endfunction
 command! NewPlugin call <sid>NewPlugin()
+"
+" Create new vim file
+function! s:NewVimFile()
+  echohl String | let text = input('File name: ') | echohl None
+  if text ==# '' | return | endif
+  execute 'e ~/.vim/rcfiles/' . text
+  execute 'set filetype=vim'
+endfunction
+command! NewVimFile call <sid>NewVimFile()
 
 " vim:ft=vim
