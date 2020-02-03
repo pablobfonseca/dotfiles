@@ -2,6 +2,7 @@
   "suggest.echodocSupport": true,
   "suggest.maxCompleteItemCount": 20,
   "tsserver.enableJavascript": true,
+  "coc.preferences.formatOnSaveFiletypes": ["rust"],
   "languageserver": {
     "cquery": {
       "command": "cquery",
@@ -21,6 +22,29 @@
       "command": "efm-langserver",
       "args": [],
       "filetypes": ["vim", "eruby", "markdown"]
+    },
+    "lua": {
+      "command": "lua-lsp",
+      "filetypes": ["lua"]
+    },
+    "haskell": {
+      "command": "hie-wrapper",
+      "args": ["--lsp"],
+      "rootPatterns": [
+        "stack.yaml",
+        "cabal.config",
+        "package.yaml"
+      ],
+      "filetypes": [
+        "hs",
+        "lhs",
+        "haskell"
+      ],
+      "initializationOptions": {
+        "languageServerHaskell": {
+          "hlintOn": true
+        }
+      }
     }
   }
 }
