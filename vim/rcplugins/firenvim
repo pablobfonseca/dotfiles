@@ -1,3 +1,0 @@
-" firenvim - use nvim on the browser
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
-" vim: ft=vim
