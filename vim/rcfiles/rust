@@ -1,0 +1,10 @@
+" Rust configurations
+"------------------------
+
+augroup filetype_rust
+  " Clear old autocmds in group
+  autocmd!
+  autocmd FileType rust nnoremap <leader>cr :Dispatch cargo run<cr>
+  autocmd FileType rust nnoremap <leader>cb :Dispatch cargo build<cr>
+augroup END
+" vim:ft=vim
