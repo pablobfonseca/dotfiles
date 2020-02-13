@@ -31,6 +31,7 @@ set shortmess+=c                  " don't give |ins-completion-menu| messages
 set updatetime=300                " You will have a bad experience for diagnostic messages when it's default 4000
 set signcolumn=yes                " always show signcolumns
 set shell=/bin/zsh
+set showmatch                     " jump to matches when entering regexp
 
 set termguicolors
 
