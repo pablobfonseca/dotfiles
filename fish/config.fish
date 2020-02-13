@@ -31,6 +31,9 @@ set -x PATH $PATH /usr/local/opt/imagemagick@6/bin
 set -x PATH $PATH $HOME/.rvm/bin
 set -x PATH $PATH /Users/pablobfonseca/Library/Python/3.7/bin
 set -x PATH $PATH /Users/pablobfonseca/.cargo/bin
+set -x PATH $PATH /Users/pablobfonseca/.cabal/bin
+set -x PATH $PATH /Users/pablobfonseca/.ghcup/bin
+set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
 
 # Go
 set -x GOPATH $HOME/code/go-workspace
