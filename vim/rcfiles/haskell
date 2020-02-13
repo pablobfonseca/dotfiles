@@ -1,0 +1,10 @@
+" Haskell configurations
+"------------------------
+
+augroup filetype_haskell
+  " Clear old autocmds in group
+  autocmd!
+  autocmd FileType haskell nnoremap <leader>hr :Dispatch runhaskell %<tab><cr>
+  autocmd FileType haskell nnoremap <leader>hb :Dispatch ghc %<tab><cr>
+augroup END
+" vim:ft=vim
