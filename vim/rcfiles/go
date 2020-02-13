@@ -5,10 +5,10 @@ augroup filetype_go
   " Clear old autocmds in group
   autocmd!
   " autoindent with two spaces, always expand tabs
-  autocmd Filetype go nmap <leader>r :GoRun %<Tab><cr><Esc>
-  autocmd Filetype go nmap <leader>b <Plug>(go-build)
+  autocmd Filetype go nmap <leader>r :GoRun <cr><Esc>
   autocmd Filetype go nmap <leader>t <Plug>(go-test)
-  autocmd Filetype go nmap <leader>c <Plug>(go-coverage)
+  autocmd Filetype go nmap <leader>c <Plug>(go-coverage-toggle)
+  autocmd Filetype go nmap <leader>b :<C-u>call <SID>build_go_files()<cr>
 augroup END
 
 let g:go_fmt_command = "goimports"
@@ -18,5 +18,15 @@ let g:go_highlight_fields = 1
 let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
+
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand("%")
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
 
 " vim:ft=vim
