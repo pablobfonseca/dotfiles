@@ -85,10 +85,10 @@ for prefix in ['i', 'n', 'v']
 endfor
 
 " resize panes
-nnoremap <silent> <Left> :vertical resize +5<cr>
-nnoremap <silent> <Right> :vertical resize -5<cr>
-nnoremap <silent> <Up> :resize +5<cr>
-nnoremap <silent> <Down> :resize -5<cr>
+nnoremap <silent> <Up> :call animate#window_delta_height(15)<cr>
+nnoremap <silent> <Down> :call animate#window_delta_height(-15)<cr>
+nnoremap <silent> <Left> :call animate#window_delta_width(30)<cr>
+nnoremap <silent> <Right> :call animate#window_delta_width(-30)<cr>
 
 " Scroll the viewport faster
 nnoremap <C-e> 7<C-e>
@@ -134,3 +134,13 @@ nnoremap + <C-a>
 nnoremap - <C-x>
 xnoremap + g<C-a>
 xnoremap - g<C-x>
+
+" Open Lazygit
+nnoremap <leader>tlg :call OpenHTerm('lazygit', 0.8)<cr>
+" Open Lazydocker
+nnoremap <leader>tld :call OpenHTerm('lazydocker', 0.8)<cr>
+
+" Switch tmux session
+nnoremap <silent><leader>[ :call OpenVTerm('tmux-fzf-switch.sh', 0.2)<cr>
+" Kill tmux session
+nnoremap <silent><leader>} :call OpenVTerm('tmux-fzf-kill.sh', 0.2)<cr>

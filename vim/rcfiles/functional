@@ -40,6 +40,10 @@ function! Mapped(list, fn)
     return new_list
 endfunction
 
+function! NewFZFWindow() abort
+  new | wincmd J | resize 1
+endfunction
+
 " Creates a floating window with a most recent buffer to be used
 function! CreateCenteredFloatingWindow()
   if has('nvim')
@@ -49,9 +53,9 @@ function! CreateCenteredFloatingWindow()
     let left = (&columns - width) / 2
     let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
 
-    let top = "╭" . repeat("─", width - 2) . "╮"
-    let mid = "│" . repeat(" ", width - 2) . "│"
-    let bot = "╰" . repeat("─", width - 2) . "╯"
+    let top = '╭' . repeat('─', width - 2) . '╮'
+    let mid = '│' . repeat(' ', width - 2) . '│'
+    let bot = '╰' . repeat('─', width - 2) . '╯'
     let lines = [top] + repeat([mid], height - 2) + [bot]
     let s:buf = nvim_create_buf(v:false, v:true)
     call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
@@ -81,9 +85,8 @@ function! DeleteUnlistedBuffers()
       if ! buflisted(n)
         let name = bufname(n)
         if name == '[Scratch]' ||
-              \ matchend(name, ":bash") ||
-              \ matchend(name, ":fish") ||
-              \ matchend(name, ":lazygit")
+              \ matchend(name, ':bash') ||
+              \ matchend(name, ':fish')
           call CleanupBuffer(n)
         endif
       endif
@@ -109,14 +112,6 @@ function! ToggleTerm(cmd)
     endif
   endif
 endfunction
-
-function! ToggleLazyGit()
-  if has('nvim')
-    call ToggleTerm('lazygit')
-  endif
-endfunction
-command! ToggleLazyGit call ToggleLazyGit()
-nnoremap <leader>tlg :ToggleLazyGit<cr>
 
 function! ToggleScratchTerm()
   if has('nvim')
@@ -159,5 +154,46 @@ function! s:NewVimFile()
   execute 'set filetype=vim'
 endfunction
 command! NewVimFile call <sid>NewVimFile()
+
+" Handles closing in cases where you would be the last window
+function! CloseWindowOnSuccess(code) abort
+  if a:code == 0
+    let current_window = winnr()
+    bdelete!
+    " Handles special cases where window remains due startify
+    if winnr() == current_window
+      close
+    endif
+  endif
+endfunction
+
+" Open autoclosing terminal, with optional size and dir
+function! OpenTerm(cmd) abort
+  if has('nvim')
+    call termopen(a:cmd, {'on_exit': { _, c -> CloseWindowOnSuccess(c) }})
+  else
+    call term_start(a:cmd, {'exit_cb': {_, c -> CloseWindowOnSuccess(c)}})
+  endif
+  setf openterm
+endfunction
+
+" Open vsplit with animation
+function! OpenVTerm(cmd, percent) abort
+  if has('nvim')
+    vnew
+  endif
+  call OpenTerm(a:cmd)
+  wincmd L | vertical resize 1
+  call animate#window_percent_width(a:percent)
+endfunction
+
+function! OpenHTerm(cmd, percent) abort
+  if has('nvim')
+    new
+  endif
+  call OpenTerm(a:cmd)
+  wincmd J | resize 1
+  call animate#window_percent_height(a:percent)
+endfunction
 
 " vim:ft=vim
