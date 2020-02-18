@@ -1,0 +1,3 @@
+" vim-doge - (Do)cumentation (Ge)nerator 15+ languages
+Plug 'kkoomen/vim-doge'
+" vim: ft=vim

@@ -5,9 +5,6 @@ Plug 'junegunn/fzf.vim'
 let g:fzf_command_prefix = 'Fzf'
 let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --iglob "!.DS_Store" --iglob "!.git"'
 
-" let g:fzf_files_options =
-"       \ '--preview "(coderay {} || cat {}) 2> /dev/null | head -'.&lines.'"'
-
 " Configure FZF to use a floating window configuration
 let $FZF_DEFAULT_OPTS = '--layout=reverse'
 let g:fzf_colors =
@@ -24,8 +21,6 @@ let g:fzf_colors =
       \ 'marker':  ['fg', 'Keyword'],
       \ 'spinner': ['fg', 'Label'],
       \ 'header':  ['fg', 'Comment'] }
-
-let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 
 nnoremap <leader>f :Find<cr>
 nnoremap <C-p> :FzfGitFiles<cr>
@@ -55,11 +50,9 @@ nnoremap <leader>fh :FzfHelpTags<cr>
 nnoremap <leader>fa :FzfRg<cr>
 
 imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
-
-" Customize fzf colors to match your color scheme
-
 
 " Configures ripgrep with fzf
 command! -bang -nargs=* FzfRg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
