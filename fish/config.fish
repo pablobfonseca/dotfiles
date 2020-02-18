@@ -52,10 +52,7 @@ for config in ~/.config/fish/profile/*.fish
   source $config
 end
 
-function reload!
-  source ~/.config/fish/config.fish
-  echo 'Fish config reloaded!'
-end
+bind \ce edit_command_buffer
 
 # virtualfish
 eval (python3 -m virtualfish)
