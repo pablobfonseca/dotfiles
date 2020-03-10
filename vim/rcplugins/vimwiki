@@ -1,0 +1,3 @@
+" vimwiki - Personal Wiki for Vim
+Plug 'vimwiki/vimwiki'
+" vim: ft=vim
