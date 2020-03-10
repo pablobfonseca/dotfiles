@@ -18,3 +18,4 @@ zeus_custom.rb
 .ctags
 .vimrc.local
 .indium.json
+.solargraph.yml
