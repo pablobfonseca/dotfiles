@@ -3,27 +3,35 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
 let g:fzf_command_prefix = 'Fzf'
-let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --iglob "!.DS_Store" --iglob "!.git"'
 
 " Configure FZF to use a floating window configuration
 let $FZF_DEFAULT_OPTS = '--layout=reverse'
+
+if has('nvim')
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+endif
+
 let g:fzf_colors =
-      \ { 'fg':      ['fg', 'Normal'],
-      \ 'bg':      ['bg', 'Normal'],
-      \ 'hl':      ['fg', 'Comment'],
-      \ 'fg+':     ['fg', 'CursorLine'],
-      \ 'bg+':     ['bg', 'Normal'],
-      \ 'hl+':     ['fg', 'Statement'],
-      \ 'info':    ['fg', 'PreProc'],
-      \ 'border':  ['fg', 'CursorLine'],
-      \ 'prompt':  ['fg', 'Conditional'],
-      \ 'pointer': ['fg', 'Exception'],
-      \ 'marker':  ['fg', 'Keyword'],
-      \ 'spinner': ['fg', 'Label'],
-      \ 'header':  ['fg', 'Comment'] }
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+autocmd! FileType fzf
+autocmd FileType fzf set noshowmode noruler nonu
 
 nnoremap <leader>f :Find<cr>
-nnoremap <C-p> :FzfGitFiles<cr>
+nnoremap <C-p> :AF<cr>
+nnoremap <C-f> :FzfGitFiles<cr>
 nnoremap <leader>gc :FzfFiles app/controllers<cr>
 nnoremap <leader>gj :FzfFiles app/assets/javascripts<cr>
 nnoremap <leader>gl :FzfFiles config/locales<cr>
@@ -58,7 +66,6 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 command! -bang -nargs=* FzfRg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 command! -bang -nargs=* Rgg call fzf#vim#grep("rg --no-ignore --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
-
 " Augmenting Ag command using fzf#vim#with_preview function
 "   * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
 "   * Preview script requires Ruby
@@ -83,5 +90,15 @@ command! -bang -nargs=* FzfAg
 " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 " --color: Search color options
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+
+command! -bang -nargs=? -complete=dir FzfFiles
+      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+" All files
+command! -nargs=? -complete=dir AF
+      \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+      \ 'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+      \ })))
+nnoremap <leader>af :AF<cr>
 
 " vim: ft=vim

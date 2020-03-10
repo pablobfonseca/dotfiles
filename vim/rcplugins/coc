@@ -21,6 +21,7 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Use <c-space> to trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<cr>"
 
 " Rename current word
 nmap <F2> <Plug>(coc-rename)
