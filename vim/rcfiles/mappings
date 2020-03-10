@@ -7,7 +7,7 @@
 nmap <C-x><C-s> :w<cr>
 
 nnoremap <silent> H :call <SID>show_documentation()<cr>
-nnoremap <silent> K :exe 'FzfRg' expand('<cword>')<cr>
+nnoremap <silent> K :FzfRg <C-R><C-W><cr>
 
 function! s:show_documentation()
   if (index(['vim', 'help'], &filetype) >= 0)
@@ -80,7 +80,7 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 " Disable arrows
 for prefix in ['i', 'n', 'v']
   for key in ['<Up>', '<Down>', '<Left>', '<Right>']
-    exe prefix . "noremap " . key . " <Nop>"
+    exe prefix . 'noremap ' . key . " <Nop>"
   endfor
 endfor
 
@@ -144,3 +144,6 @@ nnoremap <leader>tld :call OpenHTerm('lazydocker', 0.8)<cr>
 nnoremap <silent><leader>[ :call OpenVTerm('tmux-fzf-switch.sh', 0.2)<cr>
 " Kill tmux session
 nnoremap <silent><leader>} :call OpenVTerm('tmux-fzf-kill.sh', 0.2)<cr>
+
+" Correct previous misspelled word ( Don't forgot to set spell )
+nnoremap <space>sp mm[s1z=`m

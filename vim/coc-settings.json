@@ -1,9 +1,12 @@
 {
   "suggest.echodocSupport": true,
-  "suggest.noselect": false,
   "suggest.maxCompleteItemCount": 20,
+  "suggest.enablePreview": true,
   "tsserver.enableJavascript": true,
   "coc.preferences.formatOnSaveFiletypes": ["rust"],
+  "diagnostic.virtualText": true,
+  "solargraph.definitions": true,
+  "codeLens.enable": true,
   "languageserver": {
     "cquery": {
       "command": "cquery",
@@ -46,6 +49,10 @@
           "hlintOn": true
         }
       }
+    },
+    "elixirLS": {
+      "command": "~/code/elixir-ls/rel/language_server.sh",
+      "filetypes": ["elixir", "eelixir"]
     }
   }
 }
