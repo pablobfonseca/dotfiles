@@ -1,4 +1,4 @@
 function vimup
-  vim +PlugUpdate
+  nvim +PlugUpdate
 end
 

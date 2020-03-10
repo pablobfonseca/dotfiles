@@ -10,7 +10,7 @@ alias modemip="netstat -rn | grep default"
 # Git aliases
 alias st="git st"
 alias gitlog="git log --all -p --"
-alias bselect="git bselect"
+alias bs="git bselect"
 
 # Linux
 alias nocaps="/usr/bin/setxkbmap -option 'ctrl:nocaps'"
