@@ -1,0 +1,3 @@
+" neco-vim - The vim source for neocomplete/deoplete
+Plug 'Shougo/neco-vim'
+" vim: ft=vim

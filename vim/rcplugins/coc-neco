@@ -1,0 +1,3 @@
+" coc-neco - viml completion source for coc.nvim
+Plug 'neoclide/coc-neco'
+" vim: ft=vim
