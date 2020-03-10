@@ -1,3 +1,1 @@
-function cat
-  bat
-end
+_grc_wrap cat
