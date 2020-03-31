@@ -19,3 +19,4 @@ zeus_custom.rb
 .vimrc.local
 .indium.json
 .solargraph.yml
+solargraph_rails.rb
