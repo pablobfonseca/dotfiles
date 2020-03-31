@@ -1,0 +1,3 @@
+" vimagit - Ease your git workflow within Vim
+Plug 'jreybert/vimagit'
+" vim: ft=vim

@@ -1,3 +1,5 @@
 " abolish.vim - easily search for, substitute, and abbreviate multiple variants of a word 
 Plug 'tpope/vim-abolish'
+
+iabbrev bybeug byebug
 " vim: ft=vim

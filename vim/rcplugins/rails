@@ -6,9 +6,9 @@ nnoremap <leader>rs :Server<cr>
 nnoremap <leader>rc :Console<cr>
 
 let g:rails_projections = {
-      \ "app/services/*.rb": {
-      \   "command": "service",
+      \ 'app/services/*.rb': {
+      \   'command': 'service',
       \ },
-      \ "app/mappers/*.rb": {"command": "mapper"}}
+      \ 'app/mappers/*.rb': {'command': 'mapper'}}
 
 " vim:ft=vim
