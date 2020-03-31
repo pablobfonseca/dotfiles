@@ -1,6 +1,6 @@
 #### COLOUR
 
-tm_icon="Παμπλο"
+tm_icon="ולבהפ"
 tm_color_active=white
 tm_color_inactive=colour241
 tm_color_feature=colour10
