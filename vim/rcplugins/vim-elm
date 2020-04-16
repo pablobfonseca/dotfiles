@@ -1,3 +1,3 @@
 " elm-vim - Elm plugin for Vim
-Plug 'ElmCast/elm-vim'
+Plug 'Zaptic/elm-vim', {'for': 'elm'}
 " vim: ft=vim

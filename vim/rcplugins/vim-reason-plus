@@ -1,0 +1,3 @@
+" vim-reason-plus - Reason Vim editor integration
+Plug 'reasonml-editor/vim-reason-plus', {'for': 'reason'}
+" vim: ft=vim

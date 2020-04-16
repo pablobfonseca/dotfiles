@@ -50,9 +50,20 @@
         }
       }
     },
-    "elixirLS": {
-      "command": "~/code/elixir-ls/rel/language_server.sh",
-      "filetypes": ["elixir", "eelixir"]
+    "reason": {
+      "command": "reason-language-server",
+      "filetypes": ["reason"]
+    },
+    "elmLS": {
+      "command": "elm-language-server",
+      "filetypes": ["elm"],
+      "rootPatterns": ["elm.json"],
+      "initializationOptions": {
+        "elmPath": "elm",
+        "elmFormatPath": "elm-format",
+        "elmTestPath": "elm-test",
+        "elmAnalyseTrigger": "change"
+      }
     }
   }
 }
