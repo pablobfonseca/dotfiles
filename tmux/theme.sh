@@ -1,6 +1,6 @@
 #### COLOUR
 
-tm_icon="ולבהפ"
+tm_icon="ולבפ"
 tm_color_active=white
 tm_color_inactive=colour241
 tm_color_feature=colour10
