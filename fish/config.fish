@@ -14,6 +14,10 @@ set -U BUNDLER_EDITOR $EDITOR
 set -U HOMEBREW_CASK_OPTS --appdir=/Applications
 set -U DOTFILES $HOME/.dotfiles
 set -U FZF_DEFAULT_COMMAND 'rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+set -U FZF_DEFAULT_OPTS '--height=50% --min-height=15 --preview="bat --style=numbers --color=always {} | head -500" --preview-window=right:60%:wrap'
+set -U FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
+set -U FZF_COMPLETE 1
+
 set -U NVM_DIR $HOME/.nvm
 set -U SHELL /usr/local/bin/fish 
 
