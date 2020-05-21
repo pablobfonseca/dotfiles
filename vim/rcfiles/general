@@ -36,6 +36,10 @@ set isfname-=:
 
 set termguicolors
 
+if has('nvim')
+  set inccommand=nosplit " substitute with preview
+endif
+
 " Fix netrw buffer issue
 let g:netrw_fastbrowse = 0
 
