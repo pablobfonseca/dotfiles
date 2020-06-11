@@ -53,11 +53,9 @@ set-option -g display-panes-colour $tm_color_inactive
 # clock
 set-window-option -g clock-mode-colour $tm_color_active
 
-tm_itunes="#[fg=$tm_color_music]#(osascript ~/.tmux/applescripts/itunes.scpt)"
-
 tm_date="#[fg=$tm_color_inactive] %a, %b, %d"
 tm_hour="#[fg=$tm_color_inactive] %I:%M"
 tm_session_name="#[fg=white]$tm_icon #S"
 
 set -g status-left $tm_session_name' '
-set -g status-right "Battery: #{battery_icon} #{battery_percentage} #{battery_remain}"' '$tm_date' '$tm_hour
+set -g status-right "Online: #{online_status} | %A, %d %b %Y %l:%M %p"
