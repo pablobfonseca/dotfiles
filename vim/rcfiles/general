@@ -33,6 +33,7 @@ set signcolumn=yes                " always show signcolumns
 set shell=/bin/zsh
 set showmatch                     " jump to matches when entering regexp
 set isfname-=:
+set shortmess+=c                  " Don't pass messages to |ins-completion-menu|
 
 set termguicolors
 
