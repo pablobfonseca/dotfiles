@@ -58,6 +58,4 @@ end
 
 bind \ce edit_command_buffer
 
-# virtualfish
-eval (python3 -m virtualfish)
 set -g fish_user_paths "/usr/local/mysql/bin" $fish_user_paths
