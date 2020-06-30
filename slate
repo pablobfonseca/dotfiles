@@ -44,15 +44,12 @@ alias bottomRightQuarter ${sox}+${ssx}/2;${soy}+${ssy}/2 ${ssx}/2;${ssy}/2
 # Layouts
 layout default 'Google Chrome'                move ${fullscreen}
 layout default 'Firefox'                      move ${fullscreen}
-layout default 'Safari'                       move ${fullscreen}
 layout default 'iTerm2'                       move ${fullscreen}
-layout default 'VLC'                          move ${fullscreen}
 layout default 'Stremio'                      move ${fullscreen}
 layout default 'Emacs'                        move ${fullscreen}
 layout default 'Evernote'                     move ${centered}
 layout default 'PDF Expert'                   move ${fullscreen}
 layout split 'Google Chrome'                  move ${leftHalf}
-layout split 'Safari'                         move ${leftHalf}
 layout split 'iTerm2'                         move ${rightHalf}
 layout split 'Firefox'                        move ${leftHalf}
 layout split 'Evernote'                       move ${rightHalf}
