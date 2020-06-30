@@ -1,4 +1,4 @@
 function code
-  cd ~/code
+  cd ~/code && cd
 end
 

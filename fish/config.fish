@@ -5,10 +5,8 @@
 # |  _| \__ \ | | |
 # |_| |_|___/_| |_|
                  
-# Starhip Theme
-starship init fish | source
-
 set -U EDITOR nvim
+set -U MUSIC_APP Spotify
 set -U VISUAL $EDITOR
 set -U BUNDLER_EDITOR $EDITOR
 set -U HOMEBREW_CASK_OPTS --appdir=/Applications
@@ -59,3 +57,6 @@ end
 bind \ce edit_command_buffer
 
 set -g fish_user_paths "/usr/local/mysql/bin" $fish_user_paths
+
+# Starhip Theme
+starship init fish | source

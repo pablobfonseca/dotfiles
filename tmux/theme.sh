@@ -56,6 +56,7 @@ set-window-option -g clock-mode-colour $tm_color_active
 tm_date="#[fg=$tm_color_inactive] %a, %b, %d"
 tm_hour="#[fg=$tm_color_inactive] %I:%M"
 tm_session_name="#[fg=white]$tm_icon #S"
+tm_spotify="#[fg=white]#(osascript ~/.tmux/applescripts/spotify.scpt)"
 
 set -g status-left $tm_session_name' '
-set -g status-right "Online: #{online_status} | %A, %d %b %Y %l:%M %p"
+set -g status-right "$tm_spotify | Online: #{online_status} | %A, %d %b %Y %l:%M %p"
