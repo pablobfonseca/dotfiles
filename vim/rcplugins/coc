@@ -8,7 +8,8 @@ let g:coc_global_extensions = [
       \ 'coc-tsserver',
       \ 'coc-json',
       \ 'coc-solargraph',
-      \ 'coc-css'
+      \ 'coc-css',
+      \ 'coc-python'
       \ ]
 
 " Remap keys for gotos
@@ -20,8 +21,19 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Use <c-space> to trigger completion
-inoremap <silent><expr> <c-space> coc#refresh()
+" inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<cr>"
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
 " Rename current word
 nmap <F2> <Plug>(coc-rename)

@@ -5,8 +5,11 @@
   "tsserver.enableJavascript": true,
   "coc.preferences.formatOnSaveFiletypes": ["rust"],
   "diagnostic.virtualText": true,
+  "solargraph.hover": true,
   "solargraph.definitions": true,
+  "solargraph.references": true,
   "codeLens.enable": true,
+  "python.venvFolders": [ ".virtualenvs" ],
   "languageserver": {
     "cquery": {
       "command": "cquery",

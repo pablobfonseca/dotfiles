@@ -6,6 +6,9 @@
 " Emacs-like saving file
 nmap <C-x><C-s> :w<cr>
 
+" Emacs-like changing buffer
+nmap <C-x>b :FzfBuffers<cr>
+
 nnoremap <silent> H :call <SID>show_documentation()<cr>
 nnoremap <silent> K :FzfRg <C-R><C-W><cr>
 

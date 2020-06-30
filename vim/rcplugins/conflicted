@@ -1,0 +1,3 @@
+" vim-conflicted - vim plugins to resolve merge conflicts
+Plug 'christoomey/vim-conflicted'
+" vim: ft=vim
