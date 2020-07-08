@@ -1,31 +1,30 @@
 ;;; init.el --- Pablo's Emacs configuration
 ;;;
-;;; Copyright (c) 2019 Pablo Fonseca
+;;; Copyright (c) 2020 Pablo Fonseca
 ;;;
 ;;; Author: Pablo Fonseca <pablofonseca777@gmail.com>
-;;; URL: https://github.com/pablobfonseca/emacs.d
+;;; URL: https://github.com/pablobfonseca/dotfiles
 
 ;;; Comentary:
 ;; My personal Emacs file
 
 ;;; Code:
-
 (eval-when-compile
   (require 'package)
   (package-initialize)
   (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/") t)
+	       '("melpa" . "https://melpa.org/packages/") t)
   (add-to-list 'package-archives
-               '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+	       '("melpa-stable" . "https://stable.melpa.org/packages/") t)
   (add-to-list 'package-archives
-               '("gnu" . "https://elpa.gnu.org/packages/") t)
+	       '("gnu" . "https://elpa.gnu.org/packages/") t)
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package)
 
     (package-install 'diminish)))
 
-;; keep the installed packages in ~/.emacs.d
+;; Keep the installed packages in ~/.emacs.d
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
 
 (setq user-full-name "Pablo Fonseca"
@@ -34,51 +33,48 @@
 ;; Always load newest byte code
 (setq load-prefer-newer t)
 
-;; reduce the frequency of garbage collection by making it happen on
+;; Reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76)
 (setq gc-cons-threshold 50000000)
 
-;; warn when opening files bigger than 100MB
+;; Warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
 
 (defconst pbf-savefile-dir (expand-file-name "savefile" user-emacs-directory))
 
-;; create the savefile dir if it doesn't exist
+;; Create the savefile dir if it doesn't exist
 (unless (file-exists-p pbf-savefile-dir)
   (make-directory pbf-savefile-dir))
 
-;; the toolbar is just a wast of valuable screen state
-;; in a tty tool-bar-mode dows not properly auto-load, and is
+;; The toolbar is just a wast of valuable screen state
+;; in a tty tool-bar-mode does not properly auto-load, and is
 ;; already disabled anyway
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 
-;; disable blinking cursor
+;; Disable blinking cursor
 (blink-cursor-mode -1)
 
 ;; Enable line numbers globally
 (global-linum-mode t)
 
-;; disable the annoying bell ring
+;; Disable the annoying bell ring
 (setq ring-bell-function 'ignore)
 
-;; disable startup screen
+;; Disable startup screen
 (setq inhibit-startup-screen t)
 
-;; nice scrooling
+;; Nice scrooling
 (setq scroll-margin 0
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
-;; mode line settings
+;; Mode line settings
 (line-number-mode t)
 (column-number-mode t)
 (size-indication-mode t)
 
-;; enable y/n answers
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; more useful frame title, that show either a file or a
+;; More useful frame title, that show either a file or a
 ;; buffer name (if the buffer isn't visiting a file)
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
@@ -92,7 +88,7 @@
 ;; Wrap lines at 80 characters
 (setq-default fill-column 80)
 
-;; delete the selection with a keypress
+;; Delete the selection with a keypress
 (delete-selection-mode t)
 
 ;; store all backup and autosave files in the tmp dir
@@ -128,24 +124,24 @@
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "s-/") #'hippie-expand)
 
-;; replace buffer-menu with ibuffer
+;; Replace buffer-menu with ibuffer
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
-;; align code in a pretty way
+;; Align code in a pretty way
 (global-set-key (kbd "C-x \\") #'align-regexp)
 
 (define-key 'help-command (kbd "C-i") #'info-display-manual)
 
-;; misc useful keybindings
+;; Misc useful keybindings
 (global-set-key (kbd "s-<") #'beginning-of-buffer)
 (global-set-key (kbd "s->") #'end-of-buffer)
 (global-set-key (kbd "s-q") #'fill-paragraph)
 (global-set-key (kbd "s-x") #'execute-extended-command)
 
-;; smart tab behavior - indent or complete
+;; Smart tab behavior - indent or complete
 (setq tab-always-indent 'complete)
 
-(set-face-attribute 'default nil :font "Source Code Pro 13")
+(set-face-attribute 'default nil :font "Roboto Mono for Powerline")
 (setq-default line-spacing 0)
 (setq initial-frame-alist '((width . 135) (height . 55)))
 
@@ -155,7 +151,8 @@
 ;; Sentence should end in one space
 (setq sentence-end-double-space nil)
 
-(scroll-bar-mode -1) ;; remove scroll bar
+;; Remove scroll bar
+(scroll-bar-mode -1)
 
 ;; Stop creating lock files
 (setq create-lockfiles nil)
@@ -172,7 +169,7 @@
   :config
   (electric-pair-mode +1))
 
-;; highlight the current line
+;; Highlight the current line
 (use-package hl-line
   :config
   (global-hl-line-mode +1))
@@ -191,26 +188,26 @@
   :config
   (setq uniquify-buffer-name-style 'forward)
   (setq uniquify-separator "/")
-  ;; rename after killing uniquified
+  ;; Rename after killing uniquified
   (setq uniquify-after-kill-buffer-p t)
-  ;; don't muck with special buffers
+  ;; Don't muck with special buffers
   (setq uniquify-ignore-buffers-re "^\\*"))
 
-;; saveplace remembers your location in a file when saving files
+;; Saveplace remembers your location in a file when saving files
 (use-package saveplace
   :config
   (setq save-place-file (expand-file-name "saveplace" pbf-savefile-dir))
-  ;; activate it for all buffers
+  ;; Activate it for all buffers
   (setq-default save-place t))
 
 (use-package savehist
   :config
   (setq savehist-additional-variables
-        ;; search entries
+        ;; Search entries
         '(search-ring regexp-search-ring)
-        ;; save every minute
+        ;; Save every minute
         savehist-autosave-interval 60
-        ;; keep the home clean
+        ;; Keep the home clean
         savehist-file (expand-file-name "savehist" pbf-savefile-dir))
   (savehist-mode +1))
 
@@ -219,41 +216,46 @@
   (setq recentf-save-file (expand-file-name "recentf" pbf-savefile-dir)
         recentf-max-saved-items 500
         recentf-max-menu-items 15
-        ;; disable recentf-cleanup on Emacs start, because it can cause
+        ;; Disable recentf-cleanup on Emacs start, because it can cause
         ;; problems with remote files
         recentf-auto-cleanup 'never)
   (recentf-mode +1))
 
 (use-package windmove
   :config
-  ;; use shift + arrow keys to switch between visible buffers
+  ;; Use Shift + arrow keys to switch between visible buffers
   (windmove-default-keybindings))
 
 (use-package dired
   :config
-  ;; dired - reuse current buffer by pressing 'a'
+  ;; Dired - reuse current buffer by pressing 'a'
   (put 'dired-find-alternate-file 'disabled nil)
 
-  ;; always delete and copy recursively
+  ;; Always delete and copy recursively
   (setq dired-recursive-deletes 'always)
   (setq dired-recursive-copies 'always)
 
-  ;; if there is a dired buffer displayed in the next window, use its
+  ;; If there is a dired buffer displayed in the next window, use its
   ;; current subdir, instead of the current subdir of this dired buffer
   (setq dired-dwim-target t)
 
-  ;; enable some really cool extensions like C-x C-j (dired-jump)
+  ;; Enable some really cool extensions like C-x C-k (dired-jump)
   (require 'dired-x))
 
 ;;; third-party packages
 
-(use-package restclient
-  :ensure t)
+(use-package spacemacs-theme
+  :defer t
+  :ensure t
+  :init (load-theme 'spacemacs-dark t))
 
 (use-package evil
   :ensure t
   :config
   (evil-mode 1))
+
+(use-package restclient
+  :ensure t)
 
 (use-package evil-matchit
   :ensure t
@@ -265,11 +267,6 @@
   :config
   (global-evil-surround-mode 1))
 
-(use-package zenburn-theme
-  :ensure t
-  :config
-  (load-theme 'zenburn t))
-
 (use-package simpleclip
   :ensure t
   :config
@@ -277,8 +274,8 @@
 
 (use-package avy
   :ensure t
-  :bind (("s-." . avy-goto-word-or-subword-1)
-         ("s-," . avy-goto-char))
+  :bind (("s-." . any-goto-word-or-subword-1)
+         ("s-," . any-goto-char))
   :config
   (setq avy-background t))
 
@@ -328,7 +325,7 @@
   (helm-autoresize-mode 1)
   (setq helm-follow-mode-persistent t)
   (setq helm-M-x-fuzzy-match t)
-  (setq helm-buffers-fuzzy-matching t)
+  (setq helm-buffers-fuzzy-match t)
   (setq helm-recentf-fuzzy-match t)
   (setq helm-apropos-fuzzy-match t)
   (setq helm-split-window-inside-p t))
@@ -377,8 +374,8 @@
   (define-key mc/keymap (kbd "<return>") nil))
 
 (use-package anzu
-  :diminish
   :ensure t
+  :diminish
   :bind (("M-%" . anzu-query-replace)
          ("C-M-%" . anzu-query-replace-regexp))
   :config
@@ -472,7 +469,7 @@
   (setq web-mode-enable-auto-closing t)
   (setq web-mode-enable-current-column-highlight t)
   (setq web-mode-enable-current-element-highlight t)
-  (add-hook 'web-mode-hook 'electric-pair-mode)
+  (add-hook 'web-mode-hook 'electic-pair-mode)
   :mode
   (("\\.html$\\'" . web-mode)
    ("\\.erb\\'" . web-mode)
@@ -484,8 +481,8 @@
   :bind* (("C-)" . emmet-next-edit-point)
           ("C-(" . emmet-prev-edit-point))
   :commands (emmet-mode
-             emmet-next-edit-point
-             emmet-prev-edit-point)
+            emmet-next-edit-point
+            emmet-prev-edit-point)
   :init
   (setq emmet-indentation 2)
   (setq emmet-move-cursor-between-quotes t)
@@ -515,18 +512,6 @@
               ("C-c C-l" . indium-eval-buffer))
   :hook (((js2-mode typescript-mode) . indium-interaction-mode)))
 
-(use-package mocha
-  :ensure t
-  :after js2-mode
-  :config
-  (require 'typescript-mode)
-  (dolist (m (list js2-mode-map typescript-mode-map))
-    (bind-keys
-     :map m
-     ("C-c m P" . mocha-test-project)
-     ("C-c m f" . mocha-test-file)
-     ("C-c m p" . mocha-test-at-point))))
-
 (use-package helm-rg
   :ensure t)
 
@@ -535,21 +520,21 @@
   :after typescript-mode
   :config
   (defun my-tide-setup-hook ()
-    ;; configure tide
+    ;; Configure tide
     (tide-setup)
-    ;; highlight identifiers
+    ;; Hightlight identifiers
     (tide-hl-identifier-mode +1)
-    ;; enable eldoc-mode
+    ;; Enable eldoc-mode
     (eldoc-mode)
-    ;; enable flycheck
+    ;; Enable flycheck
     (flycheck-mode)
 
-    ;; company-backends setup
+    ;; Company-backends setup
     (set (make-local-variable 'company-backends)
          '((company-tide company-files :with company-yasnippet)
-           (company-dabbrev-code company-dabbrev))))
+           (company-dabbrev company-dabbrev))))
 
-  ;; add tslint checker for flycheck
+  ;; Add tslint checker for flycheck
   (flycheck-add-next-checker 'typescript-tide
                              'typescript-tslint)
   (setq tide-completion-detailed t)
@@ -576,6 +561,17 @@
                    (list (point-min) (point-max))))
     (browse-url (concat "http://www.typescriptlang.org/Playground#src="
                         (url-hexify-string (buffer-substring-no-properties start end))))))
+
+(use-package company-quickhelp
+  :ensure t
+  :defines company-quickhelp-delay
+  :bind (:map company-active-map
+              ("M-h" . company-quickhelp-manual-begin))
+  :hook (global-company-mode . company-quickhelp-mode)
+  :custom
+  (company-quickhelp-color-background "gray43")
+  (company-quickhelp-color-foreground "selectedControlColor")
+  (company-quickhelp-delay 0.5))
 
 (use-package company
   :ensure t
@@ -606,17 +602,6 @@
   (company-quickhelp-mode)
   (global-company-mode))
 
-(use-package company-quickhelp
-  :ensure t
-  :defines company-quickhelp-delay
-  :bind (:map company-active-map
-              ("M-h" . company-quickhelp-manual-begin))
-  :hook (global-company-mode . company-quickhelp-mode)
-  :custom
-  (company-quickhelp-color-background "gray43")
-  (company-quickhelp-color-foreground "selectedControlColor")
-  (company-quickhelp-delay 0.5))
-
 (use-package company-web
   :ensure t)
 
@@ -643,7 +628,6 @@
 (use-package flycheck
   :ensure t
   :config
-  (setq-default flycheck-disabled-checkers '(ruby-rubocop))
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package crux
@@ -709,8 +693,7 @@
           (swiper-isearch . ivy--regex-plus)
           (counsel-ag . ivy--regex-plus)
           (counsel-rg . ivy--regex-plus)
-          (t . ivy--regex-fuzzy))) ;; enable fuzzy searching everywhere except for Swiper and ag
-
+          (t . ivy--regex-fuzzy))) ;; enable fuzze searching everywhere except for swiper and ag
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
   (global-set-key (kbd "<f6>") 'ivy-resume))
 
@@ -749,11 +732,8 @@
   :config
   (volatile-highlights-mode +1))
 
-;; config changes made through the customize UI will be stored here
+;; Config changes made through the customize UI will be store here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-
-(when (file-exists-p custom-file)
-  (load custom-file))
 
 ;; Fixes unsafe dir issue
 (defadvice server-ensure-safe-dir (around
