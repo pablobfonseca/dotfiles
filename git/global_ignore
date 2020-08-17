@@ -20,3 +20,4 @@ zeus_custom.rb
 .indium.json
 .solargraph.yml
 solargraph_rails.rb
+.tern-port
