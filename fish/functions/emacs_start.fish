@@ -1,3 +1,7 @@
 function emacs_start
-  emacs --daemon && emacsclient -n -c
+  if not pgrep -f emacs > /dev/null
+    emacs --daemon && emacsclient -c
+  else
+    emacsclient -c
+  end
 end
