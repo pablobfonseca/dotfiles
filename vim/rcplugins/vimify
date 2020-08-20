@@ -1,7 +1,0 @@
-" vimify - Spotify integration for vim
-Plug 'HendrikPetertje/vimify'
-
-let g:spotify_token=$SPOTIFY_TOKEN
-
-nnoremap <leader>ss :SpSearch<space>
-" vim: ft=vim
