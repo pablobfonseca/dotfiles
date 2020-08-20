@@ -3,7 +3,7 @@
   filemode                = true
   bare                    = false
   logallrefupdates        = true
-	editor                  = nvim
+  editor                  = nvim
   excludesfile            = ~/.global_ignore
   pager                   = less -F -X
   whitespace              = warn
@@ -133,6 +133,6 @@
   untracked               = yellow
   modified                = red
 [git-pair]
-	scope = global
+  scope = global
 [http]
-	postBuffer = 524288000
+  postBuffer = 524288000

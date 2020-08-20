@@ -1,5 +1,0 @@
-* Pablo's Emacs config
-
-This is my personal configuration for Emacs
-
-Inspired on [[https://github.com/bbatsov/emacs.d][@bbatsov]]'s emacs config
