@@ -101,7 +101,6 @@
 	users                   = !~/.config/nvm/12.10.0/lib/node_modules/git-pair/users.js
   branch-status           = !~/bin/git-bstats
   lg                      = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
-
 [diff "ruby"]
   funcname                = "^ *\\(\\(def\\) .*\\)"
 [diff]
@@ -136,3 +135,5 @@
   scope = global
 [http]
   postBuffer = 524288000
+[status]
+  submoduleSummary = true
