@@ -16,6 +16,8 @@ set -U FZF_DEFAULT_OPTS '--height=50% --min-height=15 --preview="bat --style=num
 set -U FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -U FZF_COMPLETE 1
 
+set -U DENO_INSTALL '/Users/pablobfonseca/.deno'
+
 set -U NVM_DIR $HOME/.nvm
 set -U SHELL /usr/local/bin/fish 
 
@@ -36,6 +38,8 @@ set -x PATH $PATH /Users/pablobfonseca/.cargo/bin
 set -x PATH $PATH /Users/pablobfonseca/.cabal/bin
 set -x PATH $PATH /Users/pablobfonseca/.ghcup/bin
 set -x PATH $PATH /usr/local/sbin
+set -x PATH $PATH $DENO_INSTALL/bin:$PATH
+set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
 
 # Go
 set -x GOPATH $HOME/code/go-workspace
