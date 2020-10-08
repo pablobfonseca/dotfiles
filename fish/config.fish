@@ -41,8 +41,8 @@ set -x PATH $PATH /usr/local/sbin
 set -x GOPATH $HOME/code/go-workspace
 set -x GOROOT /usr/local/opt/go/libexec
 set -x GOBIN $GOPATH/bin
-set -x PATH $PATH $GOPATH/bin
 set -x PATH $PATH $GOROOT/bin
+set -x PATH $PATH $GOPATH/bin
 
 # Heroku toolbelt
 set -x PATH $PATH /usr/local/heroku/bin
