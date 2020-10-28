@@ -3,11 +3,14 @@
 " Mappings
 " ----------------------
 
-" Emacs-like saving file
+" Emacs-like mappings
 nmap <C-x><C-s> :w<cr>
-
-" Emacs-like changing buffer
+nmap <C-s> /
 nmap <C-x>b :FzfBuffers<cr>
+nmap <C-c>pf :FzfFiles<cr>
+nmap <C-x>2 :split<cr>
+nmap <C-x>3 :vsplit<cr>
+nmap <C-x>0 :q<cr>
 
 nnoremap <silent> H :call <SID>show_documentation()<cr>
 nnoremap <silent> K :FzfRg <C-R><C-W><cr>
