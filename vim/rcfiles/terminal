@@ -22,7 +22,7 @@ augroup terminal
       resize 10
     endfunction
   " Open Terminal on Ctrl+n
-    nnoremap <c-n> :call OpenTerminal()<cr>
+    nnoremap <C-x>n :call OpenTerminal()<cr>
   endif
 augroup END
 
