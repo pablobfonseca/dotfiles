@@ -1,5 +1,12 @@
 " Vim-test - Run your tests at the speed of thought
 Plug 'janko-m/vim-test'
 
-let test#strategy = 'dispatch'
+let test#strategy = 'neoterm'
+
+function! RunTest(cmd)
+  call neoterm#open() " Opens the neoterm window
+  call neoterm#normal('G') " Scroll to the end of the neoterm window
+  exec a:cmd
+endfunction
+
 " vim: ft=vim
