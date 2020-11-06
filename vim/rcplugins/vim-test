@@ -4,9 +4,8 @@ Plug 'janko-m/vim-test'
 let test#strategy = 'neoterm'
 
 function! RunTest(cmd)
-  call neoterm#open() " Opens the neoterm window
+  call meoterm#open() " Opens the neoterm window
   call neoterm#normal('G') " Scroll to the end of the neoterm window
   exec a:cmd
 endfunction
-
 " vim: ft=vim
