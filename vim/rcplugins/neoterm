@@ -1,3 +1,5 @@
 " neoterm - Wrapper of some vim/neovim's :terminal functions
 Plug 'kassio/neoterm'
+
+nnoremap <leader>ro :Topen<cr>
 " vim: ft=vim
