@@ -146,10 +146,5 @@ nnoremap <leader>tlg :call OpenHTerm('lazygit', 0.8)<cr>
 " Open Lazydocker
 nnoremap <leader>tld :call OpenHTerm('lazydocker', 0.8)<cr>
 
-" Switch tmux session
-nnoremap <silent><leader>[ :call OpenVTerm('tmux-fzf-switch.sh', 0.2)<cr>
-" Kill tmux session
-nnoremap <silent><leader>} :call OpenVTerm('tmux-fzf-kill.sh', 0.2)<cr>
-
 " Correct previous misspelled word ( Don't forgot to set spell )
 nnoremap <space>sp mm[s1z=`m
