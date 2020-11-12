@@ -64,3 +64,6 @@ set -g fish_user_paths "/usr/local/mysql/bin" $fish_user_paths
 
 # Starhip Theme
 starship init fish | source
+# ghcup-env
+set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
+test -f /Users/pablobfonseca/.ghcup/env ; and set -gx PATH $HOME/.cabal/bin /Users/pablobfonseca/.ghcup/bin $PATH
