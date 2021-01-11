@@ -2,8 +2,8 @@ function _enhancd_ltsv_open
     set -l configs "$ENHANCD_ROOT/config.ltsv"
 
     for config in "$configs"
-        if [ -f "$config" ]
-            cat "$config"
+        if test -f "$config"
+            command cat "$config"
         end
     end
 end

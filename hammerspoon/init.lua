@@ -26,6 +26,6 @@ end
 focusApp('b', 'Google Chrome')
 focusApp('e', 'Emacs')
 focusApp('t', 'iTerm')
-focusApp('f', 'Firefox')
+focusApp('f', 'Finder')
 focusApp('s', 'Slack')
 focusApp('v', 'Stremio')
