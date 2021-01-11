@@ -19,9 +19,9 @@ function _enhancd_ltsv_parse
     end
 
     set -l default_query '{print $0}'
-    set -l ltsv_script (cat "$ENHANCD_ROOT/lib/ltsv.awk")
+    set -l ltsv_script (command cat "$ENHANCD_ROOT/lib/ltsv.awk")
 
-    if ! set -q query
+    if not set -q query
         set query $default_query
     end
     set -l awk_scripts "$ltsv_script $query"

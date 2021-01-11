@@ -1,9 +1,9 @@
 # Overrides grep command
 function _enhancd_command_grep
-    if [ -n "$argv[1]" ] && [ -f "$argv[1]" ]
-        cat "$argv[1]"
+    if test -n "$argv[1]"; and test -f "$argv[1]"
+        command cat "$argv[1]"
     else
-        cat <&0
+        command cat <&0
     end \
         | command grep -E $argv 2>/dev/null
 end
