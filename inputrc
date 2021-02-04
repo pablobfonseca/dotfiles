@@ -62,6 +62,9 @@ set convert-meta off
 # Delete for wonky terminals
 "\e[3~": delete-char
 
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+
 # Home/End
 "\e[1~": beginning-of-line
 "\e[4~": end-of-line
