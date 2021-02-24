@@ -1,4 +1,0 @@
-" vim-notes - Easy note taking in Vim
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-notes'
-" vim: ft=vim

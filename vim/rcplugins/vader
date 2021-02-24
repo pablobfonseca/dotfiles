@@ -1,3 +1,0 @@
-" vader.vim - A Simple vimscript test framework
-Plug 'junegunn/vader.vim'
-" vim: ft=vim
