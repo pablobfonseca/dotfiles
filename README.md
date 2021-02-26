@@ -27,19 +27,4 @@ cd ~/.dotfiles
 rake install
 ```
 
-### All tasks: Install & Update
-```ruby
-rake dotfiles:install  # Install dotfiles
-rake dotfiles:update   # Update dotfiles
-rake install           # Install dotfiles and related libraries
-rake shell:install     # Install Oh-My-Zsh and change default shell
-rake shell:update      # Update Oh-My-Zsh
-rake update            # Update dotfiles, vim and shell libraries
-rake vim:install       # Install Vim plugins
-rake vim:update        # Update Vim plugins
-```
-
-
-## Customize tmux
-
-[Making tmux Pretty and Usable](http://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/)
+### TODO: Create a new installer
