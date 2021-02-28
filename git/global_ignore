@@ -13,6 +13,7 @@ zeus_custom.rb
 .vagrant
 
 .env
+.venv
 
 .project-notes
 .ctags
@@ -22,3 +23,4 @@ zeus_custom.rb
 solargraph_rails.rb
 .tern-port
 jsconfig.json
+.log
