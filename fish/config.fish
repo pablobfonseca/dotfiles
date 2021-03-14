@@ -18,7 +18,7 @@ set -U FZF_COMPLETE 1
 
 set -U DENO_INSTALL '/Users/pablobfonseca/.deno'
 
-set -U NVM_DIR $HOME/.nvm
+set -gx NVM_DIR $HOME/.nvm
 set -U SHELL /usr/local/bin/fish 
 
 for path in $HOME/bin /usr/local/bin /usr/bin /bin /usr/sbin /sbin
@@ -27,12 +27,12 @@ for path in $HOME/bin /usr/local/bin /usr/bin /bin /usr/sbin /sbin
   end
 end
 
+set -x PATH $PATH $HOME/.rvm/bin
 set -x PATH $PATH /usr/local/share/npm/bin
 set -x PATH $PATH bin
 set -x PATH $PATH /usr/local/opt/go/libexec/bin
 set -x PATH $PATH /Applications/Postgres.app/Contents/Versions/10/bin
 set -x PATH $PATH /usr/local/opt/imagemagick@6/bin
-set -x PATH $PATH $HOME/.rvm/bin
 set -x PATH $PATH /Users/pablobfonseca/Library/Python/3.7/bin
 set -x PATH $PATH /Users/pablobfonseca/.cargo/bin
 set -x PATH $PATH /Users/pablobfonseca/.cabal/bin
