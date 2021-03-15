@@ -8,6 +8,7 @@ nmap <C-x><C-s> :w<cr>
 nmap <C-s> /
 nmap <C-x>b :FzfBuffers<cr>
 nmap <C-c>pf :FzfFiles<cr>
+nmap <C-x>1 :only<cr>
 nmap <C-x>2 :split<cr>
 nmap <C-x>3 :vsplit<cr>
 nmap <C-x>0 :q<cr>
