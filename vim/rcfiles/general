@@ -21,7 +21,7 @@ set textwidth=79
 set viminfo+=!
 set rtp+=/usr/local/opt/fzf
 set cmdheight=2
-set formatoptions-=r              " Stop vim to keep adding comments on carriage return
+set formatoptions-=cro             " Stop vim to keep adding comments on carriage return
 set relativenumber
 set number
 set re=1
