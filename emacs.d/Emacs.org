@@ -1,4 +1,4 @@
-#+title @pablobfonseca's Emacs Configuration
+#+TITLE: @pablobfonseca's Emacs Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
 * Welcome to my Personal Emacs Config
