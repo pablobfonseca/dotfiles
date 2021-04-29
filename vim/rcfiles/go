@@ -5,6 +5,7 @@ augroup filetype_go
   " Clear old autocmds in group
   autocmd!
   " autoindent with two spaces, always expand tabs
+  autocmd BufNewFile,BufRead *.go setlocal ai sw=4 ts=4 sts=4 et fileformat=unix
   autocmd Filetype go nmap <leader>r :GoRun <cr><Esc>
   autocmd Filetype go nmap <leader>t <Plug>(go-test)
   autocmd Filetype go nmap <leader>c <Plug>(go-coverage-toggle)
