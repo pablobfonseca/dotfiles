@@ -3,7 +3,7 @@
   "suggest.maxCompleteItemCount": 20,
   "suggest.enablePreview": true,
   "tsserver.enableJavascript": true,
-  "coc.preferences.formatOnSaveFiletypes": ["rust"],
+  "coc.preferences.formatOnSaveFiletypes": ["rust", "elm"],
   "diagnostic.virtualText": true,
   "solargraph.hover": true,
   "solargraph.definitions": true,

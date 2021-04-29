@@ -5,6 +5,7 @@
 
 " Emacs-like mappings
 nmap <C-x><C-s> :w<cr>
+nmap <C-x><C-c> :x<cr>
 nmap <C-s> /
 nmap <C-x>b :FzfBuffers<cr>
 nmap <C-c>pf :FzfFiles<cr>
