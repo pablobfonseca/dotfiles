@@ -1,3 +1,0 @@
-" vim-xo - Vim plugin for XO
-Plug 'xojs/vim-xo', { 'branch': 'main' }
-" vim: ft=vim

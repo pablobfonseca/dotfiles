@@ -1,3 +1,0 @@
-" perl-support - Edit Perl scripts in Vim/gVim. Insert code snippets, run, check, and profile the code and look up help.
-Plug 'wolfgangmehner/perl-support', { 'for': 'perl' }
-" vim: ft=vim

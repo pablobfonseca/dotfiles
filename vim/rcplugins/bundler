@@ -1,5 +1,0 @@
-" Bundler.vim - Lightweight support for Ruby's Bundler
-
-" Plug 'tpope/vim-bundler', { 'for': 'ruby' }
-
-" vim: ft=vim

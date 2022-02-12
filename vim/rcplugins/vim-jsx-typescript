@@ -1,3 +1,0 @@
-" vim-jsx-typescript - React JSX syntax highlighting for vim and Typescript
-Plug 'peitalin/vim-jsx-typescript', {'for': 'tsx'}
-" vim: ft=vim
