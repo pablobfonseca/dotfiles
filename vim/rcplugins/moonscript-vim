@@ -1,3 +1,0 @@
-" moonscript-vim - MoonScript support for vim
-Plug 'leafo/moonscript-vim', { 'for': 'moonscript' }
-" vim: ft=vim

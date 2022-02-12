@@ -1,3 +1,0 @@
-" elm-vim - Elm plugin for Vim
-Plug 'Zaptic/elm-vim', {'for': 'elm'}
-" vim: ft=vim

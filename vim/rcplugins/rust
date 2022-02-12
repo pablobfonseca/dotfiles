@@ -1,3 +1,0 @@
-" rust.vim - Vim configuration for Rust
-Plug 'rust-lang/rust.vim', {'for': 'rust'}
-" vim: ft=vim

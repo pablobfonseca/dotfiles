@@ -1,9 +1,0 @@
-" Lua configurations
-"------------------------
-
-augroup filetype_lua
-  " Clear old autocmds in group
-  autocmd!
-  autocmd FileType lua nnoremap <leader>r :Dispatch lua %<Tab><cr>
-augroup END
-" vim:ft=vim

@@ -1,7 +1,0 @@
-" Vim Easymotion - Vim motions on speed
-
-Plug 'easymotion/vim-easymotion'
-
-let g:EasyMotion_leader_key = '<leader><leader>'
-
-" vim:ft=vim

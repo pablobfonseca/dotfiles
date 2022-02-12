@@ -1,3 +1,0 @@
-" vim-visual-multi - Multiple cursors plugin for vim/neovim
-Plug 'mg979/vim-visual-multi'
-" vim: ft=vim

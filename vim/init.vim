@@ -1,1 +1,0 @@
-/Users/pablofonseca/.dotfiles/vim/vimrc
