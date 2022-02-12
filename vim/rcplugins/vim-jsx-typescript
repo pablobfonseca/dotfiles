@@ -1,0 +1,2 @@
+Plug 'peitalin/vim-jsx-typescript', {'for': 'tsx'}
+" vim: ft=vim

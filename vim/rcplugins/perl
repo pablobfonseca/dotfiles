@@ -1,0 +1,2 @@
+Plug 'wolfgangmehner/perl-support', { 'for': 'perl' }
+" vim: ft=vim

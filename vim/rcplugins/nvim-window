@@ -1,0 +1,5 @@
+Plug 'https://gitlab.com/yorickpeterse/nvim-window.git'
+
+map <silent> <M-o> :lua require('nvim-window').pick()<CR>
+
+" vim: ft=vim

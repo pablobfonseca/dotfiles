@@ -1,0 +1,8 @@
+Plug 'tpope/vim-commentary'
+
+  vmap cm <Plug>Commentary
+  vmap <M-/> <Plug>Commentary
+  nmap cm <Plug>Commentary
+  nmap cml <Plug>CommentaryLine
+  nmap <M-/> <Plug>CommentaryLine
+  " vim:ft=vim

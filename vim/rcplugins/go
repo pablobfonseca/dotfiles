@@ -1,0 +1,2 @@
+Plug 'fatih/vim-go', { 'for': 'go' }
+" vim:ft=vim

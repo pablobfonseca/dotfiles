@@ -1,0 +1,7 @@
+Plug 'Mofiqul/dracula.nvim'
+
+" let g:termguicolors = true
+" let g:dracula_show_end_of_buffer = true
+" let g:dracula_transparent_bg = true
+
+" vim: ft=vim

@@ -1,0 +1,30 @@
+colorscheme dracula
+set visualbell
+
+" Easy access to maximizing
+nnoremap <C-_> <C-w>_
+
+set splitbelow
+set splitright
+
+" Colors
+set t_Co=256
+hi Search guifg=#000000 guibg=#8dabcd guisp=#8dabcd gui=NONE ctermfg=NONE ctermbg=110 cterm=NONE
+hi WarningMsg guifg=#bd4848 guibg=#f9f8ff guisp=#f9f8ff gui=bold ctermfg=131 ctermbg=15 cterm=bold
+hi ErrorMsg guifg=#bd5353 guibg=NONE guisp=NONE gui=NONE ctermfg=131 ctermbg=NONE cterm=NONE
+
+" Make it more obvious which paren I'm on
+hi MatchParen cterm=none ctermbg=black ctermfg=yellow
+
+hi! link Search CursorLine
+hi! link SpellBad ErrorMsg
+hi! link SpellCap ErrorMsg
+hi! link Error ErrorMsg
+
+nnoremap <leader>! :redraw!<cr>
+
+" zoom a vim pane, <C-w>= to re-balance
+nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
+nnoremap <leader>= :wincmd =<cr>
+
+" vim:ft=vim

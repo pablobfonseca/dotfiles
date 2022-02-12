@@ -1,0 +1,9 @@
+"Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+
+" 9000+ Snippets
+"Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+"Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
+
+"let g:coq_settings = { 'auto_start': 'shut-up' }
+
+" vim: ft=vim

@@ -1,0 +1,4 @@
+Plug 'rainerborene/vim-reek', { 'for': 'ruby' }
+let g:reek_on_loading = 0
+let g:reek_always_show = 0
+" vim: ft=vim

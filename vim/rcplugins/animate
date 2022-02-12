@@ -1,0 +1,4 @@
+Plug 'camspiers/animate.vim'
+
+let g:animate#easing_func = 'animate#ease_out_quad'
+" vim: ft=vim
