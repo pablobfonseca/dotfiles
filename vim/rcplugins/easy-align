@@ -1,0 +1,7 @@
+Plug 'junegunn/vim-easy-align'
+
+vmap <leader>ea <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+" vim:ft=vim

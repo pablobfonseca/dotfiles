@@ -1,0 +1,9 @@
+Plug 'dense-analysis/ale'
+
+let g:ale_linters = { 'javascript': ['xo', 'eslint'], 'ruby': ['rubocop'] }
+let g:ale_fixers = { 'javascript': ['xo', 'prettier', 'eslint'], 'ruby': ['rubocop'] }
+
+let g:ale_fix_on_save = 1
+let g:ale_linters_explicit = 1
+
+" vim:ft=vim

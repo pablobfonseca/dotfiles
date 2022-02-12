@@ -1,0 +1,5 @@
+Plug 'prettier/vim-prettier', {
+    \ 'do': 'yarn install --frozen-lockfile --production',
+    \ 'for': ['javascript', 'typescript', 'css', 'html' ] }
+
+let g:prettier#autoformat = 1

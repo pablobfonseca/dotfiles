@@ -1,0 +1,4 @@
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+
+let g:typescript_compiler_binary='tsc'
+" vim: ft=vim

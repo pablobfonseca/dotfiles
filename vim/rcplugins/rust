@@ -1,0 +1,2 @@
+Plug 'rust-lang/rust.vim', {'for': 'rust'}
+" vim: ft=vim

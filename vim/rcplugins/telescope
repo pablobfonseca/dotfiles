@@ -1,0 +1,14 @@
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'kyazdani42/nvim-web-devicons'
+
+nnoremap <C-p> <cmd>Telescope find_files<cr>
+nnoremap <leader>f <cmd>Telescope live_grep<cr>
+nnoremap <C-x>b <cmd>Telescope buffers<cr>
+nnoremap gs <cmd>Telescope git_status<cr>
+nnoremap <C-x>t <cmd>Telescope tags<cr>
+
+" vim: ft=vim

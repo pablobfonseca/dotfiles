@@ -1,0 +1,2 @@
+Plug 'Zaptic/elm-vim', {'for': 'elm'}
+" vim: ft=vim

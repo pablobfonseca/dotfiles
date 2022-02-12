@@ -1,0 +1,7 @@
+if has("autocmd")
+  augroup templates
+    autocmd!
+    autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh
+  augroup END
+endif
+" vim: ft=vim

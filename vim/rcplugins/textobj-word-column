@@ -1,0 +1,3 @@
+Plug 'coderifous/textobj-word-column.vim'
+
+" vim:ft=vim

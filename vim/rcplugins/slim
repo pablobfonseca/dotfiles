@@ -1,0 +1,2 @@
+Plug 'slim-template/vim-slim', { 'for': 'slim' }
+" vim: ft=vim
