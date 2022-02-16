@@ -1,5 +1,7 @@
 Plug 'janko-m/vim-test'
 
-let test#strategy = 'neovim'
+let test#strategy = 'dispatch'
+
+let test#ruby#rspec#executable = 'rspec'
 
 " vim: ft=vim
