@@ -61,6 +61,9 @@ set completeopt-=preview   " Hide the documentation preview window
 set completeopt+=noinsert  " Don't insert text automatically
 set completeopt-=noselect  " Highlight the first completion automatically
 
+" Autocomplete with dictionary words wwhen spell check is on
+set complete+=kspell
+
 " Setup nice command tab completion
 set wildmenu
 set wildmode=list:longest,full
