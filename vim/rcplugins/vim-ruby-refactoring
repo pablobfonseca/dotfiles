@@ -1,0 +1,5 @@
+Plug 'pablobfonseca/vim-ruby-refactoring'
+
+nnoremap <leader>ptl :RExtractLet<cr>
+
+" vim: ft=vim
