@@ -1,0 +1,8 @@
+Plug 'mhinz/vim-startify'
+
+let g:startify_custom_header =
+      \ 'startify#center(startify#fortune#cowsay())'
+
+let g:startify_bookmarks = [ {'z': '~/.zshrc'} ]
+
+" vim: ft=vim
