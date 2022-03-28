@@ -2,5 +2,6 @@ augroup filetype_lua
   " Clear old autocmds in group
   autocmd!
   autocmd FileType lua nnoremap <leader>r :Dispatch lua %<Tab><cr>
+  autocmd FileType lua setlocal ai sw=2 sts=2 et
 augroup END
 " vim:ft=vim

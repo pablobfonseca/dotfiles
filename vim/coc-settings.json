@@ -14,6 +14,8 @@
   "eslint.autoFixOnSave": true,
   "eslint.filetypes": ["javascript", "typescript", "jsx", "tsx"],
   "python.venvFolders": [ ".virtualenvs" ],
+  "sumneko-lua.enableNvimLuaDev": true,
+  "sumneko-lua.enable": true,
   "languageserver": {
     "cquery": {
       "command": "cquery",
@@ -73,5 +75,6 @@
         "elmAnalyseTrigger": "change"
       }
     }
-  }
+  },
+  "Lua.telemetry.enable": true
 }
