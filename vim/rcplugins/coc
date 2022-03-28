@@ -8,7 +8,8 @@ let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-solargraph',
       \ 'coc-css',
-      \ 'coc-python'
+      \ 'coc-pyright',
+      \ 'coc-sumneko-lua'
       \ ]
 
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
@@ -19,18 +20,18 @@ if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
   let g:coc_global_extensions += ['coc-eslint']
 endif
 
-function! ShowDocIfNoDiagnostic(timer_id)
-  if (coc#float#has_float() == 0 && CocHasProvider('hover') == 1)
-    silent call CocActionAsync('doHover')
-  endif
-endfunction
+" function! ShowDocIfNoDiagnostic(timer_id)
+"   if (coc#float#has_float() == 0 && CocHasProvider('hover') == 1)
+"     silent call CocActionAsync('doHover')
+"   endif
+" endfunction
 
-function! s:show_hover_doc()
-  call timer_start(1000, 'ShowDocIfNoDiagnostic')
-endfunction
+" function! s:show_hover_doc()
+"   call timer_start(1000, 'ShowDocIfNoDiagnostic')
+" endfunction
 
-autocmd CursorHoldI * :call <SID>show_hover_doc()
-autocmd CursorHold * :call <SID>show_hover_doc()
+" autocmd CursorHoldI * :call <SID>show_hover_doc()
+" autocmd CursorHold * :call <SID>show_hover_doc()
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
