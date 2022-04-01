@@ -1,2 +1,2 @@
-Plug 'ap/vim-css-color'
+Plug 'ap/vim-css-color', {'for': 'css'}
   " vim: ft=vim
