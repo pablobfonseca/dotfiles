@@ -1,5 +1,5 @@
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
+"Plug 'neovim/nvim-lspconfig'
+"Plug 'hrsh7th/nvim-compe'
 
 " nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 " nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
