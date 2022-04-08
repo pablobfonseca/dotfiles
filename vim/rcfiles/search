@@ -37,4 +37,11 @@ vnoremap <silent> # :<C-U>
 nnoremap Q @q
 vnoremap Q :normal Q<cr>
 
+" Spectre configs
+lua << EOF
+require('spectre').setup({
+  live_update = true
+})
+EOF
+
 " vim:ft=vim
