@@ -1,0 +1,4 @@
+" Copilot.nvim
+Plug 'github/copilot.vim'
+
+" vim: ft=vim

@@ -100,20 +100,6 @@ nnoremap <C-y> 7<C-y>
 vnoremap <C-e> 7<C-e>
 vnoremap <C-y> 7<C-y>
 
-" Disable mouse scroll wheel
-"nnoremap <ScrollWheelUp> <nop>
-"nnoremap <S-ScrollWheelUp> <nop>
-"nnoremap <C-ScrollWheelUp> <nop>
-"nnoremap <ScrollWheelDown> <nop>
-"nnoremap <S-ScrollWheelDown> <nop>
-"nnoremap <C-ScrollWheelDown> <nop>
-"nnoremap <ScrollWheelLeft> <nop>
-"nnoremap <S-ScrollWheelLeft> <nop>
-"nnoremap <C-ScrollWheelLeft> <nop>
-"nnoremap <ScrollWheelRight> <nop>
-"nnoremap <S-ScrollWheelRight> <nop>
-"nnoremap <C-ScrollWheelRight> <nop>
-
 " Open Gemfile
 nnoremap <leader>og :e Gemfile<cr>
 
@@ -147,4 +133,4 @@ nnoremap <leader>tld :call OpenHTerm('lazydocker', 0.8)<cr>
 " Correct previous misspelled word ( Don't forgot to set spell )
 nnoremap <space>sp mm[s1z=`m
 
-"vim:ft=vim
+" vim: ft=vim
