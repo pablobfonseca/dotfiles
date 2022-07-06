@@ -1,9 +1,16 @@
 Plug 'dense-analysis/ale'
 
 let g:ale_linters = { 'javascript': ['xo', 'eslint'], 'typescriptreact': ['xo', 'eslint'],'typescript': ['xo', 'eslint'], 'ruby': ['rubocop', 'solargraph'] }
-let g:ale_fixers = { 'typescriptreact': ['xo', 'prettier', 'eslint'],'typescript': ['xo', 'prettier', 'eslint'], 'javascript': ['xo', 'prettier', 'eslint'], 'ruby': ['rubocop'] }
+let g:ale_fixers = { 'css': ['prettier'], 'typescriptreact': ['xo', 'prettier', 'eslint'],'typescript': ['xo', 'prettier', 'eslint'], 'javascript': ['xo', 'prettier', 'eslint'], 'ruby': ['rubocop'] }
 
 let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
+
+" Map movement through errors without wrapping.
+" nmap <silent> <C-k> <Plug>(ale_previous)
+" nmap <silent> <C-j> <Plug>(ale_next)
+" OR map keys to use wrapping.
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " vim:ft=vim
