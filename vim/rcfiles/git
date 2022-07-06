@@ -1,0 +1,7 @@
+" Octo config
+lua << EOF
+require('octo').setup()
+EOF
+
+
+" vim: ft=vim

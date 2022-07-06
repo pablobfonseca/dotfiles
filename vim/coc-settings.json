@@ -13,7 +13,8 @@
   "codeLens.enable": true,
   "eslint.autoFixOnSave": true,
   "eslint.filetypes": ["javascript", "typescript", "jsx", "tsx"],
-  "python.venvFolders": [ ".virtualenvs" ],
+  "prettier.useEditorConfig": true,
+  "python.venvFolders": [".virtualenvs"],
   "sumneko-lua.enableNvimLuaDev": true,
   "sumneko-lua.enable": true,
   "languageserver": {
@@ -21,7 +22,13 @@
       "command": "cquery",
       "args": ["--log-file=/tmp/cq.log"],
       "filetypes": ["c", "cpp"],
-      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+      "rootPatterns": [
+        "compile_flags.txt",
+        "compile_commands.json",
+        ".vim/",
+        ".git/",
+        ".hg/"
+      ],
       "initializationOptions": {
         "cacheDirectory": "/tmp/cquery"
       }
@@ -36,29 +43,17 @@
       "args": [],
       "filetypes": ["vim", "eruby", "markdown"]
     },
-    "rust": {
-      "command": "rust-analyzer",
-      "filetypes": ["rust"],
-      "rootPatterns": ["Cargo.toml"]
-    },
     "haskell": {
-      "command": "hie-wrapper",
+      "command": "haskell-language-server-wrapper",
       "args": ["--lsp"],
       "rootPatterns": [
+        "*.cabal",
         "stack.yaml",
-        "cabal.config",
-        "package.yaml"
+        "cabal.project",
+        "package.yaml",
+        "hie.yaml"
       ],
-      "filetypes": [
-        "hs",
-        "lhs",
-        "haskell"
-      ],
-      "initializationOptions": {
-        "languageServerHaskell": {
-          "hlintOn": true
-        }
-      }
+      "filetypes": ["haskell", "lhaskell"]
     },
     "reason": {
       "command": "reason-language-server",

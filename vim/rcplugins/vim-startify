@@ -4,5 +4,6 @@ let g:startify_custom_header =
       \ 'startify#center(startify#fortune#cowsay())'
 
 let g:startify_bookmarks = [ {'z': '~/.zshrc'} ]
+let g:startify_change_to_dir = 0
 
 " vim: ft=vim
