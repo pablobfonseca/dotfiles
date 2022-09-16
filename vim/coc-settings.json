@@ -12,6 +12,7 @@
   "solargraph.useBundler": true,
   "codeLens.enable": true,
   "eslint.autoFixOnSave": true,
+  "diagnostic.displayByAle": true,
   "eslint.filetypes": ["javascript", "typescript", "jsx", "tsx"],
   "prettier.useEditorConfig": true,
   "python.venvFolders": [".virtualenvs"],
