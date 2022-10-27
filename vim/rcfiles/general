@@ -21,7 +21,7 @@ set cmdheight=2
 set formatoptions-=cro             " Stop vim to keep adding comments on carriage return
 set relativenumber
 set number
-set re=1
+set re=0
 scriptencoding utf-16             " Allow emoji in vimrc
 set nrformats+=alpha              " Force decimal-based arithmetic
 set shortmess+=c                  " don't give |ins-completion-menu| messages

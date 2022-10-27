@@ -1,4 +1,6 @@
 " Copilot.nvim
-" Plug 'github/copilot.vim'
+Plug 'github/copilot.vim'
+
+nnoremap <leader>cp :Copilot panel<CR>
 
 " vim: ft=vim
