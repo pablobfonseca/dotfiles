@@ -7,6 +7,9 @@ nnoremap <C-_> <C-w>_
 set splitbelow
 set splitright
 
+" Disable continuation comment lines
+autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
+
 " Colors
 set t_Co=256
 hi Search guifg=#000000 guibg=#8dabcd guisp=#8dabcd gui=NONE ctermfg=NONE ctermbg=110 cterm=NONE
