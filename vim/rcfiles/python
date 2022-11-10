@@ -1,10 +1,12 @@
 let arch = getenv('UNAME_MACHINE')
+let system = getenv('UNAME_SYSTEM')
 let g:python_host_prog='/usr/bin/python'
 
-if arch == 'arm64'
+if system == 'Darwin'
   let g:python3_host_prog='/opt/homebrew/bin/python3'
-elseif arch == 'x86_64'
-  let g:python3_host_prog='/usr/local/bin/python3'
+endif
+if system == 'Linux'
+  let g:python3_host_prog='/usr/bin/python3'
 endif
 
 augroup filetype_python
