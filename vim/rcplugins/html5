@@ -1,3 +1,0 @@
-Plug 'othree/html5.vim', { 'for': 'html' }
-
-" vim:ft=vim

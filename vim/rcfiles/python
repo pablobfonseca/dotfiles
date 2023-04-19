@@ -1,13 +1,7 @@
 let arch = getenv('UNAME_MACHINE')
 let system = getenv('UNAME_SYSTEM')
 let g:python_host_prog='/usr/bin/python'
-
-if system == 'Darwin'
-  let g:python3_host_prog='/opt/homebrew/bin/python3'
-endif
-if system == 'Linux'
-  let g:python3_host_prog='/usr/bin/python3'
-endif
+let g:python3_host_prog='/usr/bin/python3'
 
 augroup filetype_python
 " Clear old autocmds in group

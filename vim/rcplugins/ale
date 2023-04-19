@@ -1,10 +1,11 @@
 Plug 'dense-analysis/ale'
 
-let g:ale_linters = { 'javascript': ['xo', 'eslint'], 'typescriptreact': ['xo', 'eslint'],'typescript': ['xo', 'eslint'], 'ruby': ['rubocop', 'solargraph'] }
-let g:ale_fixers = { 'css': ['prettier_eslint'], 'typescriptreact': ['xo', 'prettier_eslint', 'eslint'],'typescript': ['xo', 'prettier_eslint', 'eslint'], 'javascript': ['xo', 'eslint', 'prettier_eslint'], 'ruby': ['rubocop'] } 
+let g:ale_linters = { 'haml': ['hamllint'], 'javascript': ['eslint'], 'typescriptreact': ['eslint'],'typescript': ['eslint', 'deno'], 'ruby': ['rubocop', 'solargraph'] }
+let g:ale_fixers = { 'css': ['prettier_eslint'], 'typescriptreact': ['prettier_eslint', 'eslint'],'typescript': ['prettier_eslint', 'eslint', 'deno'], 'javascript': ['eslint', 'prettier_eslint'], 'ruby': ['rubocop'] } 
 
-let g:ale_fix_on_save = 1
+" let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
+let g:ale_completion_enabled = 0
 
 " Map movement through errors without wrapping.
 " nmap <silent> <C-k> <Plug>(ale_previous)

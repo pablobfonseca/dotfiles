@@ -1,0 +1,5 @@
+" nvim-blame-line
+Plug 'tveskag/nvim-blame-line'
+
+nnoremap <silent> <leader>b :ToggleBlameLine<cr>
+" vim: ft=vim

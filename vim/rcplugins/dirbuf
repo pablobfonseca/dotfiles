@@ -2,4 +2,4 @@ Plug 'elihunter173/dirbuf.nvim'
 
 nnoremap <leader>rp :e ~/.vim/rcplugins/<cr>
 nnoremap <leader>rf :e ~/.vim/rcfiles/<cr>
-  " vim: ft=vim
+" vim: ft=vim

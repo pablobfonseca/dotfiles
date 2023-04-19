@@ -1,2 +1,0 @@
-Plug 'leafo/moonscript-vim', { 'for': 'moonscript' }
-" vim: ft=vim
