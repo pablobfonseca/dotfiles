@@ -11,9 +11,11 @@
   "solargraph.references": true,
   "solargraph.useBundler": true,
   "codeLens.enable": true,
-  "eslint.autoFixOnSave": true,
+  "eslint.autoFixOnSave": false,
+  "eslint.format.enable": true,
   "diagnostic.displayByAle": true,
   "eslint.filetypes": ["javascript", "typescript", "jsx", "tsx"],
+  "eslint.packageManager": "yarn",
   "prettier.useEditorConfig": true,
   "python.venvFolders": [".virtualenvs"],
   "sumneko-lua.enableNvimLuaDev": true,
@@ -72,5 +74,6 @@
       }
     }
   },
-  "Lua.telemetry.enable": true
+  "Lua.telemetry.enable": true,
+  "snippets.ultisnips.pythonPrompt": false
 }

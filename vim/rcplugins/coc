@@ -4,13 +4,12 @@ let g:coc_global_extensions = [
       \ 'coc-css',
       \ 'coc-emmet',
       \ 'coc-json',
+      \ 'coc-deno',
       \ 'coc-pairs',
-      \ 'coc-perl',
       \ 'coc-pyright',
       \ 'coc-rls',
       \ 'coc-snippets',
       \ 'coc-solargraph',
-      \ 'coc-sumneko-lua',
       \ 'coc-tsserver'
       \ ]
 
