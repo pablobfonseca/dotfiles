@@ -1,23 +1,19 @@
 {
-  "suggest.echodocSupport": true,
   "suggest.maxCompleteItemCount": 20,
-  "suggest.enablePreview": true,
-  "tsserver.enableJavascript": true,
-  "tsserver.formatOnType": true,
-  "coc.preferences.formatOnSaveFiletypes": ["rust", "elm"],
+  "coc.preferences.formatOnSave": true,
   "diagnostic.virtualText": true,
   "solargraph.hover": true,
   "solargraph.definitions": true,
   "solargraph.references": true,
-  "solargraph.useBundler": true,
+  "solargraph.autoformat": true,
+  "pyright.enable": true,
+  "solargraph.completion": true,
   "codeLens.enable": true,
   "eslint.autoFixOnSave": false,
   "eslint.format.enable": true,
   "diagnostic.displayByAle": true,
-  "eslint.filetypes": ["javascript", "typescript", "jsx", "tsx"],
   "eslint.packageManager": "yarn",
   "prettier.useEditorConfig": true,
-  "python.venvFolders": [".virtualenvs"],
   "sumneko-lua.enableNvimLuaDev": true,
   "sumneko-lua.enable": true,
   "languageserver": {
@@ -65,15 +61,8 @@
     "elmLS": {
       "command": "elm-language-server",
       "filetypes": ["elm"],
-      "rootPatterns": ["elm.json"],
-      "initializationOptions": {
-        "elmPath": "elm",
-        "elmFormatPath": "elm-format",
-        "elmTestPath": "elm-test",
-        "elmAnalyseTrigger": "change"
-      }
+      "rootPatterns": ["elm.json"]
     }
   },
-  "Lua.telemetry.enable": true,
   "snippets.ultisnips.pythonPrompt": false
 }
