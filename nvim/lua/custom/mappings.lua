@@ -14,11 +14,19 @@ M.general = {
     [";"] = { ":", "enter command mode", opts = { nowait = true } },
     ["<C-x><C-s>"] = { ":w<cr>", "Save file" },
     ["<C-x><C-c>"] = { ":x<cr>", "Save and quit" },
-    ["<C-s>"] = { "/", "Search" },
+    ["<C-s>"] = {
+      function()
+        require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
+          winblend = 10,
+          previewer = false,
+        })
+      end,
+      "Fuzzily search in current buffer",
+    },
     ["<C-x>1"] = { ":only<cr>", "Keep only the current pane" },
     ["<C-x>2"] = { ":split<cr>", "Split pane horizontally" },
     ["<C-x>3"] = { ":vsplit<cr>", "Split pane vertically" },
-    ["<C-x>0"] = { ":q<cr>", "Clone pane" },
+    ["<C-x>0"] = { ":q<cr>", "Close pane" },
     ["gp"] = { "`[v`]", "Select last paste in visual mode" },
     ["<leader>fh"] = { "<C-w>t<C-w>K", "Change vertically split to horizontally" },
     ["Y"] = { "y$", "Make Y yank to end of line (like D, or C)" },
@@ -65,6 +73,13 @@ M.telescope = {
     ["<C-x>b"] = { "<cmd>Telescope buffers<cr>" },
     ["gs"] = { "<cmd>Telescope git_status<cr>" },
     ["<C-x>t"] = { "<cmd>Telescope tags<cr>" },
+    ["<C-x>k"] = { "<cmd>Telescope keymaps<cr>" },
+    ["K"] = {
+      function()
+        require("telescope.builtin").grep_string()
+      end,
+      "Search current word",
+    },
     ["<leader>ds"] = {
       function()
         require("telescope.builtin").lsp_document_symbols()
@@ -76,6 +91,14 @@ M.telescope = {
         require("telescope.builtin").lsp_dynamic_workspace_symbols()
       end,
       "Search workspace symbols",
+    },
+  },
+  v = {
+    ["K"] = {
+      function()
+        require("telescope.builtin").grep_string()
+      end,
+      "Search current word",
     },
   },
 }
@@ -113,7 +136,7 @@ M.lspconfig = {
       end,
       "LSP hover",
     },
-    ["gd"] = {
+    ["gr"] = {
       function()
         require("telescope.builtin").lsp_references()
       end,
@@ -137,18 +160,6 @@ M.nvimtree = {
   plugin = true,
   n = {
     ["<C-d>"] = { "<cmd> NvimTreeToggle <CR>", "Toggle nvimtree" },
-  },
-}
-
-M.spectre = {
-  plugin = true,
-  n = {
-    ["<leader>K"] = {
-      function()
-        require("spectre").open_visual { select_word = true }
-      end,
-      "Search current word spectre",
-    },
   },
 }
 

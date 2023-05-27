@@ -1,6 +1,6 @@
 # vim: syntax=sh
 
-function vimup { vim +PlugUpdate }
+function vimup { vim "+Lazy update" }
 
 function git-new-remote-tracking {
   git checkout -b $1 && git push -u origin $1
