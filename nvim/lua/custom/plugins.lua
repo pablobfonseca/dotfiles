@@ -93,7 +93,18 @@ local plugins = {
     "tpope/vim-fugitive",
     event = "VeryLazy",
     config = function()
-      require("custom.configs.fugitive")
+      require "custom.configs.fugitive"
+    end,
+  },
+  {
+    "sindrets/diffview.nvim",
+    lazy = false,
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    ft = "markdown",
+    build = function()
+      vim.fn["mkdp#util#install"]()
     end,
   },
 

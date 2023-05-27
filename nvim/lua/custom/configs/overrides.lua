@@ -37,6 +37,16 @@ M.mason = {
     -- c/cpp stuff
     "clangd",
     "clang-format",
+
+    -- ruby stuff
+    "solargraph",
+
+    -- elm stuff
+    "elm-format",
+    "elm-language-server",
+
+    -- python stuff
+    "pyright",
   },
 }
 
