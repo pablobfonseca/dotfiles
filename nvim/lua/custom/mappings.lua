@@ -60,9 +60,15 @@ M.general = {
     ["<leader><space>"] = { ":nohl<cr>", "Clear search highlight" },
     ["<leader>sr"] = {
       function()
-        require("custom.functions").configSearch()
+        require("custom.functions").config_search()
       end,
       "Search for nvim config",
+    },
+    ["<space>sr"] = {
+      function()
+        require("custom.functions").old_config_search()
+      end,
+      "Search for old nvim config",
     },
   },
   v = {
