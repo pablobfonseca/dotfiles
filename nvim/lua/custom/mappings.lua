@@ -58,6 +58,12 @@ M.general = {
     ["<C-e>"] = { "7<C-e>", "Scroll the viewport faster" },
     ["<C-y>"] = { "7<C-y>", "Scroll the viewport faster" },
     ["<leader><space>"] = { ":nohl<cr>", "Clear search highlight" },
+    ["<leader>sr"] = {
+      function()
+        require("custom.functions").configSearch()
+      end,
+      "Search for nvim config",
+    },
   },
   v = {
     ["<C-e>"] = { "7<C-e>", "Scroll the viewport faster" },
