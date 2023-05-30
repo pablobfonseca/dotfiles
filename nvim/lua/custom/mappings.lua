@@ -76,6 +76,12 @@ M.general = {
       end,
       "Find nvim config files",
     },
+    ["<leader>oh"] = {
+      function()
+        vim.cmd("help " .. vim.fn.expand("<cword>", { silent = true }))
+      end,
+      "Search for help under the cursor",
+    },
   },
   v = {
     ["<C-e>"] = { "7<C-e>", "Scroll the viewport faster" },
@@ -141,6 +147,12 @@ M.comment = {
   v = {
     ["cm"] = {
       "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+      "Toggle comment",
+    },
+    ["<M-/>"] = {
+      function()
+        require("Comment.api").toggle.linewise.current()
+      end,
       "Toggle comment",
     },
   },
