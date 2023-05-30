@@ -70,6 +70,12 @@ M.general = {
       end,
       "Search for old nvim config",
     },
+    ["<leader>rp"] = {
+      function()
+        require("custom.functions").config_files()
+      end,
+      "Find nvim config files",
+    },
   },
   v = {
     ["<C-e>"] = { "7<C-e>", "Scroll the viewport faster" },
@@ -80,12 +86,13 @@ M.general = {
 M.telescope = {
   plugin = true,
   n = {
-    ["<C-p>"] = { "<cmd>Telescope find_files<cr>" },
-    ["<leader>f"] = { "<cmd>Telescope live_grep<cr>" },
-    ["<C-x>b"] = { "<cmd>Telescope buffers<cr>" },
-    ["gs"] = { "<cmd>Telescope git_status<cr>" },
-    ["<C-x>t"] = { "<cmd>Telescope tags<cr>" },
-    ["<C-x>k"] = { "<cmd>Telescope keymaps<cr>" },
+    ["<C-p>"] = { "<cmd>Telescope find_files<cr>", "Find files" },
+    ["<leader>f"] = { "<cmd>Telescope live_grep<cr>", "Live Grep" },
+    ["<C-x>b"] = { "<cmd>Telescope buffers<cr>", "Find Buffers" },
+    ["gs"] = { "<cmd>Telescope git_status<cr>", "Git status" },
+    ["<C-x>t"] = { "<cmd>Telescope tags<cr>", "Find tags" },
+    ["<C-x>k"] = { "<cmd>Telescope keymaps<cr>", "Find keymaps" },
+    ["<C-x>h"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
     ["K"] = {
       function()
         require("telescope.builtin").grep_string()
@@ -152,6 +159,12 @@ M.lspconfig = {
       function()
         require("telescope.builtin").lsp_references()
       end,
+    },
+    ["<leader>od"] = {
+      function()
+        vim.diagnostic.open_float { border = "rounded" }
+      end,
+      "Open LSP Diagnostics",
     },
   },
 }

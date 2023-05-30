@@ -19,4 +19,15 @@ M.old_config_search = function()
   _config_search("Search inside old nvim config", "~/.dotfiles/vim")
 end
 
+M.config_files = function()
+  local telescope = require "telescope.builtin"
+
+  local opts = {
+    prompt_title = "Search for nvim files",
+    cwd = "~/.config/nvim/lua",
+  }
+
+  telescope.find_files(opts)
+end
+
 return M
