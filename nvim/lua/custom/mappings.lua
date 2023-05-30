@@ -18,7 +18,6 @@ M.general = {
       function()
         require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
           winblend = 10,
-          previewer = false,
         })
       end,
       "Fuzzily search in current buffer",
@@ -101,7 +100,9 @@ M.telescope = {
     ["<C-x>h"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
     ["K"] = {
       function()
-        require("telescope.builtin").grep_string()
+        require("telescope.builtin").grep_string(require("telescope.themes").get_dropdown {
+          winblend = 10,
+        })
       end,
       "Search current word",
     },
