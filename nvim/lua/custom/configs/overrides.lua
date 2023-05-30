@@ -8,6 +8,7 @@ M.treesitter = {
     "css",
     "javascript",
     "typescript",
+    "ruby",
     "tsx",
     "c",
     "markdown",

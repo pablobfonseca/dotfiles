@@ -107,6 +107,15 @@ local plugins = {
       vim.fn["mkdp#util#install"]()
     end,
   },
+  {
+    "folke/neodev.nvim",
+    opts = {},
+  },
+  {
+    "pablobfonseca/stackmap.nvim",
+    lazy = false,
+    dir = "~/code/stackmap.nvim/",
+  },
 
   -- To make a plugin not be loaded
   -- {

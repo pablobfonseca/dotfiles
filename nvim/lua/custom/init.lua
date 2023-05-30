@@ -6,5 +6,7 @@
 --   command = "tabdo wincmd =",
 -- })
 
+require "custom.globals"
+
 vim.g.mapleader = ","
 vim.o.relativenumber = true
