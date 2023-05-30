@@ -116,6 +116,10 @@ local plugins = {
     lazy = false,
     dir = "~/code/stackmap.nvim/",
   },
+  {
+    "tpope/vim-eunuch",
+    lazy = false,
+  },
 
   -- To make a plugin not be loaded
   -- {
