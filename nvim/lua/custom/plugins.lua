@@ -120,6 +120,63 @@ local plugins = {
     "tpope/vim-eunuch",
     lazy = false,
   },
+  { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+  {
+    "glepnir/lspsaga.nvim",
+    event = "LspAttach",
+    keys = {
+      {
+        "<leader>llf",
+        "<cmd>Lspsaga lsp_finder<cr>",
+        desc = "[L]spSaga [L] [F]inder",
+        mode = { "n" },
+      },
+      {
+        "<leader>lca",
+        "<cmd>Lspsaga lsp_code_action<cr>",
+        desc = "[L]sp [C]ode [A]ction",
+        mode = { "n" },
+      },
+      {
+        "<leader>lsl",
+        "<cmd>Lspsaga show_line_diagnostics<cr>",
+        desc = "[L]sp [S]how [L]ine diagnostics",
+        mode = { "n" },
+      },
+      {
+        "<leader>lsb",
+        "<cmd>Lspsaga show_buffer_diagnostics<cr>",
+        desc = "[L]sp [S]how [B]uffer diagnostics",
+        mode = { "n" },
+      },
+      {
+        "<leader>lh",
+        "<cmd>Lspsaga hover_doc<cr>",
+        desc = "[L]sp [H]over",
+        mode = { "n" },
+      },
+    },
+    config = function()
+      require("lspsaga").setup {}
+    end,
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons" },
+      --Please make sure you install markdown and markdown_inline parser
+      { "nvim-treesitter/nvim-treesitter" },
+    },
+  },
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+      {
+        "<leader>tt",
+        "<cmd>TroubleToggle<cr>",
+        desc = "[T]rouble [T]oggle",
+        mode = { "n" },
+      },
+    },
+  },
 
   -- To make a plugin not be loaded
   -- {

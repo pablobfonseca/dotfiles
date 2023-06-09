@@ -7,6 +7,7 @@
 -- })
 
 require "custom.globals"
+require "custom.configs.markdown-text"
 
 vim.g.mapleader = ","
 vim.o.relativenumber = true

@@ -69,11 +69,23 @@ M.general = {
       end,
       "Search for old nvim config",
     },
+    ["<space>df"] = {
+      function()
+        require("custom.functions").dotfiles_search()
+      end,
+      "Search for old nvim config",
+    },
     ["<leader>rp"] = {
       function()
         require("custom.functions").config_files()
       end,
       "Find nvim config files",
+    },
+    ["<leader>df"] = {
+      function()
+        require("custom.functions").find_dotfiles()
+      end,
+      "Find dotfiles",
     },
     ["<leader>oh"] = {
       function()
@@ -146,14 +158,8 @@ M.comment = {
     },
   },
   v = {
-    ["cm"] = {
-      "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
-      "Toggle comment",
-    },
     ["<M-/>"] = {
-      function()
-        require("Comment.api").toggle.linewise.current()
-      end,
+      "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
       "Toggle comment",
     },
   },
@@ -168,7 +174,7 @@ M.lspconfig = {
       end,
       "LSP hover",
     },
-    ["gr"] = {
+    ["<leader>lgr"] = {
       function()
         require("telescope.builtin").lsp_references()
       end,
