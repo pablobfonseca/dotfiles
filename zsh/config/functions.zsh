@@ -1,6 +1,6 @@
 # vim: syntax=sh
 
-function vimup { vim "+Lazy update" }
+function vimup { nvim -c ":lua require'lazy'.update()" }
 
 function git-new-remote-tracking {
   git checkout -b $1 && git push -u origin $1

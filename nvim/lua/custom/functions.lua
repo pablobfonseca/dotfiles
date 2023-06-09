@@ -6,13 +6,31 @@ local function _config_search(prompt_tile, cwd)
   local opts = {
     prompt_title = prompt_tile,
     cwd = cwd,
+    require("telescope.themes").get_dropdown {
+      winblend = 10,
+    },
   }
 
   telescope.live_grep(opts)
 end
 
+local function _find_file(prompt_tile, cwd)
+  local telescope = require "telescope.builtin"
+
+  local opts = {
+    prompt_title = prompt_tile,
+    cwd = cwd,
+  }
+
+  telescope.find_files(opts)
+end
+
 M.config_search = function()
   _config_search("Search inside nvim config", "~/.config/nvim")
+end
+
+M.dotfiles_search = function()
+  _config_search("Search inside dotfiles", "~/.dotfiles")
 end
 
 M.old_config_search = function()
@@ -20,14 +38,11 @@ M.old_config_search = function()
 end
 
 M.config_files = function()
-  local telescope = require "telescope.builtin"
+  _find_file("Search for nvim files", "~/.config/nvim/lua")
+end
 
-  local opts = {
-    prompt_title = "Search for nvim files",
-    cwd = "~/.config/nvim/lua",
-  }
-
-  telescope.find_files(opts)
+M.find_dotfiles = function()
+  _find_file("Search for dotfiles", "~/.dotfiles")
 end
 
 return M
