@@ -76,6 +76,14 @@ M.nvimtree = {
   },
 }
 
+M.copilot = {
+  suggestion = {
+    enable = false,
+  },
+  panel = {
+    enable = false,
+  },
+}
 
 M.spectre = {
   live_update = true,
