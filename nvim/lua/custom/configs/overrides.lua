@@ -1,5 +1,14 @@
 local M = {}
 
+M.neodev = {
+  override = function(_, library)
+    library.enabled = true
+    library.plugins = true
+  end,
+  lspconfig = true,
+  pathStrict = true,
+}
+
 M.treesitter = {
   ensure_installed = {
     "vim",
@@ -65,6 +74,11 @@ M.nvimtree = {
       },
     },
   },
+}
+
+
+M.spectre = {
+  live_update = true,
 }
 
 return M
