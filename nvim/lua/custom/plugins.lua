@@ -15,6 +15,18 @@ local plugins = {
           require "custom.configs.null-ls"
         end,
       },
+      {
+        "folke/lua-dev.nvim",
+      },
+      {
+        "RRethy/vim-illuminate",
+      },
+      {
+        "j-hui/fidget.nvim",
+        config = function()
+          require("fidget").setup {}
+        end,
+      },
     },
     config = function()
       require "plugins.configs.lspconfig"
@@ -46,7 +58,6 @@ local plugins = {
       require("better_escape").setup()
     end,
   },
-
   {
     "nvim-pack/nvim-spectre",
     keys = {
@@ -59,10 +70,9 @@ local plugins = {
         mode = { "n" },
       },
     },
+    opts = overrides.spectre,
     config = function()
-      require("spectre").setup {
-        live_update = true,
-      }
+      require("spectre").setup {}
     end,
   },
   {
@@ -106,10 +116,6 @@ local plugins = {
     build = function()
       vim.fn["mkdp#util#install"]()
     end,
-  },
-  {
-    "folke/neodev.nvim",
-    opts = {},
   },
   {
     "pablobfonseca/stackmap.nvim",
@@ -173,6 +179,33 @@ local plugins = {
         "<leader>tt",
         "<cmd>TroubleToggle<cr>",
         desc = "[T]rouble [T]oggle",
+        mode = { "n" },
+      },
+    },
+  },
+  {
+    "johmsalas/text-case.nvim",
+    config = function()
+      require("textcase").setup {}
+      require("telescope").load_extension "textcase"
+    end,
+    keys = {
+      {
+        "<leader>tct",
+        "<cmd>TextCaseOpenTelescope<cr>",
+        desc = "[T]ext [C]ase [T]elescope",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>tcq",
+        "<cmd>TextCaseOpenTelescopeQuickChange<cr>",
+        desc = "[T]ext [C]ase [Q]uickChange",
+        mode = { "n" },
+      },
+      {
+        "<leader>tcl",
+        "<cmd>TextCaseOpenTelescopeLSPChange<cr>",
+        desc = "[T]ext [C]ase [L]SPChange",
         mode = { "n" },
       },
     },

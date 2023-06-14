@@ -8,6 +8,7 @@
 
 require "custom.globals"
 require "custom.configs.markdown-text"
+require "custom.functions"
 
 vim.g.mapleader = ","
 vim.o.relativenumber = true
