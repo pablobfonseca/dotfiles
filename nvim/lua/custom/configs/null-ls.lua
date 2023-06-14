@@ -15,6 +15,9 @@ local sources = {
   -- Lua
   b.formatting.stylua,
 
+  -- json
+  b.formatting.fixjson,
+
   -- cpp
   b.formatting.clang_format,
 
