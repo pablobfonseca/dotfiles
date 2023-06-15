@@ -49,6 +49,10 @@ local plugins = {
     "nvim-tree/nvim-tree.lua",
     opts = overrides.nvimtree,
   },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = overrides.cmp,
+  },
 
   -- Install a plugin
   {
@@ -193,58 +197,42 @@ local plugins = {
     end,
   },
   {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      {
-        "zbirenbaum/copilot-cmp",
-        config = function()
-          require("copilot_cmp").setup()
-        end,
-      },
-      {
-        "hrsh7th/cmp-buffer",
-        config = function()
-          local cmp = require "cmp"
-          cmp.setup.cmdline("/", {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = {
-              { name = "buffer" },
+    "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },
+  {
+    "hrsh7th/cmp-buffer",
+    config = function()
+      local cmp = require "cmp"
+      cmp.setup.cmdline("/", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = "buffer" },
+        },
+      })
+    end,
+  },
+  {
+    "hrsh7th/cmp-cmdline",
+    lazy = false,
+    config = function()
+      local cmp = require "cmp"
+      cmp.setup.cmdline(":", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = "path" },
+        }, {
+          {
+            name = "cmdline",
+            option = {
+              ignore_cmds = { "Man", "!" },
             },
-          })
-        end,
-      },
-      {
-        "hrsh7th/cmp-cmdline",
-        lazy = false,
-        config = function()
-          local cmp = require "cmp"
-          cmp.setup.cmdline(":", {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources({
-              { name = "path" },
-            }, {
-              {
-                name = "cmdline",
-                option = {
-                  ignore_cmds = { "Man", "!" },
-                },
-              },
-            }),
-          })
-        end,
-      },
-    },
-    opts = {
-      sources = {
-        { name = "nvim_lsp", group_index = 2 },
-        { name = "copilot", group_index = 2 },
-        { name = "luasnip", group_index = 2 },
-        { name = "buffer", group_index = 2 },
-        { name = "nvim_lua", group_index = 2 },
-        { name = "path", group_index = 2 },
-        { name = "cmdline", group_index = 2 },
-      },
-    },
+          },
+        }),
+      })
+    end,
   },
   {
     "johmsalas/text-case.nvim",
