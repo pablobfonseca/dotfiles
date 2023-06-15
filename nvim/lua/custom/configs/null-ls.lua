@@ -10,8 +10,7 @@ local sources = {
 
   -- webdev stuff
   -- b.formatting.deno_fmt, -- choosed deno for ts/js files cuz its very fast!
-  b.formatting.prettierd.with { filetypes = { "html" } },
-  b.formatting.prettier.with { filetypes = { "markdown", "css", "javascript", "typescript" } }, -- so prettier works only on these filetypes
+  b.formatting.prettier.with { filetypes = { "html", "markdown", "css", "javascript", "typescript" } }, -- so prettier works only on these filetypes
 
   -- Lua
   b.formatting.stylua,
@@ -36,6 +35,9 @@ local sources = {
 
   -- rust
   b.formatting.rustfmt,
+
+  -- gitcommit, markdown
+  b.diagnostics.write_good.with { filetypes = { "gitcommit", "markdown" } },
 }
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
