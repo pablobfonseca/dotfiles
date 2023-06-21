@@ -39,6 +39,10 @@ local plugins = {
     "williamboman/mason.nvim",
     opts = overrides.mason,
   },
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = overrides.mason,
+  },
 
   {
     "nvim-treesitter/nvim-treesitter",
@@ -52,6 +56,46 @@ local plugins = {
   {
     "hrsh7th/nvim-cmp",
     opts = overrides.cmp,
+    dependencies = {
+      {
+        "zbirenbaum/copilot-cmp",
+        config = function()
+          require("copilot_cmp").setup()
+        end,
+      },
+      {
+        "hrsh7th/cmp-buffer",
+        config = function()
+          local cmp = require "cmp"
+          cmp.setup.cmdline({ "/", "?" }, {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = {
+              { name = "buffer" },
+            },
+          })
+        end,
+      },
+      {
+        "hrsh7th/cmp-cmdline",
+        lazy = false,
+        config = function()
+          local cmp = require "cmp"
+          cmp.setup.cmdline(":", {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = cmp.config.sources({
+              { name = "path" },
+            }, {
+              {
+                name = "cmdline",
+                option = {
+                  ignore_cmds = { "Man", "!" },
+                },
+              },
+            }),
+          })
+        end,
+      },
+    },
   },
 
   -- Install a plugin
@@ -132,6 +176,42 @@ local plugins = {
   },
   { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+  },
+  {
+    "nvim-telescope/telescope-project.nvim",
+    keys = {
+      {
+        "<leader>cd",
+        function()
+          require("telescope").extensions.project.project { display_type = "full" }
+        end,
+        desc = "Telescope project",
+        mode = { "n" },
+      },
+    },
+    config = function()
+      local project_actions = require "telescope._extensions.project.actions"
+      require("telescope").setup {
+        extensions = {
+          project = {
+            base_dirs = {
+              "~/code",
+              { "~/.dotfiles/" },
+            },
+            theme = "dropdown",
+            order_by = "asc",
+            search_by = "title",
+            on_project_selected = function(prompt_bufnr)
+              project_actions.find_project_files(prompt_bufnr, true)
+            end,
+          },
+        },
+      }
+    end,
+  },
+  {
     "glepnir/lspsaga.nvim",
     event = "LspAttach",
     keys = {
@@ -145,12 +225,6 @@ local plugins = {
         "<leader>lca",
         "<cmd>Lspsaga lsp_code_action<cr>",
         desc = "[L]sp [C]ode [A]ction",
-        mode = { "n" },
-      },
-      {
-        "<leader>lsl",
-        "<cmd>Lspsaga show_line_diagnostics<cr>",
-        desc = "[L]sp [S]how [L]ine diagnostics",
         mode = { "n" },
       },
       {
@@ -197,44 +271,6 @@ local plugins = {
     end,
   },
   {
-    "zbirenbaum/copilot-cmp",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
-  },
-  {
-    "hrsh7th/cmp-buffer",
-    config = function()
-      local cmp = require "cmp"
-      cmp.setup.cmdline("/", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = "buffer" },
-        },
-      })
-    end,
-  },
-  {
-    "hrsh7th/cmp-cmdline",
-    lazy = false,
-    config = function()
-      local cmp = require "cmp"
-      cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = "path" },
-        }, {
-          {
-            name = "cmdline",
-            option = {
-              ignore_cmds = { "Man", "!" },
-            },
-          },
-        }),
-      })
-    end,
-  },
-  {
     "johmsalas/text-case.nvim",
     config = function()
       require("textcase").setup {}
@@ -257,6 +293,22 @@ local plugins = {
         "<leader>tcl",
         "<cmd>TextCaseOpenTelescopeLSPChange<cr>",
         desc = "[T]ext [C]ase [L]SPChange",
+        mode = { "n" },
+      },
+    },
+  },
+  {
+    "rest-nvim/rest.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = overrides.rest,
+    config = function(_, opts)
+      require("rest-nvim").setup(opts)
+    end,
+    keys = {
+      {
+        "<C-c><C-c>",
+        "<cmd>lua require('rest-nvim').run()<cr>",
+        desc = "[R]est [R]un",
         mode = { "n" },
       },
     },
