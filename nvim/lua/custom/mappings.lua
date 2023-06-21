@@ -5,7 +5,9 @@ M.disabled = {
   n = {
     ["<leader>b"] = "",
     ["K"] = "",
+    ["H"] = "",
     ["<C-n>"] = "",
+    ["gr"] = "",
   },
 }
 
@@ -57,6 +59,7 @@ M.general = {
     ["<C-e>"] = { "7<C-e>", "Scroll the viewport faster" },
     ["<C-y>"] = { "7<C-y>", "Scroll the viewport faster" },
     ["<leader><space>"] = { ":nohl<cr>", "Clear search highlight" },
+    ["<leader>rm"] = { "<cmd>RestMode<cr>", "Open RestMode" },
     ["<leader>sr"] = {
       function()
         require("custom.functions").config_search()
@@ -87,12 +90,6 @@ M.general = {
       end,
       "Find dotfiles",
     },
-    ["<leader>oh"] = {
-      function()
-        vim.cmd("help " .. vim.fn.expand("<cword>", { silent = true }))
-      end,
-      "Search for help under the cursor",
-    },
   },
   v = {
     ["<C-e>"] = { "7<C-e>", "Scroll the viewport faster" },
@@ -106,7 +103,20 @@ M.telescope = {
     ["<C-p>"] = { "<cmd>Telescope find_files<cr>", "Find files" },
     ["<leader>f"] = { "<cmd>Telescope live_grep<cr>", "Live Grep" },
     ["<C-x>b"] = { "<cmd>Telescope buffers<cr>", "Find Buffers" },
-    ["gs"] = { "<cmd>Telescope git_status<cr>", "Git status" },
+    ["gs"] = {
+      function()
+        require("telescope.builtin").git_status(require("telescope.themes").get_dropdown {
+          winblend = 10,
+        })
+      end,
+      "Git status",
+    },
+    ["bs"] = {
+      function()
+        require("telescope.builtin").git_branches()
+      end,
+      "Git branches",
+    },
     ["<C-x>t"] = { "<cmd>Telescope tags<cr>", "Find tags" },
     ["<C-x>k"] = { "<cmd>Telescope keymaps<cr>", "Find keymaps" },
     ["<C-x>h"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
@@ -129,14 +139,6 @@ M.telescope = {
         require("telescope.builtin").lsp_dynamic_workspace_symbols()
       end,
       "Search workspace symbols",
-    },
-  },
-  v = {
-    ["K"] = {
-      function()
-        require("telescope.builtin").grep_string()
-      end,
-      "Search current word",
     },
   },
 }

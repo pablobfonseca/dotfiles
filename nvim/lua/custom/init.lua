@@ -9,6 +9,8 @@
 require "custom.globals"
 require "custom.configs.markdown-text"
 require "custom.functions"
+require "custom.commands"
 
 vim.g.mapleader = ","
 vim.o.relativenumber = true
+vim.o.completeopt = "menuone,noselect"
