@@ -21,6 +21,7 @@ M.treesitter = {
     "markdown",
     "markdown_inline",
     "ruby",
+    "go",
     "tsx",
     "typescript",
     "vim",
