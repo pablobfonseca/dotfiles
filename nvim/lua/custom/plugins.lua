@@ -23,6 +23,7 @@ local plugins = {
       },
       {
         "j-hui/fidget.nvim",
+        tag = "legacy",
         config = function()
           require("fidget").setup {}
         end,
@@ -119,8 +120,8 @@ local plugins = {
       },
     },
     opts = overrides.spectre,
-    config = function()
-      require("spectre").setup {}
+    config = function(_, opts)
+      require("spectre").setup(opts)
     end,
   },
   {
@@ -266,36 +267,9 @@ local plugins = {
     cmd = "Copilot",
     event = "InsertEnter",
     opts = overrides.copilot,
-    config = function()
-      require("copilot").setup()
+    config = function(_, opts)
+      require("copilot").setup(opts)
     end,
-  },
-  {
-    "johmsalas/text-case.nvim",
-    config = function()
-      require("textcase").setup {}
-      require("telescope").load_extension "textcase"
-    end,
-    keys = {
-      {
-        "<leader>tct",
-        "<cmd>TextCaseOpenTelescope<cr>",
-        desc = "[T]ext [C]ase [T]elescope",
-        mode = { "n", "v" },
-      },
-      {
-        "<leader>tcq",
-        "<cmd>TextCaseOpenTelescopeQuickChange<cr>",
-        desc = "[T]ext [C]ase [Q]uickChange",
-        mode = { "n" },
-      },
-      {
-        "<leader>tcl",
-        "<cmd>TextCaseOpenTelescopeLSPChange<cr>",
-        desc = "[T]ext [C]ase [L]SPChange",
-        mode = { "n" },
-      },
-    },
   },
   {
     "rest-nvim/rest.nvim",
