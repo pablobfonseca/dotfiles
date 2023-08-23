@@ -18,7 +18,7 @@ M.general = {
     ["<C-x><C-c>"] = { ":x<cr>", "Save and quit" },
     ["<C-s>"] = {
       function()
-        require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
+        require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_ivy {
           winblend = 10,
         })
       end,
@@ -100,12 +100,12 @@ M.general = {
 M.telescope = {
   plugin = true,
   n = {
-    ["<C-p>"] = { "<cmd>Telescope find_files<cr>", "Find files" },
+    ["<C-p>"] = { "<cmd>Telescope find_files find_command=rg,--ignore,--hidden,--files<cr>", "Find files" },
     ["<leader>f"] = { "<cmd>Telescope live_grep<cr>", "Live Grep" },
     ["<C-x>b"] = { "<cmd>Telescope buffers<cr>", "Find Buffers" },
     ["gs"] = {
       function()
-        require("telescope.builtin").git_status(require("telescope.themes").get_dropdown {
+        require("telescope.builtin").git_status(require("telescope.themes").get_ivy {
           winblend = 10,
         })
       end,
@@ -122,7 +122,7 @@ M.telescope = {
     ["<C-x>h"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
     ["K"] = {
       function()
-        require("telescope.builtin").grep_string(require("telescope.themes").get_dropdown {
+        require("telescope.builtin").grep_string(require("telescope.themes").get_ivy {
           winblend = 10,
         })
       end,
