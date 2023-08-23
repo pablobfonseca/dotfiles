@@ -42,7 +42,7 @@ local plugins = {
   },
   {
     "nvim-telescope/telescope.nvim",
-    opts = overrides.mason,
+    opts = overrides.telescope,
   },
 
   {
