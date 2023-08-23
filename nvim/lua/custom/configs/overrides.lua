@@ -10,9 +10,13 @@ M.neodev = {
 }
 
 M.treesitter = {
+  matchup = {
+    enable = true,
+  },
   ensure_installed = {
     "c",
     "css",
+    "go",
     "html",
     "http",
     "javascript",
@@ -20,8 +24,8 @@ M.treesitter = {
     "lua",
     "markdown",
     "markdown_inline",
+    "org",
     "ruby",
-    "go",
     "tsx",
     "typescript",
     "vim",
@@ -31,6 +35,10 @@ M.treesitter = {
     -- disable = {
     --   "python"
     -- },
+  },
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = { "org" },
   },
 }
 
@@ -82,10 +90,7 @@ M.nvimtree = {
 
 M.copilot = {
   suggestion = {
-    enable = false,
-  },
-  panel = {
-    enable = false,
+    auto_trigger = true,
   },
 }
 
@@ -104,6 +109,7 @@ M.cmp = {
     { name = "nvim_lua", group_index = 2 },
     { name = "path", group_index = 2 },
     { name = "cmdline", group_index = 2 },
+    { name = "orgmode", group_index = 2 },
   },
 }
 
@@ -151,6 +157,11 @@ M.spectre = {
 
 M.telescope = {
   extensions_list = { "themes", "terms", "projects", "file_browser" },
+  pickers = {
+    find_file = {
+      hidden = true,
+    },
+  },
 }
 
 return M

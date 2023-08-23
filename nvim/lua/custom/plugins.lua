@@ -59,12 +59,6 @@ local plugins = {
     opts = overrides.cmp,
     dependencies = {
       {
-        "zbirenbaum/copilot-cmp",
-        config = function()
-          require("copilot_cmp").setup()
-        end,
-      },
-      {
         "hrsh7th/cmp-buffer",
         config = function()
           local cmp = require "cmp"
@@ -229,6 +223,18 @@ local plugins = {
         mode = { "n" },
       },
       {
+        "<leader>lpd",
+        "<cmd>Lspsaga peek_type_definition<cr>",
+        desc = "[L]sp [P]eek [D]efinition",
+        mode = { "n" },
+      },
+      {
+        "<leader>lgd",
+        "<cmd>Lspsaga goto_definition<cr>",
+        desc = "[L]sp [G]oto [D]efinition",
+        mode = { "n" },
+      },
+      {
         "<leader>lsb",
         "<cmd>Lspsaga show_buffer_diagnostics<cr>",
         desc = "[L]sp [S]how [B]uffer diagnostics",
@@ -286,6 +292,30 @@ local plugins = {
         mode = { "n" },
       },
     },
+  },
+  {
+    "pwntester/octo.nvim",
+    cmd = "Octo",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require("octo").setup()
+    end,
+  },
+  {
+    "andymass/vim-matchup",
+    lazy = false,
+  },
+  {
+    "nvim-orgmode/orgmode",
+    ft = { "org" },
+    config = function()
+      require("orgmode").setup_ts_grammar()
+      require("orgmode").setup {}
+    end,
   },
 
   -- To make a plugin not be loaded
