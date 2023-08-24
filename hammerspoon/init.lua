@@ -45,6 +45,4 @@ end)
 
 focusApp("b", "Google Chrome")
 focusApp("t", "iTerm")
-focusApp("f", "Firefox")
 focusApp("s", "Slack")
-focusApp("v", "Stremio")
