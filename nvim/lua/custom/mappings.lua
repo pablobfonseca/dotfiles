@@ -102,7 +102,7 @@ M.telescope = {
   n = {
     ["<C-p>"] = { "<cmd>Telescope find_files find_command=rg,--ignore,--hidden,--files<cr>", "Find files" },
     ["<leader>f"] = { "<cmd>Telescope live_grep<cr>", "Live Grep" },
-    ["<C-x>b"] = { "<cmd>Telescope buffers<cr>", "Find Buffers" },
+    ["<C-x>b"] = { "<cmd>Telescope buffers theme=ivy<cr>", "Find Buffers" },
     ["gs"] = {
       function()
         require("telescope.builtin").git_status(require("telescope.themes").get_ivy {
@@ -139,6 +139,10 @@ M.telescope = {
         require("telescope.builtin").lsp_dynamic_workspace_symbols()
       end,
       "Search workspace symbols",
+    },
+    ["<leader>fb"] = {
+      ":Telescope file_browser theme=ivy<cr>",
+      "Telescope file browser",
     },
   },
 }

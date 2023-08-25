@@ -13,6 +13,9 @@ M.treesitter = {
   matchup = {
     enable = true,
   },
+  endwise = {
+    enable = true,
+  },
   ensure_installed = {
     "c",
     "css",
@@ -54,7 +57,13 @@ M.mason = {
     "typescript-language-server",
     "deno",
     "prettier",
-    "tailwindcss",
+    "prettierd",
+    "tailwindcss-language-server",
+    "fixjson",
+
+    -- elm stuff
+    "elm-format",
+    "elm-language-server",
 
     -- c/cpp stuff
     "clangd",
@@ -62,6 +71,7 @@ M.mason = {
 
     -- ruby stuff
     "solargraph",
+    "rubocop",
 
     -- elm stuff
     "elm-format",
@@ -69,6 +79,14 @@ M.mason = {
 
     -- python stuff
     "pyright",
+    "flake8",
+
+    -- go stuff
+    "gopls",
+    "goimports",
+
+    -- writting stuff
+    "write-good",
   },
 }
 
@@ -156,10 +174,15 @@ M.spectre = {
 }
 
 M.telescope = {
-  extensions_list = { "themes", "terms", "projects", "file_browser" },
+  extensions_list = { "themes", "terms", "project", "file_browser" },
   pickers = {
     find_file = {
       hidden = true,
+    },
+  },
+  extensions = {
+    file_browser = {
+      hijack_netrw = true,
     },
   },
 }
