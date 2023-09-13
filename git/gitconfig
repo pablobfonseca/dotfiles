@@ -52,7 +52,7 @@
   bhist                   = "!git --no-pager reflog $(git rev-parse --abbrev-ref HEAD)"
   bom                     = push --set-upstream origin master
   browse                  = !hub browse
-  bselect                 = "!branches=$(git branch) && branch=$(echo \"$branches\" | fzf --reverse +s +m) && git checkout $(echo \"$branch\" | sed \"s/.* //\")"
+  bselect                 = "!branches=$(git branch -a) && branch=$(echo \"$branches\" | fzf --reverse +s +m) && git checkout $(echo \"$branch\" | sed \"s/.* //\")"
   ca                      = commit --amend
   car                     = commit --amend --no-edit
   ci-status               = "!hub ci-status"

@@ -112,6 +112,22 @@ local plugins = {
         desc = "Open spectre",
         mode = { "n" },
       },
+      {
+        "<leader>sw",
+        function()
+          require("spectre").open_visual { select_word = true }
+        end,
+        desc = "Search current word",
+        mode = { "n" },
+      },
+      {
+        "<leader>sw",
+        function()
+          require("spectre").open_visual()
+        end,
+        desc = "Search current selected word",
+        mode = { "v" },
+      },
     },
     opts = overrides.spectre,
     config = function(_, opts)
@@ -155,6 +171,7 @@ local plugins = {
   },
   {
     "iamcco/markdown-preview.nvim",
+    lazy = false,
     ft = "markdown",
     build = function()
       vim.fn["mkdp#util#install"]()
@@ -316,6 +333,27 @@ local plugins = {
       require("orgmode").setup_ts_grammar()
       require("orgmode").setup {}
     end,
+  },
+  {
+    "tpope/vim-abolish",
+    lazy = false,
+  },
+  {
+    "mattn/emmet-vim",
+    ft = { "html" },
+    dependencies = {
+      {
+        "dcampos/cmp-emmet-vim",
+        config = function()
+          local cmp = require "cmp"
+          cmp.setup {
+            sources = {
+              { name = "emmet_vim" },
+            },
+          }
+        end,
+      },
+    },
   },
 
   -- To make a plugin not be loaded

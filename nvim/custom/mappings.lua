@@ -24,6 +24,7 @@ M.general = {
       end,
       "Fuzzily search in current buffer",
     },
+    ["<leader>i"] = { "mmgg=G`m", "Indent the whole file" },
     ["<C-x>1"] = { ":only<cr>", "Keep only the current pane" },
     ["<C-x>2"] = { ":split<cr>", "Split pane horizontally" },
     ["<C-x>3"] = { ":vsplit<cr>", "Split pane vertically" },

@@ -113,9 +113,8 @@ M.copilot = {
 }
 
 M.cmp = {
-  mapping = {
+  mapping = require("cmp").mapping.preset.insert {
     ["<CR>"] = require("cmp").mapping.confirm {
-      behavior = require("cmp").ConfirmBehavior.Replace,
       select = true,
     },
   },

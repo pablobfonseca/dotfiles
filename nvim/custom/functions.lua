@@ -38,7 +38,7 @@ M.old_config_search = function()
 end
 
 M.config_files = function()
-  _find_file("Search for nvim files", "~/.config/nvim/lua")
+  _find_file("Search for nvim files", "~/.config/nvim/lua/custom")
 end
 
 M.find_dotfiles = function()
