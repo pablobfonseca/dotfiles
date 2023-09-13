@@ -14,3 +14,9 @@ require "custom.commands"
 vim.g.mapleader = ","
 vim.o.relativenumber = true
 vim.o.completeopt = "menuone,noselect"
+
+-- prevent neovim from commenting next line
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  command = "setlocal formatoptions-=cro",
+})
