@@ -12,6 +12,7 @@ local servers = {
   "solargraph",
   "pyright",
   "gopls",
+  "ruby_ls",
   "elmls",
   "rust_analyzer",
   "tailwindcss",
