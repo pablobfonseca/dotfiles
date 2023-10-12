@@ -113,11 +113,11 @@ M.copilot = {
 }
 
 M.cmp = {
-  mapping = require("cmp").mapping.preset.insert {
-    ["<CR>"] = require("cmp").mapping.confirm {
-      select = true,
-    },
-  },
+  -- mapping = require("cmp").mapping.preset.insert {
+  --   ["<CR>"] = require("cmp").mapping.confirm {
+  --     select = true,
+  --   },
+  -- },
   sources = {
     { name = "nvim_lsp", group_index = 2 },
     { name = "copilot", group_index = 2 },
@@ -125,7 +125,6 @@ M.cmp = {
     { name = "buffer", group_index = 2 },
     { name = "nvim_lua", group_index = 2 },
     { name = "path", group_index = 2 },
-    { name = "cmdline", group_index = 2 },
     { name = "orgmode", group_index = 2 },
   },
 }
