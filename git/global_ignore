@@ -25,3 +25,4 @@ solargraph_rails.rb
 jsconfig.json
 .log
 restmode
+.solargraph.yml

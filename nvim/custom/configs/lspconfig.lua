@@ -12,8 +12,8 @@ local servers = {
   "solargraph",
   "pyright",
   "gopls",
-  "ruby_ls",
   "elmls",
+  "hls",
   "rust_analyzer",
   "tailwindcss",
   "jsonls",
@@ -28,6 +28,10 @@ end
 
 lspconfig.jsonls.setup = {
   filetypes = { "json", "jsonc" },
+}
+
+lspconfig.hls.setup = {
+  filetypes = { "haskell", "lhaskell", "cabal" },
 }
 
 lspconfig.tsserver.setup {
@@ -55,6 +59,7 @@ lspconfig.tsserver.setup {
 --
 -- lspconfig.pyright.setup { blabla}
 lspconfig.solargraph.setup {
+  filetypes = { "ruby", "haml" },
   init_options = {
     solargraph = {
       formatting = true,

@@ -137,3 +137,5 @@
   postBuffer = 524288000
 [status]
   submoduleSummary = true
+[init]
+	defaultBranch = master

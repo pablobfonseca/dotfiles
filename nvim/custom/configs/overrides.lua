@@ -85,6 +85,9 @@ M.mason = {
     "gopls",
     "goimports",
 
+    -- haskell
+    "haskell-language-server",
+
     -- writting stuff
     "write-good",
   },
