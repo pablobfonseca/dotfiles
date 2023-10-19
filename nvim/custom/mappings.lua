@@ -8,6 +8,7 @@ M.disabled = {
     ["H"] = "",
     ["<C-n>"] = "",
     ["gr"] = "",
+    ["<leader>ca"] = "",
   },
 }
 
@@ -195,12 +196,6 @@ M.comment = {
 M.lspconfig = {
   plugin = true,
   n = {
-    ["H"] = {
-      function()
-        vim.lsp.buf.hover()
-      end,
-      "LSP hover",
-    },
     ["<leader>lgr"] = {
       function()
         require("telescope.builtin").lsp_references()
