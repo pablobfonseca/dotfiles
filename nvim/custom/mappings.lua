@@ -8,6 +8,7 @@ M.disabled = {
     ["H"] = "",
     ["<C-n>"] = "",
     ["gr"] = "",
+    ["gd"] = "",
     ["<leader>ca"] = "",
   },
 }
@@ -32,6 +33,7 @@ M.general = {
     ["<C-x>0"] = { ":q<cr>", "Close pane" },
     ["gp"] = { "`[v`]", "Select last paste in visual mode" },
     ["<leader>fh"] = { "<C-w>t<C-w>K", "Change vertically split to horizontally" },
+    ["<leader>fv"] = { "<C-w>t<C-w>H", "Change horizontally split to vertically" },
     ["Y"] = { "y$", "Make Y yank to end of line (like D, or C)" },
     ["<space>e"] = {
       ":e <C-R>=escape(expand('%:p:h'),' ') . '/'<CR>",
