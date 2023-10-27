@@ -252,7 +252,7 @@ local plugins = {
         mode = { "n" },
       },
       {
-        "<leader>lgd",
+        "gd",
         "<cmd>Lspsaga goto_definition<cr>",
         desc = "[L]spsaga [G]oto [D]efinition",
         mode = { "n" },
@@ -358,6 +358,31 @@ local plugins = {
             },
           }
         end,
+      },
+    },
+  },
+  {
+    "smoka7/hop.nvim",
+    version = "*",
+    opts = {},
+    keys = {
+      {
+        "<space>hw",
+        "<cmd>HopWord<cr>",
+        desc = "[H]op [W]ord",
+        mode = { "n" },
+      },
+      {
+        "<space>hl",
+        "<cmd>HopLine<cr>",
+        desc = "[H]op [L]ine",
+        mode = { "n" },
+      },
+      {
+        "<space>hc",
+        "<cmd>HopChar1<cr>",
+        desc = "[H]op [C]har",
+        mode = { "n" },
       },
     },
   },
