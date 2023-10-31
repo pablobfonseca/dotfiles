@@ -171,6 +171,18 @@ M.telescope = {
   },
 }
 
+M.telescope_project = {
+  plugin = true,
+  n = {
+    ["<leader>cd"] = {
+      function()
+        require("telescope").extensions.project.project { display_type = "full" }
+      end,
+      "Telescope project",
+    },
+  },
+}
+
 M.comment = {
   plugin = true,
   n = {
@@ -228,6 +240,85 @@ M.nvimtree = {
   plugin = true,
   n = {
     ["<C-d>"] = { "<cmd> NvimTreeToggle <CR>", "Toggle nvimtree" },
+  },
+}
+
+M.spectre = {
+  plugin = true,
+  n = {
+    ["<leader>S"] = {
+      function()
+        require("spectre").open()
+      end,
+      "Open Spectre",
+    },
+    ["<leader>sw"] = {
+      function()
+        require("spectre").open_visual { select_word = true }
+      end,
+      "Search current word",
+    },
+  },
+  v = {
+    ["<leader>sw"] = {
+      function()
+        require("spectre").open_visual()
+      end,
+      "Search current selected word",
+    },
+  },
+}
+
+M.hop = {
+  plugin = true,
+  n = {
+    ["<space>hw"] = { "<cmd>HopWord<cr>", "[H]op [W]ord" },
+    ["<space>hl"] = { "<cmd>HopLine<cr>", "[H]op [L]ine" },
+    ["<space>hc"] = { "<cmd>HopChar<cr>", "[H]op [C]har" },
+  },
+}
+
+M.nvim_window = {
+  plugin = true,
+  n = {
+    ["<M-o>"] = {
+      function()
+        require("nvim-window").pick()
+      end,
+      "Pick a window",
+    },
+  },
+}
+
+M.lsp_saga = {
+  plugin = true,
+  n = {
+    ["<leader>llf"] = { "<cmd>Lspsaga finder<cr>", "Lspsaga Finder" },
+    ["<leader>ca"] = { "<cmd>Lspsaga code_action<cr>", "Lspsaga Code Action" },
+    ["<leader>lpd"] = { "<cmd>Lspsaga peek_type_definition<cr>", "Lspsaga Peek Type Definition" },
+    ["gd"] = { "<cmd>Lspsaga goto_definition<cr>", "Lspsaga Goto Definition" },
+    ["<leader>lsl"] = { "<cmd>Lspsaga show_line_diagnostics<cr>", "Lspsaga Show Line Diagnostics" },
+    ["<leader>lsb"] = { "<cmd>Lspsaga show_buf_diagnostics<cr>", "Lspsaga Show Buffer Diagnostics" },
+    ["H"] = { "<cmd>Lspsaga hover_doc<cr>", "Lspsaga Hover Doc" },
+  },
+}
+
+M.trouble = {
+  plugin = true,
+  n = {
+    ["<leader>tt"] = { "<cmd>TroubleToggle<cr>", "Trouble Toggle" },
+  },
+}
+
+M.rest = {
+  plugin = true,
+  n = {
+    ["<C-c><C-c>"] = {
+      function()
+        require("rest-nvim").run()
+      end,
+      "Rest Run",
+    },
   },
 }
 
