@@ -109,32 +109,9 @@ local plugins = {
   },
   {
     "nvim-pack/nvim-spectre",
-    keys = {
-      {
-        "<leader>S",
-        function()
-          require("spectre").open()
-        end,
-        desc = "Open spectre",
-        mode = { "n" },
-      },
-      {
-        "<leader>sw",
-        function()
-          require("spectre").open_visual { select_word = true }
-        end,
-        desc = "Search current word",
-        mode = { "n" },
-      },
-      {
-        "<leader>sw",
-        function()
-          require("spectre").open_visual()
-        end,
-        desc = "Search current selected word",
-        mode = { "v" },
-      },
-    },
+    init = function()
+      require("core.utils").load_mappings "spectre"
+    end,
     opts = overrides.spectre,
     config = function(_, opts)
       require("spectre").setup(opts)
@@ -142,15 +119,13 @@ local plugins = {
   },
   {
     "yorickpeterse/nvim-window",
-    keys = {
-      {
-        "<M-o>",
-        function()
-          require("nvim-window").pick()
-        end,
-        desc = "Pick window",
-      },
-    },
+    lazy = false,
+    init = function()
+      require("core.utils").load_mappings "nvim_window"
+    end,
+    config = function()
+      require("nvim-window").setup {}
+    end,
   },
   {
     "kylechui/nvim-surround",
@@ -199,77 +174,19 @@ local plugins = {
   },
   {
     "nvim-telescope/telescope-project.nvim",
-    keys = {
-      {
-        "<leader>cd",
-        function()
-          require("telescope").extensions.project.project { display_type = "full" }
-        end,
-        desc = "Telescope project",
-        mode = { "n" },
-      },
-    },
-    config = function()
-      local project_actions = require "telescope._extensions.project.actions"
-      require("telescope").setup {
-        extensions = {
-          project = {
-            base_dirs = {
-              "~/code",
-              { "~/.dotfiles/" },
-            },
-            theme = "dropdown",
-            order_by = "asc",
-            search_by = "title",
-            on_project_selected = function(prompt_bufnr)
-              project_actions.find_project_files(prompt_bufnr, true)
-            end,
-          },
-        },
-      }
+    init = function()
+      require("core.utils").load_mappings "telescope_project"
+    end,
+    config = function(_, opts)
+      require("telescope").setup(opts)
     end,
   },
   {
     "glepnir/lspsaga.nvim",
     event = "LspAttach",
-    keys = {
-      {
-        "<leader>llf",
-        "<cmd>Lspsaga finder<cr>",
-        desc = "[L]spsaga [L] [F]inder",
-        mode = { "n" },
-      },
-      {
-        "<leader>ca",
-        "<cmd>Lspsaga code_action<cr>",
-        desc = " [C]ode [A]ction",
-        mode = { "n" },
-      },
-      {
-        "<leader>lpd",
-        "<cmd>Lspsaga peek_type_definition<cr>",
-        desc = "[L]spsaga [P]eek [D]efinition",
-        mode = { "n" },
-      },
-      {
-        "gd",
-        "<cmd>Lspsaga goto_definition<cr>",
-        desc = "[L]spsaga [G]oto [D]efinition",
-        mode = { "n" },
-      },
-      {
-        "<leader>lsb",
-        "<cmd>Lspsaga show_buf_diagnostics<cr>",
-        desc = "[L]spsaga [S]how [B]uffer diagnostics",
-        mode = { "n" },
-      },
-      {
-        "H",
-        "<cmd>Lspsaga hover_doc<cr>",
-        desc = "[L]spsaga [H]over",
-        mode = { "n" },
-      },
-    },
+    init = function()
+      require("core.utils").load_mappings "lsp_saga"
+    end,
     config = function()
       require("lspsaga").setup {}
     end,
@@ -282,14 +199,9 @@ local plugins = {
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    keys = {
-      {
-        "<leader>tt",
-        "<cmd>TroubleToggle<cr>",
-        desc = "[T]rouble [T]oggle",
-        mode = { "n" },
-      },
-    },
+    init = function()
+      require("core.utils").load_mappings "trouble"
+    end,
   },
   {
     "zbirenbaum/copilot.lua",
@@ -304,17 +216,13 @@ local plugins = {
     "rest-nvim/rest.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = overrides.rest,
+    ft = { "restmode" },
     config = function(_, opts)
       require("rest-nvim").setup(opts)
     end,
-    keys = {
-      {
-        "<C-c><C-c>",
-        "<cmd>lua require('rest-nvim').run()<cr>",
-        desc = "[R]est [R]un",
-        mode = { "n" },
-      },
-    },
+    init = function()
+      require("core.utils").load_mappings "rest"
+    end,
   },
   {
     "pwntester/octo.nvim",
@@ -363,28 +271,12 @@ local plugins = {
   },
   {
     "smoka7/hop.nvim",
+    lazy = false,
     version = "*",
     opts = {},
-    keys = {
-      {
-        "<space>hw",
-        "<cmd>HopWord<cr>",
-        desc = "[H]op [W]ord",
-        mode = { "n" },
-      },
-      {
-        "<space>hl",
-        "<cmd>HopLine<cr>",
-        desc = "[H]op [L]ine",
-        mode = { "n" },
-      },
-      {
-        "<space>hc",
-        "<cmd>HopChar1<cr>",
-        desc = "[H]op [C]har",
-        mode = { "n" },
-      },
-    },
+    init = function()
+      require("core.utils").load_mappings "hop"
+    end,
   },
 
   -- To make a plugin not be loaded

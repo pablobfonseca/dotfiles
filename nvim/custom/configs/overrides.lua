@@ -188,4 +188,21 @@ M.telescope = {
   },
 }
 
+M.telescope_project = {
+  extensions = {
+    project = {
+      base_dirs = {
+        "~/code",
+        { "~/.dotfiles/" },
+      },
+      theme = "dropdown",
+      order_by = "asc",
+      search_by = "title",
+      on_project_selected = function(prompt_bufnr)
+        require("telescope._extensions.project.actions").find_project_files(prompt_bufnr, true)
+      end,
+    },
+  },
+}
+
 return M
