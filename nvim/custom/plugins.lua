@@ -253,23 +253,6 @@ local plugins = {
     lazy = false,
   },
   {
-    "mattn/emmet-vim",
-    ft = { "html" },
-    dependencies = {
-      {
-        "dcampos/cmp-emmet-vim",
-        config = function()
-          local cmp = require "cmp"
-          cmp.setup {
-            sources = {
-              { name = "emmet_vim" },
-            },
-          }
-        end,
-      },
-    },
-  },
-  {
     "smoka7/hop.nvim",
     lazy = false,
     version = "*",

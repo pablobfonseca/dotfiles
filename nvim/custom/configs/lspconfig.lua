@@ -13,6 +13,7 @@ local servers = {
   "pyright",
   "gopls",
   "elmls",
+  "emmet_language_server",
   "hls",
   "rust_analyzer",
   "tailwindcss",
