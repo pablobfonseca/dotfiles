@@ -159,11 +159,6 @@ local plugins = {
     end,
   },
   {
-    "pablobfonseca/stackmap.nvim",
-    lazy = false,
-    dir = "~/code/stackmap.nvim/",
-  },
-  {
     "tpope/vim-eunuch",
     lazy = false,
   },
@@ -172,6 +167,7 @@ local plugins = {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
   },
+  { "nvim-telescope/telescope-ui-select.nvim" },
   {
     "nvim-telescope/telescope-project.nvim",
     init = function()

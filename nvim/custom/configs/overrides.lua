@@ -175,7 +175,7 @@ M.spectre = {
 }
 
 M.telescope = {
-  extensions_list = { "themes", "terms", "project", "file_browser" },
+  extensions_list = { "themes", "terms", "project", "file_browser", "ui-select" },
   pickers = {
     find_file = {
       hidden = true,
