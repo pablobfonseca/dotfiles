@@ -11,6 +11,7 @@ M.disabled = {
     ["gd"] = "",
     ["<leader>ca"] = "",
     ["<leader>ra"] = "",
+    ["<leader>od"] = "",
   },
 }
 
@@ -298,7 +299,7 @@ M.lsp_saga = {
     ["<leader>ca"] = { "<cmd>Lspsaga code_action<cr>", "Lspsaga Code Action" },
     ["<leader>lpd"] = { "<cmd>Lspsaga peek_definition<cr>", "Lspsaga Peek Definition" },
     ["gd"] = { "<cmd>Lspsaga goto_definition<cr>", "Lspsaga Goto Definition" },
-    ["<leader>lsl"] = { "<cmd>Lspsaga show_line_diagnostics<cr>", "Lspsaga Show Line Diagnostics" },
+    ["<leader>od"] = { "<cmd>Lspsaga show_line_diagnostics<cr>", "Lspsaga Show Line Diagnostics" },
     ["<leader>lsb"] = { "<cmd>Lspsaga show_buf_diagnostics<cr>", "Lspsaga Show Buffer Diagnostics" },
     ["H"] = { "<cmd>Lspsaga hover_doc<cr>", "Lspsaga Hover Doc" },
     ["<leader>ra"] = { "<cmd>Lspsaga rename<cr>", "Lspsaga Rename" },

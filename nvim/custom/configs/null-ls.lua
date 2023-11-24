@@ -30,9 +30,6 @@ local sources = {
   -- json
   b.formatting.fixjson.with { filetypes = { "json", "jsonc" } },
 
-  -- cpp
-  b.formatting.clang_format,
-
   -- python
   b.formatting.autoflake,
 
