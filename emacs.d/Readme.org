@@ -1,0 +1,10 @@
+#+TITLE: dotfiles Config
+
+* Emacs
+All the emacs config is managed by the [[file:Emacs.org][Emacs.org]]  file
+* zsh
+All the zsh config is managed by the [[file:Zsh.org][Zsh.org]] file
+* Vim
+All the vim config is managed by the [[file:Vim.org][Vim.org]] file
+
+* TODO Move to the [[https://github.com/pablobfonseca/dotfiles.git][dotfiles]] repo

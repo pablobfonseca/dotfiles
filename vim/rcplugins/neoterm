@@ -1,4 +1,0 @@
-Plug 'kassio/neoterm'
-
-nnoremap <leader>ro :Topen<cr>
-" vim: ft=vim

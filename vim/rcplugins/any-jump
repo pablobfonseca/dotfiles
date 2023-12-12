@@ -1,5 +1,0 @@
-Plug 'pechorin/any-jump.vim'
-
-nnoremap <leader>j :AnyJump<cr>
-nnoremap <leader>al :AnyJumpLastResults<cr>
-" vim: ft=vim

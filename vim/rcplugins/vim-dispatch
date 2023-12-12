@@ -1,6 +1,0 @@
-Plug 'tpope/vim-dispatch'
-
-nnoremap d<cr> :Dispatch<space>
-nnoremap <leader>co :Copen<cr>
-nnoremap <leader>cop :Copen!<cr>
-" vim: ft=vim

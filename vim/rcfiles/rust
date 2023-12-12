@@ -1,7 +1,0 @@
-augroup filetype_rust
-  " Clear old autocmds in group
-  autocmd!
-  autocmd FileType rust nnoremap <leader>cr :Cargo run<cr>
-  autocmd FileType rust nnoremap <leader>cb :Cargo build<cr>
-augroup END
-" vim:ft=vim

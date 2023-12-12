@@ -1,5 +1,0 @@
-Plug 'tpope/vim-markdown', {'for': 'markdown'}
-
-let g:markdown_fenced_languages = ['python', 'javascript', 'ruby', 'sh', 'yaml', 'javascript', 'go', 'html', 'vim', 'json', 'diff']
-
-" vim:ft=vim

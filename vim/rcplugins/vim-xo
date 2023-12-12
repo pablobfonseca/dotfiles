@@ -1,2 +1,0 @@
-Plug 'xojs/vim-xo', { 'branch': 'main' }
-" vim: ft=vim
