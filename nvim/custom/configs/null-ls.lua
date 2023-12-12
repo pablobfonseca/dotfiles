@@ -41,6 +41,7 @@ local sources = {
 
   -- go
   b.formatting.gofmt,
+  b.formatting.goimports,
 
   -- rust
   b.formatting.rustfmt,
