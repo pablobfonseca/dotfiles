@@ -1,2 +1,0 @@
-Plug 'AndrewRadev/splitjoin.vim', { 'branch': 'main' }
-" vim: ft=vim

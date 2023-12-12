@@ -1,5 +1,0 @@
-" markdown preview
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
-
-le g:mkdp_auto_start = 1
-" vim:ft=vim

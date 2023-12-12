@@ -1,9 +1,0 @@
-Plug 'tpope/vim-rails'
-
-let g:rails_projections = {
-      \ 'app/services/*.rb': {
-      \   'command': 'service',
-      \ },
-      \ 'app/mappers/*.rb': {'command': 'mapper'}}
-
-" vim:ft=vim
