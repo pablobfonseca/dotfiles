@@ -1,0 +1,9 @@
+[dotfiles]
+default_dir = '/Users/pablobfonseca/.dotfiles'
+repository = 'pablobfonseca/dotfiles'
+
+[dotfiles.emacs]
+config_dir = '/Users/pablobfonseca/.emacs.d'
+
+[dotfiles.nvim]
+config_dir = '/Users/pablobfonseca/.config/nvim'
