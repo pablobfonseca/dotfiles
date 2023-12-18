@@ -20,6 +20,7 @@ M.general = {
     [";"] = { ":", "enter command mode", opts = { nowait = true } },
     ["<C-x><C-s>"] = { ":w<cr>", "Save file" },
     ["<C-x><C-c>"] = { ":x<cr>", "Save and quit" },
+    ["<C-x><C-d>"] = { ":e ~/.dotfiles/config.toml<cr>", "Open dotfiles config" },
     ["<C-s>"] = {
       function()
         require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_ivy {
