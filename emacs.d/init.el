@@ -251,10 +251,10 @@
   :defer t
   :init (load-theme 'doom-dracula t))
 
-(set-face-attribute 'default nil :font "FiraCode Nerd Font" :family "Retina" :height 190)
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :family "Regular" :height 190)
 
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "FiraCode Nerd Font" :family "Retina" :height 190)
+(set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :family "Regular" :height 190)
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 190 :weight 'normal)
