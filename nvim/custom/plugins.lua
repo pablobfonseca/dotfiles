@@ -16,6 +16,10 @@ local plugins = {
         end,
       },
       {
+        "folke/neodev.nvim",
+        opts = overrides.neodev,
+      },
+      {
         "folke/lua-dev.nvim",
       },
       {
@@ -113,9 +117,6 @@ local plugins = {
       require("core.utils").load_mappings "spectre"
     end,
     opts = overrides.spectre,
-    config = function(_, opts)
-      require("spectre").setup(opts)
-    end,
   },
   {
     "yorickpeterse/nvim-window",
@@ -204,18 +205,12 @@ local plugins = {
     cmd = "Copilot",
     event = "InsertEnter",
     opts = overrides.copilot,
-    config = function(_, opts)
-      require("copilot").setup(opts)
-    end,
   },
   {
     "rest-nvim/rest.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = overrides.rest,
     ft = { "restmode" },
-    config = function(_, opts)
-      require("rest-nvim").setup(opts)
-    end,
     init = function()
       require("core.utils").load_mappings "rest"
     end,
