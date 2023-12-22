@@ -73,18 +73,6 @@ M.general = {
       end,
       "Search for nvim config",
     },
-    ["<space>sr"] = {
-      function()
-        require("custom.functions").old_config_search()
-      end,
-      "Search for old nvim config",
-    },
-    ["<space>df"] = {
-      function()
-        require("custom.functions").dotfiles_search()
-      end,
-      "Search for old nvim config",
-    },
     ["<leader>rp"] = {
       function()
         require("custom.functions").config_files()
