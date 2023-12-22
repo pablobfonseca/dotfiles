@@ -387,13 +387,13 @@ Don't warn for following symlinked files
 ** Font
 *** Set the font
 
-I am using the [[https://github.com/tonsky/FiraCode][Fira Code]] and [[https://fonts.google.com/specimen/Cantarell][Cantarell]] fonts for this configuration which will more than likely need to be installed on your machine.  Both can usually be found in the various Linux distro package managers or downloaded from the links above.
+I am using the [[https://www.programmingfonts.org/#jetbrainsmono][JetBrainsMono]] and [[https://fonts.google.com/specimen/Cantarell][Cantarell]] fonts for this configuration which will more than likely need to be installed on your machine.  Both can usually be found in the various Linux distro package managers or downloaded from the links above.
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "FiraCode Nerd Font" :family "Retina" :height 190)
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :family "Regular" :height 190)
 
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "FiraCode Nerd Font" :family "Retina" :height 190)
+(set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :family "Regular" :height 190)
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 190 :weight 'normal)
