@@ -13,7 +13,6 @@ export HISTTIMEFORMAT="%d/%m/%y %T"
 export EDITOR=nvim
 export BUNDLER_EDITOR=$EDITOR
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # for rails
-export DOCKER_MACHINE_NAME=pablo-machine
 
 export GOPATH=$HOME/code/go-workspace
 
