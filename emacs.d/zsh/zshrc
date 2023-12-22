@@ -1,0 +1,176 @@
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+if [ "$UNAME_MACHINE" = "arm64" ]; then
+    source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+autoload -U compinit
+compinit
+
+source $DOTFILES/zsh/completions/_dotfiles_cli
+
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
+
+export ZPLUG_HOME=$(brew --prefix zplug)
+source $ZPLUG_HOME/init.zsh
+
+zplug "zsh-users/zsh-autosuggestions"
+zplug "b4b4r07/enhancd"
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load
+
+if [ -n "$HTTP_TOOLKIT_ACTIVE" ]; then
+    # When HTTP Toolkit is active, we inject various overrides into PATH
+    export PATH="$HOME/.local/share/httptoolkit-server/client/1.0.2/overrides/path:$PATH"
+
+    if command -v winpty >/dev/null 2>&1; then
+        # Work around for winpty's hijacking of certain commands
+        alias php=php
+        alias node=node
+    fi
+fi
+
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+autoload -U add-zsh-hook
+load-nvmrc() {
+    local node_version="$(nvm version)"
+    local nvmrc_path="$(nvm_find_nvmrc)"
+
+    if [ -n "$nvmrc_path" ]; then
+        local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+        if [ "$nvmrc_node_version" = "N/A" ]; then
+            nvm install
+        elif [ "$nvmrc_node_version" != "$node_version" ]; then
+            nvm use
+        fi
+    elif [ "$node_version" != "$(nvm version default)" ]; then
+        echo "Reverting to nvm default version"
+        nvm use default
+    fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+
+function search_route {
+  bin/rails routes | rg $1
+}
+
+function vimup {
+  nvim +NvChadUpdate
+}
+
+function bundle_search() {
+    pattern="$1"; shift
+    ag $pattern $(bundle show --paths "$@")
+}
+
+function take {
+    mkdir $1
+    cd $1
+}
+
+rvmlist() {
+    local rb
+    rb=$((echo system; rvm list | grep ruby | cut -c 4-) |
+             awk '{print $1}' |
+             fzf) && rvm use $rb
+}
+
+nvmlist() {
+    local njs
+    njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf) && nvm use $njs
+}
+
+function branch_clean() {
+  git checkout master && git branch --merged | grep -v master | xargs git branch -d
+}
+
+docker_rmi() {
+    local image
+    image=$(docker images | awk '(NR>1) { print $1 " " $3; }' | fzf) \
+        && docker rmi $(cut -d' ' -f2 <<< "$image") --force
+}
+
+docker_attach() {
+    local container
+    container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf) \
+        && docker attach $(cut -d' ' -f1 <<< "$container")
+}
+
+docker_stop() {
+    local container
+    container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf) \
+        && docker stop $(cut -d' ' -f1 <<< "$container")
+}
+
+dspec() {
+    local file
+    file=$(find app/spec -type f | fzf | sed 's/app\/spec/spec/') \
+        && docker compose exec -it app rspec "$file"
+}
+
+alias dconsole="docker compose exec -it app rails c"
+
+fspec() {
+    local file
+    file=$(find spec -type f | fzf) && rspec "$file"
+}
+
+alias heic_to_png="magick mogrify -monitor -format png *.HEIC"
+
+alias boot=". ./setup-machine.sh"
+
+find_file() {
+  find . -type f | fzf | xargs nvim
+}
+
+zle -N find_file
+bindkey "^P" find_file
+
+bindkey "^R" history-incremental-search-backward
+
+alias path="echo $PATH | tr -s ':' '\n'"
+alias reload!="source ~/.zshrc"
+alias brew_update="brew update && brew upgrade && brew cleanup"
+alias code="cd ~/code && cd"
+alias untar="tar -zxvf"
+alias genpass="openssl rand -base64 20"
+alias st="git st"
+alias check3000="lsof -i :3000"
+alias ls="lsd"
+alias ll="ls -alF"
+alias bs="git bselect"
+
+# Upscope aliases
+alias docker_app="docker compose exec -it app"
+alias docker_logs="docker compose logs -f"
+alias docker_frontend="docker compose exec -it app-frontend"
+alias app_migrate="docker_app rails db:migrate"
+alias app_console="docker_app rails c"
+alias app_logs="docker_logs app"
+
+# GH
+alias copilot="gh copilot"
+alias gcs="gh copilot suggest"
+alias gce="gh copilot explain"
+
+eval "$(op completion zsh)"; compdef _op op
+
+eval "$(starship init zsh)"
