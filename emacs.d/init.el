@@ -426,8 +426,8 @@
 (personal/leader-keys
   "f"  '(:ignore t :which-key "dotfiles")
   "fe" '((lambda () (interactive) (find-file "~/.emacs.d/Emacs.org")) :which-key "edit config")
-  "fz" '((lambda () (interactive) (find-file "~/.emacs.d/Zsh.org")) :which-key "edit zsh config")
-  "fv" '((lambda () (interactive) (find-file "~/.emacs.d/Vim.org")) :which-key "edit vim config"))
+  "fz" '((lambda () (interactive) (find-file "~/.dotfiles/Zsh.org")) :which-key "edit zsh config")
+  "fv" '((lambda () (interactive) (find-file "~/.dotfiles/Vim.org")) :which-key "edit vim config"))
 
 (use-package command-log-mode
   :straight t)

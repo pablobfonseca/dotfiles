@@ -1,0 +1,42 @@
+export UNAME_MACHINE=$(/usr/bin/uname -m)
+export UNAME_SYSTEM=$(/usr/bin/uname)
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/opt/homebrew/sbin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
+export HISTSIZE=20000
+export SAVEHIST=20000
+export DOTFILES=$HOME/.dotfiles
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export CLICOLOR=1
+export HISTTIMEFORMAT="%d/%m/%y %T"
+export EDITOR=nvim
+export BUNDLER_EDITOR=$EDITOR
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # for rails
+export DOCKER_MACHINE_NAME=pablo-machine
+
+export GOPATH=$HOME/code/go-workspace
+
+if [ "$UNAME_MACHINE" = "arm64" ]; then
+   export GOROOT=/opt/homebrew/opt/go/libexec
+else
+   export GOROOT=/usr/local/opt/go/libexec
+fi
+
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
+
+export PATH="$HOME/.local/bin:$PATH"
+
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+export FZF_COMPLETE=1
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$HOME/.gem/bin:$PATH"
+export GEM_HOME=$HOME/.gem
+
+export NVM_DIR="$HOME/.nvm"

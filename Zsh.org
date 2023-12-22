@@ -75,6 +75,11 @@ This file generates [[file:zshrc][zshrc]] file which can be loaded by ZSH at sta
 autoload -U compinit
 compinit
 #+end_src
+** completions
+*** dotfiles
+#+begin_src shell
+  source $DOTFILES/zsh/completions/_dotfiles_cli
+#+end_src
 
 * Edit current line on EDITOR
 #+begin_src shell
