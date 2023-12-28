@@ -7,9 +7,9 @@ This file generates [[file:zshrc][zshrc]] file which can be loaded by ZSH at sta
 #+begin_src shell :tangle ./zsh/zshenv
   export UNAME_MACHINE=$(/usr/bin/uname -m)
   export UNAME_SYSTEM=$(/usr/bin/uname)
-  export PATH="/usr/local/sbin:$PATH"
   export PATH="/opt/homebrew/sbin:$PATH"
   export PATH="/opt/homebrew/bin:$PATH"
+  export PATH="/usr/local/sbin:$PATH"
   export HISTSIZE=20000
   export SAVEHIST=20000
   export DOTFILES=$HOME/.dotfiles
@@ -20,7 +20,6 @@ This file generates [[file:zshrc][zshrc]] file which can be loaded by ZSH at sta
   export EDITOR=nvim
   export BUNDLER_EDITOR=$EDITOR
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # for rails
-  export DOCKER_MACHINE_NAME=pablo-machine
 #+end_src
 ** Go
 #+begin_src shell :tangle ./zsh/zshenv
