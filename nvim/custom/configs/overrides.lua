@@ -27,7 +27,7 @@ M.treesitter = {
     "lua",
     "markdown",
     "markdown_inline",
-    "org",
+    "norg",
     "ruby",
     "tsx",
     "typescript",
@@ -60,6 +60,7 @@ M.mason = {
     "prettierd",
     "tailwindcss-language-server",
     "fixjson",
+    "js-debug-adapter",
 
     -- elm stuff
     "elm-format",
@@ -84,6 +85,7 @@ M.mason = {
     -- go stuff
     "gopls",
     "goimports",
+    "delve",
 
     -- haskell
     "haskell-language-server",
@@ -175,7 +177,7 @@ M.spectre = {
 }
 
 M.telescope = {
-  extensions_list = { "themes", "terms", "project", "file_browser", "ui-select" },
+  extensions_list = { "themes", "terms", "project", "file_browser" },
   pickers = {
     find_file = {
       hidden = true,
@@ -201,6 +203,65 @@ M.telescope_project = {
       on_project_selected = function(prompt_bufnr)
         require("telescope._extensions.project.actions").find_project_files(prompt_bufnr, true)
       end,
+    },
+  },
+}
+
+M.dapgo = {
+  dap_configurations = {
+    {
+      name = "Debug Upscope CLI",
+      type = "go",
+      request = "launch",
+      mode = "debug",
+      preLaunchTask = "go build .",
+      program = "${workspaceRoot}/upscope",
+      cwd = "${workspaceRoot}",
+    },
+  },
+}
+
+M.dap = {
+  library = {
+    plugins = {
+      { "nvim-dap-ui", types = true },
+    },
+  },
+}
+
+M.dap_vscode_js = {
+  plugin = true,
+  debugger_path = vim.fn.stdpath "data" .. "/mason/packages/js-debug-adapter",
+  debugger_cmd = { "js-debug-adapter" },
+  adapters = {
+    "chrome",
+    "pwa-node",
+    "pwa-chrome",
+    "pwa-msedge",
+    "node-terminal",
+    "pwa-extensionHost",
+    "node",
+    "chrome",
+  },
+}
+
+M.neorg = {
+  load = {
+    ["core.defaults"] = {},
+    ["core.concealer"] = {},
+    ["core.completion"] = {
+      config = {
+        engine = "nvim-cmp",
+      },
+    },
+    ["core.integrations.telescope"] = {},
+    ["core.dirman"] = {
+      config = {
+        workspaces = {
+          notes = "~/Dropbox/notes",
+          dotfiles = "~/.dotfiles",
+        },
+      },
     },
   },
 }
