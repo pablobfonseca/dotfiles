@@ -20,6 +20,8 @@ This file generates [[file:zshrc][zshrc]] file which can be loaded by ZSH at sta
   export EDITOR=nvim
   export BUNDLER_EDITOR=$EDITOR
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # for rails
+  export UPSCOPE_DIR=$HOME/code/upscope
+  export PATH="$PATH:$UPSCOPE_DIR/bin"
 #+end_src
 ** Go
 #+begin_src shell :tangle ./zsh/zshenv
@@ -77,7 +79,7 @@ compinit
 ** completions
 *** dotfiles
 #+begin_src shell
-  source $DOTFILES/zsh/completions/_dotfiles_cli
+  eval "$(dotfiles completion zsh)"; compdef _dotfiles dotfiles
 #+end_src
 
 * Edit current line on EDITOR
@@ -290,6 +292,7 @@ alias boot=". ./setup-machine.sh"
   alias ls="lsd"
   alias ll="ls -alF"
   alias bs="git bselect"
+  alias cat="bat"
 
   # Upscope aliases
   alias docker_app="docker compose exec -it app"

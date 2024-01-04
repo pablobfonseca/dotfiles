@@ -1,0 +1,8 @@
+@document.meta
+title: @pablofonseca's ZSH Configuration
+description: My ZSH configuration
+authors: Pablo Fonseca
+@end
+
+* Welcome to my Zsh Config
+  This file generates {:./zsh/zshrc:}[zshrc] file which can be loaded by ZSH at startup.

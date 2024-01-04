@@ -1,0 +1,12 @@
+@document.meta
+title: Dotfiles Config
+description: My dotfiles configuration
+authors: Pablo Fonseca
+@end
+
+
+* Welcome to my dotfiles Config
+  {:$/Zsh.norg:** Zsh Config}
+  {:$/Emacs.norg:** Emacs Config}
+  {:$/Git.norg:** Git Config}
+  {:$/NVim.norg:** NVim Config}
