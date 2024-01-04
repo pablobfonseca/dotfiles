@@ -11,7 +11,7 @@ fi
 autoload -U compinit
 compinit
 
-source $DOTFILES/zsh/completions/_dotfiles_cli
+eval "$(dotfiles completion zsh)"; compdef _dotfiles dotfiles
 
 autoload -z edit-command-line
 zle -N edit-command-line
@@ -157,6 +157,7 @@ alias check3000="lsof -i :3000"
 alias ls="lsd"
 alias ll="ls -alF"
 alias bs="git bselect"
+alias cat="bat"
 
 # Upscope aliases
 alias docker_app="docker compose exec -it app"
