@@ -20,9 +20,6 @@ local plugins = {
         opts = overrides.neodev,
       },
       {
-        "folke/lua-dev.nvim",
-      },
-      {
         "RRethy/vim-illuminate",
       },
       {
@@ -66,12 +63,12 @@ local plugins = {
         "hrsh7th/cmp-buffer",
         config = function()
           local cmp = require "cmp"
-          cmp.event:on("menu_opened", function()
-            vim.b.copilot_suggestion_hidden = true
-          end)
-          cmp.event:on("menu_closed", function()
-            vim.b.copilot_suggestion_hidden = false
-          end)
+          -- cmp.event:on("menu_opened", function()
+          --   vim.b.copilot_suggestion_hidden = true
+          -- end)
+          -- cmp.event:on("menu_closed", function()
+          --   vim.b.copilot_suggestion_hidden = false
+          -- end)
           cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmp.mapping.preset.cmdline(),
             sources = {
@@ -168,7 +165,11 @@ local plugins = {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
   },
-  { "nvim-telescope/telescope-ui-select.nvim" },
+  {
+    "stevearc/dressing.nvim",
+    lazy = false,
+    opts = {},
+  },
   {
     "nvim-telescope/telescope-project.nvim",
     init = function()
@@ -232,12 +233,14 @@ local plugins = {
     lazy = false,
   },
   {
-    "nvim-orgmode/orgmode",
-    ft = { "org" },
-    config = function()
-      require("orgmode").setup_ts_grammar()
-      require("orgmode").setup {}
+    "nvim-neorg/neorg",
+    ft = "norg",
+    build = ":Neorg sync-parsers",
+    init = function()
+      require("core.utils").load_mappings "neorg"
     end,
+    dependencies = { { "nvim-lua/plenary.nvim" }, { "nvim-neorg/neorg-telescope" } },
+    opts = overrides.neorg,
   },
   {
     "tpope/vim-abolish",
@@ -251,6 +254,81 @@ local plugins = {
     init = function()
       require("core.utils").load_mappings "hop"
     end,
+  },
+  {
+    "pablobfonseca/stackmap.nvim",
+    dir = "~/code/nvim_plugins/stackmap.nvim",
+    lazy = false,
+  },
+  {
+    "pablobfonseca/impatient.nvim",
+    dir = "~/code/nvim_plugins/impatient.nvim",
+    ft = { "html" },
+  },
+  {
+    "rafcamlet/nvim-luapad",
+    cmd = "Luapad",
+  },
+  {
+    "mfussenegger/nvim-dap",
+    init = function()
+      require("core.utils").load_mappings "dap"
+    end,
+    opts = overrides.dap,
+    config = function()
+      local dap, dapui = require "dap", require "dapui"
+
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+
+      for _, language in ipairs { "typescript", "javascript", "typescriptreact" } do
+        dap.configurations[language] = {
+          {
+            type = "pwa-node",
+            request = "launch",
+            name = "Launch file",
+            program = "${file}",
+            cwd = "${workspaceFolder}",
+          },
+          {
+            type = "pwa-node",
+            request = "attach",
+            name = "Attach",
+            processId = require("dap.utils").pick_process,
+            cwd = "${workspaceFolder}",
+          },
+          {
+            type = "pwa-chrome",
+            request = "launch",
+            name = "Launch Chrome",
+            url = "http://localhost:3000",
+            webRoot = "${workspaceFolder}",
+          },
+        }
+      end
+
+      vim.fn.sign_define("DapBreakpoint", { text = "🟥", texthl = "", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapStopped", { text = "▶️", texthl = "", linehl = "", numhl = "" })
+    end,
+  },
+
+  { "rcarriga/nvim-dap-ui", dependencies = "mfussenegger/nvim-dap" },
+  {
+    "mxsdev/nvim-dap-vscode-js",
+    ft = { "typescript", "javascript", "typescriptreact" },
+    dependencies = "mfussenegger/nvim-dap",
+    opts = overrides.dap_vscode_js,
+  },
+  { "leoluz/nvim-dap-go", dependencies = "mfussenegger/nvim-dap", opts = overrides.dapgo },
+  {
+    "b0o/schemastore.nvim",
   },
 
   -- To make a plugin not be loaded

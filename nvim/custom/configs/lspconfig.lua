@@ -27,11 +27,17 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-lspconfig.jsonls.setup = {
+lspconfig.jsonls.setup {
   filetypes = { "json", "jsonc" },
+  settings = {
+    json = {
+      schemas = require("schemastore").json.schemas(),
+      validate = { enable = true },
+    },
+  },
 }
 
-lspconfig.hls.setup = {
+lspconfig.hls.setup {
   filetypes = { "haskell", "lhaskell", "cabal" },
 }
 
@@ -39,26 +45,6 @@ lspconfig.tsserver.setup {
   filetypes = { "javascript", "typescript", "typescriptreact", "typescript.tsx" },
 }
 
--- lspconfig.jsonls.setup {
---   filetypes = { "json", "jsonc" },
---   settings = {
---     json = {
---       schemas = {
---         {
---           fileMatch = { "package.json" },
---           url = "https://json.schemastore.org/package.json",
---         },
---         {
---           fileMatch = { "tsconfig*.json" },
---           url = "https://json.schemastore.org/tsconfig.json",
---         },
---       },
---     },
---   },
--- }
-
---
--- lspconfig.pyright.setup { blabla}
 lspconfig.solargraph.setup {
   filetypes = { "ruby", "haml" },
   init_options = {

@@ -20,3 +20,8 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",
   command = "setlocal formatoptions-=cro",
 })
+
+-- remove inline diagnostics
+vim.diagnostic.config {
+  virtual_text = false,
+}

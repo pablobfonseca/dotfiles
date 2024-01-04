@@ -34,6 +34,12 @@ M.general = {
     ["<C-x>2"] = { ":split<cr>", "Split pane horizontally" },
     ["<C-x>3"] = { ":vsplit<cr>", "Split pane vertically" },
     ["<C-x>0"] = { ":q<cr>", "Close pane" },
+    ["<M-x>1"] = {
+      function()
+        require("nvchad.tabufline").closeOtherBufs()
+      end,
+      "Keep only current buffer",
+    },
     ["gp"] = { "`[v`]", "Select last paste in visual mode" },
     ["<leader>fh"] = { "<C-w>t<C-w>K", "Change vertically split to horizontally" },
     ["<leader>fv"] = { "<C-w>t<C-w>H", "Change horizontally split to vertically" },
@@ -311,6 +317,31 @@ M.rest = {
       end,
       "Rest Run",
     },
+  },
+}
+
+M.dap = {
+  plugin = true,
+  n = {
+    ["<space>d"] = {
+      function()
+        require("dap").continue()
+      end,
+      "DAP - Start debugging",
+    },
+    ["<space>b"] = {
+      function()
+        require("dap").toggle_breakpoint()
+      end,
+      "DAP - Toggle breakpoint",
+    },
+  },
+}
+
+M.neorg = {
+  plugin = true,
+  n = {
+    ["<C-x>w"] = { "<cmd>Telescope neorg switch_workspace<cr>", "Change Neorg Workspace" },
   },
 }
 
