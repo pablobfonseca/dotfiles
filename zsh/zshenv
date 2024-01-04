@@ -13,6 +13,8 @@ export HISTTIMEFORMAT="%d/%m/%y %T"
 export EDITOR=nvim
 export BUNDLER_EDITOR=$EDITOR
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # for rails
+export UPSCOPE_DIR=$HOME/code/upscope
+export PATH="$PATH:$UPSCOPE_DIR/bin"
 
 export GOPATH=$HOME/code/go-workspace
 
