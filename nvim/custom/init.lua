@@ -21,6 +21,11 @@ vim.api.nvim_create_autocmd("FileType", {
   command = "setlocal formatoptions-=cro",
 })
 
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*.norg",
+  command = "Neorg tangle current-file",
+})
+
 -- remove inline diagnostics
 vim.diagnostic.config {
   virtual_text = false,
