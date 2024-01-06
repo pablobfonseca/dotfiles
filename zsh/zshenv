@@ -19,9 +19,9 @@ export PATH="$PATH:$UPSCOPE_DIR/bin"
 export GOPATH=$HOME/code/go-workspace
 
 if [ "$UNAME_MACHINE" = "arm64" ]; then
-   export GOROOT=/opt/homebrew/opt/go/libexec
+export GOROOT=/opt/homebrew/opt/go/libexec
 else
-   export GOROOT=/usr/local/opt/go/libexec
+export GOROOT=/usr/local/opt/go/libexec
 fi
 
 export GOBIN=$GOPATH/bin
@@ -29,6 +29,7 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 
 export PATH="$HOME/.local/bin:$PATH"
+
 
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'

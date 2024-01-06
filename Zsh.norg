@@ -2,7 +2,329 @@
 title: @pablofonseca's ZSH Configuration
 description: My ZSH configuration
 authors: Pablo Fonseca
+tangle: {
+  languages: {
+    zshrc: $HOME/.dotfiles/zsh/zshrc
+    zshenv: $HOME/.dotfiles/zsh/zshenv
+  }
+}
 @end
 
 * Welcome to my Zsh Config
-  This file generates {:./zsh/zshrc:}[zshrc] file which can be loaded by ZSH at startup.
+  This file generates {/ ~/.zshrc}[zshrc] file which can be loaded by ZSH at startup.
+* envvars
+  @code zshenv
+  export UNAME_MACHINE=$(/usr/bin/uname -m)
+  export UNAME_SYSTEM=$(/usr/bin/uname)
+  export PATH="/opt/homebrew/sbin:$PATH"
+  export PATH="/opt/homebrew/bin:$PATH"
+  export PATH="/usr/local/sbin:$PATH"
+  export HISTSIZE=20000
+  export SAVEHIST=20000
+  export DOTFILES=$HOME/.dotfiles
+  export LC_ALL=en_US.UTF-8
+  export LANG=en_US.UTF-8
+  export CLICOLOR=1
+  export HISTTIMEFORMAT="%d/%m/%y %T"
+  export EDITOR=nvim
+  export BUNDLER_EDITOR=$EDITOR
+  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # for rails
+  export UPSCOPE_DIR=$HOME/code/upscope
+  export PATH="$PATH:$UPSCOPE_DIR/bin"
+  @end
+** Go
+   @code zshenv
+   export GOPATH=$HOME/code/go-workspace
+
+   if [ "$UNAME_MACHINE" = "arm64" ]; then
+   export GOROOT=/opt/homebrew/opt/go/libexec
+   else
+   export GOROOT=/usr/local/opt/go/libexec
+   fi
+
+   export GOBIN=$GOPATH/bin
+   export PATH=$PATH:$GOPATH/bin
+   export PATH=$PATH:$GOROOT/bin
+   @end
+** Haskell
+*** envvars
+    @code zshenv
+    export PATH="$HOME/.local/bin:$PATH"
+
+    @end
+
+*** config
+    @code zshrc
+    [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
+    @end
+* fzf
+** envvars
+   @code zshenv
+   export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+   export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+   export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+   export FZF_COMPLETE=1
+   @end
+
+** config
+   @code zshrc
+   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+   @end
+
+* zsh-syntax-highlighting
+  @code zshrc
+  if [ "$UNAME_MACHINE" = "arm64" ]; then
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  else
+  source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  fi
+  @end
+
+* Enable completion
+  @code zshrc
+  autoload -U compinit
+  compinit
+  @end
+** completions
+*** dotfiles
+    @code zshrc
+    eval "$(dotfiles completion zsh)"; compdef _dotfiles dotfiles
+    @end
+
+* Edit current line on EDITOR
+  @code zshrc
+  autoload -z edit-command-line
+  zle -N edit-command-line
+  bindkey "^X^E" edit-command-line
+  @end
+
+* zplug
+  @code zshrc
+  export ZPLUG_HOME=$(brew --prefix zplug)
+  source $ZPLUG_HOME/init.zsh
+  @end
+** Plugins
+   @code zshrc
+   zplug "zsh-users/zsh-autosuggestions"
+   zplug "b4b4r07/enhancd"
+
+   # Install plugins if there are plugins that have not been installed
+   if ! zplug check --verbose; then
+   printf "Install? [y/N]: "
+   if read -q; then
+   echo; zplug install
+   fi
+   fi
+
+   # Then, source plugins and add commands to $PATH
+   zplug load
+   @end
+* httptoolkit
+  This section will be reset each time a HTTP Toolkit terminal is opened
+  @code zshrc
+  if [ -n "$HTTP_TOOLKIT_ACTIVE" ]; then
+  # When HTTP Toolkit is active, we inject various overrides into PATH
+  export PATH="$HOME/.local/share/httptoolkit-server/client/1.0.2/overrides/path:$PATH"
+
+  if command -v winpty >/dev/null 2>&1; then
+  # Work around for winpty's hijacking of certain commands
+  alias php=php
+  alias node=node
+  fi
+  fi
+  @end
+
+* rvm
+  @code zshenv
+  # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+  export PATH="$PATH:$HOME/.rvm/bin"
+  export PATH="$HOME/.gem/bin:$PATH"
+  export GEM_HOME=$HOME/.gem
+  @end
+
+* nvm
+** envvars
+   @code zshenv
+   export NVM_DIR="$HOME/.nvm"
+   @end
+
+** config
+   @code zshrc
+   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+   autoload -U add-zsh-hook
+   load-nvmrc() {
+   local node_version="$(nvm version)"
+   local nvmrc_path="$(nvm_find_nvmrc)"
+
+   if [ -n "$nvmrc_path" ]; then
+   local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+   if [ "$nvmrc_node_version" = "N/A" ]; then
+   nvm install
+   elif [ "$nvmrc_node_version" != "$node_version" ]; then
+   nvm use
+   fi
+   elif [ "$node_version" != "$(nvm version default)" ]; then
+   echo "Reverting to nvm default version"
+   nvm use default
+   fi
+   }
+   add-zsh-hook chpwd load-nvmrc
+   load-nvmrc
+   @end
+
+* Functions
+** search_route
+   @code zshrc
+   function search_route {
+   bin/rails routes | rg $1
+   }
+   @end
+** vimup
+   @code zshrc
+   function vimup {
+   nvim +NvChadUpdate
+   }
+   @end
+
+** bundle_search
+   @code zshrc
+   function bundle_search() {
+   pattern="$1"; shift
+   ag $pattern $(bundle show --paths "$@")
+   }
+   @end
+
+** take
+   @code zshrc
+   function take {
+   mkdir $1
+   cd $1
+   }
+   @end
+
+** rvmlist
+   @code zshrc
+   rvmlist() {
+   local rb
+   rb=$((echo system; rvm list | grep ruby | cut -c 4-) |
+   awk '{print $1}' |
+   fzf) && rvm use $rb
+   }
+
+   @end
+** nvmlist
+   @code zshrc
+   nvmlist() {
+   local njs
+   njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf) && nvm use $njs
+   }
+   @end
+** branch_clean
+   @code zshrc
+   function branch_clean() {
+   git checkout master && git branch --merged | grep -v master | xargs git branch -d
+   }
+   @end
+** docker functions
+   @code zshrc
+   docker_rmi() {
+   local image
+   image=$(docker images | awk '(NR>1) { print $1 " " $3; }' | fzf) \
+   && docker rmi $(cut -d' ' -f2 <<< "$image") --force
+   }
+
+   docker_attach() {
+   local container
+   container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf) \
+   && docker attach $(cut -d' ' -f1 <<< "$container")
+   }
+
+   docker_stop() {
+   local container
+   container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf) \
+   && docker stop $(cut -d' ' -f1 <<< "$container")
+   }
+
+   dspec() {
+   local file
+   file=$(find app/spec -type f | fzf | sed 's/app\/spec/spec/') \
+   && docker compose exec -it app rspec "$file"
+   }
+
+   alias dconsole="docker compose exec -it app rails c"
+   @end
+** rspec
+   @code zshrc
+   fspec() {
+   local file
+   file=$(find spec -type f | fzf) && rspec "$file"
+   }
+   @end
+
+** heic_to_png
+   @code zshrc
+   alias heic_to_png="magick mogrify -monitor -format png *.HEIC"
+   @end
+
+** boot
+   Starts docker machine for upscope
+   @code zshrc
+   alias boot=". ./setup-machine.sh"
+   @end
+
+** find_file
+   @code zshrc
+   find_file() {
+   find . -type f | fzf | xargs nvim
+   }
+
+   zle -N find_file
+   bindkey "^P" find_file
+   @end
+
+** history_search
+   @code zshrc
+   bindkey "^R" history-incremental-search-backward
+   @end
+* Aliases
+  @code zshrc
+  alias path="echo $PATH | tr -s ':' '\n'"
+  alias reload!="source ~/.zshrc"
+  alias brew_update="brew update && brew upgrade && brew cleanup"
+  alias code="cd ~/code && cd"
+  alias untar="tar -zxvf"
+  alias genpass="openssl rand -base64 20"
+  alias st="git st"
+  alias check3000="lsof -i :3000"
+  alias ls="lsd"
+  alias ll="ls -alF"
+  alias bs="git bselect"
+  alias cat="bat"
+
+  # Upscope aliases
+  alias docker_app="docker compose exec -it app"
+  alias docker_logs="docker compose logs -f"
+  alias docker_frontend="docker compose exec -it app-frontend"
+  alias app_migrate="docker_app rails db:migrate"
+  alias app_console="docker_app rails c"
+  alias app_logs="docker_logs app"
+
+  # GH
+  alias copilot="gh copilot"
+  alias gcs="gh copilot suggest"
+  alias gce="gh copilot explain"
+  @end
+
+* Languages
+
+* 1Password
+  @code zshrc
+  eval "$(op completion zsh)"; compdef _op op
+  @end
+* Starship theme
+  @code zshrc
+  eval "$(starship init zsh)"
+  @end
+
