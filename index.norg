@@ -6,7 +6,4 @@ authors: Pablo Fonseca
 
 
 * Welcome to my dotfiles Config
-  {:$/Zsh.norg:** Zsh Config}
-  {:$/Emacs.norg:** Emacs Config}
-  {:$/Git.norg:** Git Config}
-  {:$/NVim.norg:** NVim Config}
+** {:$/Zsh:}[ZSH Configuration]
