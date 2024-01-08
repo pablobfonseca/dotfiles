@@ -268,10 +268,10 @@ tangle: {
    alias heic_to_png="magick mogrify -monitor -format png *.HEIC"
    @end
 
-** boot
-   Starts docker machine for upscope
+** upscope
+   Upscope aliases
    @code zshrc
-   alias boot=". ./setup-machine.sh"
+   alias lazydocker="upscope lazydocker"
    @end
 
 ** find_file

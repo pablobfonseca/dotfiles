@@ -136,7 +136,7 @@ file=$(find spec -type f | fzf) && rspec "$file"
 
 alias heic_to_png="magick mogrify -monitor -format png *.HEIC"
 
-alias boot=". ./setup-machine.sh"
+alias lazydocker="upscope lazydocker"
 
 find_file() {
 find . -type f | fzf | xargs nvim
