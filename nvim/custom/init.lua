@@ -1,4 +1,4 @@
--- local autocmd = vim.api.nvim_create_autocmd
+local autocmd = vim.api.nvim_create_autocmd
 
 -- Auto resize panes when resizing nvim window
 -- autocmd("VimResized", {
@@ -10,23 +10,14 @@ require "custom.globals"
 require "custom.configs.markdown-text"
 require "custom.functions"
 require "custom.commands"
+require "custom.dev.languages"
 
 vim.g.mapleader = ","
 vim.o.relativenumber = true
 vim.o.completeopt = "menuone,noselect"
 
 -- prevent neovim from commenting next line
-vim.api.nvim_create_autocmd("FileType", {
+autocmd("FileType", {
   pattern = "*",
   command = "setlocal formatoptions-=cro",
 })
-
-vim.api.nvim_create_autocmd("BufWritePost", {
-  pattern = "*.norg",
-  command = "Neorg tangle current-file",
-})
-
--- remove inline diagnostics
-vim.diagnostic.config {
-  virtual_text = false,
-}

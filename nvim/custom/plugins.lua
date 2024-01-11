@@ -319,16 +319,29 @@ local plugins = {
     end,
   },
 
-  { "rcarriga/nvim-dap-ui", dependencies = "mfussenegger/nvim-dap" },
+  { "rcarriga/nvim-dap-ui",                     dependencies = "mfussenegger/nvim-dap" },
   {
     "mxsdev/nvim-dap-vscode-js",
     ft = { "typescript", "javascript", "typescriptreact" },
     dependencies = "mfussenegger/nvim-dap",
     opts = overrides.dap_vscode_js,
   },
-  { "leoluz/nvim-dap-go", dependencies = "mfussenegger/nvim-dap", opts = overrides.dapgo },
+  {
+    "leoluz/nvim-dap-go",
+    dependencies = "mfussenegger/nvim-dap",
+    opts = overrides.dapgo,
+  },
   {
     "b0o/schemastore.nvim",
+  },
+  {
+    "ThePrimeagen/refactoring.nvim",
+    cmd = "Refactor",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {},
   },
 
   -- To make a plugin not be loaded
