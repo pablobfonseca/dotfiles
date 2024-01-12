@@ -16,6 +16,9 @@ vim.g.mapleader = ","
 vim.o.relativenumber = true
 vim.o.completeopt = "menuone,noselect"
 
+vim.o.foldenable = true
+vim.o.foldmethod = "manual"
+
 -- prevent neovim from commenting next line
 autocmd("FileType", {
   pattern = "*",

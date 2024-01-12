@@ -235,7 +235,7 @@ local plugins = {
   {
     "nvim-neorg/neorg",
     ft = "norg",
-    run = ":Neorg sync-parsers",
+    build = ":Neorg sync-parsers",
     init = function()
       require("core.utils").load_mappings "neorg"
     end,
