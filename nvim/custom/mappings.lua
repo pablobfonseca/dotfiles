@@ -345,6 +345,14 @@ M.neorg = {
   },
 }
 
+M.octo = {
+  plugin = true,
+  n = {
+    ["<leader>ors"] = { "<cmd>Octo review start<cr>", "[O]cto [R]eview [S]tart" },
+    ["<leader>orS"] = { "<cmd>Octo review submit<cr>", "[O]cto [R]eview [S]ubmit" },
+  },
+}
+
 -- more keybinds!
 
 return M

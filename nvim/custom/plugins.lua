@@ -224,6 +224,9 @@ local plugins = {
       "nvim-telescope/telescope.nvim",
       "nvim-tree/nvim-web-devicons",
     },
+    init = function()
+      require("core.utils").load_mappings "octo"
+    end,
     config = function()
       require("octo").setup()
     end,
