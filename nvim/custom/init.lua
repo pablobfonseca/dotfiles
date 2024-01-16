@@ -19,6 +19,11 @@ vim.o.completeopt = "menuone,noselect"
 vim.o.foldenable = true
 vim.o.foldmethod = "manual"
 
+local arrow_keys = { "<up>", "<left>", "<down>", "<right>" }
+for _, key in ipairs(arrow_keys) do
+  vim.api.nvim_set_keymap("n", key, "<cmd>echo 'Use hjkl Brav!'<cr>", { noremap = true, silent = true })
+end
+
 -- prevent neovim from commenting next line
 autocmd("FileType", {
   pattern = "*",
