@@ -138,13 +138,6 @@ local plugins = {
     event = "VeryLazy",
   },
   {
-    "tpope/vim-fugitive",
-    event = "VeryLazy",
-    config = function()
-      require "custom.configs.fugitive"
-    end,
-  },
-  {
     "sindrets/diffview.nvim",
     lazy = false,
   },
@@ -345,6 +338,16 @@ local plugins = {
       "nvim-treesitter/nvim-treesitter",
     },
     opts = {},
+  },
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    cmd = "Neogit",
+    config = true,
   },
 
   -- To make a plugin not be loaded
