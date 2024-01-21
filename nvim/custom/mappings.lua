@@ -335,6 +335,13 @@ M.octo = {
   },
 }
 
+M.neogit = {
+  plugin = true,
+  n = {
+    ["<C-x>g"] = { "<cmd>Neogit<cr>", "Neogit Status" },
+  },
+}
+
 -- more keybinds!
 
 return M
