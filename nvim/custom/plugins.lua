@@ -279,6 +279,9 @@ local plugins = {
   },
   {
     "NeogitOrg/neogit",
+    init = function()
+      require("core.utils").load_mappings "neogit"
+    end,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "sindrets/diffview.nvim",
