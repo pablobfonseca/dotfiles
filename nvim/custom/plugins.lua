@@ -266,68 +266,6 @@ local plugins = {
     cmd = "Luapad",
   },
   {
-    "mfussenegger/nvim-dap",
-    init = function()
-      require("core.utils").load_mappings "dap"
-    end,
-    opts = overrides.dap,
-    config = function()
-      local dap, dapui = require "dap", require "dapui"
-
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
-
-      for _, language in ipairs { "typescript", "javascript", "typescriptreact" } do
-        dap.configurations[language] = {
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch file",
-            program = "${file}",
-            cwd = "${workspaceFolder}",
-          },
-          {
-            type = "pwa-node",
-            request = "attach",
-            name = "Attach",
-            processId = require("dap.utils").pick_process,
-            cwd = "${workspaceFolder}",
-          },
-          {
-            type = "pwa-chrome",
-            request = "launch",
-            name = "Launch Chrome",
-            url = "http://localhost:3000",
-            webRoot = "${workspaceFolder}",
-          },
-        }
-      end
-
-      vim.fn.sign_define("DapBreakpoint", { text = "🟥", texthl = "", linehl = "", numhl = "" })
-      vim.fn.sign_define("DapStopped", { text = "▶️", texthl = "", linehl = "", numhl = "" })
-    end,
-  },
-
-  { "rcarriga/nvim-dap-ui",                     dependencies = "mfussenegger/nvim-dap" },
-  {
-    "mxsdev/nvim-dap-vscode-js",
-    ft = { "typescript", "javascript", "typescriptreact" },
-    dependencies = "mfussenegger/nvim-dap",
-    opts = overrides.dap_vscode_js,
-  },
-  {
-    "leoluz/nvim-dap-go",
-    dependencies = "mfussenegger/nvim-dap",
-    opts = overrides.dapgo,
-  },
-  {
     "b0o/schemastore.nvim",
   },
   {

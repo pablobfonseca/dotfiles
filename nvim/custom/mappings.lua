@@ -320,24 +320,6 @@ M.rest = {
   },
 }
 
-M.dap = {
-  plugin = true,
-  n = {
-    ["<space>d"] = {
-      function()
-        require("dap").continue()
-      end,
-      "DAP - Start debugging",
-    },
-    ["<space>b"] = {
-      function()
-        require("dap").toggle_breakpoint()
-      end,
-      "DAP - Toggle breakpoint",
-    },
-  },
-}
-
 M.neorg = {
   plugin = true,
   n = {
