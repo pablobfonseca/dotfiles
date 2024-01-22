@@ -14,7 +14,6 @@ local servers = {
   "gopls",
   "elmls",
   "emmet_language_server",
-  "hls",
   "rust_analyzer",
   "tailwindcss",
   "jsonls",
@@ -36,10 +35,6 @@ lspconfig.jsonls.setup {
       validate = { enable = true },
     },
   },
-}
-
-lspconfig.hls.setup {
-  filetypes = { "haskell", "lhaskell", "cabal" },
 }
 
 local function organize_imports()

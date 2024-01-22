@@ -204,23 +204,6 @@ M.comment = {
   },
 }
 
-M.lspconfig = {
-  plugin = true,
-  n = {
-    ["<leader>lgr"] = {
-      function()
-        require("telescope.builtin").lsp_references()
-      end,
-    },
-    ["<leader>od"] = {
-      function()
-        vim.diagnostic.open_float { border = "rounded" }
-      end,
-      "Open LSP Diagnostics",
-    },
-  },
-}
-
 M.gitsigns = {
   plugin = true,
   n = {
