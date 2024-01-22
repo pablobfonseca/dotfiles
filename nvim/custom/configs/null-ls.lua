@@ -31,9 +31,6 @@ local sources = {
   -- json
   b.formatting.fixjson.with { filetypes = { "json", "jsonc" } },
 
-  -- python
-  b.formatting.autoflake,
-
   -- ruby
   b.formatting.rubocop,
 

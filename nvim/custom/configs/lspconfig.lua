@@ -10,7 +10,6 @@ local servers = {
   "tsserver",
   "clangd",
   "solargraph",
-  "pyright",
   "gopls",
   "elmls",
   "emmet_language_server",
