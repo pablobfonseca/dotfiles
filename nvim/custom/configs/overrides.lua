@@ -36,9 +36,6 @@ M.treesitter = {
   },
   indent = {
     enable = true,
-    -- disable = {
-    --   "python"
-    -- },
   },
   highlight = {
     enable = true,
@@ -78,10 +75,6 @@ M.mason = {
     -- elm stuff
     "elm-format",
     "elm-language-server",
-
-    -- python stuff
-    "pyright",
-    "flake8",
 
     -- go stuff
     "gopls",
