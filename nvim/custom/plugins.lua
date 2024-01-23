@@ -290,6 +290,10 @@ local plugins = {
     cmd = "Neogit",
     config = true,
   },
+  {
+    "tpope/vim-fugitive",
+    event = "VeryLazy",
+  },
 
   -- To make a plugin not be loaded
   -- {
