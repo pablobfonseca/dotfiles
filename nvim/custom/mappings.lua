@@ -23,9 +23,7 @@ M.general = {
     ["<C-x><C-d>"] = { ":e ~/.dotfiles/config.toml<cr>", "Open dotfiles config" },
     ["<C-s>"] = {
       function()
-        require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_ivy {
-          winblend = 10,
-        })
+        require("telescope.builtin").current_buffer_fuzzy_find()
       end,
       "Fuzzily search in current buffer",
     },
@@ -124,17 +122,13 @@ M.telescope = {
     ["<C-x>b"] = { "<cmd>Telescope buffers theme=ivy<cr>", "Find Buffers" },
     ["gs"] = {
       function()
-        require("telescope.builtin").git_status(require("telescope.themes").get_ivy {
-          winblend = 10,
-        })
+        require("telescope.builtin").git_status()
       end,
       "Git status",
     },
     ["bs"] = {
       function()
-        require("telescope.builtin").git_branches(require("telescope.themes").get_ivy {
-          winblend = 10,
-        })
+        require("telescope.builtin").git_branches()
       end,
       "Git branches",
     },
@@ -143,9 +137,7 @@ M.telescope = {
     ["<C-x>h"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
     ["K"] = {
       function()
-        require("telescope.builtin").grep_string(require("telescope.themes").get_ivy {
-          winblend = 10,
-        })
+        require("telescope.builtin").grep_string()
       end,
       "Search current word",
     },
