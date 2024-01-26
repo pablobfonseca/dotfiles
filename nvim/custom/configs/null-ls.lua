@@ -41,6 +41,9 @@ local sources = {
   b.formatting.gofmt,
   b.formatting.goimports,
 
+  -- haskell
+  b.formatting.fourmolu,
+
   -- rust
   b.formatting.rustfmt,
 

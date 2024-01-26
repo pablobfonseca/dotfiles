@@ -36,10 +36,6 @@ lspconfig.jsonls.setup {
   },
 }
 
-lspconfig.hls.setup {
-  filetypes = { "haskell", "lhaskell", "cabal" },
-}
-
 local function organize_imports()
   local params = {
     command = "_typescript.organizeImports",
