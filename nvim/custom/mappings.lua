@@ -119,7 +119,12 @@ M.telescope = {
   n = {
     ["<C-p>"] = { "<cmd>Telescope find_files find_command=rg,--ignore,--hidden,--files<cr>", "Find files" },
     ["<leader>f"] = { "<cmd>Telescope live_grep<cr>", "Live Grep" },
-    ["<C-x>b"] = { "<cmd>Telescope buffers theme=ivy<cr>", "Find Buffers" },
+    ["<C-x>b"] = {
+      function()
+        require("telescope.builtin").buffers()
+      end,
+      "Find Buffers",
+    },
     ["gs"] = {
       function()
         require("telescope.builtin").git_status()
@@ -154,7 +159,9 @@ M.telescope = {
       "Search workspace symbols",
     },
     ["<leader>fb"] = {
-      ":Telescope file_browser theme=ivy<cr>",
+      function()
+        require("telescope.builtin").file_browser()
+      end,
       "Telescope file browser",
     },
   },
@@ -305,8 +312,8 @@ M.neorg = {
 M.octo = {
   plugin = true,
   n = {
-    ["<leader>ors"] = { "<cmd>Octo review start<cr>", "[O]cto [R]eview [S]tart" },
-    ["<leader>orS"] = { "<cmd>Octo review submit<cr>", "[O]cto [R]eview [S]ubmit" },
+    ["<leader>ors"] = { "<cmd>Octo review start<cr>", "Octo Review Start" },
+    ["<leader>orS"] = { "<cmd>Octo review submit<cr>", "Octo Review Submit" },
   },
 }
 
