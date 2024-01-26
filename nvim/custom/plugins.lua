@@ -294,6 +294,24 @@ local plugins = {
     "tpope/vim-fugitive",
     event = "VeryLazy",
   },
+  {
+    "mrcjkb/haskell-tools.nvim",
+    version = "^3", -- Recommended
+    ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
+  },
+  {
+    "neovimhaskell/haskell-vim",
+    ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
+    config = function()
+      vim.api.nvim_set_var("haskell_enable_quantification", 1)
+      vim.api.nvim_set_var("haskell_enable_recursivedo", 1)
+      vim.api.nvim_set_var("haskell_enable_arrowsyntax", 1)
+      vim.api.nvim_set_var("haskell_enable_pattern_synonyms", 1)
+      vim.api.nvim_set_var("haskell_enable_typeroles", 1)
+      vim.api.nvim_set_var("haskell_enable_static_pointers", 1)
+      vim.api.nvim_set_var("haskell_backpack", 1)
+    end,
+  },
 
   -- To make a plugin not be loaded
   -- {
