@@ -168,6 +168,7 @@ local plugins = {
     init = function()
       require("core.utils").load_mappings "telescope_project"
     end,
+    opts = overrides.telescope_project,
     config = function(_, opts)
       require("telescope").setup(opts)
     end,
@@ -223,10 +224,6 @@ local plugins = {
     config = function()
       require("octo").setup()
     end,
-  },
-  {
-    "andymass/vim-matchup",
-    lazy = false,
   },
   {
     "nvim-neorg/neorg",
