@@ -43,7 +43,7 @@ hs.hotkey.bind(alt, "h", function()
   hs.window.focusedWindow():moveOneScreenWest()
 end)
 
-focusApp("b", "Google Chrome")
+focusApp("b", "Arc")
 focusApp("t", "Warp")
 focusApp("w", "Warp")
 focusApp("s", "Slack")
