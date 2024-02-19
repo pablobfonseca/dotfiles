@@ -396,7 +396,7 @@ I am using the [[https://www.programmingfonts.org/#jetbrainsmono][JetBrainsMono]
 (set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :family "Regular" :height 190)
 
 ;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 190 :weight 'normal)
+(set-face-attribute 'variable-pitch nil :font "Andale Mono" :height 190 :weight 'normal)
 #+end_src
 
 *** Enable proper Unicode glyph support
