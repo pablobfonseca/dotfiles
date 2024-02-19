@@ -257,7 +257,7 @@
 (set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :family "Regular" :height 190)
 
 ;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 190 :weight 'normal)
+(set-face-attribute 'variable-pitch nil :font "Andale Mono" :height 190 :weight 'normal)
 
 (defun personal/replace-unicode-font-mapping (block-name old-font new-font)
   (let* ((block-idx (cl-position-if
