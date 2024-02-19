@@ -44,9 +44,6 @@ local sources = {
   -- haskell
   b.formatting.fourmolu,
 
-  -- rust
-  b.formatting.rustfmt,
-
   -- gitcommit, markdown
   b.diagnostics.write_good.with { filetypes = { "gitcommit", "markdown" } },
 }

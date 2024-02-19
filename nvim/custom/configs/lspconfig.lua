@@ -13,7 +13,6 @@ local servers = {
   "gopls",
   "elmls",
   "emmet_language_server",
-  "rust_analyzer",
   "tailwindcss",
   "jsonls",
   "sqls",
