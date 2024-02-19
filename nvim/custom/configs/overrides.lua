@@ -10,9 +10,6 @@ M.neodev = {
 }
 
 M.treesitter = {
-  matchup = {
-    enable = true,
-  },
   endwise = {
     enable = true,
   },
