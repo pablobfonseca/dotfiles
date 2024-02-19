@@ -150,8 +150,9 @@ local plugins = {
     end,
   },
   {
-    "tpope/vim-eunuch",
+    "chrisgrieser/nvim-genghis",
     lazy = false,
+    dependencies = "stevearc/dressing.nvim",
   },
   { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   {
