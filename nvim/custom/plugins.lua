@@ -237,8 +237,16 @@ local plugins = {
     opts = overrides.neorg,
   },
   {
-    "tpope/vim-abolish",
-    lazy = false,
+    "johmsalas/text-case.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("textcase").setup {}
+      require("telescope").load_extension "textcase"
+    end,
+    keys = {
+      "ga", -- Default invocation prefix
+      { "ga.", "<cmd>TextCaseOpenTelescope<CR>", mode = { "n", "x" }, desc = "Telescope" },
+    },
   },
   {
     "smoka7/hop.nvim",
@@ -287,10 +295,6 @@ local plugins = {
     },
     cmd = "Neogit",
     config = true,
-  },
-  {
-    "tpope/vim-fugitive",
-    event = "VeryLazy",
   },
   {
     "mrcjkb/haskell-tools.nvim",
