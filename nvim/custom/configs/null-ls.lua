@@ -28,9 +28,6 @@ local sources = {
   -- Lua
   b.formatting.stylua,
 
-  -- json
-  b.formatting.fixjson.with { filetypes = { "json", "jsonc" } },
-
   -- ruby
   b.formatting.rubocop,
 
@@ -40,9 +37,6 @@ local sources = {
   -- go
   b.formatting.gofmt,
   b.formatting.goimports,
-
-  -- haskell
-  b.formatting.fourmolu,
 
   -- gitcommit, markdown
   b.diagnostics.write_good.with { filetypes = { "gitcommit", "markdown" } },
