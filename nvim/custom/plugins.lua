@@ -117,7 +117,7 @@ local plugins = {
   },
   {
     "yorickpeterse/nvim-window",
-    lazy = false,
+    event = "VeryLazy",
     init = function()
       require("core.utils").load_mappings "nvim_window"
     end,
@@ -139,11 +139,11 @@ local plugins = {
   },
   {
     "sindrets/diffview.nvim",
-    lazy = false,
+    event = "VeryLazy",
   },
   {
     "iamcco/markdown-preview.nvim",
-    lazy = false,
+    event = "VeryLazy",
     ft = "markdown",
     build = function()
       vim.fn["mkdp#util#install"]()
@@ -151,7 +151,7 @@ local plugins = {
   },
   {
     "chrisgrieser/nvim-genghis",
-    lazy = false,
+    event = "VeryLazy",
     dependencies = "stevearc/dressing.nvim",
   },
   { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -161,7 +161,7 @@ local plugins = {
   },
   {
     "stevearc/dressing.nvim",
-    lazy = false,
+    event = "VeryLazy",
     opts = {},
   },
   {
@@ -250,7 +250,7 @@ local plugins = {
   },
   {
     "smoka7/hop.nvim",
-    lazy = false,
+    event = "VeryLazy",
     version = "*",
     opts = {},
     init = function()
@@ -260,7 +260,7 @@ local plugins = {
   {
     "pablobfonseca/stackmap.nvim",
     dir = "~/code/nvim_plugins/stackmap.nvim",
-    lazy = false,
+    event = "VeryLazy",
   },
   {
     "pablobfonseca/impatient.nvim",
