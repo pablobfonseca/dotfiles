@@ -183,11 +183,13 @@ M.telescope_project = {
     project = {
       base_dirs = {
         "~/code",
-        { "~/.dotfiles/" },
+        { "~/.dotfiles" },
+        { " ~/code/go-workspace" },
       },
       theme = "dropdown",
       order_by = "asc",
       search_by = "title",
+      sync_with_nvim_tree = true,
       on_project_selected = function(prompt_bufnr)
         require("telescope._extensions.project.actions").find_project_files(prompt_bufnr, true)
       end,
