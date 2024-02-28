@@ -42,10 +42,6 @@ M.general = {
     ["<leader>fh"] = { "<C-w>t<C-w>K", "Change vertically split to horizontally" },
     ["<leader>fv"] = { "<C-w>t<C-w>H", "Change horizontally split to vertically" },
     ["Y"] = { "y$", "Make Y yank to end of line (like D, or C)" },
-    ["<space>e"] = {
-      ":e <C-R>=escape(expand('%:p:h'),' ') . '/'<CR>",
-      "Edit another file in the same directory as the current file",
-    },
     ["<C-x><C-f>"] = {
       ":e <C-R>=escape(expand('%:p:h'),' ') . '/'<CR>",
       "Edit another file in the same directory as the current file",
@@ -158,11 +154,10 @@ M.telescope = {
       end,
       "Search workspace symbols",
     },
-    ["<leader>fb"] = {
-      function()
-        require("telescope.builtin").file_browser()
-      end,
-      "Telescope file browser",
+    ["<C-d>"] = { "<cmd>Telescope file_browser<cr>", "Telescope file browser" },
+    ["<space>e"] = {
+      "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>",
+      "Telescope file browser current directory",
     },
   },
 }
@@ -218,7 +213,7 @@ M.gitsigns = {
 M.nvimtree = {
   plugin = true,
   n = {
-    ["<C-d>"] = { "<cmd> NvimTreeToggle <CR>", "Toggle nvimtree" },
+    ["<leader>fb"] = { "<cmd> NvimTreeToggle <CR>", "Toggle nvimtree" },
   },
 }
 
