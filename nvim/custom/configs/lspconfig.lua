@@ -12,7 +12,6 @@ local servers = {
   "solargraph",
   "gopls",
   "elmls",
-  "emmet_language_server",
   "tailwindcss",
   "jsonls",
   "sqls",
