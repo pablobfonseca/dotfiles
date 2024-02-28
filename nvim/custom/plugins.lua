@@ -43,7 +43,12 @@ local plugins = {
   },
   {
     "nvim-telescope/telescope.nvim",
-    opts = overrides.telescope,
+    dependencies = {
+      { "MunifTanjim/nui.nvim" },
+    },
+    config = function()
+      require("custom.configs.telescope").setup()
+    end,
   },
 
   {
@@ -159,6 +164,12 @@ local plugins = {
   {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+    opts = overrides.telescope_file_browser,
+    config = function(_, opts)
+      local telescope = require "telescope"
+      telescope.setup(opts)
+      telescope.load_extension "file_browser"
+    end,
   },
   {
     "stevearc/dressing.nvim",
@@ -192,6 +203,7 @@ local plugins = {
   },
   {
     "folke/trouble.nvim",
+    event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     init = function()
       require("core.utils").load_mappings "trouble"
@@ -313,6 +325,28 @@ local plugins = {
       vim.api.nvim_set_var("haskell_enable_typeroles", 1)
       vim.api.nvim_set_var("haskell_enable_static_pointers", 1)
       vim.api.nvim_set_var("haskell_backpack", 1)
+    end,
+  },
+  {
+    "mbbill/undotree",
+    cmd = "UndotreeToggle",
+  },
+  {
+    "debugloop/telescope-undo.nvim",
+    dependencies = {
+      {
+        "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+      },
+    },
+    init = function()
+      require("core.utils").load_mappings "telescope_undo"
+    end,
+    opts = overrides.telescope_undo,
+    config = function(_, opts)
+      local telescope = require "telescope"
+      telescope.setup(opts)
+      telescope.load_extension "undo"
     end,
   },
 

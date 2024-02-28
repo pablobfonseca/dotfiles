@@ -21,12 +21,6 @@ M.general = {
     ["<C-x><C-s>"] = { ":w<cr>", "Save file" },
     ["<C-x><C-c>"] = { ":x<cr>", "Save and quit" },
     ["<C-x><C-d>"] = { ":e ~/.dotfiles/config.toml<cr>", "Open dotfiles config" },
-    ["<C-s>"] = {
-      function()
-        require("telescope.builtin").current_buffer_fuzzy_find()
-      end,
-      "Fuzzily search in current buffer",
-    },
     ["<leader>i"] = { "mmgg=G`m", "Indent the whole file" },
     ["<C-x>1"] = { ":only<cr>", "Keep only the current pane" },
     ["<C-x>2"] = { ":split<cr>", "Split pane horizontally" },
@@ -95,6 +89,12 @@ M.general = {
 M.telescope = {
   plugin = true,
   n = {
+    ["<C-s>"] = {
+      function()
+        require("telescope.builtin").current_buffer_fuzzy_find()
+      end,
+      "Fuzzily search in current buffer",
+    },
     ["<C-p>"] = { "<cmd>Telescope find_files find_command=rg,--ignore,--hidden,--files<cr>", "Find files" },
     ["<leader>f"] = { "<cmd>Telescope live_grep<cr>", "Live Grep" },
     ["<C-x>b"] = {
@@ -301,6 +301,11 @@ M.neogit = {
   },
 }
 
--- more keybinds!
+M.telescope_undo = {
+  plugin = true,
+  n = {
+    ["<leader>u"] = { "<cmd>Telescope undo<cr>", "Undo history" },
+  },
+}
 
 return M
