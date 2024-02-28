@@ -85,24 +85,6 @@ M.general = {
       end,
       "Find dotfiles",
     },
-    ["<leader>um"] = {
-      function()
-        require("custom.dev.upscope.functions").models_search()
-      end,
-      "Find Upscope models",
-    },
-    ["<leader>uc"] = {
-      function()
-        require("custom.dev.upscope.functions").controllers_search()
-      end,
-      "Find Upscope controllers",
-    },
-    ["<leader>us"] = {
-      function()
-        require("custom.dev.upscope.functions").specs_search()
-      end,
-      "Find Upscope specs",
-    },
   },
   v = {
     ["<C-e>"] = { "7<C-e>", "Scroll the viewport faster" },
