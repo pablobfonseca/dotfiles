@@ -18,6 +18,7 @@ vim.o.completeopt = "menuone,noselect"
 
 vim.o.foldenable = true
 vim.o.foldmethod = "manual"
+vim.o.mouse = ""
 
 local arrow_keys = { "<up>", "<left>", "<down>", "<right>" }
 for _, key in ipairs(arrow_keys) do
