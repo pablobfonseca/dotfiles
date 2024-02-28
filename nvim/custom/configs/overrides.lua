@@ -30,6 +30,7 @@ M.treesitter = {
     "typescript",
     "vim",
     "vimdoc",
+    "help",
   },
   indent = {
     enable = true,
