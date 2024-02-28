@@ -164,21 +164,6 @@ M.spectre = {
   live_update = true,
 }
 
-M.telescope = {
-  extensions_list = { "themes", "terms", "project", "file_browser" },
-  pickers = {
-    find_file = {
-      hidden = true,
-    },
-  },
-  extensions = {
-    file_browser = {
-      theme = "dropdown",
-      hijack_netrw = true,
-    },
-  },
-}
-
 M.telescope_project = {
   extensions = {
     project = {
@@ -252,6 +237,29 @@ M.neorg = {
           dotfiles = "~/.dotfiles",
         },
       },
+    },
+  },
+}
+
+M.telescope_undo = {
+  extensions = {
+    undo = {
+      use_delta = true,
+      use_custom_command = nil,
+      side_by_side = false,
+      diff_context_lines = vim.o.scrolloff,
+      entry_format = "state #$ID, $STAT, $TIME",
+      time_format = "",
+      saved_only = false,
+    },
+  },
+}
+
+M.telescope_file_browser = {
+  extensions = {
+    file_browser = {
+      hijack_netrw = true,
+      display_stat = false,
     },
   },
 }
