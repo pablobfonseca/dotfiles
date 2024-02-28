@@ -20,6 +20,8 @@ vim.o.foldenable = true
 vim.o.foldmethod = "manual"
 vim.o.mouse = ""
 
+vim.o.undodir = os.getenv "HOME" .. "/.vim/undodir"
+
 local arrow_keys = { "<up>", "<left>", "<down>", "<right>" }
 for _, key in ipairs(arrow_keys) do
   vim.api.nvim_set_keymap("n", key, "<cmd>echo 'Use hjkl Brav!'<cr>", { noremap = true, silent = true })
