@@ -30,7 +30,6 @@ M.treesitter = {
     "typescript",
     "vim",
     "vimdoc",
-    "help",
   },
   indent = {
     enable = true,
@@ -174,6 +173,7 @@ M.telescope = {
   },
   extensions = {
     file_browser = {
+      theme = "dropdown",
       hijack_netrw = true,
     },
   },
@@ -185,7 +185,6 @@ M.telescope_project = {
       base_dirs = {
         "~/code",
         { "~/.dotfiles" },
-        { " ~/code/go-workspace" },
       },
       theme = "dropdown",
       order_by = "asc",
