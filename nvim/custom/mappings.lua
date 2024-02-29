@@ -261,7 +261,7 @@ M.lsp_saga = {
 M.trouble = {
   plugin = true,
   n = {
-    ["<leader>tt"] = { "<cmd>TroubleToggle document_diagnostics<cr>", "Trouble Toggle" },
+    ["<C-c>t"] = { "<cmd>TroubleToggle document_diagnostics<cr>", "Trouble Toggle" },
   },
 }
 
