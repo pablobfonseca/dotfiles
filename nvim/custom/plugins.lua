@@ -160,7 +160,6 @@ local plugins = {
     event = "VeryLazy",
     dependencies = "stevearc/dressing.nvim",
   },
-  { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },

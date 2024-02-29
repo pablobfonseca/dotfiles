@@ -136,7 +136,11 @@ M.telescope = {
       end,
       "Search workspace symbols",
     },
-    ["<C-d>"] = { "<cmd>Telescope file_browser<cr>", "Telescope file browser" },
+    ["<leader>fb"] = { "<cmd>Telescope file_browser<cr>", "Telescope file browser" },
+    ["<C-d>"] = {
+      "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>",
+      "Telescope file browser current directory",
+    },
     ["<space>e"] = {
       "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>",
       "Telescope file browser current directory",
@@ -189,13 +193,6 @@ M.gitsigns = {
       end,
       "Blame line",
     },
-  },
-}
-
-M.nvimtree = {
-  plugin = true,
-  n = {
-    ["<leader>fb"] = { "<cmd> NvimTreeToggle <CR>", "Toggle nvimtree" },
   },
 }
 
