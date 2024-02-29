@@ -9,6 +9,59 @@ M.neodev = {
   pathStrict = true,
 }
 
+M.telescope = {
+  defaults = {
+    mappings = {
+      i = {
+        -- map actions.which_key to <C-h> (default: <C-/>)
+        -- actions.which_key shows the mappings for your picker,
+        -- e.g. git_{create, delete, ...}_branch for the git_branches picker
+        ["<C-h>"] = "which_key",
+      },
+    },
+    preview = {
+      timeout = 500,
+      msg_bg_fillchar = "",
+    },
+    multi_icon = " ",
+    vimgrep_arguments = {
+      "rg",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+      "--hidden",
+    },
+    prompt_prefix = "❯ ",
+    selection_caret = "❯ ",
+    sorting_strategy = "ascending",
+    color_devicons = true,
+    layout_config = {
+      prompt_position = "bottom",
+      horizontal = {
+        width_padding = 0.04,
+        height_padding = 0.1,
+        preview_width = 0.6,
+      },
+      vertical = {
+        width_padding = 0.05,
+        height_padding = 0.1,
+        preview_width = 0.6,
+      },
+    },
+    dynamic_preview_title = true,
+    winblend = 4,
+  },
+  extensions_list = { "themes", "terms", "project" },
+  pickers = {
+    find_file = {
+      hidden = true,
+    },
+  },
+}
+
 M.treesitter = {
   endwise = {
     enable = true,
