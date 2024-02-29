@@ -43,12 +43,7 @@ local plugins = {
   },
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = {
-      { "MunifTanjim/nui.nvim" },
-    },
-    config = function()
-      require("custom.configs.telescope").setup()
-    end,
+    opts = overrides.telescope,
   },
 
   {
