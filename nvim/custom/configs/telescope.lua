@@ -3,6 +3,7 @@ T = {}
 T.setup = function()
   local Layout = require "nui.layout"
   local Popup = require "nui.popup"
+  local trouble = require "trouble"
 
   local telescope = require "telescope"
   local TSLayout = require "telescope.pickers.layout"
@@ -18,6 +19,14 @@ T.setup = function()
 
   telescope.setup {
     defaults = {
+      mappings = {
+        i = {
+          -- map actions.which_key to <C-h> (default: <C-/>)
+          -- actions.which_key shows the mappings for your picker,
+          -- e.g. git_{create, delete, ...}_branch for the git_branches picker
+          ["<C-h>"] = "which_key",
+        },
+      },
       layout_strategy = "flex",
       layout_config = {
         horizontal = {
