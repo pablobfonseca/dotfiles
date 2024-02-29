@@ -118,6 +118,7 @@ M.telescope = {
     ["<C-x>t"] = { "<cmd>Telescope tags<cr>", "Find tags" },
     ["<C-x>k"] = { "<cmd>Telescope keymaps<cr>", "Find keymaps" },
     ["<C-x>h"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
+    ["<leader>tc"] = { "<cmd>Telescope commands<cr>", "Telescope commands" },
     ["K"] = {
       function()
         require("telescope.builtin").grep_string()
@@ -260,7 +261,7 @@ M.lsp_saga = {
 M.trouble = {
   plugin = true,
   n = {
-    ["<leader>tt"] = { "<cmd>TroubleToggle<cr>", "Trouble Toggle" },
+    ["<leader>tt"] = { "<cmd>TroubleToggle document_diagnostics<cr>", "Trouble Toggle" },
   },
 }
 
