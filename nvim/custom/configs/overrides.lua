@@ -10,38 +10,34 @@ M.neodev = {
 }
 
 M.telescope = {
-  defaults = {
-    vimgrep_arguments = {
-      "rg",
-      "-L",
-      "--color=never",
-      "--no-heading",
-      "--with-filename",
-      "--line-number",
-      "--column",
-      "--smart-case",
-      "--hidden",
-    },
-    prompt_prefix = "❯ ",
-    selection_caret = "❯ ",
-    sorting_strategy = "ascending",
-    color_devicons = true,
-    layout_config = {
-      prompt_position = "bottom",
-      horizontal = {
-        width_padding = 0.04,
-        height_padding = 0.1,
-        preview_width = 0.6,
+      defaults = {
+        vimgrep_arguments = {
+          "rg",
+          "-L",
+          "--color=never",
+          "--no-heading",
+          "--with-filename",
+          "--line-number",
+          "--column",
+          "--smart-case",
+        },
+        prompt_prefix = "   ",
+        selection_caret = "  ",
+        entry_prefix = "  ",
+        initial_mode = "insert",
+        selection_strategy = "reset",
+        sorting_strategy = "ascending",
+        file_sorter = require("telescope.sorters").get_fuzzy_file,
+        file_ignore_patterns = { "node_modules" },
+        generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+        winblend = 0,
+        border = {},
+        color_devicons = true,
+        set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
+        file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+        grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+        qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
       },
-      vertical = {
-        width_padding = 0.05,
-        height_padding = 0.1,
-        preview_width = 0.6,
-      },
-    },
-    dynamic_preview_title = true,
-    winblend = 4,
-  },
   extensions_list = { "themes", "terms", "project" },
   pickers = {
     find_file = {
@@ -64,8 +60,7 @@ M.telescope = {
     file_previewer = require("telescope.previewers").vim_buffer_cat.new,
     grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
     qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
-  },
-}
+  }
 
 M.treesitter = {
   endwise = {
