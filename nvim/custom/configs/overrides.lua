@@ -11,21 +11,9 @@ M.neodev = {
 
 M.telescope = {
   defaults = {
-    mappings = {
-      i = {
-        -- map actions.which_key to <C-h> (default: <C-/>)
-        -- actions.which_key shows the mappings for your picker,
-        -- e.g. git_{create, delete, ...}_branch for the git_branches picker
-        ["<C-h>"] = "which_key",
-      },
-    },
-    preview = {
-      timeout = 500,
-      msg_bg_fillchar = "",
-    },
-    multi_icon = " ",
     vimgrep_arguments = {
       "rg",
+      "-L",
       "--color=never",
       "--no-heading",
       "--with-filename",
@@ -59,6 +47,23 @@ M.telescope = {
     find_file = {
       hidden = true,
     },
+    },
+    prompt_prefix = "   ",
+    selection_caret = "  ",
+    entry_prefix = "  ",
+    initial_mode = "insert",
+    selection_strategy = "reset",
+    sorting_strategy = "ascending",
+    file_sorter = require("telescope.sorters").get_fuzzy_file,
+    file_ignore_patterns = { "node_modules" },
+    generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+    winblend = 0,
+    border = {},
+    color_devicons = true,
+    set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
+    file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+    grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+    qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
   },
 }
 
