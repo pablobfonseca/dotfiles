@@ -1,0 +1,6 @@
+require "pablobfonseca.mappings"
+require "pablobfonseca.config"
+require "pablobfonseca.commands"
+require "pablobfonseca.functions"
+require "pablobfonseca.languages"
+require "pablobfonseca.lazy"

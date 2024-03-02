@@ -1,3 +1,0 @@
-# @pablobfonseca's config
-
-TODO

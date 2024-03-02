@@ -44,6 +44,6 @@ hs.hotkey.bind(alt, "h", function()
 end)
 
 focusApp("b", "Arc")
-focusApp("t", "Warp")
+focusApp("t", "iTerm")
 focusApp("w", "Warp")
 focusApp("s", "Slack")
