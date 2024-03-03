@@ -1,10 +1,12 @@
+local opt = vim.opt
+
 -- Numbers
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.ruler = false
+opt.number = true
+opt.relativenumber = true
+opt.ruler = false
 
 -- disable nvim intro
-vim.opt.shortmess:append "sI"
+opt.shortmess:append "sI"
 
 -- disable mouse and arrow keys
 vim.o.mouse = ""
@@ -14,46 +16,60 @@ for _, key in ipairs(arrow_keys) do
 end
 
 -- Indenting
-vim.opt.expandtab = true
-vim.opt.shiftwidth = 2
-vim.opt.smartindent = true
-vim.opt.tabstop = 2
-vim.opt.softtabstop = 2
+opt.expandtab = true
+opt.shiftwidth = 2
+opt.smartindent = true
+opt.tabstop = 2
+opt.softtabstop = 2
 
-vim.opt.laststatus = 3 -- global statusline
-vim.opt.showmode = false
+opt.laststatus = 3 -- global statusline
+opt.showmode = false
 
-vim.opt.clipboard = "unnamedplus"
-vim.opt.cursorline = true
+opt.clipboard = "unnamedplus"
+opt.cursorline = true
 
-vim.opt.fillchars = { eob = " " }
-vim.opt.ignorecase = true
+opt.fillchars = { eob = " " }
+opt.ignorecase = true
 
-vim.opt.wrap = false
+opt.wrap = false
 
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv "HOME" .. "/.local/share/nvim/undodir"
-vim.opt.undofile = true
+opt.swapfile = false
+opt.backup = false
+opt.undodir = os.getenv "HOME" .. "/.local/share/nvim/undodir"
+opt.undofile = true
 
-vim.opt.hlsearch = false
-vim.opt.incsearch = true
+opt.hlsearch = false
+opt.incsearch = true
 
-vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes"
-vim.opt.splitbelow = true
-vim.opt.splitright = true
-vim.opt.termguicolors = true
-vim.opt.timeoutlen = 1000
+opt.scrolloff = 8
+opt.signcolumn = "yes"
+opt.splitbelow = true
+opt.splitright = true
+opt.termguicolors = true
+opt.timeoutlen = 1000
 
-vim.opt.isfname:append "@-@"
+opt.isfname:append "@-@"
 
--- interval for writing swap file to disk, also used by gitsigns
-vim.opt.updatetime = 250
+-- Make updates happen faster
+opt.updatetime = 1000
+
+-- set bell off
+opt.belloff = "all"
+
+opt.formatoptions = opt.formatoptions
+    - "a" -- Auto formatting is BAD.
+    - "t" -- Don't auto format my code. I got linters for that.
+    + "c" -- In general, I like it when comments respect textwidth
+    + "q" -- Allow formatting comments w/ gq
+    - "o" -- O and o, don't continue comments
+    + "r" -- But do continue when pressing enter.
+    + "n" -- Indent past the formatlistpat, not underneath it.
+    + "j" -- Auto-remove comments if possible.
+    - "2" -- I'm not in gradeschool anymore
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
-vim.opt.whichwrap:append "<>[]hl"
+opt.whichwrap:append "<>[]hl"
 
 -- disable some default providers
 for _, provider in ipairs { "node", "perl", "python3", "ruby" } do
