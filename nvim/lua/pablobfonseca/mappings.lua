@@ -15,6 +15,8 @@ vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines but keep cursor position"
 
 vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without losing the current register" })
 
+vim.keymap.set("n", ";", ":", { desc = "Makes ; behave like :" })
+
 -- navigate within insert mode
 vim.keymap.set("i", "<C-h>", "<Left>")
 vim.keymap.set("i", "<C-l>", "<Right>")
@@ -50,6 +52,9 @@ vim.keymap.set("n", "<space><space>", ":ccl<cr>", { desc = "Close quickfix windo
 
 vim.keymap.set({ "n", "v" }, "<C-e>", "7<C-e>", { desc = "Scroll the viewport faster" })
 vim.keymap.set({ "n", "v" }, "<C-y>", "7<C-y>", { desc = "Scroll the viewport faster" })
+
+-- close buffer
+vim.keymap.set("n", "<leader>x", ":bd<cr>", { desc = "Close buffer" })
 
 -- functions mappings
 vim.keymap.set("n", "<leader>sr", function()
