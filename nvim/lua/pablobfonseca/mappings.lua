@@ -15,8 +15,6 @@ vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines but keep cursor position"
 
 vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without losing the current register" })
 
-vim.keymap.set("n", ";", ":", { nowait = true, desc = "Enter command mode with ;" })
-
 -- navigate within insert mode
 vim.keymap.set("i", "<C-h>", "<Left>")
 vim.keymap.set("i", "<C-l>", "<Right>")
