@@ -41,6 +41,7 @@ return {
     { "<C-x>k", mode = "n", desc = "Find keymaps", "<cmd>Telescope keymaps<cr>" },
     { "<C-x>h", mode = "n", desc = "Help page", "<cmd> Telescope help_tags <CR>" },
     { "<M-x>", mode = "n", desc = "Telescope commands", "<cmd>Telescope commands theme=ivy<cr>" },
+    { ";", mode = "n", desc = "Telescope commands", "<cmd>Telescope commands theme=ivy<cr>" },
     {
       "K",
       mode = "n",
