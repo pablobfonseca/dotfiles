@@ -43,6 +43,7 @@ return {
         end)
 
         map("n", "<leader>gs", gs.stage_buffer)
+        map("n", "<leader>gr", gs.reset_buffer)
       end,
     }
   end,
