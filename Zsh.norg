@@ -184,7 +184,7 @@ tangle: {
 ** vimup
    @code zshrc
    function vimup {
-   nvim +NvChadUpdate
+   nvim +Lazy
    }
    @end
 

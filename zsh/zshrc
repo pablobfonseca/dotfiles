@@ -73,7 +73,7 @@ bin/rails routes | rg $1
 }
 
 function vimup {
-nvim +NvChadUpdate
+nvim +Lazy
 }
 
 function bundle_search() {
