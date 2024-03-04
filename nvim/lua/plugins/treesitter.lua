@@ -18,6 +18,7 @@ return {
         "markdown",
         "markdown_inline",
         "norg",
+        "norg_meta",
         "ruby",
         "tsx",
         "typescript",
