@@ -9,7 +9,11 @@ return {
   opts = {
     load = {
       ["core.defaults"] = {},
-      ["core.concealer"] = {},
+      ["core.concealer"] = {
+        config = {
+          folds = false,
+        },
+      },
       ["core.completion"] = {
         config = {
           engine = "nvim-cmp",
