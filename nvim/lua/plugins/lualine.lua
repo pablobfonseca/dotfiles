@@ -4,6 +4,12 @@ return {
   opts = {
     options = {
       theme = "dracula",
+      component_separators = "",
+      section_separators = { left = "", right = "" },
+    },
+    sections = {
+      lualine_b = { "branch", "diff" },
+      lualine_x = { "diagnostics", "filetype" },
     },
   },
 }
