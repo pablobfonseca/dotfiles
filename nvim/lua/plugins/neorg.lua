@@ -4,7 +4,7 @@ return {
   build = ":Neorg sync-parsers",
   dependencies = { { "nvim-lua/plenary.nvim" }, { "nvim-neorg/neorg-telescope" } },
   keys = {
-    { "n", "<C-x>w", mode = "n", desc = "Change neorg workspace", "<cmd>Telescope neorg switch_workspace<cr>" },
+    { "<C-x>w", mode = "n", desc = "Change neorg workspace", "<cmd>Telescope neorg switch_workspace<cr>" },
   },
   opts = {
     load = {
