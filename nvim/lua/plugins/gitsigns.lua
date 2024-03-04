@@ -26,7 +26,7 @@ return {
             gs.next_hunk()
           end)
           return "<Ignore>"
-        end, { expr = true })
+        end, { expr = true, desc = "Jump to next hunk" })
 
         map("n", "[c", function()
           if vim.wo.diff then
@@ -36,14 +36,14 @@ return {
             gs.prev_hunk()
           end)
           return "<Ignore>"
-        end, { expr = true })
+        end, { expr = true, desc = "Jump to previous hunk" })
 
         map("n", "<leader>b", function()
           gs.blame_line { full = true }
-        end)
+        end, { desc = "Blame line" })
 
-        map("n", "<leader>gs", gs.stage_buffer)
-        map("n", "<leader>gr", gs.reset_buffer)
+        map("n", "<leader>gs", gs.stage_buffer, { desc = "Stage buffer" })
+        map("n", "<leader>gr", gs.reset_buffer, { desc = "Reset buffer" })
       end,
     }
   end,

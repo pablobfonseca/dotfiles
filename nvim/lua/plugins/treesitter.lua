@@ -8,6 +8,7 @@ return {
       ensure_installed = {
         "c",
         "css",
+        "dockerfile",
         "gitcommit",
         "go",
         "html",
