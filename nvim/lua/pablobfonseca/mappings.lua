@@ -55,16 +55,3 @@ vim.keymap.set({ "n", "v" }, "<C-y>", "7<C-y>", { desc = "Scroll the viewport fa
 
 -- close buffer
 vim.keymap.set("n", "<leader>x", ":bd<cr>", { desc = "Close buffer" })
-
--- functions mappings
-vim.keymap.set("n", "<leader>sr", function()
-  require("pablobfonseca.functions").config_search()
-end, { desc = "Search for nvim config" })
-
-vim.keymap.set("n", "<leader>rp", function()
-  require("pablobfonseca.functions").config_files()
-end, { desc = "Find nvim config files" })
-
-vim.keymap.set("n", "<leader>df", function()
-  require("pablobfonseca.functions").find_dotfiles()
-end, { desc = "Find dotfiles" })

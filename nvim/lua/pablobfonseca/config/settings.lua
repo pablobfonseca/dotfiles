@@ -46,12 +46,12 @@ opt.signcolumn = "yes"
 opt.splitbelow = true
 opt.splitright = true
 opt.termguicolors = true
-opt.timeoutlen = 1000
+opt.timeoutlen = 300
 
 opt.isfname:append "@-@"
 
 -- Make updates happen faster
-opt.updatetime = 1000
+opt.updatetime = 250
 
 -- set bell off
 opt.belloff = "all"

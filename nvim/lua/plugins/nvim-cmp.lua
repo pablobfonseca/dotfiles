@@ -63,8 +63,8 @@ return {
     vim.api.nvim_create_autocmd("InsertLeave", {
       callback = function()
         if
-          require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-          and not require("luasnip").session.jump_active
+            require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
+            and not require("luasnip").session.jump_active
         then
           require("luasnip").unlink_current()
         end
@@ -128,7 +128,7 @@ return {
         { name = "path" },
         { name = "orgmode" },
         { name = "luasnip", keyword_length = 2 },
-        { name = "buffer", keyword_length = 3 },
+        { name = "buffer",  keyword_length = 3 },
       },
     }
   end,
