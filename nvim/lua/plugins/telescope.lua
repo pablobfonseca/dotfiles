@@ -9,10 +9,12 @@ return {
       mode = "n",
       desc = "Fuzzy finder on current buffer",
       function()
-        require("telescope.builtin").current_buffer_fuzzy_find()
+        require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_ivy {
+          winblend = 10,
+          previewer = false,
+        })
       end,
     },
-
     {
       "<C-p>",
       mode = "n",
@@ -66,6 +68,36 @@ return {
       end,
     },
     { "<leader>to", mode = "n", desc = "Browse oldfiles", "<cmd>Telescope oldfiles<cr>" },
+    {
+      "<leader>rp",
+      mode = "n",
+      desc = "Search [N]eovim files",
+      function()
+        require("telescope.builtin").find_files { cwd = vim.fn.stdpath "config", prompt_title = " neovim" }
+      end,
+    },
+    {
+      "<leader>df",
+      mode = "n",
+      desc = "Find dotfiles",
+      function()
+        require("telescope.builtin").find_files {
+          prompt_title = " dotfiles",
+          cwd = "~/.dotfiles",
+        }
+      end,
+    },
+    {
+      "<leader>sr",
+      mode = "n",
+      desc = "Search for nvim config",
+      function()
+        require("telescope.builtin").live_grep {
+          prompt_title = "Search for nvim config",
+          cwd = "~/.dotfiles",
+        }
+      end,
+    },
   },
   config = function()
     local telescope = require "telescope"
