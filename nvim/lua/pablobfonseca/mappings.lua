@@ -46,6 +46,3 @@ vim.keymap.set("n", "<space><space>", ":ccl<cr>", { desc = "Close quickfix windo
 
 vim.keymap.set({ "n", "v" }, "<C-e>", "7<C-e>", { desc = "Scroll the viewport faster" })
 vim.keymap.set({ "n", "v" }, "<C-y>", "7<C-y>", { desc = "Scroll the viewport faster" })
-
--- close buffer
-vim.keymap.set("n", "<leader>x", ":bd<cr>", { desc = "Close buffer" })
