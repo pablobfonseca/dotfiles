@@ -176,3 +176,14 @@ alias gce="gh copilot explain"
 eval "$(op completion zsh)"; compdef _op op
 
 eval "$(starship init zsh)"
+
+# tmux
+tlist() {
+local tmux_session
+  tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf --prompt="Switch: ")
+  if [ -n "$TMUX" ]; then
+    tmux switch-client -t "$tmux_session"
+  else
+    tmux attach-session -t "$tmux_session"
+  fi
+}

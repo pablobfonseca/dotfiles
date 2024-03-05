@@ -328,3 +328,16 @@ tangle: {
   eval "$(starship init zsh)"
   @end
 
+* tmux 
+  @code zshrc
+  # tmux
+  tlist() {
+  local tmux_session
+    tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf --prompt="Switch: ")
+    if [ -n "$TMUX" ]; then
+      tmux switch-client -t "$tmux_session"
+    else
+      tmux attach-session -t "$tmux_session"
+    fi
+  }
+  @end
