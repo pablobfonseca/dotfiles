@@ -1,7 +1,7 @@
 return {
   "NeogitOrg/neogit",
   keys = {
-    { "<C-x>g", "<cmd>Neogit<cr>", { desc = "Open Neogit" } },
+    { "<C-x>g", "<cmd>Neogit cwd=%:p:h<cr>", { desc = "Open Neogit" } },
   },
   dependencies = {
     "nvim-lua/plenary.nvim",
