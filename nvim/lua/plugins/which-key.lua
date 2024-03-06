@@ -9,6 +9,7 @@ return {
     which_key.register {
       ["<C-c>o"] = { name = "[O]cto", _ = "which_key_ignore" },
       ["<leader>l"] = { name = "[L]sp", _ = "which_key_ignore" },
+      ["<C-c>n"] = { name = "[N]eorg", _ = "which_key_ignore" },
     }
   end,
 }
