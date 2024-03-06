@@ -218,7 +218,7 @@ tangle: {
    @code zshrc
    nvmlist() {
    local njs
-   njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf) && nvm use $njs
+   njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf-tmux -p) && nvm use $njs
    }
    @end
 ** branch_clean
@@ -231,35 +231,20 @@ tangle: {
    @code zshrc
    docker_rmi() {
    local image
-   image=$(docker images | awk '(NR>1) { print $1 " " $3; }' | fzf) \
+   image=$(docker images | awk '(NR>1) { print $1 " " $3; }' | fzf-tmux -p) \
    && docker rmi $(cut -d' ' -f2 <<< "$image") --force
    }
 
    docker_attach() {
    local container
-   container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf) \
+   container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf-tmux -p) \
    && docker attach $(cut -d' ' -f1 <<< "$container")
    }
 
    docker_stop() {
    local container
-   container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf) \
+   container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf-tmux -p) \
    && docker stop $(cut -d' ' -f1 <<< "$container")
-   }
-
-   dspec() {
-   local file
-   file=$(find app/spec -type f | fzf | sed 's/app\/spec/spec/') \
-   && docker compose exec -it app rspec "$file"
-   }
-
-   alias dconsole="docker compose exec -it app rails c"
-   @end
-** rspec
-   @code zshrc
-   fspec() {
-   local file
-   file=$(find spec -type f | fzf) && rspec "$file"
    }
    @end
 
@@ -277,7 +262,7 @@ tangle: {
 ** find_file
    @code zshrc
    find_file() {
-   find . -type f | fzf | xargs nvim
+   fd --type f --hidden --exclude .git | fzf-tmux | xargs nvim
    }
 
    zle -N find_file
@@ -303,21 +288,11 @@ tangle: {
   alias bs="git bselect"
   alias cat="bat"
 
-  # Upscope aliases
-  alias docker_app="docker compose exec -it app"
-  alias docker_logs="docker compose logs -f"
-  alias docker_frontend="docker compose exec -it app-frontend"
-  alias app_migrate="docker_app rails db:migrate"
-  alias app_console="docker_app rails c"
-  alias app_logs="docker_logs app"
-
   # GH
   alias copilot="gh copilot"
   alias gcs="gh copilot suggest"
   alias gce="gh copilot explain"
   @end
-
-* Languages
 
 * 1Password
   @code zshrc
