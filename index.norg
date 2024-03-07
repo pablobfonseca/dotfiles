@@ -1,9 +1,0 @@
-@document.meta
-title: Dotfiles Config
-description: My dotfiles configuration
-authors: Pablo Fonseca
-@end
-
-
-* Welcome to my dotfiles Config
-** {:$/Zsh:}[ZSH Configuration]
