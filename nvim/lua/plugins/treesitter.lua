@@ -21,6 +21,7 @@ return {
         "norg",
         "norg_meta",
         "ruby",
+        "toml",
         "tsx",
         "typescript",
         "vim",
