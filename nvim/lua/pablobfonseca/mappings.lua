@@ -13,7 +13,7 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines but keep cursor position" })
 
-vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without losing the current register" })
+vim.keymap.set("x", "<leader>p", [[" _dP"]], { desc = "Paste without losing the current register" })
 
 vim.keymap.set("n", ";", ":", { desc = "Makes ; behave like :" })
 
