@@ -1,0 +1,19 @@
+import = ["~/.config/alacritty/themes/dracula.toml"]
+
+live_config_reload = true
+
+[window]
+decorations = "None"
+startup_mode = "Maximized"
+option_as_alt = "OnlyLeft"
+padding = { x = 7, y = 0 }
+
+[font]
+size = 20
+normal = { family = "SauceCodePro Nerd Font", style = "Regular" }
+
+[cursor]
+style = { blinking = "On" }
+
+[mouse]
+hide_when_typing = true
