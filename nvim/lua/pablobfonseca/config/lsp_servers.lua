@@ -3,6 +3,7 @@ return {
   "cssls",
   "tsserver",
   "solargraph",
+  "ocamllsp",
   "gopls",
   "elmls",
   "tailwindcss",

@@ -18,6 +18,7 @@ return {
         "lua",
         "markdown",
         "markdown_inline",
+        "ocaml",
         "norg",
         "norg_meta",
         "ruby",

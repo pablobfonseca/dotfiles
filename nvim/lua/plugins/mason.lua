@@ -33,6 +33,9 @@ return {
         "elm-format",
         "elm-language-server",
 
+        -- ocaml
+        "ocamlformat",
+
         -- go stuff
         "gopls",
         "goimports",
