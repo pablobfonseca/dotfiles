@@ -166,3 +166,6 @@ local tmux_session
     tmux attach-session -t "$tmux_session"
   fi
 }
+
+# opam configuration
+[[ ! -r /Users/pablobfonseca/.opam/opam-init/init.zsh ]] || source /Users/pablobfonseca/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
