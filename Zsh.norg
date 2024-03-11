@@ -31,6 +31,7 @@ tangle: {
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # for rails
   export UPSCOPE_DIR=$HOME/code/upscope
   export PATH="$PATH:$UPSCOPE_DIR/bin"
+  export PATH="$PATH:$DOTFILES/scripts"
   @end
 ** Go
    @code zshenv
