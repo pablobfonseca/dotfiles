@@ -167,5 +167,14 @@ local tmux_session
   fi
 }
 
+tkill() {
+  local tmux_session
+  tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf --prompt="Kill: ")
+
+  if [ -n "$TMUX" ]; then
+    tmux kill-session -t "$tmux_session"
+  fi
+}
+
 # opam configuration
 [[ ! -r /Users/pablobfonseca/.opam/opam-init/init.zsh ]] || source /Users/pablobfonseca/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
