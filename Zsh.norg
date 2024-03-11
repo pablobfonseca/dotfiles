@@ -32,6 +32,7 @@ tangle: {
   export UPSCOPE_DIR=$HOME/code/upscope
   export PATH="$PATH:$UPSCOPE_DIR/bin"
   export PATH="$PATH:$DOTFILES/scripts"
+  export XDG_CONFIG_HOME="$HOME/.config"
   @end
 ** Go
    @code zshenv
@@ -314,6 +315,15 @@ tangle: {
       tmux switch-client -t "$tmux_session"
     else
       tmux attach-session -t "$tmux_session"
+    fi
+  }
+
+  tkill() {
+    local tmux_session
+    tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf --prompt="Kill: ")
+
+    if [ -n "$TMUX" ]; then
+      tmux kill-session -t "$tmux_session"
     fi
   }
   @end
