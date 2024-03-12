@@ -138,10 +138,10 @@ alias path="echo $PATH | tr -s ':' '\n'"
 alias reload!="source ~/.zshrc"
 alias brew_update="brew update && brew upgrade && brew cleanup"
 alias code="cd ~/code && cd"
+alias dot="cd ~/.dotfiles && cd"
 alias untar="tar -zxvf"
 alias genpass="openssl rand -base64 20"
 alias st="git st"
-alias check3000="lsof -i :3000"
 alias ls="lsd"
 alias ll="ls -alF"
 alias bs="git bselect"
@@ -171,10 +171,12 @@ tkill() {
   local tmux_session
   tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf --prompt="Kill: ")
 
-  if [ -n "$TMUX" ]; then
-    tmux kill-session -t "$tmux_session"
-  fi
+if [ -n "$tmux_session" ]; then
+  tmux kill-session -t "$tmux_session"
+fi
 }
 
 # opam configuration
 [[ ! -r /Users/pablobfonseca/.opam/opam-init/init.zsh ]] || source /Users/pablobfonseca/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+eval "$(zoxide init zsh)"
