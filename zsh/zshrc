@@ -90,13 +90,13 @@ rvmlist() {
 local rb
 rb=$((echo system; rvm list | grep ruby | cut -c 4-) |
 awk '{print $1}' |
-fzf) && rvm use $rb
+fzf-tmux -p --prompt "Ruby version: ") && rvm use $rb
 }
 
 
 nvmlist() {
 local njs
-njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf-tmux -p) && nvm use $njs
+njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf-tmux -p --prompt "Node version: ") && nvm use $njs
 }
 
 function branch_clean() {
@@ -126,11 +126,18 @@ alias heic_to_png="magick mogrify -monitor -format png *.HEIC"
 alias lazydocker="upscope lazydocker"
 
 find_file() {
-fd --type f --hidden --exclude .git | fzf-tmux | xargs nvim
+fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Find File: "
+ }
+
+open_file() {
+fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Open File: " | xargs nvim
 }
 
 zle -N find_file
-bindkey "^P" find_file
+bindkey "^F" find_file
+
+zle -N open_file
+bindkey "^P" open_file
 
 bindkey "^R" history-incremental-search-backward
 

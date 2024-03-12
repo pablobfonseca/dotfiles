@@ -12,15 +12,6 @@ return {
     },
     {
       "hrsh7th/cmp-buffer",
-      config = function()
-        local cmp = require "cmp"
-        cmp.setup.cmdline({ "/", "?" }, {
-          mapping = cmp.mapping.preset.cmdline(),
-          sources = {
-            { name = "buffer" },
-          },
-        })
-      end,
     },
     {
       "hrsh7th/cmp-cmdline",
