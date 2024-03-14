@@ -48,4 +48,8 @@ return {
   ui = {
     enable = true,
   },
+  templates = {
+    subdir = "Templates",
+    date_format = "%Y-%m-%d",
+  },
 }
