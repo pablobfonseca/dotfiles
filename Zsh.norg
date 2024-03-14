@@ -343,4 +343,11 @@ tangle: {
 * zoxide
 @code zshrc
 eval "$(zoxide init zsh)"
-@end
+  @end
+* obsidian
+@code zshenv
+  export OBSIDIAN_VAULTS="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/"
+  @end
+@code zshrc
+  alias sb="cd $OBSIDIAN_VAULTS"
+  @end

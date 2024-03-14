@@ -36,6 +36,11 @@ return {
         -- ocaml
         "ocamlformat",
 
+        -- python stuff
+        "pyright",
+        "pylsp",
+        "black",
+
         -- go stuff
         "gopls",
         "goimports",

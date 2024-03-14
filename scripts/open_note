@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+
+import subprocess
+import os
+
+
+def main():
+    OBSIDIAN_VAULTS = os.getenv("OBSIDIAN_VAULTS")
+    if not OBSIDIAN_VAULTS:
+        print("OBSIDIAN_VAULTS environment variable is not set.")
+        return
+
+    fd_command = [
+        "fd",
+        "--type",
+        "f",
+        "--exclude",
+        ".git",
+        ".",
+        OBSIDIAN_VAULTS,
+    ]
+    fd_output = subprocess.run(
+        fd_command, capture_output=True, text=True
+    ).stdout.strip()
+
+    files = fd_output.split("\n")
+    display_files = [file.replace(OBSIDIAN_VAULTS, "", 1) for file in files]
+
+    fzf_input = "\n".join(display_files)
+    selected = subprocess.run(
+        ["fzf-tmux", "-p", "--prompt", "Open Note: "],
+        input=fzf_input,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+    selected_full_path = next(
+        (file for file in files if file.endswith(selected)), None)
+
+    if selected_full_path:
+        subprocess.run(["nvim", selected_full_path])
+    else:
+        print("File not found.")
+
+
+if __name__ == "__main__":
+    main()

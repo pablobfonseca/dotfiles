@@ -187,3 +187,5 @@ fi
 [[ ! -r /Users/pablobfonseca/.opam/opam-init/init.zsh ]] || source /Users/pablobfonseca/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 eval "$(zoxide init zsh)"
+
+  alias sb="cd $OBSIDIAN_VAULTS"
