@@ -44,3 +44,5 @@ export PATH="$HOME/.gem/bin:$PATH"
 export GEM_HOME=$HOME/.gem
 
 export NVM_DIR="$HOME/.nvm"
+
+  export OBSIDIAN_VAULTS="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/"

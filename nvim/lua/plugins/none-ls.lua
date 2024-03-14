@@ -34,6 +34,9 @@ return {
       -- elm
       b.formatting.elm_format,
 
+      -- python
+      b.formatting.black,
+
       -- go
       b.formatting.gofmt,
       b.formatting.goimports,
