@@ -38,15 +38,12 @@ return {
 
         -- python stuff
         "pyright",
-        "pylsp",
+        "python-lsp-server",
         "black",
 
         -- go stuff
         "gopls",
         "goimports",
-
-        -- writting stuff
-        "write-good",
       },
     },
     config = function(_, opts)

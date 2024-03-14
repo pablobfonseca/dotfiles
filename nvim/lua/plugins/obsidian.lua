@@ -6,22 +6,44 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
   },
+  keys = {
+    {
+      "<leader>Oo",
+      mode = "n",
+      ":ObsidianOpen<cr>",
+      desc = "Open current note in the Obsidian app",
+    },
+    {
+      "<leader>On",
+      mode = "n",
+      ":ObsidianNew",
+      desc = "New note",
+    },
+    {
+      "<leader>Ot",
+      mode = "n",
+      ":ObsidianTemplate<cr>",
+      desc = "Insert template",
+    },
+    {
+      "<leader>Of",
+      mode = "n",
+      ":ObsidianQuickSwitch<cr>",
+      desc = "Find a note",
+    },
+  },
   opts = {
     workspaces = {
       {
         name = "SecondBrain",
-        path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/SecondBrain",
-      },
-      {
-        name = "Notes",
-        path = "~/Dropbox/notes",
+        path = os.getenv "OBSIDIAN_VAULTS" .. "/SecondBrain",
       },
     },
     completions = {
       nvim_cmp = true,
       min_chars = 2,
     },
-    new_notes_location = "current_dir",
+    new_notes_location = "notes_subdir",
   },
   ui = {
     enable = true,
