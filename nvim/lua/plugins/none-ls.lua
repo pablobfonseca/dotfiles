@@ -14,6 +14,7 @@ return {
         filetypes = {
           "html",
           "css",
+          "markdown",
           "javascript",
           "typescript",
           "javascriptreact",
