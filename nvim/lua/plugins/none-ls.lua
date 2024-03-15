@@ -42,9 +42,6 @@ return {
       b.formatting.gofmt,
       b.formatting.goimports,
 
-      -- gitcommit, markdown
-      b.diagnostics.write_good.with { filetypes = { "gitcommit", "markdown" } },
-
       b.diagnostics.rubocop,
     }
 
