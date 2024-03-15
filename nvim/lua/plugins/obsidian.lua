@@ -22,14 +22,20 @@ return {
     {
       "<leader>Ot",
       mode = "n",
-      ":ObsidianTemplate<cr>",
-      desc = "Insert template",
+      ":ObsidianTags<cr>",
+      desc = "Search for tags",
     },
     {
       "<leader>Of",
       mode = "n",
       ":ObsidianQuickSwitch<cr>",
       desc = "Find a note",
+    },
+    {
+      "<leader>Os",
+      mode = "n",
+      ":ObsidianSearch<cr>",
+      desc = "Search notes",
     },
   },
   opts = {
@@ -44,12 +50,12 @@ return {
       min_chars = 2,
     },
     new_notes_location = "notes_subdir",
-  },
-  ui = {
-    enable = true,
-  },
-  templates = {
-    subdir = "Templates",
-    date_format = "%Y-%m-%d",
+    ui = {
+      enable = true,
+    },
+    templates = {
+      subdir = "Templates",
+      date_format = "%Y-%m-%d",
+    },
   },
 }
