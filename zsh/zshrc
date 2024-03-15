@@ -166,7 +166,7 @@ eval "$(starship init zsh)"
 # tmux
 tlist() {
 local tmux_session
-  tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf --prompt="Switch: ")
+  tmux_session=$(tmux list-windows -a | fzf --prompt="Switch: " | sed 's/: .*//g')
   if [ -n "$TMUX" ]; then
     tmux switch-client -t "$tmux_session"
   else
