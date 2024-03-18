@@ -25,6 +25,9 @@ return {
         "fixjson",
         "js-debug-adapter",
 
+        -- elm
+        "elmls",
+
         -- ruby stuff
         "solargraph",
         "rubocop",
