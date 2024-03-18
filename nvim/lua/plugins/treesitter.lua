@@ -9,6 +9,7 @@ return {
         "c",
         "css",
         "dockerfile",
+        "elm",
         "gitcommit",
         "go",
         "html",
