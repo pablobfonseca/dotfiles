@@ -1,8 +1,7 @@
 return {
   "rest-nvim/rest.nvim",
-  tag = "v1.2.1",
-  dependencies = { "nvim-lua/plenary.nvim" },
-  ft = { "restmode" },
+  ft = { "http", "restmode" },
+  dependencies = { "luarocks" },
   keys = {
     {
       "<C-c><C-c>",
@@ -19,4 +18,7 @@ return {
       "<cmd>RestMode<cr>",
     },
   },
+  config = function()
+    require("rest-nvim").setup()
+  end,
 }
