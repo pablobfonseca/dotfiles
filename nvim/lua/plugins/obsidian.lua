@@ -8,6 +8,12 @@ return {
   },
   keys = {
     {
+      "<leader>OT",
+      mode = "n",
+      ":ObsidianOpen todo<cr>",
+      desc = "Obsidian TODO",
+    },
+    {
       "<leader>Oo",
       mode = "n",
       ":ObsidianOpen<cr>",
@@ -45,6 +51,7 @@ return {
         path = os.getenv "OBSIDIAN_VAULTS" .. "/SecondBrain",
       },
     },
+    notes_subdir = "0 - Inbox",
     completions = {
       nvim_cmp = true,
       min_chars = 2,
