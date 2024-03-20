@@ -1,16 +1,8 @@
 return {
   "rest-nvim/rest.nvim",
-  ft = { "http", "restmode" },
-  dependencies = { "luarocks" },
+  ft = "http",
+  dependencies = { "luarocks.nvim" },
   keys = {
-    {
-      "<C-c><C-c>",
-      mode = "n",
-      desc = "Rest Run",
-      function()
-        require("rest-nvim").run()
-      end,
-    },
     {
       "<leader>rm",
       mode = "n",
@@ -19,6 +11,14 @@ return {
     },
   },
   config = function()
-    require("rest-nvim").setup()
+    require("rest-nvim").setup {
+      keybinds = {
+        {
+          "<C-c><C-c>",
+          "<cmd>Rest run<cr>",
+          "Run request under the cursor",
+        },
+      },
+    }
   end,
 }

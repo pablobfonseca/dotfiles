@@ -1,6 +1,6 @@
 return {
   "camspiers/luarocks",
-  config = function()
-    require("luarocks").setup {}
-  end,
+  opts = {
+    rocks = { "nvim-nio", "mimetypes", "xml2lua" },
+  },
 }
