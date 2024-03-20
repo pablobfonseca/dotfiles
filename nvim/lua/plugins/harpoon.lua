@@ -1,12 +1,13 @@
 return {
   "theprimeagen/harpoon",
+  branch = "harpoon2",
   keys = {
     {
       "<C-c>ha",
       mode = "n",
       desc = "Add file to harpoon",
       function()
-        require("harpoon.mark").add_file()
+        require("harpoon"):list():append()
       end,
     },
     {
@@ -14,7 +15,7 @@ return {
       mode = "n",
       desc = "Toggle harpoon",
       function()
-        require("harpoon.ui").toggle_quick_menu()
+        require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
       end,
     },
     {
@@ -22,7 +23,7 @@ return {
       mode = "n",
       desc = "Navigate to next file",
       function()
-        require("harpoon.ui").nav_next()
+        require("harpoon"):list():next()
       end,
     },
     {
@@ -30,12 +31,35 @@ return {
       mode = "n",
       desc = "Navigate to previous file",
       function()
-        require("harpoon.ui").nav_prev()
+        require("harpoon"):list():prev()
       end,
     },
   },
   config = function()
-    require("harpoon").setup {}
-    require("telescope").load_extension "harpoon"
+    local harpoon = require "harpoon"
+    harpoon:setup {}
+
+    local conf = require("telescope.config").values
+    local function toggle_telescope(harpoon_files)
+      local file_paths = {}
+      for _, item in ipairs(harpoon_files.items) do
+        table.insert(file_paths, item.value)
+      end
+
+      require("telescope.pickers")
+          .new({}, {
+            prompt_title = "Harpoon",
+            finder = require("telescope.finders").new_table {
+              results = file_paths,
+            },
+            previewer = conf.file_previewer {},
+            sorter = conf.generic_sorter {},
+          })
+          :find()
+    end
+
+    vim.keymap.set("n", "<C-c>hT", function()
+      toggle_telescope(harpoon:list())
+    end, { desc = "Telescope harpoon" })
   end,
 }
