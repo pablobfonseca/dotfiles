@@ -152,7 +152,6 @@ alias st="git st"
 alias ls="lsd"
 alias ll="ls -alF"
 alias bs="git bselect"
-alias cat="bat"
 
 # GH
 alias copilot="gh copilot"
