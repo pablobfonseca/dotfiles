@@ -1,6 +1,5 @@
 return {
-  "camspiers/luarocks",
-  opts = {
-    rocks = { "nvim-nio", "mimetypes", "xml2lua" },
-  },
+  "vhyrro/luarocks.nvim",
+  priority = 1000,
+  config = true,
 }
