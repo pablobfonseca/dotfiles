@@ -1,8 +1,9 @@
 return {
   "nvim-neorg/neorg",
+  version = "*",
   ft = "norg",
-  build = ":Neorg sync-parsers",
-  dependencies = { { "nvim-lua/plenary.nvim" }, { "nvim-neorg/neorg-telescope" } },
+  lazy = false,
+  dependencies = { { "vhyrro/luarocks.nvim" }, { "nvim-neorg/neorg-telescope" } },
   keys = {
     { "<C-c>nw", mode = "n", desc = "Change neorg workspace", "<cmd>Telescope neorg switch_workspace<cr>" },
     { "<C-c>nt", mode = "n", desc = "Toggle table of contents", "<cmd>Neorg toc<cr>" },
