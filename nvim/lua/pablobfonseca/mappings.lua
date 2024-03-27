@@ -8,12 +8,15 @@ vim.keymap.set("n", "<C-x>2", ":split<cr>", { desc = "Split pane horizontally" }
 vim.keymap.set("n", "<C-x>3", ":vsplit<cr>", { desc = "Split pane vertically" })
 vim.keymap.set("n", "<C-x>0", ":q<cr>", { desc = "Close pane" })
 
-vim.keymap.set("v", "J", ":m '>+0<CR>gv=gv")
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
 
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines but keep cursor position" })
 
-vim.keymap.set("x", "<leader>p", [[" _dP"]], { desc = "Paste without losing the current register" })
+vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste without losing the current register" })
 
 vim.keymap.set("n", ";", ":", { desc = "Makes ; behave like :" })
 
