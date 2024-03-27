@@ -1,5 +1,6 @@
 return {
   "numToStr/Comment.nvim",
+  lazy = false,
   keys = {
     {
       "cml",
@@ -25,5 +26,4 @@ return {
     },
   },
   opts = {},
-  config = true,
 }
