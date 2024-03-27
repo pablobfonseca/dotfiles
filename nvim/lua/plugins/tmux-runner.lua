@@ -19,5 +19,11 @@ return {
       desc = "Tmux flush command",
       "<cmd>VtrFlushCommand<cr>",
     },
+    {
+      "<C-c>to",
+      mode = "n",
+      desc = "Tmux open runner",
+      "<cmd>VtrOpenRunner<cr>",
+    },
   },
 }
