@@ -1,18 +1,12 @@
 return {
   {
-    "ellisonleao/gruvbox.nvim",
+    "maxmx03/dracula.nvim",
+    lazy = false,
     priority = 1000,
     config = function()
-      require("gruvbox").setup {}
-
-      vim.cmd.colorscheme "gruvbox"
-    end,
-  },
-  {
-    "maxmx03/dracula.nvim",
-    enabled = false,
-    config = function()
       require("dracula").setup {}
+
+      vim.cmd.colorscheme "dracula"
     end,
   },
 }
