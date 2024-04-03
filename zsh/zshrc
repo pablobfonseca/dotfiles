@@ -152,6 +152,7 @@ alias st="git st"
 alias ls="lsd"
 alias ll="ls -alF"
 alias bs="git bselect"
+alias vim="nvim"
 
 # GH
 alias copilot="gh copilot"
