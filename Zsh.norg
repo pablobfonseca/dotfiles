@@ -71,6 +71,7 @@ tangle: {
 ** config
    @code zshrc
    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+   eval "$(fzf --zsh)"
    @end
 
 * zsh-syntax-highlighting
