@@ -355,6 +355,11 @@ tangle: {
 # opam configuration
 [[ ! -r /Users/pablobfonseca/.opam/opam-init/init.zsh ]] || source /Users/pablobfonseca/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
   @end
+* lua
+@code zshrc
+  export PATH="$HOME/.luarocks/bin:$PATH"
+
+  @end
 * zoxide
 @code zshrc
 eval "$(zoxide init zsh)"
