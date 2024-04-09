@@ -7,11 +7,11 @@ return {
       mode = "n",
       desc = "Add file to harpoon",
       function()
-        require("harpoon"):list():append()
+        require("harpoon"):list():add()
       end,
     },
     {
-      "<C-c>ht",
+      "<C-c>hh",
       mode = "n",
       desc = "Toggle harpoon",
       function()
@@ -19,7 +19,7 @@ return {
       end,
     },
     {
-      "<C-c>hn",
+      "<C-c>h2",
       mode = "n",
       desc = "Navigate to next file",
       function()
@@ -27,7 +27,7 @@ return {
       end,
     },
     {
-      "<C-c>hp",
+      "<C-c>h1",
       mode = "n",
       desc = "Navigate to previous file",
       function()
@@ -47,15 +47,15 @@ return {
       end
 
       require("telescope.pickers")
-          .new({}, {
-            prompt_title = "Harpoon",
-            finder = require("telescope.finders").new_table {
-              results = file_paths,
-            },
-            previewer = conf.file_previewer {},
-            sorter = conf.generic_sorter {},
-          })
-          :find()
+        .new({}, {
+          prompt_title = "Harpoon",
+          finder = require("telescope.finders").new_table {
+            results = file_paths,
+          },
+          previewer = conf.file_previewer {},
+          sorter = conf.generic_sorter {},
+        })
+        :find()
     end
 
     vim.keymap.set("n", "<C-c>hT", function()
