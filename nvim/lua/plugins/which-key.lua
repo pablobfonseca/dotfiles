@@ -14,6 +14,7 @@ return {
       ["<C-c>w"] = { name = "[W]orktrees", _ = "which_key_ignore" },
       ["<C-c>h"] = { name = "[H]arpoon", _ = "which_key_ignore" },
       ["<C-c>t"] = { name = "[T]mux Runner", _ = "which_key_ignore" },
+      ["<C-c>d"] = { name = "[D]ebugger", _ = "which_key_ignore" },
     }
   end,
 }
