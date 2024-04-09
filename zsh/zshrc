@@ -126,6 +126,20 @@ alias heic_to_png="magick mogrify -monitor -format png *.HEIC"
 
 alias lazydocker="upscope lazydocker"
 
+function _ur() {
+   local service;
+service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf-tmux --prompt 'Select a service to restart: ')"
+   echo "Restarting $service"
+   upscope restart -c $service
+}
+
+function _ul() {
+  local service;
+  service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf-tmux --prompt 'Select a service to see the logs: ')"
+  echo "Restarting $service"
+  upscope logs -c $service
+ }
+
 find_file() {
 fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Find File: "
  }
