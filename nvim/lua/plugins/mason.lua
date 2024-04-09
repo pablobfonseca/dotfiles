@@ -25,9 +25,6 @@ return {
         "fixjson",
         "js-debug-adapter",
 
-        -- elm
-        "elmls",
-
         -- ruby stuff
         "solargraph",
         "rubocop",
@@ -47,6 +44,7 @@ return {
         -- go stuff
         "gopls",
         "goimports",
+        "delve",
       },
     },
     config = function(_, opts)
