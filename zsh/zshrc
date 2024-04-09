@@ -201,6 +201,9 @@ fi
 # opam configuration
 [[ ! -r /Users/pablobfonseca/.opam/opam-init/init.zsh ]] || source /Users/pablobfonseca/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
+  export PATH="$HOME/.luarocks/bin:$PATH"
+
+
 eval "$(zoxide init zsh)"
 
   alias sb="cd $OBSIDIAN_VAULTS"
