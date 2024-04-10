@@ -50,10 +50,33 @@ return {
         end,
       },
       {
-        "<Leader>dl",
+        "<leader>B",
+        desc = "Toggle conditional breakpoint",
+        function()
+          require("dap").set_breakpoint(vim.fn.input "[DAP] Condition >")
+        end,
+      },
+      {
+        "<leader>dl",
         desc = "Debug log point",
         function()
-          require("dap").set_breakpoint(nil, nil, vim.fn.input "Log point message: ")
+          require("dap").set_breakpoint(nil, nil, vim.fn.input "[DAP] Log point message >")
+        end,
+      },
+      {
+        "<C-c>de",
+        desc = "Debugger eval",
+        mode = { "n", "v" },
+        function()
+          require("dapui").eval()
+        end,
+      },
+      {
+        "<C-c>dE",
+        desc = "Debugger eval Expression",
+        mode = { "n", "v" },
+        function()
+          require("dapui").eval(vim.fn.input "[DAP] Expression >")
         end,
       },
     },
@@ -108,7 +131,7 @@ return {
           },
           -- Divider for the launch.json derived configs
           {
-            name = "----- ↓ launch.json configs ↓ -----",
+            name = "----- launch.json configs -----",
             type = "",
             request = "launch",
           },
@@ -124,6 +147,28 @@ return {
     },
     config = function()
       local dap, dapui = require "dap", require "dapui"
+
+      dapui.setup {
+        layouts = {
+          elements = {
+            "scopes",
+            "breakpoints",
+            "stacks",
+            "watches",
+          },
+          size = 40,
+          position = "left",
+        },
+        {
+          elements = {
+            "repl",
+            "console",
+          },
+          size = 10,
+          position = "bottom",
+        },
+      }
+
       dap.listeners.before.attach.dapui_config = function()
         dapui.open()
       end
@@ -152,7 +197,7 @@ return {
     dependencies = { "mfussenegger/nvim-dap" },
     opts = {
       delve = {
-        path = vim.fn.stdpath "data" .. "/mason/bin/" .. "dlv",
+        path = vim.fn.resolve(vim.fn.stdpath "data" .. "/mason/bin/dlv"),
       },
     },
   },
@@ -160,10 +205,16 @@ return {
     "mxsdev/nvim-dap-vscode-js",
     dependencies = {
       "mfussenegger/nvim-dap",
-      opts = {
-        debugger_path = vim.fn.stdpath "data" .. "/mason/bin/" .. "js-debug-adapter",
-        adapters = { "pwa-node", "pwa-chrome" },
+      {
+        "microsoft/vscode-js-debug",
+        build = "npm i && npm run compile vsDebugServerBundle && mv dist out",
       },
     },
+    config = function()
+      require("dap-vscode-js").setup {
+        debugger_path = vim.fn.resolve(vim.fn.stdpath "data" .. "/lazy/vscode-js-debug"),
+        adapters = { "pwa-node", "pwa-chrome", "node-terminal" },
+      }
+    end,
   },
 }
