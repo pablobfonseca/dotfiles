@@ -23,7 +23,6 @@ return {
         "prettierd",
         "tailwindcss-language-server",
         "fixjson",
-        "js-debug-adapter",
 
         -- ruby stuff
         "solargraph",
@@ -80,5 +79,14 @@ return {
         },
       }
     end,
+  },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    opts = {
+      ensure_installed = {
+        "delve",
+        "js-debug-adapter",
+      },
+    },
   },
 }
