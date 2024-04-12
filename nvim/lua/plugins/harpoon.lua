@@ -19,7 +19,7 @@ return {
       end,
     },
     {
-      "<C-c>h2",
+      "<C-c>hn",
       mode = "n",
       desc = "Navigate to next file",
       function()
@@ -27,7 +27,7 @@ return {
       end,
     },
     {
-      "<C-c>h1",
+      "<C-c>hb",
       mode = "n",
       desc = "Navigate to previous file",
       function()
@@ -47,15 +47,15 @@ return {
       end
 
       require("telescope.pickers")
-        .new({}, {
-          prompt_title = "Harpoon",
-          finder = require("telescope.finders").new_table {
-            results = file_paths,
-          },
-          previewer = conf.file_previewer {},
-          sorter = conf.generic_sorter {},
-        })
-        :find()
+          .new({}, {
+            prompt_title = "Harpoon",
+            finder = require("telescope.finders").new_table {
+              results = file_paths,
+            },
+            previewer = conf.file_previewer {},
+            sorter = conf.generic_sorter {},
+          })
+          :find()
     end
 
     vim.keymap.set("n", "<C-c>hT", function()
