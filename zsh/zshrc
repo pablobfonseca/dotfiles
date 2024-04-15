@@ -166,6 +166,7 @@ alias ls="lsd"
 alias ll="ls -alF"
 alias bs="git bselect"
 alias vim="nvim"
+alias v="nvim"
 
 # GH
 alias copilot="gh copilot"
