@@ -16,6 +16,7 @@ return {
       ["<C-c>t"] = { name = "[T]mux Runner", _ = "which_key_ignore" },
       ["<C-c>d"] = { name = "[D]ebugger", _ = "which_key_ignore" },
       ["<C-c>T"] = { name = "[T]est", _ = "which_key_ignore" },
+      ["<C-c>D"] = { name = "[D]iff View", _ = "which_key_ignore" },
     }
   end,
 }
