@@ -42,7 +42,6 @@ end
 
 focusApp("b", "Arc")
 focusApp("t", "iTerm")
-focusApp("w", "Warp")
 focusApp("s", "Slack")
 focusApp("n", "Obsidian")
 focusApp("f", "Firefox")
