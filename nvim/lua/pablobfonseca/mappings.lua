@@ -30,6 +30,11 @@ vim.keymap.set("i", "<C-k>", "<Up>")
 vim.keymap.set("i", "<C-b>", "<ESC>^i")
 vim.keymap.set("i", "<C-e>", "<End>")
 
+-- navigate the quickfix list
+vim.keymap.set("n", "<leader>cn", ":cnext<cr>")
+vim.keymap.set("n", "<leader>cb", ":cprevious<cr>")
+vim.keymap.set("n", "<space><space>", ":ccl<cr>", { desc = "Close quickfix window" })
+
 -- indent line
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
@@ -44,8 +49,6 @@ vim.keymap.set("n", "gp", "`[v`]", { desc = "Select last paste in visual mode" }
 
 vim.keymap.set("n", "<leader>fh", "<C-w>t<C-w>K", { desc = "Change vertically split to horizontally" })
 vim.keymap.set("n", "<leader>fv", "<C-w>t<C-w>H", { desc = "Change horizontally split to vertically" })
-
-vim.keymap.set("n", "<space><space>", ":ccl<cr>", { desc = "Close quickfix window" })
 
 vim.keymap.set({ "n", "v" }, "<C-e>", "7<C-e>", { desc = "Scroll the viewport faster" })
 vim.keymap.set({ "n", "v" }, "<C-y>", "7<C-y>", { desc = "Scroll the viewport faster" })
