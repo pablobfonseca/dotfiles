@@ -136,7 +136,17 @@ function _ul() {
   local service;
   service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf-tmux --prompt 'Select a service to see the logs: ')"
   upscope logs -c $service
- }
+}
+
+function _apitest() {
+  local file;
+  file="$(fd --extension 'test.ts' --full-path 'api/' | sed 's/api\///' | fzf-tmux -p --prompt 'Run api test: ')"
+echo "File: $file" 
+  upscope api test -t $file
+}
+
+zle -N _apitest
+bindkey "^T" _apitest
 
 find_file() {
 fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Find File: "
