@@ -6,6 +6,7 @@ tangle: {
   languages: {
     zshrc: $HOME/.dotfiles/zsh/zshrc
     zshenv: $HOME/.dotfiles/zsh/zshenv
+    zprofile: $HOME/.dotfiles/zsh/zprofile
   }
 }
 @end
@@ -62,18 +63,52 @@ tangle: {
 * fzf
 ** envvars
    @code zshenv
-   export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
-   export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+   export FZF_DEFAULT_COMMAND='fd --hidden --strip-cwd-prefix --exclude .git'
    export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
-   export FZF_COMPLETE=1
+   export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+   export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
+   export FZF_CTRL_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
    @end
 
 ** config
    @code zshrc
-   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
    eval "$(fzf --zsh)"
+
+   _fzf_compgen_path() {
+    fd --hidden --exclude .git . "$1"
+   }
+
+    # Advanced customization of fzf options via _fzf_comprun function
+    # - The first argument to the function is the name of the command.
+    # - You should make sure to pass the rest of the arguments to fzf.
+    _fzf_comprun() {
+      local command=$1
+      shift
+
+      case "$command" in
+       cd)           fzf --preview 'lsd --tree --color=always {} | head -201' "$@" ;;
+        export|unset) fzf --preview "eval 'echo $'{}"         "$@" ;;
+        *)            fzf --preview "bat -n --color=always --line-range :499 {}" "$@" ;;
+      esac
+    }
+
+   _fzf_compgen_dir() {
+   fd --type=d --hidden --exclude .git . "$1"
+   }
+
+   if [ -d ~/fzf-git.sh ]; then
+   source ~/fzf-git.sh/fzf-git.sh
+   else
+     git clone https://github.com/junegunn/fzf-git.sh.git ~/fzf-git.sh
+      source ~/fzf-git.sh/fzf-git.sh
+   fi
+
    @end
 
+* homebrew
+  @code zprofile
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  @end
 * zsh-syntax-highlighting
   @code zshrc
   if [ "$UNAME_MACHINE" = "arm64" ]; then
@@ -273,15 +308,6 @@ tangle: {
      upscope logs -c $service
    }
 
-   function _apitest() {
-     local file;
-     file="$(fd --extension 'test.ts' --full-path 'api/' | sed 's/api\///' | fzf-tmux -p --prompt 'Run api test: ')"
-   echo "File: $file" 
-     upscope api test -t $file
-   }
-
-   zle -N _apitest
-   bindkey "^T" _apitest
    @end
 
 ** find_file
@@ -316,7 +342,7 @@ tangle: {
   alias genpass="openssl rand -base64 20"
   alias st="git st"
   alias ls="lsd"
-  alias ll="ls -alF"
+  alias ll="lsd --color=always --long --git --size=short --icon=always"
   alias bs="git bselect"
   alias vim="nvim"
   alias v="nvim"
@@ -379,6 +405,10 @@ tangle: {
 * zoxide
 @code zshrc
 eval "$(zoxide init zsh)"
+  @end
+* bat
+  @code zshenv
+  export BAT_THEME=Dracula
   @end
 * obsidian
 @code zshenv
