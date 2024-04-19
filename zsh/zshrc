@@ -1,7 +1,36 @@
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(fzf --zsh)"
+
+_fzf_compgen_path() {
+ fd --hidden --exclude .git . "$1"
+}
+
+ # Advanced customization of fzf options via _fzf_comprun function
+ # - The first argument to the function is the name of the command.
+ # - You should make sure to pass the rest of the arguments to fzf.
+ _fzf_comprun() {
+   local command=$1
+   shift
+
+   case "$command" in
+    cd)           fzf --preview 'lsd --tree --color=always {} | head -201' "$@" ;;
+     export|unset) fzf --preview "eval 'echo $'{}"         "$@" ;;
+     *)            fzf --preview "bat -n --color=always --line-range :499 {}" "$@" ;;
+   esac
+ }
+
+_fzf_compgen_dir() {
+fd --type=d --hidden --exclude .git . "$1"
+}
+
+if [ -d ~/fzf-git.sh ]; then
+source ~/fzf-git.sh/fzf-git.sh
+else
+  git clone https://github.com/junegunn/fzf-git.sh.git ~/fzf-git.sh
+   source ~/fzf-git.sh/fzf-git.sh
+fi
+
 
 if [ "$UNAME_MACHINE" = "arm64" ]; then
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -138,15 +167,6 @@ function _ul() {
   upscope logs -c $service
 }
 
-function _apitest() {
-  local file;
-  file="$(fd --extension 'test.ts' --full-path 'api/' | sed 's/api\///' | fzf-tmux -p --prompt 'Run api test: ')"
-echo "File: $file" 
-  upscope api test -t $file
-}
-
-zle -N _apitest
-bindkey "^T" _apitest
 
 find_file() {
 fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Find File: "
@@ -173,7 +193,7 @@ alias untar="tar -zxvf"
 alias genpass="openssl rand -base64 20"
 alias st="git st"
 alias ls="lsd"
-alias ll="ls -alF"
+alias ll="lsd --color=always --long --git --size=short --icon=always"
 alias bs="git bselect"
 alias vim="nvim"
 alias v="nvim"
