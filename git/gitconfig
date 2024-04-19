@@ -5,7 +5,7 @@
   logallrefupdates        = true
   editor                  = nvim
   excludesfile            = ~/.global_ignore
-  pager                   = less -F -X
+  pager                   = delta
   whitespace              = warn
 [github]
   user                    = pablobfonseca
@@ -101,21 +101,13 @@
 	users                   = !~/.config/nvm/12.10.0/lib/node_modules/git-pair/users.js
   branch-status           = !~/bin/git-bstats
   lg                      = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
-[diff "ruby"]
-  funcname                = "^ *\\(\\(def\\) .*\\)"
 [diff]
   mnemonicprefix          = true
   algorithm               = patience
   tool                    = vimdiff
-[merge "bundle"]
-  name                    = bundle
-  driver                  = bundle
+  colorMoved              = default
 [merge]
-  ; ff                      = only
-  tool                    = fugitive
-[mergetool "fugitive"]
-  cmd                     = vim -f -c \"Gdiff\" \"$MERGED\"
-  keepBackup              = false
+  conflictstyle           = diff3
 [fetch]
   prune                   = true
 [credential]
@@ -136,6 +128,9 @@
 [http]
   postBuffer = 524288000
 [status]
-  submoduleSummary = true
+  submoduleSummary       = true
 [init]
-	defaultBranch = master
+	defaultBranch          = master
+[interactive]
+  diffFilter             = delta --color-only
+  side-by-side           = true

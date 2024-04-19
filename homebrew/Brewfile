@@ -6,7 +6,6 @@ docker-completion
 docker-machine
 doctl
 exercism
-eza
 fd
 fzf
 gh
@@ -26,7 +25,7 @@ php
 pkg-config
 ripgrep
 starship
-tldr
+tlrc
 tmux
 watch
 xwmx/taps/hosts
@@ -39,3 +38,4 @@ shortcat
 raycast
 tmate
 procs
+git-delta
