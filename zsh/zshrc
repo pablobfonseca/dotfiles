@@ -182,8 +182,6 @@ bindkey "^F" find_file
 zle -N open_file
 bindkey "^P" open_file
 
-bindkey "^R" history-incremental-search-backward
-
 alias path="echo $PATH | tr -s ':' '\n'"
 alias reload!="source ~/.zshrc"
 alias brew_update="brew update && brew upgrade && brew cleanup"
