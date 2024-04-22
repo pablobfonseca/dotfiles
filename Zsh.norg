@@ -126,8 +126,7 @@ tangle: {
 
 * Enable completion
   @code zshrc
-  autoload -U compinit
-  compinit
+  autoload -U compinit; compinit
   @end
 ** completions
 *** dotfiles
@@ -344,7 +343,7 @@ tangle: {
   alias genpass="openssl rand -base64 20"
   alias st="git st"
   alias ls="lsd"
-  alias ll="lsd --color=always --long --git --size=short --icon=always"
+  alias ll="lsd -a --color=always --long --git --size=short --icon=always"
   alias bs="git bselect"
   alias vim="nvim"
   alias v="nvim"
@@ -418,4 +417,8 @@ eval "$(zoxide init zsh)"
   @end
 @code zshrc
   alias sb="cd $OBSIDIAN_VAULTS"
+  @end
+* zellij
+@code zshenv
+  export ZELLIJ_CONFIG_DIR="~/.config/zellij"
   @end
