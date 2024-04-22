@@ -8,6 +8,7 @@ return {
     "nvim-neotest/neotest-vim-test",
     "vim-test/vim-test",
     "nvim-neotest/neotest-go",
+    "nvim-neotest/neotest-python",
     -- "olimorris/neotest-rspec",
   },
   keys = {
@@ -71,8 +72,9 @@ return {
         --   end,
         --   results_path = "tmp/rspec.output",
         -- },
+        require "neotest-python",
         require "neotest-go",
-        require "neotest-vim-test" { ignore_filetypes = { "go" } },
+        require "neotest-vim-test" { ignore_filetypes = { "python", "go" } },
       },
     }
   end,
