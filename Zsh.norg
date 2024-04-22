@@ -68,6 +68,12 @@ tangle: {
    export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
    export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
    export FZF_CTRL_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
+   export FZF_CTRL_R_OPTS="
+      --preview 'echo {}' --preview-window up:3:hidden:wrap
+      --bind 'ctrl-/:toggle-preview'
+      --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+      --color header:italic
+       --header 'Press CTRL-Y to copy command into clipboard'"
    @end
 
 ** config
@@ -327,10 +333,6 @@ tangle: {
    bindkey "^P" open_file
    @end
 
-** history_search
-   @code zshrc
-   bindkey "^R" history-incremental-search-backward
-   @end
 * Aliases
   @code zshrc
   alias path="echo $PATH | tr -s ':' '\n'"
