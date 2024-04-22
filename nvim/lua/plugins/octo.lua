@@ -8,6 +8,7 @@ return {
   },
   keys = {
     { "<C-c>ors", mode = "n", desc = "[O]cto [R]eview [S]tart",  "<cmd>Octo review start<cr>" },
+    { "<C-c>orr", mode = "n", desc = "[O]cto [R]eview [R]esume", "<cmd>Octo review resume<cr>" },
     { "<C-c>orS", mode = "n", desc = "[O]cto [R]eview [S]ubmit", "<cmd>Octo review submit<cr>" },
     {
       "<C-c>opm",
