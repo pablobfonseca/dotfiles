@@ -38,8 +38,7 @@ else
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
-autoload -U compinit
-compinit
+autoload -U compinit; compinit
 
 eval "$(dotfiles completion zsh)"; compdef _dotfiles dotfiles
 
@@ -191,7 +190,7 @@ alias untar="tar -zxvf"
 alias genpass="openssl rand -base64 20"
 alias st="git st"
 alias ls="lsd"
-alias ll="lsd --color=always --long --git --size=short --icon=always"
+alias ll="lsd -a --color=always --long --git --size=short --icon=always"
 alias bs="git bselect"
 alias vim="nvim"
 alias v="nvim"

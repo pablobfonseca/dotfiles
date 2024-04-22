@@ -55,3 +55,5 @@ export NVM_DIR="$HOME/.nvm"
 export BAT_THEME=Dracula
 
   export OBSIDIAN_VAULTS="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/"
+
+  export ZELLIJ_CONFIG_DIR="~/.config/zellij"
