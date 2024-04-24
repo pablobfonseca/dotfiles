@@ -72,7 +72,6 @@
   master                  = checkout master
   mb                      = !git merge-base HEAD $1
   mup                     = !git checkout master && git pull && git checkout - no-ff = merge --no-ff
-  pl                      = pull
   plr                     = pull --rebase
   pom                     = push -u origin master
   ps                      = push
@@ -97,9 +96,7 @@
   unstage                 = reset
   upstream                = rev-parse --abbrev-ref --symbolic-full-name @{u}
   ureset                  = !git upstream && git reset --hard $(git upstream)
-  fop                     = !git fetch origin && git pl
-	users                   = !~/.config/nvm/12.10.0/lib/node_modules/git-pair/users.js
-  branch-status           = !~/bin/git-bstats
+  fop                     = !git fetch origin && git pull
   lg                      = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 [diff]
   mnemonicprefix          = true
