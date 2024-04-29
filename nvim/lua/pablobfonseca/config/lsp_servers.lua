@@ -4,6 +4,7 @@ return {
   "gopls",
   "html",
   "jsonls",
+  "yamlls",
   "lua_ls",
   "ocamllsp",
   "pylsp",

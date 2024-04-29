@@ -32,6 +32,9 @@ return {
         "elm-format",
         "elm-language-server",
 
+        -- yaml
+        "yaml-language-server",
+
         -- ocaml
         "ocamlformat",
 
