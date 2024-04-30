@@ -207,7 +207,7 @@ eval "$(starship init zsh)"
 # tmux
 tlist() {
 local tmux_session
-  tmux_session=$(tmux list-windows -a | fzf --prompt="Switch: " | sed 's/: .*//g')
+tmux_session=$(tmux list-windows -a | fzf-tmux -p --prompt="Switch: " | sed 's/: .*//g')
   if [ -n "$TMUX" ]; then
     tmux switch-client -t "$tmux_session"
   else
@@ -217,7 +217,7 @@ local tmux_session
 
 tkill() {
   local tmux_session
-  tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf --prompt="Kill: ")
+tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf-tmux -p --prompt="Kill: ")
 
 if [ -n "$tmux_session" ]; then
   tmux kill-session -t "$tmux_session"
