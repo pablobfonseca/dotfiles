@@ -8,6 +8,7 @@ return {
   "lua_ls",
   "ocamllsp",
   "pylsp",
+  "ruby_lsp",
   "solargraph",
   "sqls",
   "tailwindcss",

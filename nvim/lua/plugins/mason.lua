@@ -27,6 +27,7 @@ return {
         -- ruby stuff
         "solargraph",
         "rubocop",
+        "ruby-lsp",
 
         -- elm stuff
         "elm-format",
