@@ -129,7 +129,8 @@ return {
       "mfussenegger/nvim-dap",
       {
         "microsoft/vscode-js-debug",
-        build = "rm -rf dist && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+        version = "1.x",
+        build = "npm i && npm run compile vsDebugServerBundle && mv dist out",
       },
     },
     config = function()
