@@ -32,11 +32,7 @@ else
 fi
 
 
-if [ "$UNAME_MACHINE" = "arm64" ]; then
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-else
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
 
 autoload -U compinit; compinit
 
@@ -63,17 +59,6 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load
 
-if [ -n "$HTTP_TOOLKIT_ACTIVE" ]; then
-# When HTTP Toolkit is active, we inject various overrides into PATH
-export PATH="$HOME/.local/share/httptoolkit-server/client/1.0.2/overrides/path:$PATH"
-
-if command -v winpty >/dev/null 2>&1; then
-# Work around for winpty's hijacking of certain commands
-alias php=php
-alias node=node
-fi
-fi
-
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 autoload -U add-zsh-hook
@@ -96,19 +81,6 @@ fi
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
-
-function search_route {
-bin/rails routes | rg $1
-}
-
-function vimup {
-nvim +Lazy
-}
-
-function bundle_search() {
-pattern="$1"; shift
-ag $pattern $(bundle show --paths "$@")
-}
 
 function take {
 mkdir $1
@@ -225,10 +197,9 @@ fi
 }
 
 # opam configuration
-[[ ! -r /Users/pablobfonseca/.opam/opam-init/init.zsh ]] || source /Users/pablobfonseca/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+[[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
-  export PATH="$HOME/.luarocks/bin:$PATH"
-
+export PATH="$HOME/.luarocks/bin:$PATH"
 
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
@@ -237,4 +208,4 @@ eval "$(pyenv virtualenv-init -)"
 
 eval "$(zoxide init zsh)"
 
-  alias sb="cd $OBSIDIAN_VAULTS"
+alias sb="cd $OBSIDIAN_VAULTS"

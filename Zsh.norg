@@ -15,8 +15,6 @@ tangle: {
   This file generates {/ ~/.zshrc}[zshrc] file which can be loaded by ZSH at startup.
 * envvars
   @code zshenv
-  export UNAME_MACHINE=$(/usr/bin/uname -m)
-  export UNAME_SYSTEM=$(/usr/bin/uname)
   export PATH="/opt/homebrew/sbin:$PATH"
   export PATH="/opt/homebrew/bin:$PATH"
   export PATH="/usr/local/sbin:$PATH"
@@ -29,33 +27,24 @@ tangle: {
   export HISTTIMEFORMAT="%d/%m/%y %T"
   export EDITOR=nvim
   export BUNDLER_EDITOR=$EDITOR
+  export VISUAL_EDITOR=$EDITOR
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # for rails
   export UPSCOPE_DIR=$HOME/code/upscope
   export PATH="$PATH:$UPSCOPE_DIR/bin"
   export PATH="$PATH:$DOTFILES/scripts"
   export XDG_CONFIG_HOME="$HOME/.config"
+  export PATH="$HOME/.local/bin:$PATH"
   @end
 ** Go
    @code zshenv
    export GOPATH=$HOME/code/go-workspace
-
-   if [ "$UNAME_MACHINE" = "arm64" ]; then
    export GOROOT=/opt/homebrew/opt/go/libexec
-   else
-   export GOROOT=/usr/local/opt/go/libexec
-   fi
 
    export GOBIN=$GOPATH/bin
    export PATH=$PATH:$GOPATH/bin
    export PATH=$PATH:$GOROOT/bin
    @end
 ** Haskell
-*** envvars
-    @code zshenv
-    export PATH="$HOME/.local/bin:$PATH"
-
-    @end
-
 *** config
     @code zshrc
     [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
@@ -117,11 +106,7 @@ tangle: {
   @end
 * zsh-syntax-highlighting
   @code zshrc
-  if [ "$UNAME_MACHINE" = "arm64" ]; then
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-  else
-  source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-  fi
   @end
 
 * Enable completion
@@ -162,21 +147,6 @@ tangle: {
    # Then, source plugins and add commands to $PATH
    zplug load
    @end
-* httptoolkit
-  This section will be reset each time a HTTP Toolkit terminal is opened
-  @code zshrc
-  if [ -n "$HTTP_TOOLKIT_ACTIVE" ]; then
-  # When HTTP Toolkit is active, we inject various overrides into PATH
-  export PATH="$HOME/.local/share/httptoolkit-server/client/1.0.2/overrides/path:$PATH"
-
-  if command -v winpty >/dev/null 2>&1; then
-  # Work around for winpty's hijacking of certain commands
-  alias php=php
-  alias node=node
-  fi
-  fi
-  @end
-
 * rvm
   @code zshenv
   # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
@@ -218,27 +188,6 @@ tangle: {
    @end
 
 * Functions
-** search_route
-   @code zshrc
-   function search_route {
-   bin/rails routes | rg $1
-   }
-   @end
-** vimup
-   @code zshrc
-   function vimup {
-   nvim +Lazy
-   }
-   @end
-
-** bundle_search
-   @code zshrc
-   function bundle_search() {
-   pattern="$1"; shift
-   ag $pattern $(bundle show --paths "$@")
-   }
-   @end
-
 ** take
    @code zshrc
    function take {
@@ -389,12 +338,11 @@ tangle: {
 * ocaml
 @code zshrc
 # opam configuration
-[[ ! -r /Users/pablobfonseca/.opam/opam-init/init.zsh ]] || source /Users/pablobfonseca/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+[[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
   @end
 * lua
-@code zshrc
+  @code zshrc
   export PATH="$HOME/.luarocks/bin:$PATH"
-
   @end
 * python
   @code zshrc
@@ -404,21 +352,17 @@ tangle: {
   eval "$(pyenv virtualenv-init -)"
  @end
 * zoxide
-@code zshrc
-eval "$(zoxide init zsh)"
+  @code zshrc
+  eval "$(zoxide init zsh)"
   @end
 * bat
   @code zshenv
   export BAT_THEME=Dracula
   @end
 * obsidian
-@code zshenv
+  @code zshenv
   export OBSIDIAN_VAULTS="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/"
   @end
-@code zshrc
+  @code zshrc
   alias sb="cd $OBSIDIAN_VAULTS"
-  @end
-* zellij
-@code zshenv
-  export ZELLIJ_CONFIG_DIR="~/.config/zellij"
   @end
