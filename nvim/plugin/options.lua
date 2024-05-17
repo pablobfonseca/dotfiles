@@ -3,7 +3,6 @@ local opt = vim.opt
 -- Numbers
 opt.number = true
 opt.relativenumber = true
-opt.ruler = false
 
 -- disable nvim intro
 opt.shortmess:append "sI"
@@ -29,7 +28,9 @@ opt.clipboard = "unnamedplus"
 opt.cursorline = true
 
 opt.fillchars = { eob = " " }
+opt.inccommand = "split"
 opt.ignorecase = true
+opt.smartcase = true
 
 opt.wrap = false
 
@@ -105,3 +106,5 @@ vim.diagnostic.config {
     },
   },
 }
+
+opt.shada = { "'10", "<0", "s10", "h" }

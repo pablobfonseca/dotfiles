@@ -15,8 +15,5 @@ return {
     -- - sd'   - [S]urround [D]elete [']quotes
     -- - sr)'  - [S]urround [R]eplace [)]paren with [']quote
     require("mini.surround").setup()
-
-    -- Split join
-    require("mini.splitjoin").setup()
   end,
 }
