@@ -1,9 +1,6 @@
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.opt.shortmess:append "c"
 
-local lspkind = require "lspkind"
-lspkind.init {}
-
 local cmp = require "cmp"
 
 cmp.setup {
@@ -59,13 +56,27 @@ cmp.setup {
     documentation = cmp.config.window.bordered(),
     scrollbar = false,
   },
+  formatting = {
+    format = require("lspkind").cmp_format {
+      mode = "symbol_text",
+      preset = "codicons",
+      maxwidth = 50,
+      ellipsis_char = "...",
+      show_labelDetails = true,
+    },
+  },
 }
 
 local ls = require "luasnip"
-ls.config.set_config = {
+local luasnip_opts = {
   history = false,
   updateevents = "TextChanged,TextChangedI",
 }
+
+ls.config.set_config = luasnip_opts
+
+require("luasnip.loaders.from_vscode").lazy_load(luasnip_opts)
+require("luasnip.loaders.from_lua").load()
 
 for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/custom/snippets/*.lua", true)) do
   loadfile(ft_path)()
