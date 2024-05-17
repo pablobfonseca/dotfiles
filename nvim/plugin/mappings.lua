@@ -1,0 +1,58 @@
+local set = vim.keymap.set
+
+-- source file
+set("n", "<leader>x", "<cmd>.lua<cr>", { desc = "Execute the current line" })
+set("n", "<leader><leader>x", "<cmd>source %<cr>", { desc = "Execute the current file" })
+
+-- emacs-like keybindings
+set("n", "<C-x><C-s>", ":w<cr>", { desc = "Save the file" })
+set("n", "<C-x><C-c>", ":x<cr>", { desc = "Save and quit" })
+set("n", "<C-x>1", ":only<cr>", { desc = "Keep only the current pane" })
+set("n", "<C-x>2", ":split<cr>", { desc = "Split pane horizontally" })
+set("n", "<C-x>3", ":vsplit<cr>", { desc = "Split pane vertically" })
+set("n", "<C-x>0", ":q<cr>", { desc = "Close pane" })
+
+set("v", "J", ":m '>+1<CR>gv=gv")
+set("v", "K", ":m '<-2<CR>gv=gv")
+
+set("n", "n", "nzzzv")
+set("n", "N", "Nzzzv")
+
+set("n", "J", "mzJ`z", { desc = "Join lines but keep cursor position" })
+
+set("x", "<leader>p", [["_dP]], { desc = "Paste without losing the current register" })
+
+set("n", ";", ":", { desc = "Makes ; behave like :" })
+
+-- navigate within insert mode
+set("i", "<C-h>", "<Left>")
+set("i", "<C-l>", "<Right>")
+set("i", "<C-j>", "<Down>")
+set("i", "<C-k>", "<Up>")
+
+-- go to beginning and end
+set("i", "<C-b>", "<ESC>^i")
+set("i", "<C-e>", "<End>")
+
+-- navigate the quickfix list
+set("n", "<leader>cn", ":cnext<cr>")
+set("n", "<leader>cb", ":cprevious<cr>")
+set("n", "<space><space>", ":ccl<cr>", { desc = "Close quickfix window" })
+
+-- indent line
+set("v", "<", "<gv")
+set("v", ">", ">gv")
+
+set("x", "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
+set("x", "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
+-- Don't copy the replaced text after pasting in visual mode
+-- https://vim.fandom.com/wiki/Replace_a_word_with_yanked_text#Alternative_mapping_for_paste
+set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { silent = true })
+
+set("n", "gp", "`[v`]", { desc = "Select last paste in visual mode" })
+
+set("n", "<leader>fh", "<C-w>t<C-w>K", { desc = "Change vertically split to horizontally" })
+set("n", "<leader>fv", "<C-w>t<C-w>H", { desc = "Change horizontally split to vertically" })
+
+set({ "n", "v" }, "<C-e>", "7<C-e>", { desc = "Scroll the viewport faster" })
+set({ "n", "v" }, "<C-y>", "7<C-y>", { desc = "Scroll the viewport faster" })
