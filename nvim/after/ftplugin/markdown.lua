@@ -1,6 +1,8 @@
+local setlocal = vim.opt_local
+
 vim.api.nvim_create_autocmd("BufEnter", {
-  buffer = 0,
   callback = function()
-    vim.opt_local.conceallevel = 2
+    setlocal.wrap = true
+    setlocal.conceallevel = 2
   end,
 })
