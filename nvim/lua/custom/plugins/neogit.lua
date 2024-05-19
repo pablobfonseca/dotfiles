@@ -1,6 +1,5 @@
 return {
   "NeogitOrg/neogit",
-  branch = "nightly",
   keys = {
     { "<C-x>g", "<cmd>Neogit cwd=%:p:h<cr>", { desc = "Open Neogit" } },
   },

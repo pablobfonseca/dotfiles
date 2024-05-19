@@ -57,7 +57,7 @@ return {
           enabled = true,
         },
       },
-      "nvim-neotest/nvim-nio",
+      { "pablobfonseca/nvim-nio", branch = "fix-deprecations" },
     },
     keys = {
       {
