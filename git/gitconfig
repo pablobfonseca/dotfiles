@@ -131,3 +131,5 @@
 [interactive]
   diffFilter             = delta --color-only
   side-by-side           = true
+[delta]
+navigate                 = true
