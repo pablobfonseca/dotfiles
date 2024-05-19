@@ -1,7 +1,7 @@
 return {
   "nvim-neotest/neotest",
   dependencies = {
-    "nvim-neotest/nvim-nio",
+    { "pablobfonseca/nvim-nio", branch = "fix-deprecations" },
     "nvim-lua/plenary.nvim",
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter",

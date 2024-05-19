@@ -1,5 +1,6 @@
 return {
   "nvimtools/none-ls.nvim",
+  branch = "main",
   config = function()
     local present, null_ls = pcall(require, "null-ls")
 
