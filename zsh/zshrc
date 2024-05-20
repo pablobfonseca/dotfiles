@@ -1,3 +1,4 @@
+# Load GHCup environment
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
 eval "$(fzf --zsh)"
@@ -21,22 +22,20 @@ _fzf_compgen_path() {
  }
 
 _fzf_compgen_dir() {
-fd --type=d --hidden --exclude .git . "$1"
+  fd --type=d --hidden --exclude .git . "$1"
 }
 
 if [ -d ~/fzf-git.sh ]; then
-source ~/fzf-git.sh/fzf-git.sh
+  source ~/fzf-git.sh/fzf-git.sh
 else
   git clone https://github.com/junegunn/fzf-git.sh.git ~/fzf-git.sh
-   source ~/fzf-git.sh/fzf-git.sh
+  source ~/fzf-git.sh/fzf-git.sh
 fi
 
 
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 autoload -U compinit; compinit
-
-eval "$(dotfiles completion zsh)"; compdef _dotfiles dotfiles
 
 autoload -z edit-command-line
 zle -N edit-command-line
