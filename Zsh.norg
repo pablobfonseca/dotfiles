@@ -47,6 +47,7 @@ tangle: {
 ** Haskell
 *** config
     @code zshrc
+    # Load GHCup environment
     [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
     @end
 * fzf
@@ -88,14 +89,14 @@ tangle: {
     }
 
    _fzf_compgen_dir() {
-   fd --type=d --hidden --exclude .git . "$1"
+     fd --type=d --hidden --exclude .git . "$1"
    }
 
    if [ -d ~/fzf-git.sh ]; then
-   source ~/fzf-git.sh/fzf-git.sh
+     source ~/fzf-git.sh/fzf-git.sh
    else
      git clone https://github.com/junegunn/fzf-git.sh.git ~/fzf-git.sh
-      source ~/fzf-git.sh/fzf-git.sh
+     source ~/fzf-git.sh/fzf-git.sh
    fi
 
    @end
@@ -113,11 +114,6 @@ tangle: {
   @code zshrc
   autoload -U compinit; compinit
   @end
-** completions
-*** dotfiles
-    @code zshrc
-    eval "$(dotfiles completion zsh)"; compdef _dotfiles dotfiles
-    @end
 
 * Edit current line on EDITOR
   @code zshrc
@@ -336,9 +332,9 @@ tangle: {
   @end
 
 * ocaml
-@code zshrc
-# opam configuration
-[[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+  @code zshrc
+  # opam configuration
+  [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
   @end
 * lua
   @code zshrc
