@@ -13,8 +13,7 @@ return {
         },
       },
       {
-        "pablobfonseca/nvim-dap-ui",
-        branch = "fix-deprecations",
+        "rcarriga/nvim-dap-ui",
         keys = {
           {
             "<C-c>de",
