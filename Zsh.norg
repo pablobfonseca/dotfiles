@@ -34,6 +34,8 @@ tangle: {
   export PATH="$PATH:$DOTFILES/scripts"
   export XDG_CONFIG_HOME="$HOME/.config"
   export PATH="$HOME/.local/bin:$PATH"
+  export PATH="$HOME/.config/emacs/bin:$PATH"
+  export PATH="$HOME/.cargo/bin:$PATH"
   @end
 ** Go
    @code zshenv
@@ -112,7 +114,16 @@ tangle: {
 
 * Enable completion
   @code zshrc
-  autoload -U compinit; compinit
+  if type brew &>/dev/null
+  then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+  else
+    autoload -U compinit; compinit
+
+  fi
   @end
 
 * Edit current line on EDITOR
@@ -292,6 +303,8 @@ tangle: {
   alias bs="git bselect"
   alias vim="nvim"
   alias v="nvim"
+  alias k="kubectl"
+  alias ip="curl ifconfig.me"
 
   # GH
   alias copilot="gh copilot"
