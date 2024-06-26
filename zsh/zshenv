@@ -17,6 +17,8 @@ export PATH="$PATH:$UPSCOPE_DIR/bin"
 export PATH="$PATH:$DOTFILES/scripts"
 export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.config/emacs/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 export GOPATH=$HOME/code/go-workspace
 export GOROOT=/opt/homebrew/opt/go/libexec

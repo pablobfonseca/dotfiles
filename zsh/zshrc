@@ -35,7 +35,16 @@ fi
 
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-autoload -U compinit; compinit
+if type brew &>/dev/null
+then
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+autoload -Uz compinit
+compinit
+else
+  autoload -U compinit; compinit
+
+fi
 
 autoload -z edit-command-line
 zle -N edit-command-line
@@ -165,6 +174,8 @@ alias ll="lsd -a --color=always --long --git --size=short --icon=always"
 alias bs="git bselect"
 alias vim="nvim"
 alias v="nvim"
+alias k="kubectl"
+alias ip="curl ifconfig.me"
 
 # GH
 alias copilot="gh copilot"
