@@ -1,3 +1,4 @@
+local filetype = require "vim.filetype"
 return {
   {
     "williamboman/mason.nvim",
@@ -11,11 +12,11 @@ return {
       },
       max_concurrent_installers = 10,
       ensure_installed = {
-        -- lua stuff
+        -- Lua stuff
         "lua-language-server",
         "stylua",
 
-        -- web dev stuff
+        -- Web dev stuff
         "css-lsp",
         "html-lsp",
         "typescript-language-server",
@@ -35,9 +36,6 @@ return {
 
         -- yaml
         "yaml-language-server",
-
-        -- ocaml
-        "ocamlformat",
 
         -- python stuff
         "pyright",
@@ -69,6 +67,11 @@ return {
           lua_ls = function()
             local lua_opts = lsp_zero.nvim_lua_ls()
             require("lspconfig").lua_ls.setup(lua_opts)
+          end,
+          harper_ls = function()
+            require("lspconfig").harper_ls.setup {
+              filetypes = { "markdown", "gitcommit", "NeogitCommitMessage" },
+            }
           end,
           jsonls = function()
             require("lspconfig").jsonls.setup {

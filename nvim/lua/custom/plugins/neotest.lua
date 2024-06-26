@@ -1,19 +1,19 @@
 return {
   "nvim-neotest/neotest",
   dependencies = {
-    { "pablobfonseca/nvim-nio", branch = "fix-deprecations" },
+    "nvim-neotest/nvim-nio",
     "nvim-lua/plenary.nvim",
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter",
     "nvim-neotest/neotest-vim-test",
     "vim-test/vim-test",
-    "nvim-neotest/neotest-go",
+    { "pablobfonseca/neotest-go", branch = "fix-deprecations" },
     "nvim-neotest/neotest-python",
-    -- "olimorris/neotest-rspec",
+    "olimorris/neotest-rspec",
   },
   keys = {
     {
-      "<c-c>Tn",
+      "<leader>Tn",
       mode = "n",
       desc = "Run nearest test",
       function()
@@ -21,7 +21,7 @@ return {
       end,
     },
     {
-      "<c-c>Tf",
+      "<leader>Tf",
       mode = "n",
       desc = "Run current test file",
       function()
@@ -29,7 +29,7 @@ return {
       end,
     },
     {
-      "<c-c>To",
+      "<leader>To",
       mode = "n",
       desc = "Test output",
       function()
@@ -40,41 +40,32 @@ return {
   config = function()
     local neotest = require "neotest"
 
-    -- vim.api.nvim_exec2(
-    --   [[
-    --   function! DockerTransform(cmd)
-    --     echo cmd
-    --     return "upscope api test -t $(tmux display-message -p '#S') " .a:cmd
-    --   endfunction
-    --   ]],
-    --   { output = false }
-    -- )
-
-    -- vim.cmd [[ let test#custom_transformations = {"docker": function("DockerTransform")}]]
-    -- vim.cmd [[ let test#transformation = "docker"]]
-    -- vim.cmd [[ let g:test#basic#start_normal = 1 " If using basic strategy ]]
-
     neotest.setup {
       adapters = {
-        -- require "neotest-rspec" {
-        --   rspec_cmd = function()
-        --     return vim.tbl_flatten {
-        --       "upscope",
-        --       "app",
-        --       "test",
-        --       "-t",
-        --     }
-        --   end,
-        --
-        --   transform_spec_path = function(path)
-        --     local prefix = require("neotest-rspec").root(path)
-        --     return string.sub(path, string.len(prefix) + 2, -1)
-        --   end,
-        --   results_path = "tmp/rspec.output",
-        -- },
+        require "neotest-rspec" {
+          rspec_cmd = function()
+            return vim
+                .iter({
+                  "upscope",
+                  "app",
+                  "test",
+                  "-t",
+                })
+                :flatten()
+                :totable()
+          end,
+          transform_spec_path = function(path)
+            print("path: " .. vim.inspect(path))
+            local prefix = require("neotest-rspec").root(path)
+            print("prefix: " .. vim.inspect(prefix))
+            local result = string.sub(path, string.len(prefix) + 2, -1)
+            print("result: " .. vim.inspect(result))
+            return result
+          end,
+        },
         require "neotest-python",
         require "neotest-go",
-        require "neotest-vim-test" { ignore_filetypes = { "python", "go" } },
+        require "neotest-vim-test" { ignore_filetypes = { "python", "go", "ruby" } },
       },
     }
   end,

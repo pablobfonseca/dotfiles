@@ -6,7 +6,7 @@ return {
   "jsonls",
   "yamlls",
   "lua_ls",
-  "ocamllsp",
+  "harper_ls",
   "pylsp",
   "ruby_lsp",
   "solargraph",

@@ -1,6 +1,5 @@
 return {
   "nvimtools/none-ls.nvim",
-  branch = "main",
   config = function()
     local present, null_ls = pcall(require, "null-ls")
 
@@ -32,6 +31,7 @@ return {
 
       -- ruby
       b.formatting.rubocop,
+      b.diagnostics.rubocop,
 
       -- elm
       b.formatting.elm_format,
@@ -42,8 +42,6 @@ return {
       -- go
       b.formatting.gofmt,
       b.formatting.goimports,
-
-      b.diagnostics.rubocop,
     }
 
     local augroup = vim.api.nvim_create_augroup("LspFormatting", {})

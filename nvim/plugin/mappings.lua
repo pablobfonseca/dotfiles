@@ -15,6 +15,9 @@ set("n", "<C-x>0", ":q<cr>", { desc = "Close pane" })
 set("v", "J", ":m '>+1<CR>gv=gv")
 set("v", "K", ":m '<-2<CR>gv=gv")
 
+set("n", "<C-d>", "<C-d>zz")
+set("n", "<C-u>", "<C-u>zz")
+
 set("n", "n", "nzzzv")
 set("n", "N", "Nzzzv")
 
@@ -37,7 +40,7 @@ set("i", "<C-e>", "<End>")
 -- navigate the quickfix list
 set("n", "<leader>cn", ":cnext<cr>")
 set("n", "<leader>cb", ":cprevious<cr>")
-set("n", "<space><space>", ":ccl<cr>", { desc = "Close quickfix window" })
+set("n", "<leader><space>", ":ccl<cr>", { desc = "Close quickfix window" })
 
 -- indent line
 set("v", "<", "<gv")
@@ -56,3 +59,6 @@ set("n", "<leader>fv", "<C-w>t<C-w>H", { desc = "Change horizontally split to ve
 
 set({ "n", "v" }, "<C-e>", "7<C-e>", { desc = "Scroll the viewport faster" })
 set({ "n", "v" }, "<C-y>", "7<C-y>", { desc = "Scroll the viewport faster" })
+
+-- exit terminal mode
+set("t", "<Esc>", "<C-\\><C-m>", { desc = "Exit terminal mode" })

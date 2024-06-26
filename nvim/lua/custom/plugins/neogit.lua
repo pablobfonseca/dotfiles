@@ -1,7 +1,14 @@
 return {
   "NeogitOrg/neogit",
   keys = {
-    { "<C-x>g", "<cmd>Neogit cwd=%:p:h<cr>", { desc = "Open Neogit" } },
+    {
+      "<C-x>g",
+      mode = "n",
+      desc = "Open Neogit",
+      function()
+        require("neogit").open { cwd = vim.fn.expand "%:p:h" }
+      end,
+    },
   },
   dependencies = {
     "nvim-lua/plenary.nvim",
