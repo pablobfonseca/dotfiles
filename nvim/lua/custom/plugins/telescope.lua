@@ -1,6 +1,6 @@
 return {
   "nvim-telescope/telescope.nvim",
-  tag = "0.1.6",
+  tag = "0.1.8",
   cmd = "Telescope",
   dependencies = {
     { "nvim-lua/plenary.nvim" },
@@ -47,14 +47,6 @@ return {
     { "<C-x>h", mode = "n", desc = "Help page",          "<cmd> Telescope help_tags <CR>" },
     { "<M-x>",  mode = "n", desc = "Telescope commands", "<cmd>Telescope commands theme=ivy<cr>" },
     {
-      "K",
-      mode = "n",
-      desc = "Search current word",
-      function()
-        require("telescope.builtin").grep_string()
-      end,
-    },
-    {
       "<leader>ds",
       mode = "n",
       desc = "Search document symbols",
@@ -70,7 +62,6 @@ return {
         require("telescope.builtin").lsp_workspace_symbols()
       end,
     },
-    { "<leader>to", mode = "n", desc = "Browse oldfiles", "<cmd>Telescope oldfiles<cr>" },
     {
       "<leader>rp",
       mode = "n",

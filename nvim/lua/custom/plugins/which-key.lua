@@ -18,7 +18,8 @@ return {
       ["<C-c>h"] = { name = "[H]arpoon", _ = "which_key_ignore" },
       ["<C-c>t"] = { name = "[T]mux Runner", _ = "which_key_ignore" },
       ["<C-c>d"] = { name = "[D]ebugger", _ = "which_key_ignore" },
-      ["<C-c>T"] = { name = "[T]est", _ = "which_key_ignore" },
+      ["<leader>T"] = { name = "[T]est", _ = "which_key_ignore" },
+      ["<leader>t"] = { name = "[T]rouble", _ = "which_key_ignore" },
       ["<C-c>D"] = { name = "[D]iff View", _ = "which_key_ignore" },
     }
   end,

@@ -10,11 +10,27 @@ return {
       end,
     },
     {
+      "<leader>sW",
+      mode = { "n", "v" },
+      desc = "Search on current file",
+      function()
+        require("spectre").open_file_search { select_word = true }
+      end,
+    },
+    {
       "<leader>sw",
-      mode = "n",
+      mode = { "n", "v" },
       desc = "Search current word",
       function()
-        require("spectre").open_visual({ select_word = true })
+        require("spectre").open_visual { select_word = true }
+      end,
+    },
+    {
+      "K",
+      mode = { "n", "v" },
+      desc = "Search current word",
+      function()
+        require("spectre").open_visual { select_word = true }
       end,
     },
   },
