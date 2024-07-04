@@ -25,8 +25,6 @@ set("n", "J", "mzJ`z", { desc = "Join lines but keep cursor position" })
 
 set("x", "<leader>p", [["_dP]], { desc = "Paste without losing the current register" })
 
-set("n", ";", ":", { desc = "Makes ; behave like :" })
-
 -- navigate within insert mode
 set("i", "<C-h>", "<Left>")
 set("i", "<C-l>", "<Right>")
