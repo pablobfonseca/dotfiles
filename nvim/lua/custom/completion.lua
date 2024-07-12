@@ -8,7 +8,8 @@ cmp.setup {
     { name = "nvim_lsp" },
     { name = "path" },
     { name = "luasnip" },
-    { name = "buffer",  keyword_length = 3 },
+    { name = "buffer", keyword_length = 3 },
+    { name = "lazydev", group_index = 0 },
   },
   mapping = {
     ["<C-p>"] = cmp.mapping.select_prev_item(),

@@ -2,6 +2,9 @@ local filetype = require "vim.filetype"
 return {
   {
     "williamboman/mason.nvim",
+    dependencies = {
+      "stevearc/dressing.nvim",
+    },
     opts = {
       ui = {
         icons = {
