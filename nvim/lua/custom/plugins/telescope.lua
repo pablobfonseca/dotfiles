@@ -1,12 +1,18 @@
 return {
   "nvim-telescope/telescope.nvim",
-  tag = "0.1.8",
+  branch = "0.1.x",
   cmd = "Telescope",
   dependencies = {
     { "nvim-lua/plenary.nvim" },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   },
   keys = {
+    {
+      "<space>t",
+      mode = "n",
+      desc = "Open Telescope",
+      "<cmd>Telescope<cr>",
+    },
     {
       "<C-s>",
       mode = "n",
@@ -24,9 +30,9 @@ return {
       desc = "Find file",
       "<cmd>Telescope find_files find_command=rg,--ignore,--hidden,--files<cr>",
     },
-    { "<space>p",  mode = "n", desc = "Find git files",    "<cmd>Telescope git_files<cr>" },
-    { "<leader>f", mode = "n", desc = "Live Grep",         "<cmd>Telescope live_grep<cr>" },
-    { "<C-x>b",    mode = "n", desc = "Telescope buffers", "<cmd>Telescope buffers<cr>" },
+    { "<space>p", mode = "n", desc = "Find git files", "<cmd>Telescope git_files<cr>" },
+    { "<leader>f", mode = "n", desc = "Live Grep", "<cmd>Telescope live_grep<cr>" },
+    { "<C-x>b", mode = "n", desc = "Telescope buffers", "<cmd>Telescope buffers<cr>" },
     {
       "gs",
       mode = "n",
@@ -43,9 +49,9 @@ return {
         require("telescope.builtin").git_branches()
       end,
     },
-    { "<C-x>k", mode = "n", desc = "Find keymaps",       "<cmd>Telescope keymaps<cr>" },
-    { "<C-x>h", mode = "n", desc = "Help page",          "<cmd> Telescope help_tags <CR>" },
-    { "<M-x>",  mode = "n", desc = "Telescope commands", "<cmd>Telescope commands theme=ivy<cr>" },
+    { "<C-x>k", mode = "n", desc = "Find keymaps", "<cmd>Telescope keymaps<cr>" },
+    { "<C-x>h", mode = "n", desc = "Help page", "<cmd> Telescope help_tags <CR>" },
+    { "<M-x>", mode = "n", desc = "Telescope commands", "<cmd>Telescope commands theme=ivy<cr>" },
     {
       "<leader>ds",
       mode = "n",

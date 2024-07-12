@@ -46,9 +46,5 @@ return {
         map("n", "<leader>gr", gs.reset_buffer, { desc = "Reset buffer" })
       end,
     }
-
-    vim.api.nvim_create_user_command("Gread", function()
-      require("gitsigns").reset_buffer()
-    end, {})
   end,
 }
