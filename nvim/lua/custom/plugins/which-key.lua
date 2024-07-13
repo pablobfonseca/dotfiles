@@ -6,21 +6,21 @@ return {
     local which_key = require "which-key"
     which_key.setup {}
 
-    which_key.register {
-      ["<C-c>o"] = { name = "[O]cto", _ = "which_key_ignore" },
-      ["<C-c>or"] = { name = "[R]eview", _ = "which_key_ignore" },
-      ["<C-c>op"] = { name = "[P]R", _ = "which_key_ignore" },
-      ["<C-c>oi"] = { name = "[I]ssue", _ = "which_key_ignore" },
-      ["<leader>O"] = { name = "[O]bsidian", _ = "which_key_ignore" },
-      ["<leader>l"] = { name = "[L]sp", _ = "which_key_ignore" },
-      ["<C-c>n"] = { name = "[N]eorg", _ = "which_key_ignore" },
-      ["<C-c>w"] = { name = "[W]orktrees", _ = "which_key_ignore" },
-      ["<C-c>h"] = { name = "[H]arpoon", _ = "which_key_ignore" },
-      ["<C-c>t"] = { name = "[T]mux Runner", _ = "which_key_ignore" },
-      ["<C-c>d"] = { name = "[D]ebugger", _ = "which_key_ignore" },
-      ["<leader>T"] = { name = "[T]est", _ = "which_key_ignore" },
-      ["<leader>t"] = { name = "[T]rouble", _ = "which_key_ignore" },
-      ["<C-c>D"] = { name = "[D]iff View", _ = "which_key_ignore" },
+    which_key.add {
+      { "<C-c>o",    group = "[O]cto" },
+      { "<C-c>or",   group = "[R]eview" },
+      { "<C-c>op",   group = "[P]R" },
+      { "<C-c>oi",   group = "[I]ssue" },
+      { "<leader>O", group = "[O]bsidian" },
+      { "<leader>l", group = "[L]sp" },
+      { "<C-c>n",    group = "[N]eorg" },
+      { "<C-c>w",    group = "[W]orktrees" },
+      { "<C-c>h",    group = "[H]arpoon" },
+      { "<C-c>t",    group = "[T]mux Runner" },
+      { "<C-c>d",    group = "[D]ebugger" },
+      { "<leader>T", group = "[T]est" },
+      { "<leader>t", group = "[T]rouble" },
+      { "<C-c>D",    group = "[D]iff View" },
     }
   end,
 }
