@@ -11,7 +11,7 @@ return {
     {
       "<C-x>g",
       mode = "n",
-      desc = "Open fugitive",
+      desc = "Open lazygit",
       "<cmd>LazyGitCurrentFile<cr>",
     },
   },
