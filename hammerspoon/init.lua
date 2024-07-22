@@ -21,3 +21,4 @@ hs.window.animationDuration = 0 -- quicker animations
 safeRequire("lua.console")
 safeRequire("lua.window")
 safeRequire("lua.reload")
+safeRequire("lua.dark")
