@@ -1,7 +1,6 @@
 return {
   "cssls",
   "elmls",
-  "emmet_ls",
   "gopls",
   "html",
   "jsonls",

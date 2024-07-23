@@ -15,7 +15,6 @@ local opts = {
     -- Web dev stuff
     "css-lsp",
     "html-lsp",
-    "emmet-ls",
     "typescript-language-server",
     "prettier",
     "prettierd",
