@@ -1,6 +1,7 @@
 return {
   "epwalsh/obsidian.nvim",
-  lazy = true,
+  cmd = { "ObsidianOpen", "ObsidianNew", "ObsidianTags", "ObsidianQuickSearch", "ObsidianSearch" },
+  lazy = false,
   ft = "markdown",
   dependencies = {
     "nvim-lua/plenary.nvim",
