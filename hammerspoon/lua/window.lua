@@ -41,7 +41,8 @@ local function focusApp(key, appName)
 end
 
 focusApp("b", "Arc")
-focusApp("t", "Alacritty")
+-- focusApp("t", "Alacritty")
+focusApp("t", "WezTerm")
 focusApp("s", "Slack")
 focusApp("n", "Obsidian")
 focusApp("f", "Firefox")
