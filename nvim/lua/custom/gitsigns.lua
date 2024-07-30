@@ -36,10 +36,13 @@ require("gitsigns").setup {
     end, { expr = true, desc = "Jump to previous hunk" })
 
     map("n", "<leader>b", function()
-      gs.blame_line { full = true }
+      gs.blame_line { full = false }
     end, { desc = "Blame line" })
 
     map("n", "<leader>gs", gs.stage_buffer, { desc = "Stage buffer" })
     map("n", "<leader>gr", gs.reset_buffer, { desc = "Reset buffer" })
+
+    -- Text object
+    map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select git hunk" })
   end,
 }
