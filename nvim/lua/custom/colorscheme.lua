@@ -1,10 +1,9 @@
-require("tokyonight").setup {
-  style = "moon",
-  transparent = true,
-  terminal_colors = true,
-  plugins = {
-    telescope = true,
+require("catppuccin").setup {
+  flavour = "mocha",
+  background = {
+    dark = "mocha",
   },
+  term_colors = true,
 }
 
-vim.cmd.colorscheme "tokyonight"
+vim.cmd.colorscheme "catppuccin"
