@@ -42,6 +42,8 @@ require("gitsigns").setup {
     map("n", "<leader>gs", gs.stage_buffer, { desc = "Stage buffer" })
     map("n", "<leader>gr", gs.reset_buffer, { desc = "Reset buffer" })
 
+    map("n", "<leader>G", "<cmd>Gitsigns<cr>", { desc = "Open gitsigns options" })
+
     -- Text object
     map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select git hunk" })
   end,
