@@ -6,7 +6,6 @@ require("nvim-treesitter.configs").setup {
     "gitcommit",
     "go",
     "html",
-    "http",
     "javascript",
     "json",
     "lua",
@@ -32,9 +31,6 @@ require("nvim-treesitter.configs").setup {
   },
   sync_install = false,
   auto_install = true,
-  highlight = {
-    enable = true,
-  },
   incremental_selection = {
     enable = true,
     keymaps = {
