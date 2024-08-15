@@ -89,8 +89,8 @@ alt-comma = 'layout accordion horizontal vertical'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
 alt-h = 'focus left'
-alt-j = 'focus down'
-alt-k = 'focus up'
+# alt-j = 'focus down'
+# alt-k = 'focus up'
 alt-l = 'focus right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
@@ -123,7 +123,6 @@ alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
 alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
-alt-d = 'workspace D'
 alt-g = 'workspace G'
 alt-i = 'workspace I'
 alt-m = 'workspace M'
