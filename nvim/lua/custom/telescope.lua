@@ -75,3 +75,6 @@ set("n", "<leader>sr", function()
     cwd = "~/.dotfiles",
   }
 end, { desc = "Search for nvim config" })
+set({ "n", "v" }, "K", function()
+  require("telescope.builtin").grep_string { cwd = require("telescope.utils").buffer_dir() }
+end, { desc = "Search current word" })
