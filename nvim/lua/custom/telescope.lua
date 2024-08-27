@@ -36,7 +36,7 @@ local set = vim.keymap.set
 
 set("n", "<space>t", "<cmd>Telescope<cr>", { desc = "Open Telescope" })
 set("n", "<C-s>", function()
-  require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_ivy {
+  require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
     winblend = 10,
     previewer = false,
   })
