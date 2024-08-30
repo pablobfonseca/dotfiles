@@ -126,7 +126,6 @@ alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
 alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
 alt-g = 'workspace G'
-alt-i = 'workspace I'
 alt-m = 'workspace M'
 alt-o = 'workspace O'
 alt-p = 'workspace P'
