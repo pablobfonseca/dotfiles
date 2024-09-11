@@ -84,6 +84,7 @@ outer.right =      5
 ctrl-cmd-b = 'exec-and-forget open -a Arc'
 ctrl-cmd-t = 'exec-and-forget open -a WezTerm'
 ctrl-cmd-s = 'exec-and-forget open -a Slack'
+ctrl-cmd-n = 'exec-and-forget open -a Obsidian'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 cmd-shift-slash = 'layout tiles horizontal vertical'
