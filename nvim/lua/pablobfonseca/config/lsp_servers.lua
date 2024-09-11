@@ -12,5 +12,5 @@ return {
   "solargraph",
   "sqls",
   "tailwindcss",
-  "tsserver",
+  "ts_ls",
 }

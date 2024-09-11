@@ -1,4 +1,3 @@
-local filetype = require "vim.filetype"
 return {
   {
     "williamboman/mason.nvim",
