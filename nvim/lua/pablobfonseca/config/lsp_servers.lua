@@ -10,6 +10,7 @@ return {
   "pylsp",
   "ruby_lsp",
   "solargraph",
+  "rust_analyzer",
   "sqls",
   "tailwindcss",
   "ts_ls",
