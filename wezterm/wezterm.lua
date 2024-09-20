@@ -8,6 +8,8 @@ config.color_scheme = "Catppuccin Mocha"
 config.font = wezterm.font({ family = "MesloLGS Nerd Font Mono", harfbuzz_features = { "calt=0", "clig=0", "liga=0" } })
 config.font_size = 16
 
+config.audible_bell = "Disabled"
+
 config.default_cursor_style = "BlinkingBlock"
 
 -- Opacity
