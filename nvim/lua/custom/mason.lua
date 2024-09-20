@@ -21,11 +21,6 @@ local opts = {
     "tailwindcss-language-server",
     "fixjson",
 
-    -- ruby stuff
-    "solargraph",
-    "rubocop",
-    "ruby-lsp",
-
     -- elm stuff
     "elm-format",
     "elm-language-server",
@@ -37,6 +32,9 @@ local opts = {
     "pyright",
     "python-lsp-server",
     "black",
+
+    -- ocaml stuff
+    "ocamllsp",
 
     -- go stuff
     "gopls",

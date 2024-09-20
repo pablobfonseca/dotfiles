@@ -29,10 +29,6 @@ return {
       -- Lua
       b.formatting.stylua,
 
-      -- ruby
-      b.formatting.rubocop,
-      b.diagnostics.rubocop,
-
       -- elm
       b.formatting.elm_format,
 
