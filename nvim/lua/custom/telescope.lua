@@ -34,26 +34,44 @@ telescope.load_extension "fzf"
 
 local set = vim.keymap.set
 
-set("n", "<space>t", "<cmd>Telescope<cr>", { desc = "Open Telescope" })
+set("n", "<space>t", function()
+  vim.cmd "Telescope"
+end, { desc = "Open Telescope" })
 set("n", "<C-s>", function()
   require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
     winblend = 10,
     previewer = false,
   })
 end, { desc = "Fuzzy finder on current buffer" })
-set("n", "<C-p>", "<cmd>Telescope find_files find_command=rg,--ignore,--hidden,--files<cr>", { desc = "Find file" })
-set("n", "<space>p", "<cmd>Telescope git_files<cr>", { desc = "Find git files" })
-set("n", "<leader>f", "<cmd>Telescope live_grep<cr>", { desc = "Live Grep" })
-set("n", "<C-x>b", "<cmd>Telescope buffers<cr>", { desc = "Telescope buffers" })
+set("n", "<C-p>", function()
+  require("telescope.builtin").find_files {
+    find_command = { "rg", "--ignore", "--hidden", "--files" },
+  }
+end, { desc = "Find file" })
+set("n", "<space>p", function()
+  require("telescope.builtin").git_files()
+end, { desc = "Find git files" })
+set("n", "<leader>f", function()
+  require("telescope.actions").live_grep()
+end, { desc = "Live Grep" })
+set("n", "<C-x>b", function()
+  require("telescope.builtin").buffers()
+end, { desc = "Telescope buffers" })
 set("n", "gs", function()
   require("telescope.builtin").git_status()
 end, { desc = "Git status" })
 set("n", "bs", function()
   require("telescope.builtin").git_branches()
 end, { desc = "Git branches" })
-set("n", "<C-x>k", "<cmd>Telescope keymaps<cr>", { desc = "Find keymaps" })
-set("n", "<C-x>h", "<cmd> Telescope help_tags <CR>", { desc = "Help page" })
-set("n", "<M-x>", "<cmd>Telescope commands theme=ivy<cr>", { desc = "Telescope commands" })
+set("n", "<C-x>k", function()
+  require("telescope.builtin").keymaps()
+end, { desc = "Find keymaps" })
+set("n", "<C-x>h", function()
+  require("telescope.builtin").help_tags()
+end, { desc = "Help page" })
+set("n", "<M-x>", function()
+  require("telescope.builtin").commands(require("telescope.themes").get_ivy())
+end, { desc = "Telescope commands" })
 set("n", "<leader>ds", function()
   require("telescope.builtin").lsp_document_symbols()
 end, { desc = "Search document symbols" })
