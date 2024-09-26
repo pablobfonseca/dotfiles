@@ -1,8 +1,9 @@
+# Haskell
 # Load GHCup environment
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
+# FZF
 eval "$(fzf --zsh)"
-
 _fzf_compgen_path() {
  fd --hidden --exclude .git . "$1"
 }
@@ -43,7 +44,6 @@ autoload -Uz compinit
 compinit
 else
   autoload -U compinit; compinit
-
 fi
 
 autoload -z edit-command-line
