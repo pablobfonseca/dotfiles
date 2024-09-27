@@ -205,6 +205,7 @@ if [ -n "$tmux_session" ]; then
   tmux kill-session -t "$tmux_session"
 fi
 }
+alias mux="tmuxinator"
 
 # rust
 . "$HOME/.cargo/env"
