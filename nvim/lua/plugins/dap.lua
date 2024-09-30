@@ -146,6 +146,32 @@ return {
       },
     },
     config = function()
+      local dap = require "dap"
+      for _, language in ipairs { "typescriptreact" } do
+        dap.configurations[language] = {
+          {
+            type = "pwa-node",
+            address = "138.68.150.122",
+            request = "attach",
+            name = "Node Docker Debug Adapter",
+            cwd = "${workspaceFolder}",
+          },
+        }
+      end
+      require("dap").configurations.typescriptreact = {
+        {
+          type = "pwa-chrome",
+          name = "Attach - Remote Debugging",
+          request = "attach",
+          program = "${file}",
+          cwd = vim.fn.getcwd(),
+          sourceMaps = true,
+          protocol = "inspector",
+          port = 9222,
+          webRoot = "${workspaceFolder}",
+        },
+      }
+
       require("dap-vscode-js").setup {
         debugger_path = vim.fn.resolve(vim.fn.stdpath "data" .. "/lazy/vscode-js-debug"),
         adapters = { "pwa-node", "pwa-chrome", "node-terminal" },
