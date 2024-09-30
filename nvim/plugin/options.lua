@@ -11,7 +11,12 @@ opt.shortmess:append "sI"
 vim.o.mouse = ""
 local arrow_keys = { "<up>", "<left>", "<down>", "<right>" }
 for _, key in ipairs(arrow_keys) do
-  vim.api.nvim_set_keymap("n", key, "<cmd>echo 'Use hjkl Brav!'<cr>", { noremap = true, silent = true })
+  vim.keymap.set("n", key, function()
+    vim.notify("Use hjkl Brav!", vim.log.levels.ERROR)
+  end, {
+    noremap = true,
+    silent = true,
+  })
 end
 
 -- Indenting
