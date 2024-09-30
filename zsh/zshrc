@@ -40,11 +40,7 @@ if type brew &>/dev/null
 then
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
-autoload -Uz compinit
-compinit
-else
-  autoload -U compinit; compinit
-fi
+autoload -U compinit; compinit
 
 autoload -z edit-command-line
 zle -N edit-command-line
