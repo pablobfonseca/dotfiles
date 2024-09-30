@@ -109,7 +109,7 @@ njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf-tmux 
 }
 
 function branch_clean() {
-git checkout master && git branch --merged | grep -v master | xargs git branch -d
+  git checkout master && git branch --merged | grep -v master | xargs git branch -d
 }
 
 docker_rmi() {
@@ -195,6 +195,16 @@ tmux_session=$(tmux list-windows -a | fzf-tmux -p --prompt="Switch: " | sed 's/:
   else
     tmux attach-session -t "$tmux_session"
   fi
+}
+
+muxlist() {
+  local project=$(tmuxinator list -n | awk 'NR>1 {print $0}' | fzf-tmux -p --prompt="Project: ")
+  tmuxinator $project
+}
+
+emuxlist() {
+  local project=$(tmuxinator list -n | awk 'NR>1 {print $0}' | fzf-tmux -p --prompt="Project to edit: ")
+  tmuxinator new $project
 }
 
 tkill() {
