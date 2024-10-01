@@ -20,6 +20,8 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.config/emacs/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
+export ZPLUG_HOME=$(brew --prefix zplug)
+
 # Go
 export GOPATH=$HOME/code/go-workspace
 export GOROOT=/opt/homebrew/opt/go/libexec
@@ -48,6 +50,12 @@ export GEM_HOME=$HOME/.gem
 export NVM_DIR="$HOME/.nvm"
 
 export BAT_THEME=Dracula
+
+export PATH="$HOME/.luarocks/bin:$PATH"
+
+# Pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 
 export OBSIDIAN_VAULTS="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/"
 . "$HOME/.cargo/env"

@@ -40,13 +40,10 @@ if type brew &>/dev/null
 then
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
-autoload -U compinit; compinit
-
 autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
-export ZPLUG_HOME=$(brew --prefix zplug)
 source $ZPLUG_HOME/init.zsh
 
 zplug "zsh-users/zsh-autosuggestions"
@@ -157,6 +154,8 @@ bindkey "^F" find_file
 zle -N open_file
 bindkey "^P" open_file
 
+# Aliases
+
 alias path="echo $PATH | tr -s ':' '\n'"
 alias reload!="source ~/.zshrc"
 alias brew_update="brew update && brew upgrade && brew cleanup"
@@ -177,6 +176,9 @@ alias ip="curl ifconfig.me"
 alias copilot="gh copilot"
 alias gcs="gh copilot suggest"
 alias gce="gh copilot explain"
+
+alias mux="tmuxinator"
+alias sb="cd $OBSIDIAN_VAULTS"
 
 eval "$(op completion zsh)"; compdef _op op
 
@@ -211,7 +213,6 @@ if [ -n "$tmux_session" ]; then
   tmux kill-session -t "$tmux_session"
 fi
 }
-alias mux="tmuxinator"
 
 # rust
 . "$HOME/.cargo/env"
@@ -219,13 +220,12 @@ alias mux="tmuxinator"
 # opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
-export PATH="$HOME/.luarocks/bin:$PATH"
-
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 eval "$(zoxide init zsh)"
 
-alias sb="cd $OBSIDIAN_VAULTS"
+autoload -Uz compinit && compinit
+else
+  autoload -U compinit; compinit
+fi
