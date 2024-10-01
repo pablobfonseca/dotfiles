@@ -6,7 +6,7 @@
 # @raycast.mode compact
 
 # Optional parameters:
-# @raycast.icon 🤖
+# @raycast.icon 🔔
 
 # Documentation:
 # @raycast.author pablobfonseca
@@ -85,3 +85,5 @@ on run
     end tell
   end tell
 end run
+
+# Error: System Events got an error: No result was returned from some part of this expression.
