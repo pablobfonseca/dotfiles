@@ -1,4 +1,6 @@
 require("octo").setup {
+  users = "mentionable",
+  enable_builtin = true,
   suppress_missing_scope = {
     projects_v2 = true,
   },
