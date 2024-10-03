@@ -40,6 +40,11 @@ if type brew &>/dev/null
 then
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
+autoload -U compinit && compinit
+else
+  autoload -U compinit; compinit
+fi
+
 autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
@@ -171,6 +176,7 @@ alias vim="nvim"
 alias v="nvim"
 alias k="kubectl"
 alias ip="curl ifconfig.me"
+alias cvim="nvim -u NONE"
 
 # GH
 alias copilot="gh copilot"
@@ -224,8 +230,3 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 eval "$(zoxide init zsh)"
-
-autoload -Uz compinit && compinit
-else
-  autoload -U compinit; compinit
-fi
