@@ -51,4 +51,6 @@ vim.keymap.set("n", "<esc>", function()
   end
 end)
 
+vim.keymap.set("v", "M", mc.matchCursors)
+
 vim.keymap.set("n", "<leader>a", mc.alignCursors)
