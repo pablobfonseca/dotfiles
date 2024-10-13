@@ -36,6 +36,10 @@ local opts = {
     -- ocaml stuff
     "ocamllsp",
 
+    -- ruby stuff
+    "rubocop",
+    "ruby_lsp",
+
     -- go stuff
     "gopls",
     "goimports",

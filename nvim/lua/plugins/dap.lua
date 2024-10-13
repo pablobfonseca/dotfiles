@@ -117,27 +117,11 @@ return {
       require("telescope").load_extension "dap"
     end,
   },
-  {
-    "jbyuki/one-small-step-for-vimkind",
-    config = function()
-      local dap = require "dap"
-
-      dap.configurations.lua = {
-        {
-          type = "nlua",
-          request = "attach",
-          name = "Attach to running Neovim instance",
-        },
-      }
-
-      dap.adapters.nlua = function(callback, config)
-        callback { type = "server", host = config.host or "127.0.0.1", port = config.port or 8086 }
-      end
-    end,
-  },
   { "nvim-telescope/telescope-dap.nvim" },
   {
     "mxsdev/nvim-dap-vscode-js",
+    event = "VeryLazy",
+    ft = { "javascript", "typescript", "typescriptreact" },
     dependencies = {
       {
         "microsoft/vscode-js-debug",
@@ -180,6 +164,7 @@ return {
   },
   {
     "mfussenegger/nvim-dap-python",
+    ft = "python",
     config = function()
       require("dap-python").setup()
     end,
