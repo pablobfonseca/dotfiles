@@ -1,5 +1,7 @@
 return {
   "sindrets/diffview.nvim",
+  cmd = { "DiffviewOpen", "DiffviewClose" },
+  event = "VeryLazy",
   keys = {
     {
       "<C-c>Do",
@@ -11,7 +13,13 @@ return {
       "<C-c>Dc",
       mode = "n",
       desc = "Diff View Close",
-      "<cmd>DiffviewOpen<cr>",
+      "<cmd>DiffviewClose<cr>",
+    },
+    {
+      "<C-c>Df",
+      mode = "n",
+      desc = "Diff View File History",
+      "<cmd>DiffviewFileHistory<cr>",
     },
   },
 }
