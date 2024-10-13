@@ -12,5 +12,16 @@ ls.add_snippets("javascript", {
 })
 
 ls.add_snippets("javascript", {
-  s("fcl", fmt("console.log(util.inspect({}, false, null, true))", { i(1) })),
+  s(
+    "fcl",
+    fmt(
+      [[
+      const util = await import("node:util");
+      console.log(util.inspect({}, false, null, true))
+      ]],
+      {
+        i(1),
+      }
+    )
+  ),
 })

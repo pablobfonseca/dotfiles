@@ -10,7 +10,7 @@ return {
       desc = "Buffer Diagnostics (Trouble)",
       "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
     },
-    { "<leader>ts", mode = "n", desc = "Symbols (Trouble)",     "<cmd>Trouble symbols toggle focus=false<cr>" },
+    { "<leader>ts", mode = "n", desc = "Symbols (Trouble)", "<cmd>Trouble symbols toggle focus=false<cr>" },
     {
       "<leader>tl",
       mode = "n",
@@ -22,6 +22,12 @@ return {
       mode = "n",
       desc = "Quickfix list (Trouble)",
       "<cmd>Trouble qflist toggle<cr>",
+    },
+    {
+      "<leader>tT",
+      mode = "n",
+      desc = "Todo list (Trouble)",
+      "<cmd>Trouble todo<cr>",
     },
   },
   opts = {

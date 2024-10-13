@@ -16,6 +16,7 @@ return {
   },
   {
     "jay-babu/mason-nvim-dap.nvim",
+    event = "VeryLazy",
     opts = {
       ensure_installed = {
         "delve",

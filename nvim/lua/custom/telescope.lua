@@ -1,15 +1,64 @@
 local telescope = require "telescope"
+local lga_actions = require "telescope-live-grep-args.actions"
+local builtin = require "telescope.builtin"
+local z_utils = require "telescope._extensions.zoxide.utils"
+
 telescope.setup {
   defaults = {
     vimgrep_arguments = {
       "rg",
-      "-L",
       "--color=never",
       "--no-heading",
       "--with-filename",
       "--line-number",
       "--column",
       "--smart-case",
+      "--hidden",
+    },
+    extensions = {
+      live_grep_args = {
+        auto_quoting = true,
+        mappings = {
+          i = {
+            ["<C-k>"] = lga_actions.quote_prompt(),
+            ["<C-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
+          },
+        },
+      },
+      fzf = {
+        fuzzy = true,
+        override_generic_sorter = true,
+        override_file_sorter = true,
+        case_mode = "smart_case",
+      },
+      zoxide = {
+        prompt_title = "[ Zoxide List ]",
+        -- Zoxide list command with score
+        list_command = "zoxide query -ls",
+        mappings = {
+          default = {
+            keepinsert = true,
+            action = function(selection)
+              builtin.find_files { cwd = selection.path, find_command = { "rg", "--files", "--hidden", "-g", "!.git" } }
+            end,
+          },
+          ["<C-s>"] = { action = z_utils.create_basic_command "split" },
+          ["<C-v>"] = { action = z_utils.create_basic_command "vsplit" },
+          ["<C-e>"] = { action = z_utils.create_basic_command "edit" },
+          ["<C-b>"] = {
+            keepinsert = true,
+            action = function(selection)
+              builtin.file_browser { cwd = selection.path }
+            end,
+          },
+          ["<C-f>"] = {
+            keepinsert = true,
+            action = function(selection)
+              builtin.find_files { cwd = selection.path, find_command = { "rg", "--files", "--hidden", "-g", "!.git" } }
+            end,
+          },
+        },
+      },
     },
     prompt_prefix = "  ",
     selection_caret = "  ",
@@ -31,6 +80,9 @@ telescope.setup {
 }
 
 telescope.load_extension "fzf"
+telescope.load_extension "live_grep_args"
+telescope.load_extension "zoxide"
+telescope.load_extension "cmdline"
 
 local set = vim.keymap.set
 
@@ -38,61 +90,61 @@ set("n", "<space>t", function()
   vim.cmd "Telescope"
 end, { desc = "Open Telescope" })
 set("n", "<C-s>", function()
-  require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
+  builtin.current_buffer_fuzzy_find()
 end, { desc = "Fuzzy finder on current buffer" })
 set("n", "<C-p>", function()
-  require("telescope.builtin").find_files {
+  builtin.find_files {
     find_command = { "rg", "--ignore", "--hidden", "--files" },
   }
 end, { desc = "Find file" })
 set("n", "<space>p", function()
-  require("telescope.builtin").git_files()
+  builtin.git_files()
 end, { desc = "Find git files" })
 set("n", "<leader>f", function()
-  require("telescope.builtin").live_grep()
+  -- builtin.live_grep()
+
+  require("telescope").extensions.live_grep_args.live_grep_args()
 end, { desc = "Live Grep" })
 set("n", "<C-x>b", function()
-  require("telescope.builtin").buffers()
+  builtin.buffers()
 end, { desc = "Telescope buffers" })
 set("n", "gs", function()
-  require("telescope.builtin").git_status()
+  builtin.git_status()
 end, { desc = "Git status" })
 set("n", "bs", function()
-  require("telescope.builtin").git_branches()
+  builtin.git_branches()
 end, { desc = "Git branches" })
 set("n", "<C-x>k", function()
-  require("telescope.builtin").keymaps()
+  builtin.keymaps()
 end, { desc = "Find keymaps" })
 set("n", "<C-x>h", function()
-  require("telescope.builtin").help_tags()
+  builtin.help_tags()
 end, { desc = "Help page" })
-set("n", "<M-x>", function()
-  require("telescope.builtin").commands(require("telescope.themes").get_ivy())
-end, { desc = "Telescope commands" })
+set("n", "<M-x>", ":Telescope cmdline<CR>", { desc = "Telescope commands" })
 set("n", "<leader>ds", function()
-  require("telescope.builtin").lsp_document_symbols()
+  builtin.lsp_document_symbols()
 end, { desc = "Search document symbols" })
 set("n", "<leader>ws", function()
-  require("telescope.builtin").lsp_workspace_symbols()
+  builtin.lsp_workspace_symbols()
 end, { desc = "Workspace document symbols" })
 set("n", "<leader>rp", function()
-  require("telescope.builtin").find_files { cwd = vim.fn.stdpath "config", prompt_title = " neovim" }
+  builtin.find_files { cwd = vim.fn.stdpath "config", prompt_title = " neovim" }
 end, { desc = "Search [N]eovim files" })
 set("n", "<leader>df", function()
-  require("telescope.builtin").find_files {
+  builtin.find_files {
     prompt_title = " dotfiles",
     cwd = "~/.dotfiles",
   }
 end, { desc = "Find dotfiles" })
 set("n", "<leader>sr", function()
-  require("telescope.builtin").live_grep {
+  builtin.live_grep {
     prompt_title = "Search for nvim config",
     cwd = "~/.dotfiles",
   }
 end, { desc = "Search for nvim config" })
 set({ "n", "v" }, "K", function()
-  require("telescope.builtin").grep_string {}
+  builtin.grep_string {}
 end, { desc = "Search current word" })
+set("n", "<leader>z", function()
+  telescope.extensions.zoxide.list()
+end, { desc = "Change current workdir with zoxide" })

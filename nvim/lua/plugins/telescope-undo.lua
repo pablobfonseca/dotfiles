@@ -7,19 +7,25 @@ return {
     },
   },
   keys = {
-    { "<leader>u", mode = "n", desc = "Undo history", "<cmd>Telescope undo<cr>" },
+    {
+      "<leader>u",
+      mode = "n",
+      desc = "Undo history",
+      function()
+        require("telescope").extensions.undo.undo()
+      end,
+    },
   },
-  config = function(_, opts)
+  config = function()
     local telescope = require "telescope"
     telescope.setup {
       extensions = {
         undo = {
-          use_custom_command = nil,
-          side_by_side = false,
-          diff_context_lines = vim.o.scrolloff,
-          entry_format = "state #$ID, $STAT, $TIME",
-          time_format = "",
-          saved_only = false,
+          side_by_side = true,
+          layout_strategy = "vertical",
+          layout_config = {
+            preview_height = 0.8,
+          },
         },
       },
     }

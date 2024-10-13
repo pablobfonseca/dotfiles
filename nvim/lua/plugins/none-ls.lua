@@ -35,6 +35,10 @@ return {
       -- python
       b.formatting.black,
 
+      -- ruby
+      b.formatting.rubocop,
+      b.diagnostics.rubocop,
+
       -- go
       b.formatting.gofmt,
       b.formatting.goimports,

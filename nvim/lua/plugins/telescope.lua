@@ -5,6 +5,9 @@ return {
   dependencies = {
     { "nvim-lua/plenary.nvim" },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    { "nvim-telescope/telescope-live-grep-args.nvim", version = "^1.0.0" },
+    { "jvgrootveld/telescope-zoxide" },
+    { "jonarrien/telescope-cmdline.nvim" },
   },
   config = function()
     require "custom.telescope"
