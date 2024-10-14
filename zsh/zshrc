@@ -5,7 +5,7 @@
 # FZF
 eval "$(fzf --zsh)"
 _fzf_compgen_path() {
- fd --hidden --exclude .git . "$1"
+   fd --hidden --exclude .git . "$1"
 }
 
  # Advanced customization of fzf options via _fzf_comprun function
@@ -33,16 +33,15 @@ else
   source ~/fzf-git.sh/fzf-git.sh
 fi
 
-
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 if type brew &>/dev/null
-then
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+  then
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
-autoload -U compinit && compinit
+    autoload -U compinit && compinit
 else
-  autoload -U compinit; compinit
+    autoload -U compinit; compinit
 fi
 
 autoload -z edit-command-line
@@ -55,17 +54,31 @@ zplug "zsh-users/zsh-autosuggestions"
 zplug "b4b4r07/enhancd", use:init.sh, defer:2
 zplug "jeffreytse/zsh-vi-mode"
 zplug "Aloxaf/fzf-tab"
+zplug "joshskidmore/zsh-fzf-history-search"
 
 # fzf-tab
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
-printf "Install? [y/N]: "
-if read -q; then
-echo; zplug install
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo; zplug install
+  fi
 fi
-fi
+
+# zsh-vi-mode
+source_if_exists() {
+  if test -r "$1"; then
+    source "$1"
+  fi
+}
+
+function after_init() {
+  source_if_exists ~/.fzf.zsh
+  source_if_exists $ZPLUG_REPOS/joshskidmore/zsh-fzf-history-search/zsh-fzf-history-search.zsh
+}
+zvm_after_init_commands+=(after_init)
 
 # Then, source plugins and add commands to $PATH
 zplug load
@@ -74,63 +87,63 @@ zplug load
 
 autoload -U add-zsh-hook
 load-nvmrc() {
-local node_version="$(nvm version)"
-local nvmrc_path="$(nvm_find_nvmrc)"
+    local node_version="$(nvm version)"
+    local nvmrc_path="$(nvm_find_nvmrc)"
 
-if [ -n "$nvmrc_path" ]; then
-local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+    if [ -n "$nvmrc_path" ]; then
+      local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
 
-if [ "$nvmrc_node_version" = "N/A" ]; then
-nvm install
-elif [ "$nvmrc_node_version" != "$node_version" ]; then
-nvm use
-fi
-elif [ "$node_version" != "$(nvm version default)" ]; then
-echo "Reverting to nvm default version"
-nvm use default
-fi
+      if [ "$nvmrc_node_version" = "N/A" ]; then
+        nvm install
+      elif [ "$nvmrc_node_version" != "$node_version" ]; then
+        nvm use
+      fi
+    elif [ "$node_version" != "$(nvm version default)" ]; then
+      echo "Reverting to nvm default version"
+      nvm use default
+    fi
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
 function take {
-mkdir $1
-cd $1
+  mkdir $1
+  cd $1
 }
 
 rvmlist() {
-local rb
-rb=$((echo system; rvm list | grep ruby | cut -c 4-) |
-awk '{print $1}' |
-fzf-tmux -p --prompt "Ruby version: ") && rvm use $rb
+    local rb
+    rb=$((echo system; rvm list | grep ruby | cut -c 4-) |
+    awk '{print $1}' |
+    fzf-tmux -p --prompt "Ruby version: ") && rvm use $rb
 }
 
 
 nvmlist() {
-local njs
-njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf-tmux -p --prompt "Node version: ") && nvm use $njs
+    local njs
+    njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf-tmux -p --prompt "Node version: ") && nvm use $njs
 }
 
 function branch_clean() {
-  git checkout master && git branch --merged | grep -v master | xargs git branch -d
+    git checkout master && git branch --merged | grep -v master | xargs git branch -d
 }
 
 docker_rmi() {
-local image
-image=$(docker images | awk '(NR>1) { print $1 " " $3; }' | fzf-tmux -p) \
-&& docker rmi $(cut -d' ' -f2 <<< "$image") --force
+    local image
+    image=$(docker images | awk '(NR>1) { print $1 " " $3; }' | fzf-tmux -p) \
+    && docker rmi $(cut -d' ' -f2 <<< "$image") --force
 }
 
 docker_attach() {
-local container
-container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf-tmux -p) \
-&& docker attach $(cut -d' ' -f1 <<< "$container")
+    local container
+    container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf-tmux -p) \
+    && docker attach $(cut -d' ' -f1 <<< "$container")
 }
 
 docker_stop() {
-local container
-container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf-tmux -p) \
-&& docker stop $(cut -d' ' -f1 <<< "$container")
+    local container
+    container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf-tmux -p) \
+    && docker stop $(cut -d' ' -f1 <<< "$container")
 }
 
 alias heic_to_png="magick mogrify -monitor -format png *.HEIC"
@@ -139,7 +152,7 @@ alias lazydocker="upscope lazydocker"
 
 function _ur() {
    local service;
-service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf-tmux --prompt 'Select a service to restart: ')"
+   service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf-tmux --prompt 'Select a service to restart: ')"
    upscope restart -c $service
 }
 
@@ -151,11 +164,11 @@ function _ul() {
 
 
 find_file() {
-fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Find File: "
+  fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Find File: "
  }
 
 open_file() {
-fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Open File: " | xargs nvim
+  fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Open File: " | xargs nvim
 }
 
 zle -N find_file
@@ -217,12 +230,12 @@ emuxlist() {
 }
 
 tkill() {
-  local tmux_session
-tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf-tmux -p --prompt="Kill: ")
+    local tmux_session
+  tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf-tmux -p --prompt="Kill: ")
 
-if [ -n "$tmux_session" ]; then
-  tmux kill-session -t "$tmux_session"
-fi
+  if [ -n "$tmux_session" ]; then
+    tmux kill-session -t "$tmux_session"
+  fi
 }
 
 # rust
