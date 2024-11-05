@@ -2,6 +2,7 @@ local telescope = require "telescope"
 local lga_actions = require "telescope-live-grep-args.actions"
 local builtin = require "telescope.builtin"
 local z_utils = require "telescope._extensions.zoxide.utils"
+local actions = require "telescope.actions"
 
 local select_one_or_multi = function(prompt_bufnr)
   local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
@@ -33,17 +34,14 @@ telescope.setup {
     mappings = {
       i = {
         ["<CR>"] = select_one_or_multi,
+        ["<C-k>"] = lga_actions.quote_prompt(),
+        ["<C-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
+        ["<C-\\>"] = actions.to_fuzzy_refine,
       },
     },
     extensions = {
       live_grep_args = {
         auto_quoting = true,
-        mappings = {
-          i = {
-            ["<C-k>"] = lga_actions.quote_prompt(),
-            ["<C-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
-          },
-        },
       },
       fzf = {
         fuzzy = true,
