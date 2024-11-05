@@ -2,37 +2,6 @@
 # Load GHCup environment
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
-# FZF
-eval "$(fzf --zsh)"
-_fzf_compgen_path() {
-   fd --hidden --exclude .git . "$1"
-}
-
- # Advanced customization of fzf options via _fzf_comprun function
- # - The first argument to the function is the name of the command.
- # - You should make sure to pass the rest of the arguments to fzf.
- _fzf_comprun() {
-   local command=$1
-   shift
-
-   case "$command" in
-    cd)           fzf --preview 'lsd --tree --color=always {} | head -201' "$@" ;;
-     export|unset) fzf --preview "eval 'echo $'{}"         "$@" ;;
-     *)            fzf --preview "bat -n --color=always --line-range :499 {}" "$@" ;;
-   esac
- }
-
-_fzf_compgen_dir() {
-  fd --type=d --hidden --exclude .git . "$1"
-}
-
-if [ -d ~/fzf-git.sh ]; then
-  source ~/fzf-git.sh/fzf-git.sh
-else
-  git clone https://github.com/junegunn/fzf-git.sh.git ~/fzf-git.sh
-  source ~/fzf-git.sh/fzf-git.sh
-fi
-
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 if type brew &>/dev/null
@@ -52,9 +21,7 @@ source $ZPLUG_HOME/init.zsh
 
 zplug "zsh-users/zsh-autosuggestions"
 zplug "b4b4r07/enhancd", use:init.sh, defer:2
-zplug "jeffreytse/zsh-vi-mode"
 zplug "Aloxaf/fzf-tab"
-zplug "joshskidmore/zsh-fzf-history-search"
 
 # fzf-tab
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
@@ -66,19 +33,6 @@ if ! zplug check --verbose; then
     echo; zplug install
   fi
 fi
-
-# zsh-vi-mode
-source_if_exists() {
-  if test -r "$1"; then
-    source "$1"
-  fi
-}
-
-function after_init() {
-  source_if_exists ~/.fzf.zsh
-  source_if_exists $ZPLUG_REPOS/joshskidmore/zsh-fzf-history-search/zsh-fzf-history-search.zsh
-}
-zvm_after_init_commands+=(after_init)
 
 # Then, source plugins and add commands to $PATH
 zplug load
@@ -244,7 +198,41 @@ tkill() {
 # opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
+# FZF
+source <(fzf --zsh)
+_fzf_compgen_path() {
+   fd --hidden --follow --exclude .git . "$1"
+}
+
+ # Advanced customization of fzf options via _fzf_comprun function
+ # - The first argument to the function is the name of the command.
+ # - You should make sure to pass the rest of the arguments to fzf.
+ _fzf_comprun() {
+   local command=$1
+   shift
+
+   case "$command" in
+    cd)           fzf --preview 'lsd --tree --color=always {} | head -201' "$@" ;;
+     export|unset) fzf --preview "eval 'echo $'{}"         "$@" ;;
+     *)            fzf --preview "bat -n --color=always --line-range :499 {}" "$@" ;;
+   esac
+ }
+
+_fzf_compgen_dir() {
+  fd --type=d --hidden --follow --exclude .git . "$1"
+}
+
+if [ -d ~/fzf-git.sh ]; then
+  source ~/fzf-git.sh/fzf-git.sh
+else
+  git clone https://github.com/junegunn/fzf-git.sh.git ~/fzf-git.sh
+  source ~/fzf-git.sh/fzf-git.sh
+fi
+
+
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 eval "$(zoxide init zsh)"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
