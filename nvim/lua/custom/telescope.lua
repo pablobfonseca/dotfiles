@@ -101,6 +101,7 @@ telescope.load_extension "fzf"
 telescope.load_extension "live_grep_args"
 telescope.load_extension "zoxide"
 telescope.load_extension "cmdline"
+-- telescope.load_extension "upscope"
 
 local set = vim.keymap.set
 
@@ -120,7 +121,9 @@ set("n", "<space>p", function()
 end, { desc = "Find git files" })
 set("n", "<leader>f", function()
   -- builtin.live_grep()
-
+  require("telescope").extensions.live_grep_args.live_grep_args()
+end, { desc = "Live Grep" })
+set("n", "<leader>S", function()
   require("telescope").extensions.live_grep_args.live_grep_args()
 end, { desc = "Live Grep" })
 set("n", "<C-x>b", function()
