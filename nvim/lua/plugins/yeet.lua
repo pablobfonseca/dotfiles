@@ -7,7 +7,7 @@ return {
   cmd = "Yeet",
   keys = {
     {
-      "<C-x>xx",
+      "<leader>rr",
       mode = "n",
       desc = "Yeet run",
       "<cmd>Yeet<cr>",
