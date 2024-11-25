@@ -44,6 +44,14 @@ key-mapping.preset = 'qwerty'
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
+[[on-window-detected]]
+if.app-name-regex-substring = 'finder'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'slack'
+run = 'layout floating'
+
 # Gaps between windows (inner-*) and between monitor edges (outer-*).
 # Possible values:
 # - Constant:     gaps.outer.top = 8
@@ -81,12 +89,13 @@ outer.right =      2
 
 # You can uncomment this line to open up terminal with alt + enter shortcut
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-ctrl-cmd-b = 'exec-and-forget open -a Arc'
+ctrl-cmd-q = 'exec-and-forget open -a Qutebrowser'
+ctrl-cmd-b = 'exec-and-forget open -a "Google Chrome"'
 ctrl-cmd-t = 'exec-and-forget open -a WezTerm'
 ctrl-cmd-s = 'exec-and-forget open -a Slack'
-ctrl-cmd-n = 'exec-and-forget open -a Obsidian'
 ctrl-cmd-e = 'exec-and-forget open -a Emacs'
 ctrl-cmd-f = 'exec-and-forget open -a Firefox'
+ctrl-cmd-c = 'exec-and-forget open -a Calendar'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 cmd-shift-slash = 'layout tiles horizontal vertical'
