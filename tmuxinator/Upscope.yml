@@ -1,0 +1,11 @@
+name: Upscope
+root: ~/code/upscope
+
+windows:
+  - nvim:
+      layout: main-vertical
+      panes:
+        - nvim
+        -
+  - lazydocker: upscope lazydocker
+  - types-watch: upscope types:build -w
