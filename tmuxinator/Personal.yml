@@ -1,0 +1,17 @@
+# /Users/pablobfonseca/.config/tmuxinator/Personal.yml
+
+name: Personal
+root: ~/
+
+windows:
+  - dotfiles:
+      layout: main-vertical
+      root: ~/.dotfiles
+      panes:
+        - nvim
+  - playground:
+      layout: main-vertical
+      root: ~/code/Playground
+  - go-workspace:
+      layout: main-vertical
+      root: ~/code/go-workspace/src/github.com/pablobfonseca
