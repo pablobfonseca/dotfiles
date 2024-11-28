@@ -1,0 +1,10 @@
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+
+os:
+  editPreset: "nvim"
+keybindings:
+  universal:
+    return: "<c-x>" # return to previous menu, will quit if there's nowhere to return
