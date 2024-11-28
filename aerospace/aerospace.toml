@@ -49,6 +49,11 @@ if.app-name-regex-substring = 'finder'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-name-regex-substring = 'calendar'
+run = 'layout floating'
+
+
+[[on-window-detected]]
 if.app-name-regex-substring = 'slack'
 run = 'layout floating'
 
@@ -95,7 +100,6 @@ ctrl-cmd-t = 'exec-and-forget open -a WezTerm'
 ctrl-cmd-s = 'exec-and-forget open -a Slack'
 ctrl-cmd-e = 'exec-and-forget open -a Emacs'
 ctrl-cmd-f = 'exec-and-forget open -a Firefox'
-ctrl-cmd-c = 'exec-and-forget open -a Calendar'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 cmd-shift-slash = 'layout tiles horizontal vertical'

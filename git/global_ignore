@@ -26,3 +26,5 @@ jsconfig.json
 .log
 restmode
 .solargraph.yml
+upscope_requests.http
+http-client.env.json
