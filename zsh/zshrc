@@ -1,6 +1,6 @@
 # Haskell
 # Load GHCup environment
-[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
@@ -37,28 +37,8 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load
 
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-autoload -U add-zsh-hook
-load-nvmrc() {
-    local node_version="$(nvm version)"
-    local nvmrc_path="$(nvm_find_nvmrc)"
-
-    if [ -n "$nvmrc_path" ]; then
-      local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-      if [ "$nvmrc_node_version" = "N/A" ]; then
-        nvm install
-      elif [ "$nvmrc_node_version" != "$node_version" ]; then
-        nvm use
-      fi
-    elif [ "$node_version" != "$(nvm version default)" ]; then
-      echo "Reverting to nvm default version"
-      nvm use default
-    fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
+# This loads fnm
+[[ $(command -v "fnm") ]] && eval "$(fnm env --use-on-cd --shell zsh)"
 
 function take {
   mkdir $1
@@ -67,15 +47,14 @@ function take {
 
 rvmlist() {
     local rb
-    rb=$((echo system; rvm list | grep ruby | cut -c 4-) |
-    awk '{print $1}' |
+    rb=$((echo system; rvm list | grep ruby | awk '{print $2}') |
     fzf-tmux -p --prompt "Ruby version: ") && rvm use $rb
 }
 
 
 nvmlist() {
     local njs
-    njs=$((nvm ls --no-colors --no-alias | cut -c 8-) | awk '{print $1}' | fzf-tmux -p --prompt "Node version: ") && nvm use $njs
+    njs=$(fnm list | awk '{print $2}' | fzf-tmux -p --prompt "Node version: ") && fnm use $njs
 }
 
 function branch_clean() {
@@ -100,39 +79,31 @@ docker_stop() {
     && docker stop $(cut -d' ' -f1 <<< "$container")
 }
 
-alias heic_to_png="magick mogrify -monitor -format png *.HEIC"
-
-alias lazydocker="upscope lazydocker"
-
+# TODO: check if the service is found
 function _ur() {
    local service;
    service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf-tmux --prompt 'Select a service to restart: ')"
    upscope restart -c $service
 }
 
+# TODO: check if the service is found
 function _ul() {
   local service;
   service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf-tmux --prompt 'Select a service to see the logs: ')"
   upscope logs -c $service
 }
 
-
-find_file() {
-  fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Find File: "
- }
-
 open_file() {
   fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Open File: " | xargs nvim
 }
-
-zle -N find_file
-bindkey "^F" find_file
 
 zle -N open_file
 bindkey "^P" open_file
 
 # Aliases
 
+alias heic_to_png="magick mogrify -monitor -format png *.HEIC"
+alias lazydocker="upscope lazydocker"
 alias path="echo $PATH | tr -s ':' '\n'"
 alias reload!="source ~/.zshrc"
 alias brew_update="brew update && brew upgrade && brew cleanup"
@@ -159,13 +130,12 @@ alias mux="tmuxinator"
 alias sb="cd $OBSIDIAN_VAULTS"
 
 eval "$(op completion zsh)"; compdef _op op
-
 eval "$(starship init zsh)"
 
 # tmux
 tlist() {
-local tmux_session
-tmux_session=$(tmux list-windows -a | fzf-tmux -p --prompt="Switch: " | sed 's/: .*//g')
+  local tmux_session
+  tmux_session=$(tmux list-windows -a | fzf-tmux -p --prompt="Switch: " | sed 's/: .*//g')
   if [ -n "$TMUX" ]; then
     tmux switch-client -t "$tmux_session"
   else
@@ -193,7 +163,7 @@ tkill() {
 }
 
 # rust
-. "$HOME/.cargo/env"
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 # opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
@@ -229,10 +199,34 @@ else
   source ~/fzf-git.sh/fzf-git.sh
 fi
 
+function prlist() {
+  GH_FORCE_TTY=100% gh pr list --json number,title --template '{{range .}}{{tablerow (printf "%v" .number | autocolor "green") .title}}{{end}}' | \
+    fzf --ansi --preview 'GH_FORCE_TTY=100% gh pr view {1}' --preview-window down | \
+    awk '{print $1}' | \
+    xargs gh pr checkout
+}
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-
 eval "$(zoxide init zsh)"
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+# fnm
+FNM_PATH="/Users/pablobfonseca/Library/Application Support/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/Users/pablobfonseca/Library/Application Support/fnm:$PATH"
+  eval "`fnm env`"
+fi
+
+# fnm
+FNM_PATH="/Users/pablobfonseca/Library/Application Support/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/Users/pablobfonseca/Library/Application Support/fnm:$PATH"
+  eval "`fnm env`"
+fi
+
+# fnm
+FNM_PATH="/Users/pablobfonseca/Library/Application Support/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/Users/pablobfonseca/Library/Application Support/fnm:$PATH"
+  eval "`fnm env`"
+fi
