@@ -47,41 +47,13 @@
 [alias]
   glog                    = log -E -i --grep
   sla                     = log --oneline --decorate --graph --all -20
-  aa                      = add --all
-  bhist                   = "!git --no-pager reflog $(git rev-parse --abbrev-ref HEAD)"
-  bom                     = push --set-upstream origin master
-  browse                  = !hub browse
   bselect                 = "!branches=$(git branch -a) && branch=$(echo \"$branches\" | fzf-tmux --prompt "Branch: " -p --reverse +s +m) && [[ $branch =~ 'remotes' ]] && git checkout --track ${branch#remotes/origin/} || git checkout $(echo \"$branch\" | sed 's/.* //')"
-  ca                      = commit --amend
-  car                     = commit --amend --no-edit
-  ci-status               = "!hub ci-status"
   co                      = checkout
-  compare                 = !hub compare
   conflicts               = !git ls-files -u | awk '{print $4}' | sort -u
   copysha                 = "!git rev-parse HEAD | tr -d '\n' | pbcopy"
-  count                   = !git log --oneline | wc -l | awk '{print $1}'
-  current-branch          = !git rev-parse --abbrev-ref HEAD 2> /dev/null | sed 's/^HEAD$//'
-  dc                      = diff --word-diff --cached --color-words
-  df                      = diff --word-diff --color-words
   fall                    = "!for remote in $(git remote); do echo "Fetching $remote"; git fetch "$remote"; done"
-  fpop                    = !git stash show -p | git apply && git stash drop
-  full-commit             = !git cat-file -p $(git rev-parse HEAD)
-  issues                  = !hub browse -- issues
   lnames                  = !git --no-pager show --name-only $1
-  master                  = checkout master
-  mb                      = !git merge-base HEAD $1
-  mup                     = !git checkout master && git pull && git checkout - no-ff = merge --no-ff
-  plr                     = pull --rebase
-  pom                     = push -u origin master
-  ps                      = push
-  rbc                     = rebase --continue
-  ri                      = rebase -i
-  rim                     = !git rebase --interactive $(git merge-base master HEAD)
-  riu                     = !git rebase -i $(git upstream)
   rmdeleted               = !git rm $(git ls-files --deleted)
-  rom                     = remote add origin
-  rpo                     = remote prune origin
-  sal                     = !git sla # Accepting that I will continue to mistype this
   sdot                    = status .  --short --branch
   si                      = status --ignored
   st                      = status -s
