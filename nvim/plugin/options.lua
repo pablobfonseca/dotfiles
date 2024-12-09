@@ -60,7 +60,7 @@ opt.colorcolumn = "0"
 opt.isfname:append "@-@"
 
 -- Make updates happen faster
-opt.updatetime = 250
+opt.updatetime = 50
 
 -- set bell off
 opt.belloff = "all"
@@ -113,3 +113,6 @@ vim.diagnostic.config {
 }
 
 opt.shada = { "'10", "<0", "s10", "h" }
+
+-- gets rid of line with white spaces
+vim.g.editorconfig = true
