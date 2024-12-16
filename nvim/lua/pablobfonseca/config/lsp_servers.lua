@@ -10,7 +10,6 @@ return {
   "pylsp",
   "ruby_lsp",
   "rust_analyzer",
-  "sqls",
   "tailwindcss",
   "ts_ls",
   "yamlls",

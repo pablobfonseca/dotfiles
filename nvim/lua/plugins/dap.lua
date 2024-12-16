@@ -29,9 +29,26 @@ return {
               require("dapui").eval(vim.fn.input "[DAP] Expression >")
             end,
           },
+          {
+            "<C-c>dh",
+            desc = "Debugger hover",
+            mode = { "n", "v" },
+            function()
+              require("dap.ui.widgets").hover()
+            end,
+          },
         },
         config = function()
           local dap, dapui = require "dap", require "dapui"
+
+          -- mappings = {
+          --   edit = "e",
+          --   expand = { "<CR>", "<2-LeftMouse>" },
+          --   open = "o",
+          --   remove = "d",
+          --   repl = "r",
+          --   toggle = "t"
+          -- }
 
           dapui.setup()
 
