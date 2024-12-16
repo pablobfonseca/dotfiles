@@ -1214,12 +1214,7 @@ c.aliases = {"q": "quit", "w": "session-save", "wq": "quit --save"}
 # Same as `{column}`, but starting from index 0.
 # Type: ShellCommand
 c.editor.command = [
-    "wezterm",
-    "start",
-    "--",
-    "zsh",
-    "-c",
-    "nvim",
+    "gvim",
     "-f",
     "{file}",
     "-c",
