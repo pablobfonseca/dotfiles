@@ -1,8 +1,13 @@
 require("octo").setup {
-  users = "mentionable",
+  users = "assignable",
   enable_builtin = true,
   suppress_missing_scope = {
     projects_v2 = true,
+  },
+  mappings = {
+    submit_win = {
+      approve_review = { lhs = "<localleader>a", desc = "approve review" },
+    },
   },
 }
 

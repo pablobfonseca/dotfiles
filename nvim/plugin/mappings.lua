@@ -64,3 +64,7 @@ set("t", "<Esc>", "<C-\\><C-m>", { desc = "Exit terminal mode" })
 -- insert a line above the cursor without leaving normal mode
 set("n", "gO", "mmO<esc>`m", { desc = "Insert a new line above the cursor without leaving normal mode" })
 set("n", "go", "mmo<esc>`m", { desc = "Insert a new line below the cursor without leaving normal mode" })
+
+-- increment number
+set("n", "<M-a>", "<C-a>")
+set("n", "<M-x>", "<C-x>")

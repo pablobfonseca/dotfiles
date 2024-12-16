@@ -32,9 +32,6 @@ return {
       -- elm
       b.formatting.elm_format,
 
-      -- python
-      b.formatting.black,
-
       -- ruby
       b.formatting.rubocop,
       b.diagnostics.rubocop,

@@ -31,7 +31,6 @@ local opts = {
     -- python stuff
     "pyright",
     "python-lsp-server",
-    "black",
 
     -- ocaml stuff
     "ocamllsp",
