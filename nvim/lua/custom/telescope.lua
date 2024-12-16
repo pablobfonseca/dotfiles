@@ -85,3 +85,7 @@ end, { desc = "Search for nvim config" })
 set({ "n", "v" }, "K", function()
   builtin.grep_string {}
 end, { desc = "Search current word" })
+set("n", "<space>fa", function()
+  ---@diagnostic disable-next-line: param-type-mismatch
+  builtin.find_files { cwd = vim.fs.joinpath(vim.fn.stdpath "data", "lazy") }
+end)
