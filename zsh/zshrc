@@ -1,3 +1,5 @@
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/Users/pablobfonseca/.zsh/completions:"* ]]; then export FPATH="/Users/pablobfonseca/.zsh/completions:$FPATH"; fi
 # Haskell
 # Load GHCup environment
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
@@ -97,6 +99,15 @@ open_file() {
   fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Open File: " | xargs nvim
 }
 
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
 zle -N open_file
 bindkey "^P" open_file
 
@@ -120,6 +131,7 @@ alias v="nvim"
 alias k="kubectl"
 alias ip="curl ifconfig.me"
 alias cvim="nvim -u NONE"
+alias fman="compgen -c | fzf-tmux -p --prompt='Search for a command: ' | xargs man"
 
 # GH
 alias copilot="gh copilot"
@@ -136,10 +148,12 @@ eval "$(starship init zsh)"
 tlist() {
   local tmux_session
   tmux_session=$(tmux list-windows -a | fzf-tmux -p --prompt="Switch: " | sed 's/: .*//g')
-  if [ -n "$TMUX" ]; then
-    tmux switch-client -t "$tmux_session"
-  else
-    tmux attach-session -t "$tmux_session"
+  if [ -n "$tmux_session" ]; then
+    if [ -n "$TMUX" ]; then
+      tmux switch-client -t "$tmux_session"
+    else
+      tmux attach-session -t "$tmux_session"
+    fi
   fi
 }
 
@@ -169,7 +183,7 @@ tkill() {
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 # FZF
-source <(fzf --zsh)
+eval "$(fzf --zsh)"
 _fzf_compgen_path() {
    fd --hidden --follow --exclude .git . "$1"
 }
@@ -206,6 +220,24 @@ function prlist() {
     xargs gh pr checkout
 }
 
+function dependabot-merge-all() {
+  for i in $(gh pr list --limit 100 --json number --json author --jq '.[] | select(.author.login == "app/dependabot") | .number'); do
+    echo "Merging PR #$i"
+    gh pr review $i --approve
+    gh pr merge $i --squash --delete-branch
+
+    # Capture the exit status immediately after the merge command
+    merge_status=$?
+
+    if [ $merge_status -ne 0 ]; then
+      gh pr comment $i --body "@dependabot recreate"
+      echo "Failed to merge PR #$i, will recreate"
+    else
+      echo "Merged PR #$i"
+    fi
+  done
+}
+
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 eval "$(zoxide init zsh)"
@@ -230,3 +262,19 @@ if [ -d "$FNM_PATH" ]; then
   export PATH="/Users/pablobfonseca/Library/Application Support/fnm:$PATH"
   eval "`fnm env`"
 fi
+
+# bun completions
+[ -s "/Users/pablobfonseca/.bun/_bun" ] && source "/Users/pablobfonseca/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+. "/Users/pablobfonseca/.deno/env"
+
+# atuin
+eval "$(atuin init zsh)"
+# keybinding to start atuin in insert mode
+bindkey "^r" atuin-search-viins 
+
+# keybinding to start atuin in normal mode
+bindkey "^x^n" atuin-search-vicmd # C-x C-n starts atuin in normal mode

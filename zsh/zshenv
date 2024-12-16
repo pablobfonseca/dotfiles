@@ -20,6 +20,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.config/emacs/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
 
 # Make vi-mode transitions faster (KEYTIMEOUT is in hundredths of a second)
 export KEYTIMEOUT=1
@@ -36,20 +37,11 @@ export PATH=$PATH:$GOROOT/bin
 # FZF
 export FZF_DEFAULT_COMMAND='fd --hidden --strip-cwd-prefix --exclude .git'
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
-# export FZF_DEFAULT_OPTS="--bind ctrl-y:preview-up,ctrl-e:preview-down,
-# \ctrl-b:preview-page-up,ctrl-f:preview-page-down,
-# \ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down,
-# \shift-up:preview-top,shift-down:preview-bottom,
-# \alt-up:half-page-up,alt-down:half-page-down"
+# export FZF_DEFAULT_OPTS="--height 50% --layout=default --border --color=hl:#2dd4bf"
 export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
 export FZF_CTRL_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
-export FZF_CTRL_R_OPTS="
-   --preview 'echo {}' --preview-window up:3:hidden:wrap
-   --bind 'ctrl-/:toggle-preview'
-   --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
-   --color header:italic
-    --header 'Press CTRL-Y to copy command into clipboard'"
+export FZF_TMUX_OPTS=" -p90%,70%"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
