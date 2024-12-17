@@ -14,7 +14,7 @@ return {
           },
         },
       },
-      { "Bilal2453/luvit-meta",                        lazy = true },
+      { "Bilal2453/luvit-meta", lazy = true },
       {
         "williamboman/mason.nvim",
         dependencies = {
@@ -36,7 +36,7 @@ return {
       },
       { "williamboman/mason-lspconfig" },
       { "WhoIsSethDaniel/mason-tool-installer.nvim" },
-      { "j-hui/fidget.nvim",                           opts = {} },
+      { "j-hui/fidget.nvim", opts = {} },
       { "https://git.sr.ht/~whynothugo/lsp_lines.nvim" },
       { "stevearc/conform.nvim" },
       { "b0o/schemastore.nvim" },
@@ -118,6 +118,9 @@ return {
         pylsp = true,
         ruby_lsp = true,
         tailwindcss = true,
+        hls = {
+          filetypes = { "haskell", "lhaskell", "cabal" },
+        },
         ts_ls = {
           root_dir = require("lspconfig").util.root_pattern "package.json",
           single_file = false,

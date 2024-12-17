@@ -28,6 +28,9 @@ local opts = {
     -- yaml
     "yaml-language-server",
 
+    -- haskell
+    "haskell-language-server",
+
     -- python stuff
     "pyright",
     "python-lsp-server",

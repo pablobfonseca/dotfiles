@@ -5,6 +5,15 @@ local setup = function()
   conform.setup {
     formatters_by_ft = {
       lua = { "stylua" },
+      typescript = { "prettierd", "deno_fmt", stop_after_first = true },
+      typescriptreact = { "prettierd", "deno_fmt", stop_after_first = true },
+      javascript = { "prettierd" },
+      markdown = { "prettierd" },
+      json = { "prettierd" },
+      yaml = { "prettierd" },
+      elm = { "elm_format" },
+      ruby = { "rubocop" },
+      go = { "gofmt", "goimports" },
     },
   }
 
