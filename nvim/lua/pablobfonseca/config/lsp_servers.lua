@@ -6,6 +6,7 @@ return {
   "html",
   "jsonls",
   "lua_ls",
+  "haskell-language-server",
   "ocamllsp",
   "pylsp",
   "ruby_lsp",

@@ -1,8 +1,7 @@
-# Add deno completions to search path
-if [[ ":$FPATH:" != *":/Users/pablobfonseca/.zsh/completions:"* ]]; then export FPATH="/Users/pablobfonseca/.zsh/completions:$FPATH"; fi
 # Haskell
 # Load GHCup environment
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+[[ -f "$HOME/.ghcup/env" ]] && source "$HOME/.ghcup/env"
 
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
