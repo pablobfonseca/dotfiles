@@ -140,6 +140,9 @@ alias gce="gh copilot explain"
 alias mux="tmuxinator"
 alias sb="cd $OBSIDIAN_VAULTS"
 
+# ctags
+alias ctags="$(brew --prefix ctags)/bin/ctags"
+
 eval "$(op completion zsh)"; compdef _op op
 eval "$(starship init zsh)"
 
