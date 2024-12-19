@@ -21,6 +21,7 @@ bindkey "^X^E" edit-command-line
 source $ZPLUG_HOME/init.zsh
 
 zplug "zsh-users/zsh-autosuggestions"
+bindkey "^y" autosuggest-accept
 zplug "b4b4r07/enhancd", use:init.sh, defer:2
 zplug "Aloxaf/fzf-tab"
 
