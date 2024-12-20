@@ -12,7 +12,6 @@ local setup = function()
       json = { "prettierd" },
       yaml = { "prettierd" },
       elm = { "elm_format" },
-      ruby = { "rubocop" },
       go = { "gofmt", "goimports" },
     },
   }

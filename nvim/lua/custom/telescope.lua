@@ -10,6 +10,10 @@ telescope.setup {
       },
     },
     extensions = {
+      file_browser = {
+        hijack_netrw = true,
+        display_stat = false,
+      },
       fzf = {
         fuzzy = true,
         override_generic_sorter = true,
@@ -37,6 +41,7 @@ telescope.setup {
 }
 
 pcall(telescope.load_extension "fzf")
+pcall(telescope.load_extension "file_browser")
 
 local set = vim.keymap.set
 
