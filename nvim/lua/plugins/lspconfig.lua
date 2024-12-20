@@ -28,9 +28,6 @@ return {
             },
           },
         },
-        config = function()
-          require "custom.mason"
-        end,
       },
       { "williamboman/mason-lspconfig" },
       { "WhoIsSethDaniel/mason-tool-installer.nvim" },
@@ -131,7 +128,16 @@ return {
         end
       end, vim.tbl_keys(servers))
 
-      require("mason").setup()
+      require("mason").setup {
+        ui = {
+          icons = {
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗",
+          },
+        },
+        max_concurrent_installers = 10,
+      }
       local ensure_installed = require "pablobfonseca.config.lsp_servers"
       vim.list_extend(ensure_installed, servers_to_install)
 
