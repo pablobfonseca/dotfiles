@@ -35,7 +35,6 @@ return {
       { "williamboman/mason-lspconfig" },
       { "WhoIsSethDaniel/mason-tool-installer.nvim" },
       { "j-hui/fidget.nvim", opts = {} },
-      { "https://git.sr.ht/~whynothugo/lsp_lines.nvim" },
       { "stevearc/conform.nvim" },
       { "b0o/schemastore.nvim" },
     },
@@ -204,8 +203,7 @@ return {
 
       require("custom.autoformat").setup()
 
-      require("lsp_lines").setup()
-      vim.diagnostic.config { virtual_text = true, virtual_lines = false }
+      vim.diagnostic.config { virtual_text = true }
 
       vim.keymap.set("", "<leader>L", function()
         local config = vim.diagnostic.config() or {}

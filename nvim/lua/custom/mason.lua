@@ -41,6 +41,7 @@ local opts = {
     -- ruby stuff
     "rubocop",
     "ruby_lsp",
+    "rubyfmt",
 
     -- go stuff
     "gopls",
