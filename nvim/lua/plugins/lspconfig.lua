@@ -2,15 +2,13 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
+      { "saghen/blink.cmp" },
       {
-        -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-        -- used for completion, annotations and signatures of Neovim apis
-
         "folke/lazydev.nvim",
         ft = "lua",
         opts = {
           library = {
-            { path = "luvitmeta-library", words = { "vim%.uv" } },
+            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
           },
         },
       },
@@ -45,11 +43,6 @@ return {
       -- Don't do LSP on Obsidian mode
       if vim.g.obsidian then
         return
-      end
-
-      local capabilities = nil
-      if pcall(require, "cmp_nvim_lsp") then
-        capabilities = require("cmp_nvim_lsp").default_capabilities()
       end
 
       local lspconfig = require "lspconfig"
@@ -152,7 +145,7 @@ return {
           config = {}
         end
         config = vim.tbl_deep_extend("force", {}, {
-          capabilities = capabilities,
+          capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities),
         }, config)
 
         lspconfig[name].setup(config)
@@ -176,7 +169,7 @@ return {
 
           vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
           vim.keymap.set("n", "gd", builtin.lsp_definitions, { buffer = 0, desc = "Go to definition" })
-          vim.keymap.set("n", "gr", builtin.lsp_references, { buffer = 0, desc = "Go to references" })
+          vim.keymap.set("n", "gr", builtin.lsp_references, { buffer = -1, desc = "Go to references" })
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0, desc = "Go to declarations" })
           vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, { buffer = 0, desc = "Type definitions" })
           vim.keymap.set("n", "H", vim.lsp.buf.hover, { buffer = 0, desc = "Lsp hover" })

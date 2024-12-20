@@ -5,15 +5,11 @@ set("n", "<space>x", "<cmd>.lua<cr>", { desc = "Execute the current line" })
 set("n", "<space><space>x", "<cmd>source %<cr>", { desc = "Execute the current file" })
 
 -- emacs-like keybindings
-set("n", "<C-x><C-s>", ":w<cr>", { desc = "Save the file" })
-set("n", "<C-x><C-c>", ":x<cr>", { desc = "Save and quit" })
-set("n", "<C-x>1", ":only<cr>", { desc = "Keep only the current pane" })
-set("n", "<C-x>2", ":split<cr>", { desc = "Split pane horizontally" })
-set("n", "<C-x>3", ":vsplit<cr>", { desc = "Split pane vertically" })
-set("n", "<C-x>0", ":q<cr>", { desc = "Close pane" })
-
-set("v", "J", ":m '>+1<CR>gv=gv")
-set("v", "K", ":m '<-2<CR>gv=gv")
+-- set("n", "<C-x><C-s>", ":w<cr>", { desc = "Save the file" })
+-- set("n", "<C-x>1", ":only<cr>", { desc = "Keep only the current pane" })
+-- set("n", "<C-x>2", ":split<cr>", { desc = "Split pane horizontally" })
+-- set("n", "<C-x>3", ":vsplit<cr>", { desc = "Split pane vertically" })
+-- set("n", "<C-x>0", ":q<cr>", { desc = "Close pane" })
 
 set("n", "<C-d>", "<C-d>zz")
 set("n", "<C-u>", "<C-u>zz")
@@ -31,18 +27,10 @@ set("i", "<C-l>", "<Right>")
 set("i", "<C-j>", "<Down>")
 set("i", "<C-k>", "<Up>")
 
--- go to beginning and end
-set("i", "<C-b>", "<ESC>^i")
-set("i", "<C-e>", "<End>")
-
 -- navigate the quickfix list
 set("n", "<leader>cn", ":cnext<cr>")
 set("n", "<leader>cb", ":cprevious<cr>")
 set("n", "<leader><space>", ":ccl<cr>", { desc = "Close quickfix window" })
-
--- indent line
-set("v", "<", "<gv")
-set("v", ">", ">gv")
 
 set("x", "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
 set("x", "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
@@ -59,7 +47,7 @@ set({ "n", "v" }, "<C-e>", "7<C-e>", { desc = "Scroll the viewport faster" })
 set({ "n", "v" }, "<C-y>", "7<C-y>", { desc = "Scroll the viewport faster" })
 
 -- exit terminal mode
-set("t", "<Esc>", "<C-\\><C-m>", { desc = "Exit terminal mode" })
+set("t", "<Esc><Esc>", "<C-\\><C-m>", { desc = "Exit terminal mode" })
 
 -- insert a line above the cursor without leaving normal mode
 set("n", "gO", "mmO<esc>`m", { desc = "Insert a new line above the cursor without leaving normal mode" })
