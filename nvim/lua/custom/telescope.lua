@@ -82,7 +82,7 @@ set("n", "<leader>df", function()
   }
 end, { desc = "Find dotfiles" })
 set("n", "<leader>sr", function()
-  builtin.live_grep {
+  require "custom.telescope.multi-ripgrep" {
     prompt_title = "Search for nvim config",
     cwd = "~/.dotfiles",
   }

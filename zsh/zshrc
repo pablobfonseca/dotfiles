@@ -275,7 +275,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 . "/Users/pablobfonseca/.deno/env"
 
 # atuin
-eval "$(atuin init zsh)"
+eval "$(atuin init zsh --disable-up-arrow)"
 # keybinding to start atuin in insert mode
 bindkey "^r" atuin-search-viins 
 
