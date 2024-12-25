@@ -4,9 +4,14 @@ return {
   opts_extend = {
     "sources.default",
   },
-  version = "v0.*",
+  version = "*",
   opts = {
-    keymap = { preset = "default" },
+    keymap = {
+      preset = "default",
+      cmdline = {
+        preset = "enter",
+      },
+    },
     appearance = {
       use_nvim_cmp_as_default = true,
       nerd_font_variant = "mono",
@@ -30,7 +35,6 @@ return {
     },
     sources = {
       default = { "lsp", "path", "luasnip", "snippets", "buffer", "lazydev" },
-      cmdline = {},
       providers = {
         lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", fallbacks = { "lsp" } },
         buffer = {
