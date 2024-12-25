@@ -96,7 +96,7 @@ return {
         },
         ocamllsp = {
           manual_install = true,
-          cmd = { "dune", "tools", "exec", "ocamllsp" },
+          cmd = { "opam", "exec", "--", "dune", "exec", "ocamllsp" },
           settings = {
             codelens = { enable = true },
             inlayHints = { enable = true },
