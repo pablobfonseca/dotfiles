@@ -9,7 +9,7 @@ return {
     keymap = {
       preset = "default",
       cmdline = {
-        preset = "enter",
+        preset = "super-tab",
       },
     },
     appearance = {
@@ -28,6 +28,9 @@ return {
       menu = {
         scrollbar = false,
         border = "single",
+        auto_show = function(ctx)
+          return ctx.mode ~= "cmdline" or not vim.tbl_contains({ "/", "?" }, vim.fn.getcmdtype())
+        end,
       },
       list = {
         selection = "auto_insert",
@@ -44,6 +47,6 @@ return {
         },
       },
     },
-    signature = { enabled = true },
+    signature = { enabled = true, window = { border = "single", scrollbar = false } },
   },
 }
