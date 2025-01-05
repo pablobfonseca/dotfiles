@@ -1,3 +1,78 @@
+# Variables
+export PATH="/opt/homebrew/sbin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export HISTSIZE=20000
+export SAVEHIST=20000
+export DOTFILES=$HOME/.dotfiles
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export CLICOLOR=1
+export HISTTIMEFORMAT="%d/%m/%y %T"
+export EDITOR=nvim
+export BUNDLER_EDITOR=$EDITOR
+export VISUAL_EDITOR=$EDITOR
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # for rails
+export UPSCOPE_DIR=$HOME/code/upscope
+export DOCKERMACHINE_IP=$(yq '.docker_machine.ip' $UPSCOPE_DIR/dev.toml)
+export PATH="$PATH:$UPSCOPE_DIR/bin"
+export PATH="$PATH:$DOTFILES/scripts"
+export XDG_CONFIG_HOME="$HOME/.config"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.config/emacs/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
+export PATH="$PATH:$HOME/code/roc"
+
+# Make vi-mode transitions faster (KEYTIMEOUT is in hundredths of a second)
+export KEYTIMEOUT=1
+
+export ZPLUG_HOME=$(brew --prefix zplug)
+
+# Go
+export GOPATH=$HOME/code/go-workspace
+export GOROOT=/opt/homebrew/opt/go/libexec
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
+
+# FZF
+export FZF_DEFAULT_COMMAND='fd --hidden --strip-cwd-prefix --exclude .git'
+export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+# export FZF_DEFAULT_OPTS="--height 50% --layout=default --border --color=hl:#2dd4bf"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
+export FZF_CTRL_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
+export FZF_CTRL_R_OPTS="
+   --preview 'echo {}' --preview-window up:3:hidden:wrap
+   --bind 'ctrl-/:toggle-preview'
+   --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+   --color header:italic
+    --header 'Press CTRL-Y to copy command into clipboard'"
+export FZF_TMUX_OPTS=" -p90%,70%"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$HOME/.gem/bin:$PATH"
+export GEM_HOME=$HOME/.gem
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+
+export BAT_THEME=Dracula
+
+export PATH="$HOME/.luarocks/bin:$PATH"
+
+# Pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+
+export OBSIDIAN_VAULTS="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# zsh-vi-mode
+export ZVM_CURSOR_STYLE_ENABLED=false
+
 # Haskell
 # Load GHCup environment
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
@@ -178,9 +253,6 @@ tkill() {
     tmux kill-session -t "$tmux_session"
   fi
 }
-
-# rust
-[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 # opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
