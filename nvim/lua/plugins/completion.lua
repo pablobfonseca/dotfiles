@@ -1,6 +1,19 @@
 return {
   "saghen/blink.cmp",
-  dependencies = "rafamadriz/friendly-snippets",
+  dependencies = {
+    "rafamadriz/friendly-snippets",
+    {
+      "L3MON4D3/LuaSnip",
+      version = "v2.*",
+      config = function()
+        require("luasnip.loaders.from_lua").load()
+
+        for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/custom/snippets/*.lua", true)) do
+          loadfile(ft_path)()
+        end
+      end,
+    },
+  },
   opts_extend = {
     "sources.default",
   },
@@ -47,6 +60,20 @@ return {
           return ctx.mode == "cmdline" and "auto_insert" or "preselect"
         end,
       },
+    },
+    snippets = {
+      expand = function(snippet)
+        require("luasnip").lsp_expand(snippet)
+      end,
+      active = function(filter)
+        if filter and filter.direction then
+          return require("luasnip").jumpable(filter.direction)
+        end
+        return require("luasnip").in_snippet()
+      end,
+      jump = function(direction)
+        require("luasnip").jump(direction)
+      end,
     },
     sources = {
       default = { "lsp", "path", "luasnip", "snippets", "buffer", "lazydev" },
