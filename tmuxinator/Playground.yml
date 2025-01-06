@@ -1,8 +1,0 @@
-name: Playground
-root: ~/code/Playground
-
-windows:
-  - main:
-      layout: main-vertical
-      panes:
-        - nvim
