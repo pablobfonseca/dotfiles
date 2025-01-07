@@ -49,7 +49,7 @@ export FZF_CTRL_R_OPTS="
    --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
    --color header:italic
     --header 'Press CTRL-Y to copy command into clipboard'"
-export FZF_TMUX_OPTS=" -p90%,70%"
+# export FZF_TMUX_OPTS=" -p90%,70%"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
@@ -125,13 +125,13 @@ function take {
 rvmlist() {
     local rb
     rb=$((echo system; rvm list | grep ruby | awk '{print $2}') |
-    fzf-tmux -p --prompt "Ruby version: ") && rvm use $rb
+    fzf --tmux --prompt "Ruby version: ") && rvm use $rb
 }
 
 
 nvmlist() {
     local njs
-    njs=$(fnm list | awk '{print $2}' | fzf-tmux -p --prompt "Node version: ") && fnm use $njs
+    njs=$(fnm list | awk '{print $2}' | fzf --tmux --prompt "Node version: ") && fnm use $njs
 }
 
 function branch_clean() {
@@ -140,38 +140,38 @@ function branch_clean() {
 
 docker_rmi() {
     local image
-    image=$(docker images | awk '(NR>1) { print $1 " " $3; }' | fzf-tmux -p) \
+    image=$(docker images | awk '(NR>1) { print $1 " " $3; }' | fzf --tmux) \
     && docker rmi $(cut -d' ' -f2 <<< "$image") --force
 }
 
 docker_attach() {
     local container
-    container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf-tmux -p) \
+    container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf --tmux) \
     && docker attach $(cut -d' ' -f1 <<< "$container")
 }
 
 docker_stop() {
     local container
-    container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf-tmux -p) \
+    container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf --tmux) \
     && docker stop $(cut -d' ' -f1 <<< "$container")
 }
 
 # TODO: check if the service is found
 function _ur() {
    local service;
-   service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf-tmux --prompt 'Select a service to restart: ')"
+   service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf --tmux --prompt 'Select a service to restart: ')"
    upscope restart -c $service
 }
 
 # TODO: check if the service is found
 function _ul() {
   local service;
-  service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf-tmux --prompt 'Select a service to see the logs: ')"
+  service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf --tmux --prompt 'Select a service to see the logs: ')"
   upscope logs -c $service
 }
 
 open_file() {
-  fd --type f --hidden --exclude .git | fzf-tmux -p --prompt "Open File: " | xargs nvim
+  fd --type f --hidden --exclude .git | fzf --tmux --prompt "Open File: " | xargs nvim
 }
 
 function y() {
@@ -206,7 +206,7 @@ alias v="nvim"
 alias k="kubectl"
 alias ip="curl ifconfig.me"
 alias cvim="nvim -u NONE"
-alias fman="compgen -c | fzf-tmux -p --prompt='Search for a command: ' | xargs man"
+alias fman="compgen -c | fzf --tmux --prompt='Search for a command: ' | xargs man"
 
 # GH
 alias copilot="gh copilot"
@@ -225,7 +225,7 @@ eval "$(starship init zsh)"
 # tmux
 tlist() {
   local tmux_session
-  tmux_session=$(tmux list-windows -a | fzf-tmux -p --prompt="Switch: " | sed 's/: .*//g')
+  tmux_session=$(tmux list-windows -a | fzf --tmux --prompt="Switch: " | sed 's/: .*//g')
   if [ -n "$tmux_session" ]; then
     if [ -n "$TMUX" ]; then
       tmux switch-client -t "$tmux_session"
@@ -236,18 +236,18 @@ tlist() {
 }
 
 muxlist() {
-  local project=$(tmuxinator list -n | awk 'NR>1 {print $0}' | fzf-tmux -p --prompt="Project: ")
+  local project=$(tmuxinator list -n | awk 'NR>1 {print $0}' | fzf --tmux --prompt="Project: ")
   tmuxinator $project
 }
 
 emuxlist() {
-  local project=$(tmuxinator list -n | awk 'NR>1 {print $0}' | fzf-tmux -p --prompt="Project to edit: ")
+  local project=$(tmuxinator list -n | awk 'NR>1 {print $0}' | fzf --tmux --prompt="Project to edit: ")
   tmuxinator new $project
 }
 
 tkill() {
     local tmux_session
-  tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf-tmux -p --prompt="Kill: ")
+  tmux_session=$(tmux list-sessions -F "#{session_name}" | fzf --tmux --prompt="Kill: ")
 
   if [ -n "$tmux_session" ]; then
     tmux kill-session -t "$tmux_session"
