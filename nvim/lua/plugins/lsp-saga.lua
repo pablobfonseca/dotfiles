@@ -5,7 +5,7 @@ return {
     { "<leader>lf", mode = "n", desc = "[L]spsaga [F]inder", "<cmd>Lspsaga finder<cr>" },
     -- { "<leader>lca", mode = "n", desc = "[L]spsaga [C]ode [A]ction", "<cmd>Lspsaga code_action<cr>" },
     { "<leader>lpd", mode = "n", desc = "[L]spsaga [P]eek [D]efinition", "<cmd>Lspsaga peek_definition<cr>" },
-    -- { "gd",          mode = "n", desc = "[L]spsaga [G]oto [D]efinition",   "<cmd>Lspsaga goto_definition<cr>" },
+    { "gd", mode = "n", desc = "[L]spsaga [G]oto [D]efinition", "<cmd>Lspsaga goto_definition<cr>" },
     { "<leader>od", mode = "n", desc = "[L]spsaga Show Line Diagnostics", "<cmd>Lspsaga show_line_diagnostics<cr>" },
     {
       "<leader>ob",
