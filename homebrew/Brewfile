@@ -1,52 +1,58 @@
-alacritty
-automake
-bat
-bpytop
-cmake
-coreutils
-ctags
-docker-completion
-docker-machine
-doctl
-exercism
-fd
-ffmpegthumbnailer
-font-symbols-only-nerd-font
-fzf
-gh
-gnu-sed
-gnupg
-go
-imagemagick
-jq
-karabiner-elements
-lazydocker
-libyaml
-lpeg
-lsd
-mutagen-io/mutagen/mutagen
-navi
-neovim
-opam
-openssl@1.1
-php
-pkg-config
-poppler
-procs
-raycast
-ripgrep
-sevenzip
-shortcat
-starship
-tlrc
-tmate
-tmux
-tmuxinator
-watch
-xwmx/taps/hosts
-yazi
-yq
-zlib
-zoxide
-zplug
-zsh-syntax-highlighting
+tap "codecrafters-io/tap"
+tap "homebrew/bundle"
+tap "homebrew/services"
+tap "mutagen-io/mutagen"
+
+brew "atuin", restart_service: true
+brew "automake"
+brew "bat"
+brew "cmake"
+brew "ctags"
+brew "docker"
+brew "docker-compose"
+brew "docker-credential-helper"
+brew "docker-machine"
+brew "doctl"
+brew "exercism"
+brew "fd"
+brew "fzf"
+brew "gh"
+brew "gnupg"
+brew "go"
+brew "jq"
+brew "lazydocker"
+brew "libyaml"
+brew "lsd"
+brew "mutagen-io/mutagen/mutagen"
+brew "navi"
+brew "neovim"
+brew "opam"
+brew "openssl@3"
+brew "procs"
+brew "ripgrep"
+brew "starship"
+brew "tlrc"
+brew "tmate"
+brew "tmux"
+brew "tmuxinator"
+brew "watch"
+brew "xwmx/taps/hosts"
+brew "yazi"
+brew "yq"
+brew "zlib"
+brew "zoxide"
+brew "zplug"
+brew "zsh-syntax-highlighting"
+
+cask "1password-cli"
+cask "aerospace"
+cask "docker"
+cask "homerow"
+cask "notion"
+cask "obsidian"
+cask "qutebrowser"
+cask "raycast"
+cask "shortcat"
+cask "slack"
+cask "wezterm"
+cask "zoom"
