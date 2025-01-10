@@ -6,6 +6,7 @@ return {
       "L3MON4D3/LuaSnip",
       version = "v2.*",
       config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
         require("luasnip.loaders.from_lua").load()
 
         for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/custom/snippets/*.lua", true)) do
