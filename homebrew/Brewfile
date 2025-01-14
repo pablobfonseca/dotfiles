@@ -41,7 +41,6 @@ brew "yazi"
 brew "yq"
 brew "zlib"
 brew "zoxide"
-brew "zplug"
 brew "zsh-syntax-highlighting"
 
 cask "1password-cli"
