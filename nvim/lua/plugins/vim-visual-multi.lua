@@ -1,7 +1,6 @@
 return {
   "mg979/vim-visual-multi",
   event = "VeryLazy",
-  enabled = false,
   keys = {
     {
       "<M-j>",
