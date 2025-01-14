@@ -40,8 +40,8 @@ set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { silent = true })
 
 set("n", "gp", "`[v`]", { desc = "Select last paste in visual mode" })
 
-set("n", "<leader>fh", "<C-w>t<C-w>K", { desc = "Change vertically split to horizontally" })
-set("n", "<leader>fv", "<C-w>t<C-w>H", { desc = "Change horizontally split to vertically" })
+set("n", "<leader>gh", "<C-w>t<C-w>K", { desc = "Change vertically split to horizontally" })
+set("n", "<leader>gv", "<C-w>t<C-w>H", { desc = "Change horizontally split to vertically" })
 
 set({ "n", "v" }, "<C-e>", "7<C-e>", { desc = "Scroll the viewport faster" })
 set({ "n", "v" }, "<C-y>", "7<C-y>", { desc = "Scroll the viewport faster" })
