@@ -204,7 +204,7 @@ alias bs="git bselect"
 alias vim="nvim"
 alias v="nvim"
 alias k="kubectl"
-alias ip="curl ifconfig.me"
+alias ip="curl -s ifconfig.me"
 alias cvim="nvim -u NONE"
 alias fman="compgen -c | fzf --tmux --prompt='Search for a command: ' | xargs man"
 
