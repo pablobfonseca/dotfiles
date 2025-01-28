@@ -4,10 +4,10 @@ local wezterm = require("wezterm")
 
 local config = wezterm.config_builder()
 
-config.color_scheme = "Catppuccin Mocha"
+config.color_scheme = "tokyonight_night"
 config.font = wezterm.font({ family = "MesloLGS Nerd Font Mono" })
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
-config.font_size = 16
+config.font_size = 15
 config.automatically_reload_config = true
 config.max_fps = 120
 config.enable_kitty_graphics = true
