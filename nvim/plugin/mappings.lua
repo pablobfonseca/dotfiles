@@ -56,3 +56,6 @@ set("n", "go", "mmo<esc>`m", { desc = "Insert a new line below the cursor withou
 -- increment number
 set("n", "<M-a>", "<C-a>")
 set("n", "<M-x>", "<C-x>")
+
+-- zoom current window
+set("n", "<C-w>z", "<C-w>|<C-w>_")

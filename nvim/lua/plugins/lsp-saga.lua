@@ -18,11 +18,7 @@ return {
     { "[d", mode = "n", desc = "Go to previous diagnostic message", "<cmd>Lspsaga diagnostic_jump_prev<cr>" },
     { "]d", mode = "n", desc = "Go to next diagnostic message", "<cmd>Lspsaga diagnostic_jump_next<cr>" },
   },
-  opts = {
-    ui = {
-      kind = require("catppuccin.groups.integrations.lsp_saga").custom_kind(),
-    },
-  },
+  opts = {},
   dependencies = {
     { "nvim-tree/nvim-web-devicons" },
     --Please make sure you install markdown and markdown_inline parser
