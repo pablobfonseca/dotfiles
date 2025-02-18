@@ -15,7 +15,7 @@ return {
         keys = {
           {
             "<C-c>de",
-            desc = "Debugger eval",
+            desc = "[dap] Eval",
             mode = { "n", "v" },
             function()
               require("dapui").eval()
@@ -23,7 +23,7 @@ return {
           },
           {
             "<C-c>dE",
-            desc = "Debugger eval Expression",
+            desc = "[dap] Eval Expression",
             mode = { "n", "v" },
             function()
               require("dapui").eval(vim.fn.input "[DAP] Expression >")
@@ -31,7 +31,7 @@ return {
           },
           {
             "<C-c>dh",
-            desc = "Debugger hover",
+            desc = "[dap] Hover",
             mode = { "n", "v" },
             function()
               require("dap.ui.widgets").hover()

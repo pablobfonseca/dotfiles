@@ -98,7 +98,8 @@ source $ZPLUG_HOME/init.zsh
 zplug "zsh-users/zsh-autosuggestions"
 bindkey "^y" autosuggest-accept
 zplug "b4b4r07/enhancd", use:init.sh, defer:2
-zplug "Aloxaf/fzf-tab"
+
+zplug "jeffreytse/zsh-vi-mode"
 
 # fzf-tab
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
@@ -160,14 +161,14 @@ docker_stop() {
 function _ur() {
    local service;
    service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf --tmux --prompt 'Select a service to restart: ')"
-   upscope restart -c $service
+   upscope restart $service
 }
 
 # TODO: check if the service is found
 function _ul() {
   local service;
   service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf --tmux --prompt 'Select a service to see the logs: ')"
-  upscope logs -c $service
+  upscope logs $service
 }
 
 open_file() {
@@ -221,6 +222,9 @@ alias ctags="$(brew --prefix ctags)/bin/ctags"
 
 eval "$(op completion zsh)"; compdef _op op
 eval "$(starship init zsh)"
+
+# upscope 
+eval "$(upscope completion zsh)"; compdef _upscope upscope
 
 # tmux
 tlist() {
