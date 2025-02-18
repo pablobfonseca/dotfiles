@@ -15,14 +15,16 @@ return {
       end,
     },
   },
-  opts_extend = {
-    "sources.default",
-  },
   version = "*",
+  ---@module 'blink.cmp'
+  ---@type blink.cmp.Config
   opts = {
     keymap = {
       preset = "default",
-      cmdline = {
+    },
+    cmdline = {
+      keymap = {
+
         preset = "super-tab",
       },
     },
@@ -96,5 +98,8 @@ return {
       },
     },
     signature = { enabled = true, window = { border = "single", scrollbar = false } },
+  },
+  opts_extend = {
+    "sources.default",
   },
 }

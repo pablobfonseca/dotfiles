@@ -145,7 +145,7 @@ return {
         ensure_installed = ensure_installed,
       }
 
-      for name, config in pairs(servers) do
+      for server, config in pairs(servers) do
         if config == true then
           config = {}
         end
@@ -153,7 +153,7 @@ return {
           capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities),
         }, config)
 
-        lspconfig[name].setup(config)
+        lspconfig[server].setup(config)
       end
 
       local disable_semantic_tokens = {
