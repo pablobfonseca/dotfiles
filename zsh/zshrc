@@ -99,8 +99,6 @@ zplug "zsh-users/zsh-autosuggestions"
 bindkey "^y" autosuggest-accept
 zplug "b4b4r07/enhancd", use:init.sh, defer:2
 
-zplug "jeffreytse/zsh-vi-mode"
-
 # fzf-tab
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
