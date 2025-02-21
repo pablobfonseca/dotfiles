@@ -9,18 +9,6 @@ telescope.setup {
         ["<C-\\>"] = actions.to_fuzzy_refine,
       },
     },
-    extensions = {
-      file_browser = {
-        hijack_netrw = true,
-        display_stat = false,
-      },
-      fzf = {
-        fuzzy = true,
-        override_generic_sorter = true,
-        override_file_sorter = true,
-        case_mode = "smart_case",
-      },
-    },
     prompt_prefix = "  ",
     selection_caret = "  ",
     entry_prefix = "  ",
@@ -37,6 +25,18 @@ telescope.setup {
     file_previewer = require("telescope.previewers").vim_buffer_cat.new,
     grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
     qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+  },
+  extensions = {
+    file_browser = {
+      hijack_netrw = true,
+      display_stat = false,
+    },
+    fzf = {
+      fuzzy = true,
+      override_generic_sorter = true,
+      override_file_sorter = true,
+      case_mode = "smart_case",
+    },
   },
 }
 
