@@ -5,8 +5,8 @@ require("neotest").setup {
         return vim
           .iter({
             "upscope",
-            "app",
             "test",
+            "app",
             "-t",
           })
           :flatten()
