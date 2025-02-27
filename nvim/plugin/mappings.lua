@@ -1,7 +1,7 @@
 local set = vim.keymap.set
 
 -- source file
-set("n", "<space>x", "<cmd>.lua<cr>", { desc = "Execute the current line" })
+set({ "n", "v" }, "<space>x", "<cmd>.lua<cr>", { desc = "Execute the current line" })
 set("n", "<space><space>x", "<cmd>source %<cr>", { desc = "Execute the current file" })
 
 -- emacs-like keybindings
