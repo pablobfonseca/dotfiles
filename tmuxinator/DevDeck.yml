@@ -1,0 +1,21 @@
+# /Users/pablobfonseca/.config/tmuxinator/DevDeck.yml
+
+name: Devdeck
+root: ~/code/dev-deck
+
+windows:
+  - server:
+      layout: main-vertical
+      root: ~/code/dev-deck/server
+      panes:
+        - go run main.go
+  - mobile:
+      layout: main-vertical
+      root: ~/code/dev-deck/apps/mobile
+      panes:
+        - npx expo start
+  - desktop:
+      layout: main-vertical
+      root: ~/code/dev-deck/apps/desktop
+      panes:
+        - yarn start

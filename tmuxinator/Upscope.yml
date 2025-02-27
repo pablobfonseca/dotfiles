@@ -8,4 +8,4 @@ windows:
         - nvim
         -
   - lazydocker: upscope lazydocker
-  - types-watch: upscope types:build -w
+  - types-watch: upscope build types -w
