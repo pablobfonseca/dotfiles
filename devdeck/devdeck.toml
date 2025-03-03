@@ -1,0 +1,79 @@
+[layout]
+columns=6
+background_color="#121212"
+
+[[commands]]
+app = "Google Chrome"
+icon = "logo-chrome"
+type = "context"
+context = "chrome"
+main = true
+
+[[commands]]
+app = "Google Chrome"
+action = "open"
+description = "Open"
+type = "action"
+context = "chrome"
+
+[[commands]]
+app = "Google Chrome"
+action = "chrome-cli reload"
+description = "Reload tab"
+type = "action"
+context = "chrome"
+
+[[commands]]
+app = "Slack"
+icon = "logo-slack"
+action = "open"
+type = "action"
+main = true
+
+[[commands]]
+app = "Wezterm"
+icon = "terminal"
+action = "open"
+type = "action"
+main = true
+
+[[commands]]
+app = "Calendar"
+icon = "calendar-outline"
+action = "open"
+type = "action"
+main = true
+
+[[commands]]
+app = "Finder"
+icon = "folder-outline"
+action = "open"
+type = "action"
+main = true
+
+[[commands]]
+app = "Obsidian"
+icon = "document-outline"
+action = "open"
+type = "action"
+main = true
+
+[[commands]]
+app = "System Preferences"
+type = "context"
+icon = "cog-outline"
+context = "system"
+main = true
+
+[[commands]]
+description = "Volume Down"
+action = "aerospace volume down"
+type = "action"
+context = "system"
+
+[[commands]]
+action = "aerospace volume up"
+description = "Volume Up"
+type = "action"
+context = "system"
+
