@@ -145,6 +145,17 @@ return {
         ensure_installed = ensure_installed,
       }
 
+      -- Swift
+      lspconfig.sourcekit.setup {
+        capabilities = {
+          workspace = {
+            didChangeWatchedFiles = {
+              dynamicRegistration = true,
+            },
+          },
+        },
+      }
+
       for server, config in pairs(servers) do
         if config == true then
           config = {}

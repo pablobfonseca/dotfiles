@@ -15,6 +15,7 @@ require("nvim-treesitter.configs").setup {
     "markdown_inline",
     "ocaml",
     "python",
+    "swift",
     "ruby",
     "rust",
     "toml",
