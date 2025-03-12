@@ -45,13 +45,6 @@ type = "action"
 main = true
 
 [[commands]]
-app = "Finder"
-icon = "folder-outline"
-action = "open"
-type = "action"
-main = true
-
-[[commands]]
 app = "Obsidian"
 icon = "document-outline"
 action = "open"
@@ -77,3 +70,8 @@ description = "Volume Up"
 type = "action"
 context = "system"
 
+[[commands]]
+icon = "lock-closed-outline"
+action = "lockscreen.applescript"
+type = "action"
+main = true
