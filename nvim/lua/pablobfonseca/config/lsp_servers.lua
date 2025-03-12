@@ -22,4 +22,5 @@ return {
   "tailwindcss",
   "ts_ls",
   "yamlls",
+  "taplo",
 }
