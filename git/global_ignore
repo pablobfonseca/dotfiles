@@ -28,3 +28,4 @@ restmode
 .solargraph.yml
 upscope_requests.http
 http-client.env.json
+CLAUDE.md
