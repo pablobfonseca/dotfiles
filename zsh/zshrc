@@ -73,6 +73,11 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 # zsh-vi-mode
 export ZVM_CURSOR_STYLE_ENABLED=false
 
+
+if [ -f $HOME/.zshrc_private ]; then
+  source $HOME/.zshrc_private
+fi
+
 # Haskell
 # Load GHCup environment
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
@@ -352,7 +357,6 @@ bindkey "^r" atuin-search-viins
 
 # keybinding to start atuin in normal mode
 bindkey "^x^n" atuin-search-vicmd # C-x C-n starts atuin in normal mode
-
 
 # BEGIN opam configuration
 # This is useful if you're using opam as it adds:
