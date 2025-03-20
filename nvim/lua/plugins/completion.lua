@@ -111,9 +111,17 @@ return {
       end,
     },
     sources = {
-      default = { "lsp", "path", "snippets", "buffer", "lazydev" },
+      default = { "lsp", "path", "snippets", "buffer", "lazydev", "markdown" },
+      per_filetype = {
+        codecompanion = { "codecompanion" },
+      },
       providers = {
         lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", fallbacks = { "lsp" } },
+        markdown = {
+          name = "RenderMarkdown",
+          module = "render-markdown.integ.blink",
+          fallbacks = { "lsp" },
+        },
         buffer = {
           name = "Buffer",
           module = "blink.cmp.sources.buffer",
