@@ -6,16 +6,16 @@ root: ~/code/dev-deck
 windows:
   - server:
       layout: main-vertical
-      root: ~/code/dev-deck/server
+      root: ~/code/DevDeck/dev-deck/server
       panes:
         - go run main.go
   - mobile:
       layout: main-vertical
-      root: ~/code/dev-deck/apps/mobile
+      root: ~/code/DevDeck/dev-deck/apps/mobile
       panes:
-        - npx expo start
+        - open ios/DevDeck.xcworkspace
   - desktop:
       layout: main-vertical
-      root: ~/code/dev-deck/apps/desktop
+      root: ~/code/DevDeck/dev-deck/apps/desktop
       panes:
         - yarn start
