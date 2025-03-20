@@ -20,6 +20,7 @@ return {
       { "<C-c>d", group = "[D]ebugger" },
       { "<leader>T", group = "[T]est" },
       { "<leader>t", group = "[T]rouble" },
+      { "<leader>c", group = "[C]odecompanion" },
       { "<C-c>D", group = "[D]iff View" },
     }
   end,

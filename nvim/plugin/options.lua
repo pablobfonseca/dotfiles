@@ -118,5 +118,8 @@ vim.diagnostic.config {
 
 opt.shada = { "'10", "<0", "s10", "h" }
 
+-- add command abbrev for codecompanion
+vim.cmd [[cab cc CodeCompanion]]
+
 -- gets rid of line with white spaces
 vim.g.editorconfig = true
