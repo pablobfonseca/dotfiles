@@ -5,7 +5,7 @@
         "parameters": { "basic.to_if_held_down_threshold_milliseconds": 250 },
         "rules": [
           {
-            "description": "Vim Mode (Right Shift + Space) with LED",
+            "description": "Vim Mode (Caps Lock + V)",
             "manipulators": [
               {
                 "conditions": [
@@ -16,8 +16,11 @@
                   }
                 ],
                 "from": {
-                  "key_code": "spacebar",
-                  "modifiers": { "mandatory": ["right_shift"] }
+                  "modifiers": { "optional": ["any"] },
+                  "simultaneous": [
+                    { "key_code": "escape" },
+                    { "key_code": "v" }
+                  ]
                 },
                 "to": [
                   {
@@ -56,8 +59,11 @@
                   }
                 ],
                 "from": {
-                  "key_code": "spacebar",
-                  "modifiers": { "mandatory": ["right_shift"] }
+                  "modifiers": { "optional": ["any"] },
+                  "simultaneous": [
+                    { "key_code": "escape" },
+                    { "key_code": "v" }
+                  ]
                 },
                 "to": [
                   {
@@ -138,7 +144,7 @@
             ]
           },
           {
-            "description": "Mouse Mode (Left Shift + Space) with LED",
+            "description": "Mouse Mode (Caps Lock + M)",
             "manipulators": [
               {
                 "conditions": [
@@ -149,8 +155,11 @@
                   }
                 ],
                 "from": {
-                  "key_code": "spacebar",
-                  "modifiers": { "mandatory": ["left_shift"] }
+                  "modifiers": { "optional": ["any"] },
+                  "simultaneous": [
+                    { "key_code": "escape" },
+                    { "key_code": "m" }
+                  ]
                 },
                 "to": [
                   {
@@ -189,8 +198,11 @@
                   }
                 ],
                 "from": {
-                  "key_code": "spacebar",
-                  "modifiers": { "mandatory": ["left_shift"] }
+                  "modifiers": { "optional": ["any"] },
+                  "simultaneous": [
+                    { "key_code": "escape" },
+                    { "key_code": "m" }
+                  ]
                 },
                 "to": [
                   {
