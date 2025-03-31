@@ -361,7 +361,13 @@
         }
       ],
       "name": "Default",
-      "selected": true
+      "selected": true,
+      "simple_modifications": [
+        {
+          "from": { "key_code": "caps_lock" },
+          "to": [{ "key_code": "escape" }]
+        }
+      ]
     }
   ]
 }
