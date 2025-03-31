@@ -54,7 +54,16 @@ if.app-name-regex-substring = 'calendar'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-name-regex-substring = 'console'
+run = 'layout floating'
+
+
+[[on-window-detected]]
 if.app-name-regex-substring = 'raycast'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'simulator'
 run = 'layout floating'
 
 [[on-window-detected]]
@@ -65,7 +74,6 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-name-regex-substring = 'weather'
 run = 'layout floating'
-
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'slack'
