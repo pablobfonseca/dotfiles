@@ -5,46 +5,19 @@
         "parameters": { "basic.to_if_held_down_threshold_milliseconds": 250 },
         "rules": [
           {
-            "description": "Vim Mode (Caps Lock + V)",
+            "description": "Mouse full emulation with right command super fast",
             "manipulators": [
               {
-                "conditions": [
-                  {
-                    "name": "vim_mode",
-                    "type": "variable_if",
-                    "value": 0
-                  }
-                ],
                 "from": {
-                  "modifiers": { "optional": ["any"] },
-                  "simultaneous": [
-                    { "key_code": "escape" },
-                    { "key_code": "v" }
-                  ]
+                  "key_code": "right_command",
+                  "modifiers": { "optional": ["any"] }
                 },
-                "to": [
+                "to": [{ "key_code": "right_command" }],
+                "to_after_key_up": [
                   {
                     "set_variable": {
-                      "name": "vim_mode",
+                      "name": "mouse_keys_full",
                       "value": 1
-                    }
-                  },
-                  {
-                    "set_variable": {
-                      "name": "mouse_mode",
-                      "value": 0
-                    }
-                  },
-                  {
-                    "set_variable": {
-                      "name": "caps_lock_led",
-                      "value": 1
-                    }
-                  },
-                  {
-                    "set_variable": {
-                      "name": "fn_led",
-                      "value": 0
                     }
                   }
                 ],
@@ -53,248 +26,181 @@
               {
                 "conditions": [
                   {
-                    "name": "vim_mode",
+                    "name": "mouse_keys_full",
                     "type": "variable_if",
                     "value": 1
-                  }
-                ],
-                "from": {
-                  "modifiers": { "optional": ["any"] },
-                  "simultaneous": [
-                    { "key_code": "escape" },
-                    { "key_code": "v" }
-                  ]
-                },
-                "to": [
-                  {
-                    "set_variable": {
-                      "name": "vim_mode",
-                      "value": 0
-                    }
                   },
                   {
-                    "set_variable": {
-                      "name": "caps_lock_led",
-                      "value": 0
-                    }
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "conditions": [
-                  {
-                    "name": "vim_mode",
+                    "name": "mouse_keys_full_scroll",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
                   "key_code": "h",
-                  "modifiers": { "optional": ["any"] }
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
-                "to": [{ "key_code": "left_arrow" }],
+                "to": [{ "mouse_key": { "horizontal_wheel": 32 } }],
                 "type": "basic"
               },
               {
                 "conditions": [
                   {
-                    "name": "vim_mode",
+                    "name": "mouse_keys_full",
+                    "type": "variable_if",
+                    "value": 1
+                  },
+                  {
+                    "name": "mouse_keys_full_scroll",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
                   "key_code": "j",
-                  "modifiers": { "optional": ["any"] }
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
-                "to": [{ "key_code": "down_arrow" }],
+                "to": [{ "mouse_key": { "vertical_wheel": 32 } }],
                 "type": "basic"
               },
               {
                 "conditions": [
                   {
-                    "name": "vim_mode",
+                    "name": "mouse_keys_full",
+                    "type": "variable_if",
+                    "value": 1
+                  },
+                  {
+                    "name": "mouse_keys_full_scroll",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
                   "key_code": "k",
-                  "modifiers": { "optional": ["any"] }
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
-                "to": [{ "key_code": "up_arrow" }],
+                "to": [{ "mouse_key": { "vertical_wheel": -32 } }],
                 "type": "basic"
               },
               {
                 "conditions": [
                   {
-                    "name": "vim_mode",
+                    "name": "mouse_keys_full",
+                    "type": "variable_if",
+                    "value": 1
+                  },
+                  {
+                    "name": "mouse_keys_full_scroll",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
                   "key_code": "l",
-                  "modifiers": { "optional": ["any"] }
-                },
-                "to": [{ "key_code": "right_arrow" }],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "description": "Mouse Mode (Caps Lock + M)",
-            "manipulators": [
-              {
-                "conditions": [
-                  {
-                    "name": "mouse_mode",
-                    "type": "variable_if",
-                    "value": 0
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
                   }
-                ],
-                "from": {
-                  "modifiers": { "optional": ["any"] },
-                  "simultaneous": [
-                    { "key_code": "escape" },
-                    { "key_code": "m" }
-                  ]
                 },
-                "to": [
-                  {
-                    "set_variable": {
-                      "name": "mouse_mode",
-                      "value": 1
-                    }
-                  },
-                  {
-                    "set_variable": {
-                      "name": "vim_mode",
-                      "value": 0
-                    }
-                  },
-                  {
-                    "set_variable": {
-                      "name": "fn_led",
-                      "value": 1
-                    }
-                  },
-                  {
-                    "set_variable": {
-                      "name": "caps_lock_led",
-                      "value": 0
-                    }
-                  }
-                ],
+                "to": [{ "mouse_key": { "horizontal_wheel": -32 } }],
                 "type": "basic"
               },
               {
                 "conditions": [
                   {
-                    "name": "mouse_mode",
-                    "type": "variable_if",
-                    "value": 1
-                  }
-                ],
-                "from": {
-                  "modifiers": { "optional": ["any"] },
-                  "simultaneous": [
-                    { "key_code": "escape" },
-                    { "key_code": "m" }
-                  ]
-                },
-                "to": [
-                  {
-                    "set_variable": {
-                      "name": "mouse_mode",
-                      "value": 0
-                    }
-                  },
-                  {
-                    "set_variable": {
-                      "name": "fn_led",
-                      "value": 0
-                    }
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "conditions": [
-                  {
-                    "name": "mouse_mode",
+                    "name": "mouse_keys_full",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
                   "key_code": "h",
-                  "modifiers": { "optional": ["any"] }
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
-                "to": [{ "mouse_key": { "x": -2000 } }],
-                "to_if_held_down": [{ "mouse_key": { "x": -2000 } }],
+                "to": [{ "mouse_key": { "x": -1536 } }],
                 "type": "basic"
               },
               {
                 "conditions": [
                   {
-                    "name": "mouse_mode",
+                    "name": "mouse_keys_full",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
                   "key_code": "j",
-                  "modifiers": { "optional": ["any"] }
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
-                "to": [{ "mouse_key": { "y": 2000 } }],
-                "to_if_held_down": [{ "mouse_key": { "y": 2000 } }],
+                "to": [{ "mouse_key": { "y": 1536 } }],
                 "type": "basic"
               },
               {
                 "conditions": [
                   {
-                    "name": "mouse_mode",
+                    "name": "mouse_keys_full",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
                   "key_code": "k",
-                  "modifiers": { "optional": ["any"] }
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
-                "to": [{ "mouse_key": { "y": -2000 } }],
-                "to_if_held_down": [{ "mouse_key": { "y": -2000 } }],
+                "to": [{ "mouse_key": { "y": -1536 } }],
                 "type": "basic"
               },
               {
                 "conditions": [
                   {
-                    "name": "mouse_mode",
+                    "name": "mouse_keys_full",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
                   "key_code": "l",
-                  "modifiers": { "optional": ["any"] }
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
-                "to": [{ "mouse_key": { "x": 2000 } }],
-                "to_if_held_down": [{ "mouse_key": { "x": 2000 } }],
+                "to": [{ "mouse_key": { "x": 1536 } }],
                 "type": "basic"
               },
               {
                 "conditions": [
                   {
-                    "name": "mouse_mode",
+                    "name": "mouse_keys_full",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
-                  "key_code": "q",
-                  "modifiers": { "optional": ["any"] }
+                  "key_code": "v",
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
                 "to": [{ "pointing_button": "button1" }],
                 "type": "basic"
@@ -302,14 +208,35 @@
               {
                 "conditions": [
                   {
-                    "name": "mouse_mode",
+                    "name": "mouse_keys_full",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
-                  "key_code": "e",
-                  "modifiers": { "optional": ["any"] }
+                  "key_code": "b",
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
+                },
+                "to": [{ "pointing_button": "button3" }],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  {
+                    "name": "mouse_keys_full",
+                    "type": "variable_if",
+                    "value": 1
+                  }
+                ],
+                "from": {
+                  "key_code": "r",
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
                 "to": [{ "pointing_button": "button2" }],
                 "type": "basic"
@@ -317,31 +244,207 @@
               {
                 "conditions": [
                   {
-                    "name": "mouse_mode",
+                    "name": "mouse_keys_full",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
-                  "key_code": "u",
-                  "modifiers": { "optional": ["any"] }
+                  "key_code": "f",
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
-                "to": [{ "mouse_key": { "vertical_wheel": -64 } }],
+                "to": [{ "mouse_key": { "speed_multiplier": 2.0 } }],
                 "type": "basic"
               },
               {
                 "conditions": [
                   {
-                    "name": "mouse_mode",
+                    "name": "mouse_keys_full",
                     "type": "variable_if",
                     "value": 1
                   }
                 ],
                 "from": {
                   "key_code": "d",
-                  "modifiers": { "optional": ["any"] }
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
                 },
-                "to": [{ "mouse_key": { "vertical_wheel": 64 } }],
+                "to": [{ "mouse_key": { "speed_multiplier": 0.3 } }],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  {
+                    "name": "mouse_keys_full",
+                    "type": "variable_if",
+                    "value": 1
+                  }
+                ],
+                "from": {
+                  "key_code": "s",
+                  "modifiers": {
+                    "mandatory": ["right_command"],
+                    "optional": ["any"]
+                  }
+                },
+                "to": [
+                  {
+                    "set_variable": {
+                      "name": "mouse_keys_full_scroll",
+                      "value": 1
+                    }
+                  }
+                ],
+                "to_after_key_up": [
+                  {
+                    "set_variable": {
+                      "name": "mouse_keys_full_scroll",
+                      "value": 0
+                    }
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "CAPS_LOCK to HYPER (SHIFT+COMMAND+OPTION+CONTROL) or ESCAPE (If Alone)",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "caps_lock",
+                  "modifiers": {}
+                },
+                "to": [
+                  {
+                    "key_code": "left_shift",
+                    "modifiers": ["left_command", "left_control", "left_option"]
+                  }
+                ],
+                "to_if_alone": [{ "key_code": "escape" }],
+                "type": "basic"
+              },
+              {
+                "description": "Avoid starting sysdiagnose with the built-in macOS shortcut cmd+shift+option+ctrl+,",
+                "from": {
+                  "key_code": "comma",
+                  "modifiers": {
+                    "mandatory": ["command", "shift", "option", "control"]
+                  }
+                },
+                "to": [],
+                "type": "basic"
+              },
+              {
+                "description": "Avoid starting sysdiagnose with the built-in macOS shortcut cmd+shift+option+ctrl+.",
+                "from": {
+                  "key_code": "period",
+                  "modifiers": {
+                    "mandatory": ["command", "shift", "option", "control"]
+                  }
+                },
+                "to": [],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "description": "Avoid starting sysdiagnose with the built-in macOS shortcut cmd+shift+option+ctrl+/",
+                  "key_code": "slash",
+                  "modifiers": {
+                    "mandatory": ["command", "shift", "option", "control"]
+                  }
+                },
+                "to": [],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Hyper + i/j/k/l == vim directional Keys",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "k",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_shift",
+                      "left_command",
+                      "left_control",
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [{ "key_code": "up_arrow" }],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "h",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_shift",
+                      "left_command",
+                      "left_control",
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [{ "key_code": "left_arrow" }],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_shift",
+                      "left_command",
+                      "left_control",
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [{ "key_code": "down_arrow" }],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "l",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_shift",
+                      "left_command",
+                      "left_control",
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [{ "key_code": "right_arrow" }],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "semicolon",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_shift",
+                      "left_command",
+                      "left_control",
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "right_arrow",
+                    "modifiers": ["left_command"]
+                  }
+                ],
                 "type": "basic"
               }
             ]
@@ -364,15 +467,11 @@
       "selected": true,
       "simple_modifications": [
         {
-          "from": { "key_code": "caps_lock" },
-          "to": [{ "key_code": "escape" }]
-        },
-        {
-          "from": { "key_code": "up_arrow" },
+          "from": { "key_code": "down_arrow" },
           "to": [{ "key_code": "vk_none" }]
         },
         {
-          "from": { "key_code": "down_arrow" },
+          "from": { "key_code": "left_arrow" },
           "to": [{ "key_code": "vk_none" }]
         },
         {
@@ -380,7 +479,7 @@
           "to": [{ "key_code": "vk_none" }]
         },
         {
-          "from": { "key_code": "left_arrow" },
+          "from": { "key_code": "up_arrow" },
           "to": [{ "key_code": "vk_none" }]
         }
       ]
