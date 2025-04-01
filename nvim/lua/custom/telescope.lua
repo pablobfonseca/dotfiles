@@ -87,7 +87,7 @@ set("n", "<leader>sr", function()
     cwd = "~/.dotfiles",
   }
 end, { desc = "Search for nvim config" })
-set({ "n", "v" }, "K", function()
+set({ "n", "v" }, "<leader>K", function()
   builtin.grep_string {}
 end, { desc = "Search current word" })
 set("n", "<space>fa", function()

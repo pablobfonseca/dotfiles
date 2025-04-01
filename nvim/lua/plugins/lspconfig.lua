@@ -184,14 +184,6 @@ return {
           local builtin = require "telescope.builtin"
 
           vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-          -- vim.keymap.set("n", "gd", builtin.lsp_definitions, { buffer = 0, desc = "Go to definition" })
-          vim.keymap.set("n", "gr", builtin.lsp_references, { buffer = -1, desc = "Go to references" })
-          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0, desc = "Go to declarations" })
-          vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, { buffer = 0, desc = "Type definitions" })
-          vim.keymap.set("n", "H", vim.lsp.buf.hover, { buffer = 0, desc = "Lsp hover" })
-
-          vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { buffer = 0, desc = "Lsp rename" })
-          vim.keymap.set("n", "<leader>lca", vim.lsp.buf.code_action, { buffer = 0, desc = "Lsp code action" })
           vim.keymap.set(
             "n",
             "<leader>ds",
@@ -219,8 +211,6 @@ return {
       })
 
       require("custom.autoformat").setup()
-
-      vim.diagnostic.config { virtual_text = true }
 
       vim.keymap.set("", "<leader>L", function()
         local config = vim.diagnostic.config() or {}

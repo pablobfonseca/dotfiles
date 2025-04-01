@@ -50,7 +50,28 @@ return {
           --   toggle = "t"
           -- }
 
-          dapui.setup()
+          dap.set_log_level "TRACE"
+
+          dapui.setup {
+            layouts = {
+              {
+                elements = {
+                  "scopes",
+                  "breakpoints",
+                  "stacks",
+                },
+                size = 35,
+                position = "left",
+              },
+              {
+                elements = {
+                  "repl",
+                },
+                size = 0.30,
+                position = "bottom",
+              },
+            },
+          }
 
           dap.listeners.before.attach.dapui_config = function()
             dapui.open()
