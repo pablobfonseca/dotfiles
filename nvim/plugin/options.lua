@@ -41,7 +41,8 @@ opt.inccommand = "split"
 opt.ignorecase = true
 opt.smartcase = true
 
-opt.wrap = false
+opt.wrap = true
+opt.linebreak = true
 
 opt.swapfile = false
 opt.backup = false
@@ -94,6 +95,18 @@ vim.env.PATH = vim.fn.stdpath "data" .. "/mason/bin" .. ":" .. vim.env.PATH
 
 -- change diagnostics signs
 vim.diagnostic.config {
+  vim.diagnostic.config {
+    virtual_text = {
+      severity = {
+        max = vim.diagnostic.severity.WARN,
+      },
+    },
+    virtual_lines = {
+      severity = {
+        min = vim.diagnostic.severity.ERROR,
+      },
+    },
+  },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "󰅚 ",
@@ -123,3 +136,5 @@ vim.cmd [[cab cc CodeCompanion]]
 
 -- gets rid of line with white spaces
 vim.g.editorconfig = true
+
+vim.more = false

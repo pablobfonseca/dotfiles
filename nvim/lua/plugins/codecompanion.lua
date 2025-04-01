@@ -5,6 +5,16 @@ return {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
     "j-hui/fidget.nvim",
+    {
+      "echasnovski/mini.diff", -- Inline and better diff over the default
+      config = function()
+        local diff = require "mini.diff"
+        diff.setup {
+          -- Disabled by default
+          source = diff.gen_source.none(),
+        }
+      end,
+    },
   },
   keys = {
     { "<leader>Cc", mode = "n", desc = "Open Codecompanion chat", "<cmd>CodeCompanionChat Toggle<cr>" },
@@ -16,8 +26,11 @@ return {
       ollama = function()
         return require("codecompanion.adapters").extend("ollama", {
           schema = {
+            num_ctx = {
+              default = 20000,
+            },
             model = {
-              default = "qwen2.5-coder:latest",
+              default = "deepseek-coder:6.7b:Q4_K_M",
             },
           },
         })
@@ -27,9 +40,26 @@ return {
       -- Change the default chat adapter
       chat = {
         adapter = "anthropic",
+        tools = {
+          ["mcp"] = {
+            -- callin it in a function would prevent mcphub from being loaded before it's needed
+            callback = function()
+              return "mcphub.extensions.codecompanion"
+            end,
+            description = "Call tools and resources from the MCP Servers",
+            opts = {
+              requires_approval = true,
+            },
+          },
+        },
       },
       inline = {
         adapter = "ollama",
+      },
+      display = {
+        diff = {
+          provider = "mini_diff",
+        },
       },
     },
     opts = {
