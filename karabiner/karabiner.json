@@ -2,7 +2,10 @@
   "profiles": [
     {
       "complex_modifications": {
-        "parameters": { "basic.to_if_held_down_threshold_milliseconds": 250 },
+        "parameters": {
+          "basic.to_if_alone_timeout_milliseconds": 500,
+          "basic.to_if_held_down_threshold_milliseconds": 250
+        },
         "rules": [
           {
             "description": "Mouse full emulation with right command super fast",
@@ -365,7 +368,7 @@
             ]
           },
           {
-            "description": "Hyper + i/j/k/l == vim directional Keys",
+            "description": "Hyper + h/j/k/l == vim directional Keys",
             "manipulators": [
               {
                 "from": {
