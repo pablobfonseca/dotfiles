@@ -2,6 +2,7 @@
   "profiles": [
     {
       "complex_modifications": {
+        "parameters": { "basic.to_if_held_down_threshold_milliseconds": 200 },
         "rules": [
           {
             "description": "Mouse full emulation with right command super fast",
@@ -319,7 +320,7 @@
                   "key_code": "caps_lock",
                   "modifiers": { "optional": ["any"] }
                 },
-                "type": "basic",
+                "parameters": { "basic.to_if_alone_timeout_milliseconds": 200 },
                 "to_if_alone": [{ "key_code": "escape" }],
                 "to_if_held_down": [
                   {
@@ -327,9 +328,7 @@
                     "modifiers": ["left_command", "left_control", "left_option"]
                   }
                 ],
-                "parameters": {
-                  "basic.to_if_alone_timeout_milliseconds": 200
-                }
+                "type": "basic"
               },
               {
                 "description": "Avoid starting sysdiagnose with the built-in macOS shortcut cmd+shift+option+ctrl+,",
@@ -461,7 +460,12 @@
                     ]
                   }
                 },
-                "to": [{ "key_code": "right_arrow", "modifiers": ["option"] }],
+                "to": [
+                  {
+                    "key_code": "right_arrow",
+                    "modifiers": ["option"]
+                  }
+                ],
                 "type": "basic"
               },
               {
@@ -476,7 +480,12 @@
                     ]
                   }
                 },
-                "to": [{ "key_code": "left_arrow", "modifiers": ["option"] }],
+                "to": [
+                  {
+                    "key_code": "left_arrow",
+                    "modifiers": ["option"]
+                  }
+                ],
                 "type": "basic"
               },
               {
@@ -491,7 +500,12 @@
                     ]
                   }
                 },
-                "to": [{ "key_code": "left_arrow", "modifiers": ["command"] }],
+                "to": [
+                  {
+                    "key_code": "left_arrow",
+                    "modifiers": ["command"]
+                  }
+                ],
                 "type": "basic"
               },
               {
@@ -506,7 +520,12 @@
                     ]
                   }
                 },
-                "to": [{ "key_code": "right_arrow", "modifiers": ["command"] }],
+                "to": [
+                  {
+                    "key_code": "right_arrow",
+                    "modifiers": ["command"]
+                  }
+                ],
                 "type": "basic"
               },
               {
@@ -521,7 +540,12 @@
                     ]
                   }
                 },
-                "to": [{ "key_code": "x", "modifiers": ["command"] }],
+                "to": [
+                  {
+                    "key_code": "x",
+                    "modifiers": ["command"]
+                  }
+                ],
                 "type": "basic"
               },
               {
@@ -536,7 +560,12 @@
                     ]
                   }
                 },
-                "to": [{ "key_code": "c", "modifiers": ["command"] }],
+                "to": [
+                  {
+                    "key_code": "c",
+                    "modifiers": ["command"]
+                  }
+                ],
                 "type": "basic"
               },
               {
@@ -551,7 +580,12 @@
                     ]
                   }
                 },
-                "to": [{ "key_code": "v", "modifiers": ["command"] }],
+                "to": [
+                  {
+                    "key_code": "v",
+                    "modifiers": ["command"]
+                  }
+                ],
                 "type": "basic"
               },
               {
@@ -566,7 +600,12 @@
                     ]
                   }
                 },
-                "to": [{ "key_code": "z", "modifiers": ["command"] }],
+                "to": [
+                  {
+                    "key_code": "z",
+                    "modifiers": ["command"]
+                  }
+                ],
                 "type": "basic"
               },
               {
@@ -581,7 +620,12 @@
                     ]
                   }
                 },
-                "to": [{ "key_code": "z", "modifiers": ["command", "shift"] }],
+                "to": [
+                  {
+                    "key_code": "z",
+                    "modifiers": ["command", "shift"]
+                  }
+                ],
                 "type": "basic"
               }
             ]
@@ -597,6 +641,7 @@
             "vendor_id": 13364
           },
           "ignore": false,
+          "manipulate_caps_lock_led": false,
           "treat_as_built_in_keyboard": true
         }
       ],
