@@ -11,20 +11,48 @@
             "description": "Mouse full emulation with right command super fast",
             "manipulators": [
               {
+                "type": "basic",
                 "from": {
                   "key_code": "right_command",
                   "modifiers": { "optional": ["any"] }
                 },
-                "to": [{ "key_code": "right_command" }],
-                "to_after_key_up": [
+                "conditions": [
+                  {
+                    "type": "variable_if",
+                    "name": "mouse_keys_full",
+                    "value": 0
+                  }
+                ],
+                "to": [
                   {
                     "set_variable": {
                       "name": "mouse_keys_full",
                       "value": 1
                     }
                   }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": {
+                  "key_code": "right_command",
+                  "modifiers": { "optional": ["any"] }
+                },
+                "conditions": [
+                  {
+                    "type": "variable_if",
+                    "name": "mouse_keys_full",
+                    "value": 1
+                  }
                 ],
-                "type": "basic"
+                "to": [
+                  {
+                    "set_variable": {
+                      "name": "mouse_keys_full",
+                      "value": 0
+                    }
+                  }
+                ]
               },
               {
                 "conditions": [
@@ -42,7 +70,6 @@
                 "from": {
                   "key_code": "h",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -65,7 +92,6 @@
                 "from": {
                   "key_code": "j",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -88,7 +114,6 @@
                 "from": {
                   "key_code": "k",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -111,7 +136,6 @@
                 "from": {
                   "key_code": "l",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -129,7 +153,6 @@
                 "from": {
                   "key_code": "h",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -147,7 +170,6 @@
                 "from": {
                   "key_code": "j",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -165,7 +187,6 @@
                 "from": {
                   "key_code": "k",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -183,7 +204,6 @@
                 "from": {
                   "key_code": "l",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -201,7 +221,6 @@
                 "from": {
                   "key_code": "v",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -219,7 +238,6 @@
                 "from": {
                   "key_code": "b",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -237,7 +255,6 @@
                 "from": {
                   "key_code": "r",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -255,7 +272,6 @@
                 "from": {
                   "key_code": "f",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -273,7 +289,6 @@
                 "from": {
                   "key_code": "d",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
@@ -291,7 +306,6 @@
                 "from": {
                   "key_code": "s",
                   "modifiers": {
-                    "mandatory": ["right_command"],
                     "optional": ["any"]
                   }
                 },
