@@ -4,25 +4,25 @@
       "complex_modifications": {
         "parameters": {
           "basic.to_if_alone_timeout_milliseconds": 100,
-          "basic.to_if_held_down_threshold_milliseconds": 200
+          "basic.to_if_held_down_threshold_milliseconds": 200,
+          "mouse_motion_to_scroll.speed": 150
         },
         "rules": [
           {
             "description": "Mouse full emulation with right command super fast",
             "manipulators": [
               {
-                "type": "basic",
+                "conditions": [
+                  {
+                    "name": "mouse_keys_full",
+                    "type": "variable_if",
+                    "value": 0
+                  }
+                ],
                 "from": {
                   "key_code": "right_command",
                   "modifiers": { "optional": ["any"] }
                 },
-                "conditions": [
-                  {
-                    "type": "variable_if",
-                    "name": "mouse_keys_full",
-                    "value": 0
-                  }
-                ],
                 "to": [
                   {
                     "set_variable": {
@@ -30,21 +30,21 @@
                       "value": 1
                     }
                   }
-                ]
+                ],
+                "type": "basic"
               },
               {
-                "type": "basic",
+                "conditions": [
+                  {
+                    "name": "mouse_keys_full",
+                    "type": "variable_if",
+                    "value": 1
+                  }
+                ],
                 "from": {
                   "key_code": "right_command",
                   "modifiers": { "optional": ["any"] }
                 },
-                "conditions": [
-                  {
-                    "type": "variable_if",
-                    "name": "mouse_keys_full",
-                    "value": 1
-                  }
-                ],
                 "to": [
                   {
                     "set_variable": {
@@ -52,7 +52,8 @@
                       "value": 0
                     }
                   }
-                ]
+                ],
+                "type": "basic"
               },
               {
                 "conditions": [
@@ -69,9 +70,7 @@
                 ],
                 "from": {
                   "key_code": "h",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "mouse_key": { "horizontal_wheel": 32 } }],
                 "type": "basic"
@@ -91,9 +90,7 @@
                 ],
                 "from": {
                   "key_code": "j",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "mouse_key": { "vertical_wheel": 32 } }],
                 "type": "basic"
@@ -113,9 +110,7 @@
                 ],
                 "from": {
                   "key_code": "k",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "mouse_key": { "vertical_wheel": -32 } }],
                 "type": "basic"
@@ -135,9 +130,7 @@
                 ],
                 "from": {
                   "key_code": "l",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "mouse_key": { "horizontal_wheel": -32 } }],
                 "type": "basic"
@@ -152,9 +145,7 @@
                 ],
                 "from": {
                   "key_code": "h",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "mouse_key": { "x": -1536 } }],
                 "type": "basic"
@@ -169,9 +160,7 @@
                 ],
                 "from": {
                   "key_code": "j",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "mouse_key": { "y": 1536 } }],
                 "type": "basic"
@@ -186,9 +175,7 @@
                 ],
                 "from": {
                   "key_code": "k",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "mouse_key": { "y": -1536 } }],
                 "type": "basic"
@@ -203,9 +190,7 @@
                 ],
                 "from": {
                   "key_code": "l",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "mouse_key": { "x": 1536 } }],
                 "type": "basic"
@@ -220,9 +205,7 @@
                 ],
                 "from": {
                   "key_code": "v",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "pointing_button": "button1" }],
                 "type": "basic"
@@ -237,9 +220,7 @@
                 ],
                 "from": {
                   "key_code": "b",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "pointing_button": "button3" }],
                 "type": "basic"
@@ -254,9 +235,7 @@
                 ],
                 "from": {
                   "key_code": "r",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "pointing_button": "button2" }],
                 "type": "basic"
@@ -271,9 +250,7 @@
                 ],
                 "from": {
                   "key_code": "f",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "mouse_key": { "speed_multiplier": 2.0 } }],
                 "type": "basic"
@@ -288,9 +265,7 @@
                 ],
                 "from": {
                   "key_code": "d",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "mouse_key": { "speed_multiplier": 0.3 } }],
                 "type": "basic"
@@ -305,9 +280,7 @@
                 ],
                 "from": {
                   "key_code": "s",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
+                  "modifiers": { "optional": ["any"] }
                 },
                 "to": [
                   {
@@ -337,7 +310,7 @@
                   "key_code": "caps_lock",
                   "modifiers": { "optional": ["any"] }
                 },
-                "parameters": { "basic.to_if_alone_timeout_milliseconds": 200 },
+                "parameters": { "basic.to_if_alone_timeout_milliseconds": 100 },
                 "to_if_alone": [{ "key_code": "escape" }],
                 "to_if_held_down": [
                   {
