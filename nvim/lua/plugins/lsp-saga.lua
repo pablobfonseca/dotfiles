@@ -13,7 +13,7 @@ return {
       desc = "[L]spsaga Show Buffer Diagnostics",
       "<cmd>Lspsaga show_buf_diagnostics<cr>",
     },
-    -- { "H", mode = "n", desc = "[L]spsaga Hover Doc", "<cmd>Lspsaga hover_doc<cr>" },
+    { "K", mode = "n", desc = "[L]spsaga Hover Doc", "<cmd>Lspsaga hover_doc<cr>" },
     { "<leader>lr", mode = "n", desc = "[L]spsaga [R]ename", "<cmd>Lspsaga rename<cr>" },
     { "[d", mode = "n", desc = "Go to previous diagnostic message", "<cmd>Lspsaga diagnostic_jump_prev<cr>" },
     { "]d", mode = "n", desc = "Go to next diagnostic message", "<cmd>Lspsaga diagnostic_jump_next<cr>" },
