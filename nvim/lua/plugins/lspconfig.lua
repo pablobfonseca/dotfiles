@@ -2,7 +2,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      { "saghen/blink.cmp" },
+      { "hrsh7th/nvim-cmp" },
       {
         "folke/lazydev.nvim",
         ft = "lua",
@@ -161,7 +161,7 @@ return {
           config = {}
         end
         config = vim.tbl_deep_extend("force", {}, {
-          capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities),
+          capabilities = require("cmp_nvim_lsp").default_capabilities(),
         }, config)
 
         lspconfig[server].setup(config)
