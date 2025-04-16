@@ -3,12 +3,12 @@ local mc = require "multicursor-nvim"
 mc.setup()
 
 -- add cursors above/below the main cursor
-vim.keymap.set({ "n", "v" }, "<M-k>", function()
-  mc.addCursor "k"
-end)
-vim.keymap.set({ "n", "v" }, "<M-j>", function()
-  mc.addCursor "j"
-end)
+-- vim.keymap.set({ "n", "v" }, "<M-k>", function()
+--   mc.addCursor "k"
+-- end)
+-- vim.keymap.set({ "n", "v" }, "<M-j>", function()
+--   mc.addCursor "j"
+-- end)
 
 -- add a cursor and jump to the next word under cursor
 vim.keymap.set({ "n", "v" }, "<C-n>", function()
