@@ -204,7 +204,7 @@
                   }
                 ],
                 "from": {
-                  "key_code": "v",
+                  "key_code": "q",
                   "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "pointing_button": "button1" }],
@@ -219,7 +219,7 @@
                   }
                 ],
                 "from": {
-                  "key_code": "b",
+                  "key_code": "w",
                   "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "pointing_button": "button3" }],
@@ -234,7 +234,7 @@
                   }
                 ],
                 "from": {
-                  "key_code": "r",
+                  "key_code": "e",
                   "modifiers": { "optional": ["any"] }
                 },
                 "to": [{ "pointing_button": "button2" }],
@@ -252,7 +252,7 @@
                   "key_code": "f",
                   "modifiers": { "optional": ["any"] }
                 },
-                "to": [{ "mouse_key": { "speed_multiplier": 2.0 } }],
+                "to": [{ "mouse_key": { "speed_multiplier": 2.5 } }],
                 "type": "basic"
               },
               {
@@ -310,7 +310,7 @@
                   "key_code": "caps_lock",
                   "modifiers": { "optional": ["any"] }
                 },
-                "parameters": { "basic.to_if_alone_timeout_milliseconds": 100 },
+                "parameters": { "basic.to_if_alone_timeout_milliseconds": 200 },
                 "to_if_alone": [{ "key_code": "escape" }],
                 "to_if_held_down": [
                   {
