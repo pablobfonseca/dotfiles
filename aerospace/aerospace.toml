@@ -120,7 +120,7 @@ outer.right =      2
 
 # You can uncomment this line to open up terminal with alt + enter shortcut
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-ctrl-cmd-q = 'exec-and-forget open -a Qutebrowser'
+ctrl-cmd-n = 'exec-and-forget open -a Obsidian'
 ctrl-cmd-b = 'exec-and-forget open -a "Google Chrome"'
 ctrl-cmd-t = 'exec-and-forget open -a WezTerm'
 ctrl-cmd-s = 'exec-and-forget open -a Slack'
