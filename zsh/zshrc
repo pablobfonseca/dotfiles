@@ -24,6 +24,15 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
 export PATH="$PATH:$HOME/code/roc"
 
+# Flutter
+export PATH="$PATH:$HOME/code/flutter/bin:$PATH"
+
+# Android
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/tools
+
 # Make vi-mode transitions faster (KEYTIMEOUT is in hundredths of a second)
 export KEYTIMEOUT=1
 
@@ -102,7 +111,7 @@ source $ZPLUG_HOME/init.zsh
 
 zplug "zsh-users/zsh-autosuggestions"
 bindkey "^y" autosuggest-accept
-zplug "b4b4r07/enhancd", use:init.sh, defer:2
+# zplug "b4b4r07/enhancd", use:init.sh, defer:2
 
 # fzf-tab
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
@@ -211,6 +220,10 @@ alias k="kubectl"
 alias ip="curl -s ifconfig.me"
 alias cvim="nvim -u NONE"
 alias fman="compgen -c | fzf --tmux --prompt='Search for a command: ' | xargs man"
+alias emacs="open /Applications/Emacs.app"
+
+# Devdeck
+alias logdevdeck="log stream --predicate 'process == \"DevDeck\"' --info"
 
 # GH
 alias copilot="gh copilot"
@@ -365,3 +378,4 @@ bindkey "^x^n" atuin-search-vicmd # C-x C-n starts atuin in normal mode
 # This section can be safely removed at any time if needed.
 [[ ! -r "$HOME/.opam/opam-init/init.zsh" ]] || source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2> /dev/null
 # END opam configuration
+alias claude="/Users/pablobfonseca/.claude/local/claude"

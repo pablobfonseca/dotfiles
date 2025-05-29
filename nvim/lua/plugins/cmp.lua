@@ -6,6 +6,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-path",
     "hrsh7th/cmp-buffer",
+    "hrsh7th/cmp-cmdline",
     "petertriho/cmp-git",
     {
       "L3MON4D3/LuaSnip",
@@ -27,6 +28,7 @@ return {
 
     local cmp = require "cmp"
 
+    require("cmp_git").setup {}
     cmp.setup {
       sources = cmp.config.sources {
         { name = "nvim_lsp" },
@@ -34,6 +36,8 @@ return {
         { name = "luasnip" },
         { name = "buffer", keyword_length = 3 },
         { name = "lazydev", group_index = 0 },
+        { name = "render-markdown" },
+        { name = "git" },
       },
       mapping = {
         ["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -66,14 +70,27 @@ return {
           show_labelDetails = true,
         },
       },
-      filetype = {
-        gitcommit = {
-          sources = cmp.config.sources({
-            { name = "buffer" },
-          }, { name = "buffer" }),
-        },
-      },
     }
+
+    cmp.setup.cmdline(":", {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = cmp.config.sources({
+        { name = "path" },
+      }, {
+        { name = "cmdline" },
+      }),
+      ---@diagnostic disable-next-line: missing-fields
+      matching = {
+        { disallow_symbol_nonpredix_matching = false },
+      },
+    })
+
+    cmp.setup.cmdline({ "/", "?" }, {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = {
+        { name = "buffer" },
+      },
+    })
 
     local cmp_autopairs = require "nvim-autopairs.completion.cmp"
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())

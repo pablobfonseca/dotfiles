@@ -22,8 +22,8 @@ oil.setup {
             staticTitle = "Find and Replace from Explorer",
           }
         else
-          grug_far.open_instance "explorer"
-          grug_far.update_instance_prefills("explorer", prefills, false)
+          grug_far.get_instance("explorer"):open()
+          grug_far.get_instance("explorer"):update_input_values(prefills, false)
         end
       end,
       desc = "oil: Search in directory",
