@@ -3,5 +3,8 @@
         "vim",
         "hs",
         "require"
+    ],
+    "diagnostics.disable": [
+        "missing-fields"
     ]
 }
