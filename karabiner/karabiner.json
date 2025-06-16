@@ -5,7 +5,7 @@
         "parameters": {
           "basic.to_if_alone_timeout_milliseconds": 100,
           "basic.to_if_held_down_threshold_milliseconds": 200,
-          "mouse_motion_to_scroll.speed": 150
+          "mouse_motion_to_scroll.speed": 100
         },
         "rules": [
           {
@@ -252,7 +252,7 @@
                   "key_code": "f",
                   "modifiers": { "optional": ["any"] }
                 },
-                "to": [{ "mouse_key": { "speed_multiplier": 2.5 } }],
+                "to": [{ "mouse_key": { "speed_multiplier": 3 } }],
                 "type": "basic"
               },
               {
@@ -636,25 +636,7 @@
         }
       ],
       "name": "Default",
-      "selected": true,
-      "simple_modifications": [
-        {
-          "from": { "key_code": "down_arrow" },
-          "to": [{ "key_code": "vk_none" }]
-        },
-        {
-          "from": { "key_code": "left_arrow" },
-          "to": [{ "key_code": "vk_none" }]
-        },
-        {
-          "from": { "key_code": "right_arrow" },
-          "to": [{ "key_code": "vk_none" }]
-        },
-        {
-          "from": { "key_code": "up_arrow" },
-          "to": [{ "key_code": "vk_none" }]
-        }
-      ]
+      "selected": true
     }
   ]
 }
