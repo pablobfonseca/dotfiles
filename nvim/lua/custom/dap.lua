@@ -105,3 +105,14 @@ for _, language in ipairs(js_based_languages) do
     },
   }
 end
+
+local function reset_dapui_layout()
+  local dapui = require "dapui"
+
+  dapui.close()
+  dapui.open()
+end
+
+vim.api.nvim_create_user_command("DapUIReset", reset_dapui_layout, {
+  desc = "Close & re-open DAP-UI to its default layout",
+})
