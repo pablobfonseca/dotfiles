@@ -59,3 +59,15 @@ set("n", "<M-x>", "<C-x>")
 
 -- zoom current window
 set("n", "<C-w>z", "<C-w>|<C-w>_")
+
+-- Copy current buffer’s full path to the system clipboard
+set("n", "<leader>cp", function()
+  -- get the full path of the current buffer
+  local buf_path = vim.fn.expand "%:p"
+  if buf_path == "" then
+    return
+  end
+  -- set the clipboard register
+  vim.fn.setreg("+", buf_path)
+  print("Copied path: " .. buf_path)
+end, { noremap = true, silent = true, desc = "Copy current file path" })
