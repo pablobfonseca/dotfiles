@@ -2,6 +2,10 @@ local conf = require("telescope.config").values
 local finders = require "telescope.finders"
 local make_entry = require "telescope.make_entry"
 local pickers = require "telescope.pickers"
+local actions = require "telescope.actions"
+local action_state = require "telescope.actions.state"
+
+local last_search_term = ""
 
 return function(opts)
   opts = opts or {}
@@ -22,6 +26,9 @@ return function(opts)
       if not prompt or prompt == "" then
         return nil
       end
+
+      -- Save the last search term
+      last_search_term = prompt
 
       local prompt_split = vim.split(prompt, "  ")
 
@@ -63,6 +70,13 @@ return function(opts)
       finder = custom_grep,
       previewer = conf.grep_previewer(opts),
       sorter = require("telescope.sorters").empty(),
+      attach_mappings = function(prompt_bufnr, map)
+        map("i", "<leader>l", function()
+          local picker = action_state.get_current_picker(prompt_bufnr)
+          picker:set_prompt(last_search_term)
+        end)
+        return true
+      end,
     })
     :find()
 end
