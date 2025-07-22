@@ -8,6 +8,14 @@ return {
           delve = {
             path = vim.fn.resolve(vim.fn.stdpath "data" .. "/mason/bin/dlv"),
           },
+          dap_configurations = {
+            {
+              type = "go",
+              name = "Attach remote",
+              mode = "remote",
+              request = "attach",
+            },
+          },
         },
       },
       {
@@ -53,44 +61,44 @@ return {
           dap.set_log_level "TRACE"
 
           dapui.setup {
-            controls = {
-              element = "repl",
-              enabled = false,
-            },
-            floating = {
-              max_height = 0.5,
-              max_width = 0.5,
-              border = "rounded",
-              mappings = {
-                close = { "q", "<Esc>" },
-              },
-            },
-            layouts = {
-              {
-                elements = {
-                  { id = "scopes", size = 0.70 },
-                  { id = "watches", size = 0.30 },
-                },
-                size = 40,
-                position = "left",
-              },
-              {
-                elements = {
-                  { id = "breakpoints", size = 0.25 },
-                  { id = "stacks", size = 0.75 },
-                },
-                size = 0.35,
-                position = "right",
-              },
-              {
-                elements = {
-                  { id = "repl", size = 0.50 },
-                  { id = "console", size = 0.50 },
-                },
-                size = 0.30,
-                position = "bottom",
-              },
-            },
+            -- controls = {
+            --   element = "repl",
+            --   enabled = false,
+            -- },
+            -- floating = {
+            --   max_height = 0.5,
+            --   max_width = 0.5,
+            --   border = "rounded",
+            --   mappings = {
+            --     close = { "q", "<Esc>" },
+            --   },
+            -- },
+            -- layouts = {
+            --   {
+            --     elements = {
+            --       { id = "scopes", size = 0.70 },
+            --       { id = "watches", size = 0.30 },
+            --     },
+            --     size = 40,
+            --     position = "left",
+            --   },
+            --   {
+            --     elements = {
+            --       { id = "breakpoints", size = 0.25 },
+            --       { id = "stacks", size = 0.75 },
+            --     },
+            --     size = 0.35,
+            --     position = "right",
+            --   },
+            --   {
+            --     elements = {
+            --       { id = "repl", size = 0.50 },
+            --       { id = "console", size = 0.50 },
+            --     },
+            --     size = 0.30,
+            --     position = "bottom",
+            --   },
+            -- },
           }
 
           dap.listeners.before.attach.dapui_config = function()
