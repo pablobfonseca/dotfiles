@@ -110,6 +110,10 @@ return {
         hls = {
           filetypes = { "haskell", "lhaskell", "cabal" },
         },
+        kotlin_language_server = {
+          filetypes = { "kotlin" },
+          cmd = { vim.fn.resolve(vim.fn.stdpath "data" .. "/mason/bin/kotlin-language-server") },
+        },
         ts_ls = {
           root_dir = require("lspconfig").util.root_pattern "package.json",
           single_file = false,

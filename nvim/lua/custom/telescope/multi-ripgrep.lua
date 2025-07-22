@@ -71,10 +71,10 @@ return function(opts)
       previewer = conf.grep_previewer(opts),
       sorter = require("telescope.sorters").empty(),
       attach_mappings = function(prompt_bufnr, map)
-        map("i", "<leader>l", function()
+        map({ "i", "n" }, "<leader>l", function()
           local picker = action_state.get_current_picker(prompt_bufnr)
           picker:set_prompt(last_search_term)
-        end)
+        end, { desc = "Insert last search" })
         return true
       end,
     })

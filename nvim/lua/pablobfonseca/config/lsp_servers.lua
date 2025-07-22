@@ -8,6 +8,7 @@ return {
   "gopls",
   "harper_ls",
   "haskell-language-server",
+  "kotlin-language-server",
   "html",
   "jsonls",
   "lua_ls",

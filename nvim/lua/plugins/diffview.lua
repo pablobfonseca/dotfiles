@@ -21,5 +21,11 @@ return {
       desc = "Diff View File History",
       "<cmd>DiffviewFileHistory<cr>",
     },
+    {
+      "<C-c>Dm",
+      mode = "n",
+      desc = "Diff View With Master History",
+      "<cmd>DiffviewOpen origin/master<cr>",
+    },
   },
 }
