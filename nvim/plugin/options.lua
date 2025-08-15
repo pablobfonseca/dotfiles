@@ -96,7 +96,7 @@ vim.env.PATH = vim.fn.stdpath "data" .. "/mason/bin" .. ":" .. vim.env.PATH
 -- change diagnostics signs
 vim.diagnostic.config {
   underline = true,
-  virtual_text = true,
+  virtual_text = false,
   update_in_insert = false,
   severity_sort = true,
   signs = {

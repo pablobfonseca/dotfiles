@@ -1,6 +1,6 @@
 return {
   "hrsh7th/nvim-cmp",
-  lazy = false,
+  event = "InsertEnter",
   dependencies = {
     "onsails/lspkind.nvim",
     "hrsh7th/cmp-nvim-lsp",
@@ -30,6 +30,11 @@ return {
 
     require("cmp_git").setup {}
     cmp.setup {
+      performance = {
+        debounce = 60,
+        throttle = 30,
+        fetching_timeout = 500,
+      },
       sources = cmp.config.sources {
         { name = "nvim_lsp" },
         { name = "path" },
@@ -102,8 +107,5 @@ return {
     }
 
     ls.config.set_config = luasnip_opts
-
-    require("luasnip.loaders.from_vscode").lazy_load(luasnip_opts)
-    require("luasnip.loaders.from_lua").load()
   end,
 }

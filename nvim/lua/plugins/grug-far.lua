@@ -2,6 +2,14 @@ return {
   "MagicDuck/grug-far.nvim",
   keys = {
     {
+      "<leader>F",
+      mode = "n",
+      desc = "Open Grug Search",
+      function()
+        require("grug-far").open()
+      end,
+    },
+    {
       "<space>Gs",
       mode = "n",
       desc = "[Grug]: Search current word under cursor",

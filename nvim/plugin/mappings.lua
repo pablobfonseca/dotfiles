@@ -28,8 +28,6 @@ set("i", "<C-j>", "<Down>")
 set("i", "<C-k>", "<Up>")
 
 -- navigate the quickfix list
-set("n", "<leader>cn", ":cnext<cr>")
-set("n", "<leader>cb", ":cprevious<cr>")
 set("n", "<leader><space>", ":ccl<cr>", { desc = "Close quickfix window" })
 
 set("x", "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
