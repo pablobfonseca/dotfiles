@@ -63,7 +63,6 @@ return {
             semanticTokensProvider = vim.NIL,
           },
         },
-        rust_analyzer = true,
         pyright = true,
         cssls = true,
         elmls = true,
@@ -94,22 +93,9 @@ return {
             },
           },
         },
-        ocamllsp = {
-          manual_install = true,
-          cmd = { "opam", "exec", "--", "dune", "exec", "ocamllsp" },
-          settings = {
-            codelens = { enable = true },
-            inlayHints = { enable = true },
-            syntaxDocumentation = { enable = true },
-          },
-          server_capabilities = { semanticTokensProvider = false },
-        },
         pylsp = true,
         ruby_lsp = true,
         tailwindcss = true,
-        hls = {
-          filetypes = { "haskell", "lhaskell", "cabal" },
-        },
         kotlin_language_server = {
           filetypes = { "kotlin" },
           cmd = { vim.fn.resolve(vim.fn.stdpath "data" .. "/mason/bin/kotlin-language-server") },

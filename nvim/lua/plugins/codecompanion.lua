@@ -1,20 +1,20 @@
 return {
   "olimorris/codecompanion.nvim",
-  lazy = false,
+  enable = false,
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
     "j-hui/fidget.nvim",
-    {
-      "echasnovski/mini.diff", -- Inline and better diff over the default
-      config = function()
-        local diff = require "mini.diff"
-        diff.setup {
-          -- Disabled by default
-          source = diff.gen_source.none(),
-        }
-      end,
-    },
+    -- {
+    --   "echasnovski/mini.diff", -- Inline and better diff over the default
+    --   config = function()
+    --     local diff = require "mini.diff"
+    --     diff.setup {
+    --       -- Disabled by default
+    --       source = diff.gen_source.none(),
+    --     }
+    --   end,
+    -- },
   },
   keys = {
     { "<leader>Cc", mode = "n", desc = "Open Codecompanion chat", "<cmd>CodeCompanionChat Toggle<cr>" },

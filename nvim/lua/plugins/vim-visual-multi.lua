@@ -1,6 +1,5 @@
 return {
   "mg979/vim-visual-multi",
-  event = "VeryLazy",
   init = function()
     vim.api.nvim_create_autocmd("User", {
       pattern = "visual_multi_start",
