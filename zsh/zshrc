@@ -147,6 +147,48 @@ nvmlist() {
     njs=$(fnm list | awk '{print $2}' | fzf --tmux --prompt "Node version: ") && fnm use $njs
 }
 
+chromeaction() {
+  local tabs_json selected_tab tab_id action js_code tmpfile
+
+  tabs_json=$(OUTPUT_FORMAT=json chrome-cli list tabs)
+
+  selected_tab=$(echo "$tabs_json" | jq -r '.tabs[] | "[\(.id)] \(.title) - \(.url)"' | fzf --tmux --prompt="Select a chrome tab: ")
+
+  [[ -z "$selected_tab" ]] && return
+
+  tab_id=$(echo "$selected_tab" | sed -n 's/^\[\([0-9]*\)\].*/\1/p')
+
+  [[ -z "$tab_id" ]] && echo "Could not extract tab ID" && return 1
+
+  action=$(printf "activate\nclose\nreload\nexecute" | fzf --tmux --prompt="Choose an action: ")
+
+  [[ -z "$action" ]] && return
+
+  case "$action" in
+    activate) chrome-cli activate -t "$tab_id" ;;
+    close) chrome-cli close -t "$tab_id" ;;
+    reload) chrome-cli reload -t "$tab_id" ;;
+    execute)
+      tmpfile=$(mktemp /tmp/chrome-js.XXXXXX.js)
+      echo "// Write JS code to run in the Chrome Tab. Save & Exit to execute." > "$tmpfile"
+      echo "" >> "$tmpfile"
+
+      "${EDITOR:-nvim}" "$tmpfile"
+
+      js_code=$(grep -v '^\s*//' "$tmpfile" | sed '/^\s*$/d')
+
+      rm -f "$tmpfile"
+
+      if [[ -n "$js_code" ]]; then
+        chrome-cli execute "$js_code" -t "$tab_id"
+      else
+        echo "No JS. Aborting"
+      fi
+      ;;
+    *) echo "Unknown action: $action" ;;
+  esac
+}
+
 function branch_clean() {
     git checkout master && git branch --merged | grep -v master | xargs git branch -d
 }

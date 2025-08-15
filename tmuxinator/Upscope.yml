@@ -9,3 +9,4 @@ windows:
         -
   - lazydocker: upscope lazydocker
   - types-watch: upscope build types -w
+  - monitor: cd ../upscope-monitor; ./upscope-monitor
