@@ -1,2 +1,3 @@
-require "config.lazy"
-require "pablobfonseca"
+vim.loader.enable()
+
+-- require "config.lazy"

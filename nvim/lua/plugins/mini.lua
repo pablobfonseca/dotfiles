@@ -1,13 +1,9 @@
-return {
-  "echasnovski/mini.nvim",
-  version = false,
-  config = function()
-    -- Better Around/inside textobjects
-    --
-    -- Examples:
-    -- - va)  - [V]isually select [A]round [)]paren
-    -- - yinq - [Y]ank [I]nside [N]ext [Q]uote
-    -- - ci'  - [C]hange [I]nside [']quote
-    require("mini.ai").setup { n_lines = 500 }
-  end,
+vim.pack.add {
+  { src = "https://github.com/nvim-mini/mini.ai" },
+  { src = "https://github.com/nvim-mini/mini.surround" },
 }
+require("mini.ai").setup {
+  n_lines = 500,
+}
+
+require("mini.surround").setup()
