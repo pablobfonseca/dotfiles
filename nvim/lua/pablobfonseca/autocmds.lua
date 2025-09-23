@@ -1,0 +1,136 @@
+-- Basic autocommands
+local augroup = vim.api.nvim_create_augroup("UserConfig", {})
+
+-- Highlight yanked text
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = augroup,
+  callback = function()
+    vim.hl.on_yank()
+  end,
+})
+
+-- prevent neovim from commenting next line
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  command = "setlocal formatoptions-=cro",
+})
+
+-- Show cursorline only in active window
+vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
+  group = augroup,
+  callback = function()
+    local ok, cl = pcall(vim.api.nvim_win_get_var, 0, "auto-cursorline")
+    if ok and cl then
+      vim.wo.cursorline = true
+      vim.api.nvim_win_del_var(0, "auto-cursorline")
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
+  group = augroup,
+  callback = function()
+    local cl = vim.wo.cursorline
+    if cl then
+      vim.api.nvim_win_set_var(0, "auto-cursorline", cl)
+      vim.wo.cursorline = false
+    end
+  end,
+})
+
+-- Don't list quickfix buffers
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup,
+  pattern = "qf",
+  callback = function()
+    vim.opt_local.buflisted = false
+  end,
+})
+
+-- Return the last edit position when opening files
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = augroup,
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local lcount = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup,
+  pattern = { "javascript", "typescript", "json", "html", "css" },
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.shiftwidth = 2
+  end,
+})
+
+-- Auto-close terminal when process exits
+vim.api.nvim_create_autocmd("TermClose", {
+  group = augroup,
+  callback = function()
+    if vim.v.event.status == 0 then
+      vim.api.nvim_buf_delete(0, {})
+    end
+  end,
+})
+
+-- Disable line numbers in terminal
+vim.api.nvim_create_autocmd("TermOpen", {
+  group = augroup,
+  callback = function()
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+    vim.opt_local.signcolumn = "no"
+  end,
+})
+
+-- Auto-resize splits when window is resized
+vim.api.nvim_create_autocmd("VimResized", {
+  group = augroup,
+  callback = function()
+    vim.cmd "tabdo wincmd ="
+  end,
+})
+
+-- Create directories when saving files
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = augroup,
+  callback = function()
+    local dir = vim.fn.expand "<afile>:p:h"
+    if vim.fn.isdirectory(dir) == 0 then
+      vim.fn.mkdir(dir, "p")
+    end
+  end,
+})
+
+-- LSP Info
+vim.api.nvim_create_user_command("LspInfo", function()
+  local clients = vim.lsp.get_clients { bufnr = 0 }
+  if #clients == 0 then
+    print "No LSP clients attached to current buffer"
+  else
+    for _, client in ipairs(clients) do
+      print("LSP: " .. client.name .. " (ID: " .. client.id .. ")")
+    end
+  end
+end, { desc = "Show LSP client info" })
+
+vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+  group = augroup,
+  callback = function(args)
+    if vim.bo[args.buf].filetype == "nvim-pack" then
+      return
+    end
+
+    vim.lsp.buf.document_highlight()
+  end,
+})
+
+vim.api.nvim_create_autocmd("CursorMoved", {
+  group = augroup,
+  callback = vim.lsp.buf.clear_references,
+})

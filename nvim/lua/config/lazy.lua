@@ -22,7 +22,7 @@ require("lazy").setup {
   spec = {
     { import = "plugins" },
   },
-  install = { missing = true, colorscheme = { "catppuccin" } },
+  install = { missing = true, colorscheme = { "tokyonight" } },
   ui = { border = "rounded" },
   checker = { enabled = true, notify = true },
   change_detection = { enabled = false, notify = false },

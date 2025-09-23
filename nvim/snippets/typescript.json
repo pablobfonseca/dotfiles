@@ -1,0 +1,10 @@
+{
+  "Full Console Log": {
+    "prefix": "fcl",
+    "body": [
+      "const util = await import(\"node:util\");",
+      "console.log(util.inspect(${1:obj}, false, null, true))$0"
+    ],
+    "description": "Inspect with node util"
+  }
+}
