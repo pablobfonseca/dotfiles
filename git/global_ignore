@@ -29,3 +29,4 @@ restmode
 upscope_requests.http
 http-client.env.json
 CLAUDE.md
+oil:/
