@@ -225,6 +225,15 @@ function _ul() {
   upscope logs $service
 }
 
+function git_test() {
+  local file;
+  file=$(git status --porcelain -- '*.test.ts' | cut -c4- | fzf --tmux --prompt "Select a test file: ") \
+    && upscope test api -t $file
+}
+
+zle -N git_test
+bindkey "^x^t" git_test
+
 open_file() {
   fd --type f --hidden --exclude .git | fzf --tmux --prompt "Open File: " | xargs nvim
 }
@@ -421,3 +430,4 @@ bindkey "^x^n" atuin-search-vicmd # C-x C-n starts atuin in normal mode
 [[ ! -r "$HOME/.opam/opam-init/init.zsh" ]] || source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2> /dev/null
 # END opam configuration
 alias claude="/Users/pablobfonseca/.claude/local/claude"
+alias claude="/Users/pablobfonseca/.config/claude/local/claude"
