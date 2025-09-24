@@ -5,6 +5,7 @@ local conform = require "conform"
 conform.setup {
   formatters_by_ft = {
     lua = { "stylua" },
+    html = { "prettierd", "deno_fmt", stop_after_first = true },
     typescript = { "prettierd", "deno_fmt", stop_after_first = true },
     typescriptreact = { "prettierd", "deno_fmt", stop_after_first = true },
     javascript = { "prettierd" },

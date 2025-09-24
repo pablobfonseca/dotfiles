@@ -56,10 +56,14 @@ set("n", "<leader>rc", ":e $MYVIMRC<cr>", { desc = "Edit config", silent = true 
 
 -- Copy full path
 set("n", "<leader>cp", function()
-  local path = vim.fn.expand "%:p"
-  vim.fn.setreg("*", path)
-  vim.notify("file:" .. path)
-end)
+  local rel = vim.fn.expand "%:." -- path relative to cwd (pwd)
+  if rel == "" then
+    vim.notify("No file name for this buffer", vim.log.levels.WARN)
+    return
+  end
+  vim.fn.setreg("+", rel) -- use "*" if you prefer primary selection
+  vim.notify("copied: " .. rel)
+end, { desc = "Copy relative file path" })
 
 set("n", "z=", function()
   local suggestions = vim.fn.spellsuggest(vim.fn.expand "<cword>", 20)

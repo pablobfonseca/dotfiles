@@ -72,6 +72,10 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("TermClose", {
   group = augroup,
   callback = function()
+    -- Check if this buffer should be preserved
+    if vim.b.preserve_on_close then
+      return
+    end
     if vim.v.event.status == 0 then
       vim.api.nvim_buf_delete(0, {})
     end
@@ -126,7 +130,12 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
       return
     end
 
-    vim.lsp.buf.document_highlight()
+    local clients = vim.lsp.get_clients { bufnr = args.buf }
+    for _, client in ipairs(clients) do
+      if client:supports_method("textDocument/documentHighlight", args.buf) then
+        vim.lsp.buf.document_highlight()
+      end
+    end
   end,
 })
 
