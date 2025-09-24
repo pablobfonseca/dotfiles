@@ -6,6 +6,7 @@
   editor                  = nvim
   excludesfile            = ~/.global_ignore
   whitespace              = warn
+  pager                   = bat
 [github]
   user                    = pablobfonseca
 [help]
