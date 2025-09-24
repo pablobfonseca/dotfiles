@@ -67,7 +67,7 @@ export GEM_HOME=$HOME/.gem
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 
-export BAT_THEME=Dracula
+export BAT_THEME="tokyonight_night"
 
 export PATH="$HOME/.luarocks/bin:$PATH"
 
