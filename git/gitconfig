@@ -6,7 +6,6 @@
   editor                  = nvim
   excludesfile            = ~/.global_ignore
   whitespace              = warn
-  pager                   = bat
 [github]
   user                    = pablobfonseca
 [help]
@@ -73,10 +72,11 @@
 [diff]
   mnemonicprefix          = true
   algorithm               = patience
-  tool                    = vimdiff
+  tool                    = nvim -d
   colorMoved              = default
 [merge]
   conflictstyle           = diff3
+  tool                    = nvim -d
 [fetch]
   prune                   = true
 [credential]
