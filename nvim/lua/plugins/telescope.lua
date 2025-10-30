@@ -92,12 +92,6 @@ end, { desc = "Find dotfiles" })
 set("n", "<leader>sr", function()
   require "custom.telescope.multi-ripgrep" {
     prompt_title = "Search for nvim config",
-    cwd = "~/.dotfiles",
-  }
-end, { desc = "Search for nvim config" })
-set("n", "<leader>sR", function()
-  require "custom.telescope.multi-ripgrep" {
-    prompt_title = "Search for nvim config",
     cwd = "~/.config/nvim",
   }
 end, { desc = "Search for nvim config" })
