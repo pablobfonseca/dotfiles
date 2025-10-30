@@ -1,0 +1,94 @@
+{
+  "plugins": {
+    "cmp-buffer": [],
+    "cmp-cmdline": [],
+    "cmp-nvim-lsp": [],
+    "cmp-path": [],
+    "coc.nvim": {
+      "rev": "2467f978",
+      "src": "https://github.com/neoclide/coc.nvim"
+    },
+    "conform.nvim": {
+      "rev": "9fd3d5e"
+    },
+    "doodle": {
+      "rev": "cbe8672",
+      "src": "https://github.com/apdot/doodle"
+    },
+    "dressing.nvim": [],
+    "garbage-day.nvim": {
+      "rev": "9c6abde",
+      "src": "https://github.com/Zeioth/garbage-day.nvim"
+    },
+    "gitsigns.nvim": {
+      "rev": "20ad441"
+    },
+    "kulala.nvim": {
+      "rev": "9a9308b"
+    },
+    "live-preview.nvim": {
+      "rev": "a1bb1b3",
+      "src": "https://github.com/brianhuster/live-preview.nvim"
+    },
+    "lualine.nvim": {
+      "rev": "3946f01"
+    },
+    "mason-nvim-dap.nvim": {
+      "rev": "9a10e09"
+    },
+    "mason.nvim": [],
+    "mini.ai": {
+      "rev": "11c5718"
+    },
+    "mini.surround": {
+      "rev": "3c73e2a"
+    },
+    "nvim-bqf": {
+      "rev": "a77b17e"
+    },
+    "nvim-cmp": {
+      "rev": "a7bcf1d"
+    },
+    "nvim-dap": {
+      "rev": "6782b09"
+    },
+    "nvim-dap-go": [],
+    "nvim-dap-ui": [],
+    "nvim-dap-virtual-text": [],
+    "nvim-early-retirement": {
+      "rev": "9109589",
+      "src": "https://github.com/chrisgrieser/nvim-early-retirement"
+    },
+    "nvim-nio": [],
+    "nvim-tmux-navigation": [],
+    "nvim-treesitter": [],
+    "nvim-web-devicons": {
+      "rev": "8dcb311"
+    },
+    "obsidian.nvim": {
+      "version": "'main'"
+    },
+    "oil.nvim": {
+      "rev": "7e1cd77"
+    },
+    "plenary.nvim": [],
+    "render-markdown.nvim": {
+      "rev": "10126ef"
+    },
+    "sqlite.lua": {
+      "rev": "50092d6",
+      "src": "https://github.com/kkharji/sqlite.lua"
+    },
+    "telescope-fzf-native.nvim": [],
+    "telescope.nvim": {
+      "version": "'0.1.x'"
+    },
+    "text-case.nvim": [],
+    "tokyonight.nvim": {
+      "rev": "2642dbb"
+    },
+    "which-key.nvim": {
+      "rev": "3aab214"
+    }
+  }
+}

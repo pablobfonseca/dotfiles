@@ -5,6 +5,7 @@ require "pablobfonseca.autocmds"
 require "pablobfonseca.lsp"
 
 -- plugins
+require "plugins.which-key"
 require "plugins.tokyonight"
 require "plugins.treesitter"
 require "plugins.telescope"
@@ -20,5 +21,7 @@ require "plugins.bqf"
 require "plugins.text-case"
 require "plugins.tmux-navigator"
 require "plugins.dap"
+require "plugins.obsidian"
+require "plugins.kulala"
 
 require "pablobfonseca.lsp.ui"
