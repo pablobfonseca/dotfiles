@@ -20,7 +20,3 @@ windows:
       root: ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/SecondBrain
       panes:
         - nvim .
-  - ollama:
-      layout: main-vertical
-      panes:
-        - ollama serve
