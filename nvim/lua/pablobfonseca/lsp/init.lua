@@ -19,4 +19,15 @@ end
 
 vim.api.nvim_create_autocmd("LspAttach", { callback = on_attach })
 
-vim.lsp.enable { "ts_ls", "lua_ls", "bashls", "gopls", "tailwindcssls", "html" }
+vim.lsp.enable {
+  "ts_ls",
+  "lua_ls",
+  "bashls",
+  "gopls",
+  "tailwindcssls",
+  "html",
+  "emmet-language-server",
+  "harper-ls",
+  "json-ls",
+  "yaml-ls",
+}

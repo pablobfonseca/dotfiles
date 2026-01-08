@@ -1,7 +1,7 @@
+---@type vim.lsp.Config
 return {
   cmd = { "tailwindcss-language-server", "--stdio" },
   filetypes = {
-    "ejs",
     "html",
     "css",
     "scss",
