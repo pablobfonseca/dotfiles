@@ -260,7 +260,7 @@ alias brew_update="brew update && brew upgrade && brew cleanup"
 alias code="cd ~/code && cd"
 alias dot="cd ~/.dotfiles && cd"
 alias untar="tar -zxvf"
-alias genpass="openssl rand -base64 20"
+alias genpass="openssl rand -base64 "
 alias st="git st"
 alias ls="lsd"
 alias ll="lsd -a --color=always --long --git --size=short --icon=always"
@@ -381,6 +381,10 @@ function dependabot-merge-all() {
   done
 }
 
+function mdfc() {
+  pbpaste > FILE.md
+}
+
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 eval "$(zoxide init zsh)"
@@ -429,5 +433,5 @@ bindkey "^x^n" atuin-search-vicmd # C-x C-n starts atuin in normal mode
 # This section can be safely removed at any time if needed.
 [[ ! -r "$HOME/.opam/opam-init/init.zsh" ]] || source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2> /dev/null
 # END opam configuration
+
 alias claude="/Users/pablobfonseca/.claude/local/claude"
-alias claude="/Users/pablobfonseca/.config/claude/local/claude"
