@@ -104,12 +104,21 @@ vim.api.nvim_create_autocmd("VimResized", {
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = augroup,
   callback = function()
+    if vim.bo.filetype == "oil" or vim.api.nvim_buf_get_name(0) == "" then
+      return
+    end
+
     local dir = vim.fn.expand "<afile>:p:h"
     if vim.fn.isdirectory(dir) == 0 then
       vim.fn.mkdir(dir, "p")
     end
   end,
 })
+
+-- Update packages
+vim.api.nvim_create_user_command("PackUpdate", function()
+  vim.pack.update()
+end, { desc = "Update packages" })
 
 -- LSP Info
 vim.api.nvim_create_user_command("LspInfo", function()
@@ -123,6 +132,10 @@ vim.api.nvim_create_user_command("LspInfo", function()
   end
 end, { desc = "Show LSP client info" })
 
+-- Debounced document highlight with performance optimizations
+local highlight_timer = nil
+local last_highlight_request = 0
+
 vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
   group = augroup,
   callback = function(args)
@@ -130,10 +143,32 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
       return
     end
 
+    -- Skip highlight in large files
+    local lines = vim.api.nvim_buf_line_count(args.buf)
+    if lines > 10000 then
+      return
+    end
+
+    -- Debounce highlight requests
+    local now = vim.loop.now()
+    if now - last_highlight_request < 500 then -- 500ms debounce
+      return
+    end
+
     local clients = vim.lsp.get_clients { bufnr = args.buf }
     for _, client in ipairs(clients) do
+      -- Skip document highlight for TypeScript in large projects
+      if client.name == "ts_ls" then
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(args.buf))
+        if ok and stats and stats.size > 100 * 1024 then -- Skip for files > 100KB
+          return
+        end
+      end
+
       if client:supports_method("textDocument/documentHighlight", args.buf) then
+        last_highlight_request = now
         vim.lsp.buf.document_highlight()
+        break -- Only request from one client
       end
     end
   end,
@@ -141,5 +176,12 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 
 vim.api.nvim_create_autocmd("CursorMoved", {
   group = augroup,
-  callback = vim.lsp.buf.clear_references,
+  callback = function()
+    -- Cancel pending highlight timer if cursor moved
+    if highlight_timer then
+      vim.loop.timer_stop(highlight_timer)
+      highlight_timer = nil
+    end
+    vim.lsp.buf.clear_references()
+  end,
 })

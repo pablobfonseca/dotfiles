@@ -3,9 +3,11 @@ require "pablobfonseca.options"
 require "pablobfonseca.mappings"
 require "pablobfonseca.autocmds"
 require "pablobfonseca.lsp"
+require "pablobfonseca.lsp.ui"
 
 -- plugins
 require "plugins.which-key"
+require "plugins.abolish"
 require "plugins.tokyonight"
 require "plugins.treesitter"
 require "plugins.telescope"
@@ -23,5 +25,3 @@ require "plugins.tmux-navigator"
 require "plugins.dap"
 require "plugins.obsidian"
 require "plugins.kulala"
-
-require "pablobfonseca.lsp.ui"
