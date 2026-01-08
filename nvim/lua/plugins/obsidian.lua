@@ -1,5 +1,6 @@
 vim.pack.add {
   { src = "https://github.com/epwalsh/obsidian.nvim", version = "main" },
+  { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim", version = "main" },
 }
 
 require("obsidian").setup {
@@ -26,6 +27,8 @@ require("obsidian").setup {
     vim.fn.jobstart { "open", url }
   end,
 }
+
+require("render-markdown").setup {}
 
 vim.keymap.set("n", "<leader>OT", ":ObsidianOpen todo<cr>", { desc = "Obsidian TODO" })
 vim.keymap.set("n", "<leader>Oo", ":ObsidianOpen<cr>", { desc = "Open current note in the Obsidian app" })
