@@ -30,3 +30,4 @@ upscope_requests.http
 http-client.env.json
 CLAUDE.md
 oil:/
+tribez_todo.md
