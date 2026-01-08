@@ -1,11 +1,12 @@
+---@type vim.lsp.Config
 return {
   name = "bashls",
   cmd = { "bash-language-server", "start" },
   filetypes = { "sh", "bash", "zsh" },
-  root_markers = { ".git", "Makefile" },
+  root_markers = { ".git" },
   settings = {
     bashIde = {
-      globPattern = "*@(.sh|.inc|.bash|.command)",
+      globPattern = vim.env.GLOB_PATTERN or "*@(.sh|.inc|.bash|.command)",
     },
   },
 }

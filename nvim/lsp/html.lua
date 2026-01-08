@@ -1,3 +1,4 @@
+---@type vim.lsp.Config
 return {
   name = "html",
   cmd = { "vscode-html-language-server", "--stdio" },
@@ -8,5 +9,9 @@ return {
       suggest = { html5 = true },
       validate = { scripts = true, styles = true },
     },
+  },
+  init_options = {
+    embeddedLanguages = { css = true, javascript = true },
+    configurationSection = { "html", "css", "javascript" },
   },
 }
