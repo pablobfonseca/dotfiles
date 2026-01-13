@@ -238,6 +238,15 @@ open_file() {
   fd --type f --hidden --exclude .git | fzf --tmux --prompt "Open File: " | xargs nvim
 }
 
+copy_file_path() {
+  local file
+  file=$(fd --type f --hidden --exclude .git | fzf --prompt "Copy path: " --preview 'bat -n --color=always --line-range :500 {}')
+  if [[ -n "$file" ]]; then
+    echo -n "./$file" | pbcopy
+    echo "Copied: ./$file"
+  fi
+}
+
 function y() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
   yazi "$@" --cwd-file="$tmp"
