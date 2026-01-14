@@ -239,12 +239,12 @@ open_file() {
 }
 
 copy_file_path() {
-  local file
-  file=$(fd --type f --hidden --exclude .git | fzf --prompt "Copy path: " --preview 'bat -n --color=always --line-range :500 {}')
-  if [[ -n "$file" ]]; then
-    echo -n "./$file" | pbcopy
-    echo "Copied: ./$file"
-  fi
+  fd --type f --hidden --exclude .git | fzf \
+    --prompt "Select file: " \
+    --preview 'bat -n --color=always --line-range :500 {}' \
+    --header 'Enter: insert into pane | Ctrl-Y: copy' \
+    --bind "enter:execute-silent(tmux send-keys -t $TMUX_TARGET_PANE './{}')+abort" \
+    --bind "ctrl-y:execute-silent(echo -n './{}'| pbcopy)+abort"
 }
 
 function y() {
