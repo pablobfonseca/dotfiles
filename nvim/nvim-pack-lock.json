@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "claudecode.nvim": {
+      "rev": "93f8e48b1f6cbf2469b378c20b3df4115252d379",
+      "src": "https://github.com/coder/claudecode.nvim"
+    },
     "cmp-buffer": {
       "rev": "b74fab3656eea9de20a9b8116afa3cfc4ec09657",
       "src": "https://github.com/hrsh7th/cmp-buffer"
@@ -17,7 +21,7 @@
       "src": "https://github.com/hrsh7th/cmp-path"
     },
     "conform.nvim": {
-      "rev": "8314f4c9e205e7f30b62147069729f9a1227d8bf",
+      "rev": "238f542a118984a88124fc915d5b981680418707",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "dressing.nvim": {
@@ -29,11 +33,11 @@
       "src": "https://github.com/projekt0n/github-nvim-theme"
     },
     "gitsigns.nvim": {
-      "rev": "72acb69020c92d99cf388bfeb390481ccec50c04",
+      "rev": "42d6aed4e94e0f0bbced16bbdcc42f57673bd75e",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "kulala.nvim": {
-      "rev": "cd3eaa83b8d60533837202dede73238334d71832",
+      "rev": "ad51fbcfd674efb95a90d3b5f21271859416ea76",
       "src": "https://github.com/mistweaverco/kulala.nvim"
     },
     "lualine.nvim": {
@@ -57,7 +61,7 @@
       "src": "https://github.com/nvim-mini/mini.surround"
     },
     "nvim-bqf": {
-      "rev": "ba2b365969d7c2c6301d48e13aeee59568765529",
+      "rev": "daa1a130632dc2b05a9a73538bac058dfa4e0b86",
       "src": "https://github.com/kevinhwang91/nvim-bqf"
     },
     "nvim-cmp": {
@@ -93,7 +97,7 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-web-devicons": {
-      "rev": "6788013bb9cb784e606ada44206b0e755e4323d7",
+      "rev": "803353450c374192393f5387b6a0176d0972b848",
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "obsidian.nvim": {
@@ -102,7 +106,7 @@
       "version": "'main'"
     },
     "oil.nvim": {
-      "rev": "81b8a91735ad5cd24a6b3137f14a89f19176364f",
+      "rev": "6b59a6cf623fa2245c7454ddb458df5bdb6615d3",
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "plenary.nvim": {
@@ -110,7 +114,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "render-markdown.nvim": {
-      "rev": "73a6ebc842cf81926eb1d424820b800f6f6a1227",
+      "rev": "c54380dd4d8d1738b9691a7c349ecad7967ac12e",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim",
       "version": "'main'"
     },

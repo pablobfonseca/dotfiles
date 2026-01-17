@@ -87,6 +87,9 @@ if [ -f $HOME/.zshrc_private ]; then
   source $HOME/.zshrc_private
 fi
 
+# CLAUDE POWERLINE
+# export CLAUDE_POWERLINE_CONFIG=$DOTFILES/claude/claude-powerline.json
+
 # Haskell
 # Load GHCup environment
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
