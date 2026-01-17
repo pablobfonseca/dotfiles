@@ -23,17 +23,6 @@
   },
   "alwaysThinkingEnabled": true,
   "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bun run ~/.claude/hooks/index.ts"
-          }
-        ]
-      }
-    ],
     "SessionStart": [
       {
         "matcher": "",
