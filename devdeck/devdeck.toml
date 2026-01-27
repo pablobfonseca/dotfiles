@@ -1,77 +1,633 @@
 [layout]
-columns=6
-background_color="#121212"
+columns = 3
+landscape_columns = 5
+background_color = '#000'
+button_size = 100
+show_labels = true
+
+[contexts]
+[contexts.chrome]
+name = 'Google Chrome'
+deck = 'chrome'
+priority = 50
+
+[contexts.chrome.match]
+frontmost_bundle_ids = ['com.google.Chrome']
+frontmost_app_names = ['Google Chrome', 'Chrome']
+
+[contexts.github]
+name = 'Github'
+deck = 'github'
+priority = 80
+
+[contexts.github.match]
+frontmost_bundle_ids = ['com.google.Chrome']
+frontmost_app_names = ['Google Chrome']
+url_contains = ['github.com']
+
+[contexts.googlemeet]
+name = 'Google Meet'
+deck = 'googlemeet'
+priority = 60
+
+[contexts.googlemeet.match]
+frontmost_bundle_ids = ['com.google.Chrome', 'com.apple.Safari']
+frontmost_app_names = ['Google Chrome', 'Safari']
+url_contains = ['meet.google.com']
+title_contains = ['Google Meet']
+
+[contexts.notion]
+name = 'Notion'
+deck = 'notion'
+priority = 60
+
+[contexts.notion.match]
+frontmost_bundle_ids = ['notion.id']
+frontmost_app_names = ['Notion']
+
+[contexts.slack]
+name = 'Slack'
+deck = 'slack'
+priority = 70
+
+[contexts.slack.match]
+frontmost_bundle_ids = ['com.tinyspeck.slackmacgap']
+frontmost_app_names = ['Slack']
+
+[contexts.xcode]
+name = 'Xcode'
+deck = 'xcode'
+priority = 60
+
+[contexts.xcode.match]
+frontmost_bundle_ids = ['com.apple.dt.Xcode']
+frontmost_app_names = ['Xcode']
 
 [[commands]]
-app = "Google Chrome"
-icon = "logo-chrome"
-type = "context"
-context = "chrome"
+uuid = 'a42dcc2f-3739-e9c7-8326-f980b564aaf6'
+icon = 'globe'
+label = 'Google Chrome'
+type = 'context'
+context = 'chrome'
 main = true
 
 [[commands]]
-app = "Google Chrome"
-action = "open"
-description = "Open"
-type = "action"
-context = "chrome"
+uuid = '374f5d46-edfe-45b7-b98c-a2f5118e3e99'
+description = 'Open'
+app = 'Google Chrome'
+action = 'open'
+type = 'action'
+context = 'chrome'
 
 [[commands]]
-app = "Google Chrome"
-action = "chrome-cli reload"
-description = "Reload tab"
-type = "action"
-context = "chrome"
+uuid = 'd054d997-e87a-63e5-25b1-a3e3fbe9bb64'
+description = 'Reload tab'
+action = 'chrome-cli reload'
+icon = 'arrow.clockwise'
+label = 'Reload'
+type = 'action'
+context = 'chrome'
 
 [[commands]]
-app = "Slack"
-icon = "logo-slack"
-action = "open"
-type = "action"
+uuid = '57577bc7-7000-5f0f-2461-1df2fe9118e5'
+icon = 'social.slack'
+label = 'Slack'
+type = 'context'
+context = 'slack'
 main = true
 
 [[commands]]
-app = "Wezterm"
-icon = "terminal"
-action = "open"
-type = "action"
+uuid = 'b2d4e6f8-9a1c-3d5e-7f9a-1b3c5d7e9f1a'
+description = 'Open'
+app = 'Slack'
+action = 'open'
+type = 'action'
+context = 'slack'
+
+[[commands]]
+uuid = '3f8a9c2d-1e4b-5a6f-9d2e-7c1b8a3f4e5d'
+description = 'Pardeep'
+action = "osascript -e 'tell application \"Slack\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke \"Pardeep\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
+icon = 'person.crop.circle'
+label = 'Pardeep'
+type = 'action'
+context = 'slack'
+
+[[commands]]
+uuid = 'd3e5f3c0-f43d-4e46-9c0a-26df72336551'
+description = 'Seongkuk'
+action = "osascript -e 'tell application \"Slack\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke \"Seongkuk\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
+icon = 'person.crop.circle'
+label = 'Seongkuk'
+type = 'action'
+context = 'slack'
+
+[[commands]]
+uuid = '8a3f9c2d-1e4b-5a6f-9d2e-7c1b8a3f4e5d'
+description = 'Joe'
+action = "osascript -e 'tell application \"Slack\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke \"Joe\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
+icon = 'person.crop.circle'
+label = 'Joe'
+type = 'action'
+context = 'slack'
+
+[[commands]]
+uuid = '6122ea2b-079d-8228-cc0b-28a745d4f594'
+app = 'Wezterm'
+action = 'open'
+icon = 'terminal'
+type = 'action'
+context = ''
 main = true
 
 [[commands]]
-app = "Calendar"
-icon = "calendar-outline"
-action = "open"
-type = "action"
+uuid = '10982278-acb5-4509-de6b-03c2fb32ec7d'
+app = 'Calendar'
+action = 'open'
+icon = 'calendar'
+type = 'action'
+context = ''
 main = true
 
 [[commands]]
-app = "Obsidian"
-icon = "document-outline"
-action = "open"
-type = "action"
+uuid = '5ec77d17-646f-cb52-4398-8264efbab61c'
+app = 'Obsidian'
+action = 'open'
+icon = 'doc.text'
+type = 'action'
+context = ''
 main = true
 
 [[commands]]
-app = "System Preferences"
-type = "context"
-icon = "cog-outline"
-context = "system"
+uuid = '40606c41-63f4-57f1-3e9f-e721acae73dc'
+icon = 'gearshape'
+label = 'Preferences'
+type = 'context'
+context = 'preferences'
 main = true
 
 [[commands]]
-description = "Volume Down"
-action = "aerospace volume down"
-type = "action"
-context = "system"
+uuid = 'fa38a306-2327-9ff8-918a-a2c863909fcf'
+action = "osascript -e 'set volume output volume ((output volume of (get volume settings)) - 10)'\n"
+icon = 'speaker.minus'
+type = 'action'
+context = 'preferences'
 
 [[commands]]
-action = "aerospace volume up"
-description = "Volume Up"
-type = "action"
-context = "system"
+uuid = '866d8406-a56f-0103-f45c-7f454974816f'
+action = "osascript -e 'set volume output volume ((output volume of (get volume settings)) + 10)'\n"
+icon = 'speaker.plus'
+type = 'action'
+context = 'preferences'
 
 [[commands]]
-icon = "lock-closed-outline"
-action = "lockscreen.applescript"
-type = "action"
+uuid = 'df6dd3ab-c339-01a0-0749-e93920825f40'
+action = 'lockscreen.applescript'
+icon = 'lock'
+label = 'Lock screen'
+type = 'action'
+context = ''
 main = true
+
+[[commands]]
+uuid = '377dc6e8-f303-9d09-2f71-1e2d5ba96ee8'
+icon = 'social.github'
+label = 'Github'
+type = 'context'
+context = 'github'
+main = true
+
+[[commands]]
+uuid = 'c1f05f64-f3b5-8245-beaf-adf180913a36'
+description = 'Tribez'
+action = 'chrome-cli open https://github.com/ZeTribez/tribez/pulls'
+type = 'action'
+context = 'github'
+
+[[commands]]
+uuid = 'd2be4836-5818-ba52-e6ab-24b40af5103d'
+description = 'Upscope'
+action = 'chrome-cli open https://github.com/upscopeio/upscope/pulls'
+type = 'action'
+context = 'github'
+
+[[commands]]
+uuid = 'e6420c0a-a7f0-3011-6fe1-7801bb2a7141'
+description = 'DevDeck Server'
+action = 'chrome-cli open https://github.com/devdeck-app/devdeck-server/pulls'
+type = 'action'
+context = 'github'
+
+[[commands]]
+uuid = '4728117f-c61f-2a7c-3fdb-373439edf33b'
+description = 'DevDeck App'
+action = 'chrome-cli open https://github.com/devdeck-app/dev-deck/pulls'
+type = 'action'
+context = 'github'
+
+[[commands]]
+uuid = 'a1b2c3d4-e5f6-7890-1234-567890abcdef'
+description = 'Click Issues Tab'
+action = 'browser_click:nav[aria-label="Repository"] a[data-hotkey="g i"]'
+icon = 'exclamationmark.circle'
+label = 'Issues'
+type = 'action'
+context = 'github'
+
+[[commands]]
+uuid = 'b2c3d4e5-f6a7-8901-2345-678901bcdef0'
+description = 'Click Pull Requests Tab'
+action = 'browser_click:nav[aria-label="Repository"] a[data-hotkey="g p"]'
+icon = 'arrow.triangle.pull'
+label = 'PRs'
+type = 'action'
+context = 'github'
+
+[[commands]]
+uuid = 'c3d4e5f6-a7b8-9012-3456-789012cdef01'
+description = 'Click Actions Tab'
+action = 'browser_click:nav[aria-label="Repository"] a[data-hotkey="g a"]'
+icon = 'play.circle'
+label = 'Actions'
+type = 'action'
+context = 'github'
+
+[[commands]]
+uuid = 'd4e5f6a7-b8c9-0123-4567-890123def012'
+description = 'Click Code Tab'
+action = 'browser_click:nav[aria-label="Repository"] a[data-hotkey="g c"]'
+icon = 'chevron.left.forwardslash.chevron.right'
+label = 'Code'
+type = 'action'
+context = 'github'
+
+[[commands]]
+uuid = '7a690bd0-c35c-00b7-704c-61e8ba667c71'
+action = 'chrome-cli open https://linkedin.com/in/pablobfonseca'
+label = 'Linkedin'
+icon = 'social.linkedin'
+type = 'action'
+context = ''
+main = true
+
+[[commands]]
+uuid = '236f5646-b090-527c-b8e3-3407b72b8ef9'
+app = 'Whatsapp'
+action = 'open'
+icon = 'message'
+type = 'action'
+context = ''
+main = true
+
+[[commands]]
+uuid = '4d8eefad-8329-dae0-0df0-3e9dbf1a271e'
+action = 'chrome-cli open https://gmail.com'
+icon = 'envelope'
+label = 'Gmail'
+type = 'action'
+context = ''
+main = true
+
+[[commands]]
+uuid = '08aeff51-cd4b-c656-cead-5a40921ecb79'
+icon = 'chart.bar.xaxis'
+label = 'Analytics'
+type = 'context'
+context = 'analytics'
+main = true
+
+[[commands]]
+uuid = '0c1f10df-3269-d4ca-976f-6919d9fdc7fb'
+description = 'Userview'
+action = 'chrome-cli open https://plausible.io/upscope.com?f=contains,page,/uv:/&keybindHint=D'
+type = 'action'
+context = 'analytics'
+
+[[commands]]
+uuid = 'e931cb31-f319-5a99-5968-456c763183a7'
+description = 'Helloscreen'
+action = 'chrome-cli open https://plausible.io/upscope.com?f=contains,page,/hs:/&keybindHint=D'
+type = 'action'
+context = 'analytics'
+
+[[commands]]
+uuid = 'ab4a582d-6998-4a95-825c-69832cf50127'
+description = 'Reduce Brightness'
+action = "osascript -e 'tell application \"System Events\" to key code 107'\n"
+icon = 'sun.max'
+type = 'action'
+context = 'preferences'
+
+[[commands]]
+uuid = '1826a693-7675-4c59-bc97-71b69cf63d6e'
+description = 'Increase Brightness'
+action = "osascript -e 'tell application \"System Events\" to key code 144'\n"
+icon = 'sun.max.fill'
+type = 'action'
+context = 'preferences'
+
+[[commands]]
+uuid = '6d952584-b909-4333-8332-3d77269d40a2'
+description = 'Claude'
+app = 'Claude'
+icon = 'fireworks'
+type = 'action'
+context = 'main'
+main = true
+
+[[commands]]
+uuid = '92cfc154-1adf-4bbd-bf45-ca6b5e874f3e'
+description = 'Clear Notifications'
+action = '/Users/pablobfonseca/.config/devdeck/scripts/clear_notifications.sh'
+icon = 'bell.slash'
+type = 'action'
+context = 'preferences'
+
+[[commands]]
+uuid = '4cf10a7d-4c9a-4e36-a1ae-62ce958ae1f8'
+icon = 'video.fill'
+label = 'Google Meet'
+type = 'context'
+context = 'googlemeet'
+main = true
+
+[[commands]]
+uuid = '8360ab9f-ffec-48e2-bcd3-7400924b9051'
+description = 'Mute/Unmute'
+action = "osascript -e 'tell application \"System Events\" to key code 2 using {command down}'"
+icon = 'mic.slash'
+type = 'action'
+context = 'googlemeet'
+
+[[commands]]
+uuid = 'ebf71d82-c874-41a3-bd19-556e9d47584d'
+description = 'Camera On/Off'
+action = "osascript -e 'tell application \"System Events\" to key code 14 using {command down}'"
+icon = 'video.slash'
+type = 'action'
+context = 'googlemeet'
+
+[[commands]]
+uuid = 'a07dbd8c-52a2-410e-a00f-567ded7b6066'
+description = 'Leave Meeting'
+action = "osascript -e 'tell application \"System Events\" to key code 13 using {control down}'"
+icon = 'phone.down.fill'
+type = 'action'
+context = 'googlemeet'
+
+[[commands]]
+uuid = '9895ffc7-0542-4127-bd86-db25faefb5b4'
+description = 'Chat Toggle'
+action = "osascript -e 'tell application \"System Events\" to key code 8 using {command down, shift down}'"
+icon = 'bubble.left'
+type = 'action'
+context = 'googlemeet'
+
+[[commands]]
+uuid = 'ff04b270-4bd3-4acc-abda-e7f4a526c5f8'
+description = 'Present Screen'
+action = "osascript -e 'tell application \"System Events\" to key code 35 using {command down}'"
+icon = 'display'
+type = 'action'
+context = 'googlemeet'
+
+[[commands]]
+uuid = '8db7aebc-4eeb-4bb5-a62d-bf2bc2350cba'
+description = 'Raise Hand'
+action = "osascript -e 'tell application \"System Events\" to key code 15 using {command down, shift down}'"
+icon = 'hand.raised'
+type = 'action'
+context = 'googlemeet'
+
+[[commands]]
+uuid = '42649ebc-f15e-453e-a964-1eeb5d266fdd'
+description = 'Participants'
+action = "osascript -e 'tell application \"System Events\" to key code 34 using {command down, shift down}'"
+icon = 'person.2'
+type = 'action'
+context = 'googlemeet'
+
+[[commands]]
+uuid = '08436db0-4080-4337-a80a-b4ef32a08912'
+description = 'Full Screen'
+action = "osascript -e 'tell application \"System Events\" to key code 3 using {command down, shift down}'"
+icon = 'arrow.up.left.and.arrow.down.right'
+type = 'action'
+context = 'googlemeet'
+
+[[commands]]
+uuid = '26034f29-21ec-45de-ab52-ecbf8a5c8637'
+icon = 'doc.text.fill'
+label = 'Notion'
+type = 'context'
+context = 'notion'
+main = true
+
+[[commands]]
+uuid = 'cb466ae1-93a7-4f2f-bac8-1f85ba990eb5'
+action = "osascript -e 'tell application \"System Events\" to key code 45 using {command down}'"
+icon = 'plus.circle.fill'
+label = 'New Page'
+type = 'action'
+context = 'notion'
+
+[[commands]]
+uuid = '441fe661-c58f-4f70-a110-43238ebb42c5'
+action = "osascript -e 'tell application \"System Events\" to key code 35 using {command down}'"
+icon = 'magnifyingglass'
+label = 'Quick Find'
+type = 'action'
+context = 'notion'
+
+[[commands]]
+uuid = '5c29c539-b74a-4602-a152-e286790a1d9b'
+action = "osascript -e 'tell application \"System Events\" to key code 31 using {command down, shift down}'"
+icon = 'sidebar.left'
+label = 'Toggle Sidebar'
+type = 'action'
+context = 'notion'
+
+[[commands]]
+uuid = '66f73452-c2a1-4fb8-93f9-bf00e7f1f324'
+action = "osascript -e 'tell application \"System Events\" to key code 46 using {command down, shift down}'"
+icon = 'bubble.left'
+label = 'Comment'
+type = 'action'
+context = 'notion'
+
+[[commands]]
+uuid = 'd4efc178-9da8-4e64-ac96-5d15d08721fb'
+action = "osascript -e 'tell application \"System Events\" to key code 11 using {command down}'"
+icon = 'bold'
+label = 'Bold Text'
+type = 'action'
+context = 'notion'
+
+[[commands]]
+uuid = '526778e9-bacb-4fd2-a83e-17bba5451f8a'
+action = "osascript -e 'tell application \"System Events\" to key code 34 using {command down}'"
+icon = 'italic'
+label = 'Italic Text'
+type = 'action'
+context = 'notion'
+
+[[commands]]
+uuid = '07eef040-a4d7-436c-9cb5-d2916145089f'
+action = "osascript -e 'tell application \"System Events\" to key code 14 using {command down, shift down}'"
+icon = 'chevron.left.forwardslash.chevron.right'
+label = 'Code Block'
+type = 'action'
+context = 'notion'
+
+[[commands]]
+uuid = 'bcf48311-bbb4-492f-b2e4-1b8b247fb37c'
+action = "osascript -e 'tell application \"System Events\" to key code 40 using {command down}'"
+icon = 'link'
+label = 'Add Link'
+type = 'action'
+context = 'notion'
+
+[[commands]]
+uuid = 'deeced56-ca69-49ab-b148-83ef83baf784'
+label = 'Xcode'
+icon = 'hammer.fill'
+type = 'context'
+context = 'xcode'
+main = true
+
+[[commands]]
+uuid = 'f8c143d9-5ce6-4b06-b90b-6a7eeba6c66a'
+description = 'Build'
+action = "osascript -e 'tell application \"System Events\" to key code 11 using {command down}'"
+icon = 'play.fill'
+type = 'action'
+context = 'xcode'
+
+[[commands]]
+uuid = '55c26e6e-e64d-49fc-8da4-cfee1e88c386'
+description = 'Clean Build Folder'
+action = "osascript -e 'tell application \"System Events\" to key code 40 using {command down, shift down}'"
+icon = 'trash'
+type = 'action'
+context = 'xcode'
+
+[[commands]]
+uuid = '7b003e9f-12f7-49fb-8141-44bff12a60f9'
+description = 'Find Files'
+action = "osascript -e 'tell application \"System Events\" to key code 31 using {command down, shift down}'"
+icon = 'magnifyingglass'
+type = 'action'
+context = 'xcode'
+
+[workflows]
+[workflows.ask_ai]
+name = 'Ask AI'
+description = 'Submit to multiple AI sites'
+icon = 'sparkles'
+inputs = ['query']
+
+[[workflows.ask_ai.steps]]
+type = 'open_url'
+url = 'https://chat.openai.com/?prompt={{query}}'
+
+[[workflows.ask_ai.steps]]
+type = 'delay'
+duration = 3
+
+[[workflows.ask_ai.steps]]
+type = 'click_element'
+selector = 'button[data-testid="send-button"]'
+continue_on_error = true
+
+[[workflows.ask_ai.steps]]
+type = 'open_url'
+url = 'https://claude.ai/new'
+
+[[workflows.ask_ai.steps]]
+type = 'delay'
+duration = 3
+
+[[workflows.ask_ai.steps]]
+type = 'fill_input'
+selector = 'div[contenteditable="true"][data-placeholder*="talk"]'
+value = '{{query}}'
+continue_on_error = true
+
+[[workflows.ask_ai.steps]]
+type = 'delay'
+duration = 1
+
+[[workflows.ask_ai.steps]]
+type = 'click_element'
+selector = 'button[aria-label*="Send"]'
+continue_on_error = true
+
+[[workflows.ask_ai.steps]]
+type = 'open_url'
+url = 'https://www.perplexity.ai/'
+
+[[workflows.ask_ai.steps]]
+type = 'delay'
+duration = 3
+
+[[workflows.ask_ai.steps]]
+type = 'fill_input'
+selector = 'textarea[placeholder*="Ask"]'
+value = '{{query}}'
+continue_on_error = true
+
+[[workflows.ask_ai.steps]]
+type = 'delay'
+duration = 1
+
+[[workflows.ask_ai.steps]]
+type = 'click_element'
+selector = 'button[aria-label*="Submit"]'
+continue_on_error = true
+
+[[workflows.ask_ai.steps]]
+type = 'open_url'
+url = 'https://gemini.google.com/app'
+
+[[workflows.ask_ai.steps]]
+type = 'delay'
+duration = 3
+
+[[workflows.ask_ai.steps]]
+type = 'fill_input'
+selector = 'rich-textarea[aria-label*="Enter a prompt"]'
+value = '{{query}}'
+continue_on_error = true
+
+[[workflows.ask_ai.steps]]
+type = 'delay'
+duration = 1
+
+[[workflows.ask_ai.steps]]
+type = 'click_element'
+selector = 'button[aria-label*="Send message"]'
+continue_on_error = true
+
+[workflows.ask_chatgpt]
+name = 'Ask ChatGPT'
+description = 'Auto-submit to ChatGPT'
+icon = 'bubble.left.and.bubble.right'
+inputs = ['query']
+
+[[workflows.ask_chatgpt.steps]]
+type = 'open_url'
+url = 'https://chat.openai.com/?prompt={{query}}'
+
+[[workflows.ask_chatgpt.steps]]
+type = 'delay'
+duration = 5
+
+[[workflows.ask_chatgpt.steps]]
+type = 'click_element'
+selector = 'button[data-testid="send-button"]'
+
+[workflows.generate_command]
+name = 'AI Command'
+description = 'AI Command'
+icon = 'brain'
+inputs = ['prompt']
