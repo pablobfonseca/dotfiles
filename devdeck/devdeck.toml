@@ -1,13 +1,22 @@
+[log]
+level = 'debug'
+
 [layout]
 columns = 3
 landscape_columns = 5
 background_color = '#000'
 show_labels = true
 
-[log]
-level = 'debug'
-
 [contexts]
+[contexts.calendar]
+name = 'Calendar'
+deck = 'calendar'
+priority = 60
+
+[contexts.calendar.match]
+frontmost_bundle_ids = ['com.apple.iCal']
+frontmost_app_names = ['Calendar']
+
 [contexts.chrome]
 name = 'Google Chrome'
 deck = 'chrome'
@@ -57,6 +66,15 @@ priority = 70
 frontmost_bundle_ids = ['com.tinyspeck.slackmacgap']
 frontmost_app_names = ['Slack']
 
+[contexts.tuple]
+name = 'Tuple'
+deck = 'tuple'
+priority = 60
+
+[contexts.tuple.match]
+frontmost_bundle_ids = ['app.tuple.app']
+frontmost_app_names = ['Tuple']
+
 [contexts.xcode]
 name = 'Xcode'
 deck = 'xcode'
@@ -65,6 +83,15 @@ priority = 60
 [contexts.xcode.match]
 frontmost_bundle_ids = ['com.apple.dt.Xcode']
 frontmost_app_names = ['Xcode']
+
+[contexts.zoom]
+name = 'Zoom'
+deck = 'zoom'
+priority = 60
+
+[contexts.zoom.match]
+frontmost_bundle_ids = ['us.zoom.xos']
+frontmost_app_names = ['zoom.us', 'Zoom']
 
 [[commands]]
 uuid = 'a42dcc2f-3739-e9c7-8326-f980b564aaf6'
@@ -75,19 +102,10 @@ context = 'chrome'
 main = true
 
 [[commands]]
-uuid = '374f5d46-edfe-45b7-b98c-a2f5118e3e99'
-description = 'Open'
-app = 'Google Chrome'
-action = 'open'
-type = 'action'
-context = 'chrome'
-
-[[commands]]
 uuid = 'd054d997-e87a-63e5-25b1-a3e3fbe9bb64'
-description = 'Reload tab'
 action = 'chrome-cli reload'
 icon = 'arrow.clockwise'
-label = 'Reload'
+label = 'Reload tab'
 type = 'action'
 context = 'chrome'
 
@@ -101,15 +119,14 @@ main = true
 
 [[commands]]
 uuid = 'b2d4e6f8-9a1c-3d5e-7f9a-1b3c5d7e9f1a'
-description = 'Open'
 app = 'Slack'
 action = 'open'
+label = 'Open'
 type = 'action'
 context = 'slack'
 
 [[commands]]
 uuid = '3f8a9c2d-1e4b-5a6f-9d2e-7c1b8a3f4e5d'
-description = 'Pardeep'
 action = "osascript -e 'tell application \"Slack\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke \"Pardeep\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
 icon = 'person.crop.circle'
 label = 'Pardeep'
@@ -118,7 +135,6 @@ context = 'slack'
 
 [[commands]]
 uuid = 'd3e5f3c0-f43d-4e46-9c0a-26df72336551'
-description = 'Seongkuk'
 action = "osascript -e 'tell application \"Slack\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke \"Seongkuk\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
 icon = 'person.crop.circle'
 label = 'Seongkuk'
@@ -127,7 +143,6 @@ context = 'slack'
 
 [[commands]]
 uuid = '8a3f9c2d-1e4b-5a6f-9d2e-7c1b8a3f4e5d'
-description = 'Joe'
 action = "osascript -e 'tell application \"Slack\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke \"Joe\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
 icon = 'person.crop.circle'
 label = 'Joe'
@@ -202,35 +217,38 @@ main = true
 
 [[commands]]
 uuid = 'c1f05f64-f3b5-8245-beaf-adf180913a36'
-description = 'Tribez'
 action = 'chrome-cli open https://github.com/ZeTribez/tribez/pulls'
+icon = 'circle.hexagonpath'
+label = 'Tribez'
 type = 'action'
 context = 'github'
 
 [[commands]]
 uuid = 'd2be4836-5818-ba52-e6ab-24b40af5103d'
-description = 'Upscope'
 action = 'chrome-cli open https://github.com/upscopeio/upscope/pulls'
+icon = 'circle.circle.fill'
+label = 'Upscope'
 type = 'action'
 context = 'github'
 
 [[commands]]
 uuid = 'e6420c0a-a7f0-3011-6fe1-7801bb2a7141'
-description = 'DevDeck Server'
 action = 'chrome-cli open https://github.com/devdeck-app/devdeck-server/pulls'
+icon = 'square.grid.3x3.square'
+label = 'DevDeck Server'
 type = 'action'
 context = 'github'
 
 [[commands]]
 uuid = '4728117f-c61f-2a7c-3fdb-373439edf33b'
-description = 'DevDeck App'
 action = 'chrome-cli open https://github.com/devdeck-app/dev-deck/pulls'
+icon = 'square.grid.3x3.square'
+label = 'DevDeck App'
 type = 'action'
 context = 'github'
 
 [[commands]]
 uuid = 'a1b2c3d4-e5f6-7890-1234-567890abcdef'
-description = 'Click Issues Tab'
 action = 'browser_click:nav[aria-label="Repository"] a[data-hotkey="g i"]'
 icon = 'exclamationmark.circle'
 label = 'Issues'
@@ -239,7 +257,6 @@ context = 'github'
 
 [[commands]]
 uuid = 'b2c3d4e5-f6a7-8901-2345-678901bcdef0'
-description = 'Click Pull Requests Tab'
 action = 'browser_click:nav[aria-label="Repository"] a[data-hotkey="g p"]'
 icon = 'arrow.triangle.pull'
 label = 'PRs'
@@ -248,7 +265,6 @@ context = 'github'
 
 [[commands]]
 uuid = 'c3d4e5f6-a7b8-9012-3456-789012cdef01'
-description = 'Click Actions Tab'
 action = 'browser_click:nav[aria-label="Repository"] a[data-hotkey="g a"]'
 icon = 'play.circle'
 label = 'Actions'
@@ -257,7 +273,6 @@ context = 'github'
 
 [[commands]]
 uuid = 'd4e5f6a7-b8c9-0123-4567-890123def012'
-description = 'Click Code Tab'
 action = 'browser_click:nav[aria-label="Repository"] a[data-hotkey="g c"]'
 icon = 'chevron.left.forwardslash.chevron.right'
 label = 'Code'
@@ -301,48 +316,48 @@ main = true
 
 [[commands]]
 uuid = '0c1f10df-3269-d4ca-976f-6919d9fdc7fb'
-description = 'Userview'
-action = 'chrome-cli open https://plausible.io/upscope.com?f=contains,page,/uv:/&keybindHint=D'
+action = 'chrome-cli open https://plausible.io/upscope.com?f=contains,page,/uv:'
+label = 'Userview'
 type = 'action'
 context = 'analytics'
 
 [[commands]]
 uuid = 'e931cb31-f319-5a99-5968-456c763183a7'
-description = 'Helloscreen'
-action = 'chrome-cli open https://plausible.io/upscope.com?f=contains,page,/hs:/&keybindHint=D'
+action = 'chrome-cli open https://plausible.io/upscope.com?f=contains,page,/hs:'
+label = 'Helloscreen'
 type = 'action'
 context = 'analytics'
 
 [[commands]]
 uuid = 'ab4a582d-6998-4a95-825c-69832cf50127'
-description = 'Reduce Brightness'
 action = "osascript -e 'tell application \"System Events\" to key code 107'\n"
 icon = 'sun.max'
+label = 'Reduce Brightness'
 type = 'action'
 context = 'preferences'
 
 [[commands]]
 uuid = '1826a693-7675-4c59-bc97-71b69cf63d6e'
-description = 'Increase Brightness'
 action = "osascript -e 'tell application \"System Events\" to key code 144'\n"
 icon = 'sun.max.fill'
+label = 'Increase Brightness'
 type = 'action'
 context = 'preferences'
 
 [[commands]]
 uuid = '6d952584-b909-4333-8332-3d77269d40a2'
-description = 'Claude'
 app = 'Claude'
 icon = 'fireworks'
+label = 'Claude'
 type = 'action'
 context = 'main'
 main = true
 
 [[commands]]
 uuid = '92cfc154-1adf-4bbd-bf45-ca6b5e874f3e'
-description = 'Clear Notifications'
 action = '/Users/pablobfonseca/.config/devdeck/scripts/clear_notifications.sh'
 icon = 'bell.slash'
+label = 'Clear Notifications'
 type = 'action'
 context = 'preferences'
 
@@ -356,81 +371,81 @@ main = true
 
 [[commands]]
 uuid = '8360ab9f-ffec-48e2-bcd3-7400924b9051'
-description = 'Mute/Unmute'
 action = "osascript -e 'tell application \"System Events\" to key code 2 using {command down}'"
 icon = 'mic.slash'
+label = 'Mute/Unmute'
 type = 'action'
 context = 'googlemeet'
 
 [[commands]]
 uuid = 'ebf71d82-c874-41a3-bd19-556e9d47584d'
-description = 'Camera On/Off'
 action = "osascript -e 'tell application \"System Events\" to key code 14 using {command down}'"
 icon = 'video.slash'
+label = 'Camera On/Off'
 type = 'action'
 context = 'googlemeet'
 
 [[commands]]
 uuid = 'a07dbd8c-52a2-410e-a00f-567ded7b6066'
-description = 'Leave Meeting'
 action = "osascript -e 'tell application \"System Events\" to key code 13 using {control down}'"
 icon = 'phone.down.fill'
+label = 'Leave Meeting'
 type = 'action'
 context = 'googlemeet'
 
 [[commands]]
 uuid = '9895ffc7-0542-4127-bd86-db25faefb5b4'
-description = 'Chat Toggle'
 action = "osascript -e 'tell application \"System Events\" to key code 8 using {command down, shift down}'"
 icon = 'bubble.left'
+label = 'Chat Toggle'
 type = 'action'
 context = 'googlemeet'
 
 [[commands]]
 uuid = 'ff04b270-4bd3-4acc-abda-e7f4a526c5f8'
-description = 'Present Screen'
 action = "osascript -e 'tell application \"System Events\" to key code 35 using {command down}'"
 icon = 'display'
+label = 'Present Screen'
 type = 'action'
 context = 'googlemeet'
 
 [[commands]]
 uuid = '8db7aebc-4eeb-4bb5-a62d-bf2bc2350cba'
-description = 'Raise Hand'
 action = "osascript -e 'tell application \"System Events\" to key code 15 using {command down, shift down}'"
 icon = 'hand.raised'
+label = 'Raise Hand'
 type = 'action'
 context = 'googlemeet'
 
 [[commands]]
 uuid = '42649ebc-f15e-453e-a964-1eeb5d266fdd'
-description = 'Participants'
 action = "osascript -e 'tell application \"System Events\" to key code 34 using {command down, shift down}'"
 icon = 'person.2'
+label = 'Participants'
 type = 'action'
 context = 'googlemeet'
 
 [[commands]]
 uuid = '08436db0-4080-4337-a80a-b4ef32a08912'
-description = 'Full Screen'
 action = "osascript -e 'tell application \"System Events\" to key code 3 using {command down, shift down}'"
 icon = 'arrow.up.left.and.arrow.down.right'
+label = 'Full Screen'
 type = 'action'
 context = 'googlemeet'
 
 [[commands]]
 uuid = 'f8c143d9-5ce6-4b06-b90b-6a7eeba6c66a'
-description = 'Build'
 action = "osascript -e 'tell application \"System Events\" to key code 15 using {command down}'"
 icon = 'play.fill'
+label = 'Build'
 type = 'action'
 context = 'xcode'
 
 [[commands]]
 uuid = '55c26e6e-e64d-49fc-8da4-cfee1e88c386'
-description = 'Clean Build Folder'
 action = "osascript -e 'tell application \"System Events\" to key code 40 using {command down, shift down}'"
 icon = 'trash'
+label = 'Clean Build Folder'
 type = 'action'
 context = 'xcode'
 
@@ -444,9 +459,9 @@ context = 'xcode'
 
 [[commands]]
 uuid = '7b003e9f-12f7-49fb-8141-44bff12a60f9'
-description = 'Find Files'
 action = "osascript -e 'tell application \"System Events\" to key code 31 using {command down, shift down}'"
 icon = 'magnifyingglass'
+label = 'Find Files'
 type = 'action'
 context = 'xcode'
 
@@ -476,7 +491,7 @@ context = 'plausible'
 
 [[commands]]
 uuid = 'd5aea929-0020-4642-841a-a0fc3906f0fd'
-action = "open 'https://plausible.io/upscope.com?f=contains,page,/uv'"
+action = 'browser_navigate:https://plausible.io/upscope.com?f=contains,page,/uv'
 icon = 'chart.line.uptrend.xyaxis'
 label = 'Userview'
 type = 'action'
@@ -484,7 +499,7 @@ context = 'plausible'
 
 [[commands]]
 uuid = 'fd1609d4-f606-4363-b3b5-60f2f5b50536'
-action = "open 'https://plausible.io/upscope.com?f=contains,page,/hs'"
+action = 'browser_navigate:https://plausible.io/upscope.com?f=contains,page,/hs'
 icon = 'chart.pie'
 label = 'Helloscreen'
 type = 'action'
@@ -500,16 +515,207 @@ context = 'plausible'
 
 [[commands]]
 uuid = '9c159b82-0a56-418b-9b22-2027f6dc9077'
-action = "open 'https://plausible.io/upscope.com'"
+action = 'browser_navigate:https://plausible.io/upscope.com'
 icon = 'house.fill'
 label = 'Dashboard Home'
 type = 'action'
 context = 'plausible'
 
+[[commands]]
+uuid = '08d7bf53-7d08-4b2c-a3c6-9f6d92ef052f'
+icon = 'video.fill'
+label = 'Zoom'
+type = 'context'
+context = 'zoom'
+main = true
+
+[[commands]]
+uuid = 'f33046f2-48f4-440d-8def-8d17ee6170f8'
+action = "osascript -e 'tell application \"System Events\" to key code 0 using {command down, shift down}'"
+icon = 'mic.slash'
+label = 'Mute/Unmute'
+type = 'action'
+context = 'zoom'
+
+[[commands]]
+uuid = 'd1ad19cc-97e7-4278-abbe-114291d78a02'
+action = "osascript -e 'tell application \"System Events\" to key code 9 using {command down, shift down}'"
+icon = 'video'
+label = 'Video On/Off'
+type = 'action'
+context = 'zoom'
+
+[[commands]]
+uuid = '483fd7da-7ac8-4977-a9e8-d5f35dd1917f'
+action = "osascript -e 'tell application \"System Events\" to key code 1 using {command down, shift down}'"
+icon = 'rectangle.on.rectangle'
+label = 'Share Screen'
+type = 'action'
+context = 'zoom'
+
+[[commands]]
+uuid = '9f6ec8ee-01f4-4c81-a5c1-682a9f171d3b'
+action = "osascript -e 'tell application \"System Events\" to key code 0 using {command down, shift down, option down}'"
+icon = 'bubble.left'
+label = 'Chat'
+type = 'action'
+context = 'zoom'
+
+[[commands]]
+uuid = 'b2a37173-8840-4a4f-8605-6c0a220d0ce2'
+action = "osascript -e 'tell application \"System Events\" to key code 32 using {command down, shift down}'"
+icon = 'person.2'
+label = 'Participants'
+type = 'action'
+context = 'zoom'
+
+[[commands]]
+uuid = '417608f3-0e93-4a28-8779-af1b630f517a'
+action = "osascript -e 'tell application \"System Events\" to key code 13 using {command down}'"
+icon = 'phone.down'
+label = 'Leave Meeting'
+type = 'action'
+context = 'zoom'
+
+[[commands]]
+uuid = 'f7d4dd8f-b02e-43d2-8a94-c4e28cb88a3e'
+action = "osascript -e 'tell application \"System Events\" to key code 16 using {option down}'"
+icon = 'hand.raised'
+label = 'Raise Hand'
+type = 'action'
+context = 'zoom'
+
+[[commands]]
+uuid = 'f0257fda-9df1-4c68-ade7-f8125fa55a3d'
+action = "osascript -e 'tell application \"System Events\" to key code 5 using {command down, shift down}'"
+icon = 'square.grid.2x2'
+label = 'Gallery View'
+type = 'action'
+context = 'zoom'
+
+[[commands]]
+uuid = '9b000821-6273-49d3-b6a0-72da8fd3e96f'
+icon = 'person.2.fill'
+label = 'Tuple'
+type = 'context'
+context = 'tuple'
+main = true
+
+[[commands]]
+uuid = '95dea517-4054-4b22-8196-62de00e12477'
+action = "osascript -e 'tell application \"System Events\" to key code 46 using {command down}'"
+icon = 'mic.slash'
+label = 'Mute'
+type = 'action'
+context = 'tuple'
+
+[[commands]]
+uuid = '8f923007-77fa-4b2e-87d6-45371d30d258'
+action = "osascript -e 'tell application \"System Events\" to key code 9 using {command down}'"
+icon = 'video.slash'
+label = 'Camera Toggle'
+type = 'action'
+context = 'tuple'
+
+[[commands]]
+uuid = '087ac781-7d0a-434f-aac0-650e5aa9cd90'
+action = "osascript -e 'tell application \"System Events\" to key code 1 using {command down}'"
+icon = 'rectangle.on.rectangle'
+label = 'Screen Share'
+type = 'action'
+context = 'tuple'
+
+[[commands]]
+uuid = 'cc49dc6e-65b1-49c3-a136-f0c7b220a97a'
+action = "osascript -e 'tell application \"System Events\" to key code 14 using {command down}'"
+icon = 'phone.down.fill'
+label = 'Leave Call'
+type = 'action'
+context = 'tuple'
+
+[[commands]]
+uuid = '96a4918f-a44a-4fa9-a08c-40380d3eb487'
+action = "osascript -e 'tell application \"System Events\" to key code 8 using {command down}'"
+icon = 'bubble.left'
+label = 'Toggle Chat'
+type = 'action'
+context = 'tuple'
+
+[[commands]]
+uuid = '73381437-32e0-4ac2-903e-f85340f8a99c'
+action = "osascript -e 'tell application \"System Events\" to key code 46 using {command down}'"
+icon = 'minus.circle'
+label = 'Minimize'
+type = 'action'
+context = 'tuple'
+
+[[commands]]
+uuid = '3886c74b-7eae-401b-b9cf-ec704d182ec9'
+action = "osascript -e 'tell application \"System Events\" to key code 45 using {command down}'"
+icon = 'plus.circle'
+label = 'New Event'
+type = 'action'
+context = 'calendar'
+
+[[commands]]
+uuid = '01a30203-0ebb-4ba7-a5b1-32594a89efeb'
+action = "osascript -e 'tell application \"System Events\" to key code 17 using {command down}'"
+icon = 'house.fill'
+label = 'Today'
+type = 'action'
+context = 'calendar'
+
+[[commands]]
+uuid = '511d2bf1-5db6-4bd0-8f00-3ba8252429a2'
+action = "osascript -e 'tell application \"System Events\" to key code 13 using {command down}'"
+icon = 'calendar.badge.clock'
+label = 'Week View'
+type = 'action'
+context = 'calendar'
+
+[[commands]]
+uuid = 'faff1cba-86af-4bc3-94d2-75b4540ea39a'
+action = "osascript -e 'tell application \"System Events\" to key code 46 using {command down}'"
+icon = 'calendar'
+label = 'Month View'
+type = 'action'
+context = 'calendar'
+
+[[commands]]
+uuid = '0db56ea9-0088-46c9-ad69-0dde9afc0ff0'
+action = "osascript -e 'tell application \"System Events\" to key code 2 using {command down}'"
+icon = 'sun.max.fill'
+label = 'Day View'
+type = 'action'
+context = 'calendar'
+
+[[commands]]
+uuid = '5a069de5-b80c-49fb-9b67-d646904bf72b'
+action = "osascript -e 'tell application \"System Events\" to key code 3 using {command down}'"
+icon = 'magnifyingglass'
+label = 'Search'
+type = 'action'
+context = 'calendar'
+
+[[commands]]
+uuid = '73b7835a-cd4c-4212-a9ca-43b909fc117e'
+action = "osascript -e 'tell application \"System Events\" to key code 124'"
+icon = 'arrow.right'
+label = 'Next Period'
+type = 'action'
+context = 'calendar'
+
+[[commands]]
+uuid = 'c302d21c-802d-4b72-aaca-711570dcae57'
+action = "osascript -e 'tell application \"System Events\" to key code 123'"
+icon = 'arrow.left'
+label = 'Previous Period'
+type = 'action'
+context = 'calendar'
+
 [workflows]
 [workflows.ask_ai]
 name = 'Ask AI'
-description = 'Submit to multiple AI sites'
 icon = 'sparkles'
 inputs = ['query']
 
@@ -528,21 +734,11 @@ continue_on_error = true
 
 [[workflows.ask_ai.steps]]
 type = 'open_url'
-url = 'https://claude.ai/new'
+url = 'https://claude.ai/new?q={{query}}'
 
 [[workflows.ask_ai.steps]]
 type = 'delay'
 duration = 3
-
-[[workflows.ask_ai.steps]]
-type = 'fill_input'
-selector = 'div[contenteditable="true"][data-placeholder*="talk"]'
-value = '{{query}}'
-continue_on_error = true
-
-[[workflows.ask_ai.steps]]
-type = 'delay'
-duration = 1
 
 [[workflows.ask_ai.steps]]
 type = 'click_element'
@@ -551,53 +747,10 @@ continue_on_error = true
 
 [[workflows.ask_ai.steps]]
 type = 'open_url'
-url = 'https://www.perplexity.ai/'
-
-[[workflows.ask_ai.steps]]
-type = 'delay'
-duration = 3
-
-[[workflows.ask_ai.steps]]
-type = 'fill_input'
-selector = 'textarea[placeholder*="Ask"]'
-value = '{{query}}'
-continue_on_error = true
-
-[[workflows.ask_ai.steps]]
-type = 'delay'
-duration = 1
-
-[[workflows.ask_ai.steps]]
-type = 'click_element'
-selector = 'button[aria-label*="Submit"]'
-continue_on_error = true
-
-[[workflows.ask_ai.steps]]
-type = 'open_url'
-url = 'https://gemini.google.com/app'
-
-[[workflows.ask_ai.steps]]
-type = 'delay'
-duration = 3
-
-[[workflows.ask_ai.steps]]
-type = 'fill_input'
-selector = 'rich-textarea[aria-label*="Enter a prompt"]'
-value = '{{query}}'
-continue_on_error = true
-
-[[workflows.ask_ai.steps]]
-type = 'delay'
-duration = 1
-
-[[workflows.ask_ai.steps]]
-type = 'click_element'
-selector = 'button[aria-label*="Send message"]'
-continue_on_error = true
+url = 'https://www.perplexity.ai/?q={{query}}'
 
 [workflows.ask_chatgpt]
 name = 'Ask ChatGPT'
-description = 'Auto-submit to ChatGPT'
 icon = 'bubble.left.and.bubble.right'
 inputs = ['query']
 
@@ -615,6 +768,5 @@ selector = 'button[data-testid="send-button"]'
 
 [workflows.generate_command]
 name = 'AI Command'
-description = 'AI Command'
 icon = 'brain'
 inputs = ['prompt']
