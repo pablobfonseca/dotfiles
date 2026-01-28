@@ -2,8 +2,10 @@
 columns = 3
 landscape_columns = 5
 background_color = '#000'
-button_size = 100
 show_labels = true
+
+[log]
+level = 'debug'
 
 [contexts]
 [contexts.chrome]
@@ -36,14 +38,15 @@ frontmost_app_names = ['Google Chrome', 'Safari']
 url_contains = ['meet.google.com']
 title_contains = ['Google Meet']
 
-[contexts.notion]
-name = 'Notion'
-deck = 'notion'
-priority = 60
+[contexts.plausible]
+name = 'Plausible Analytics'
+deck = 'plausible'
+priority = 90
 
-[contexts.notion.match]
-frontmost_bundle_ids = ['notion.id']
-frontmost_app_names = ['Notion']
+[contexts.plausible.match]
+frontmost_bundle_ids = ['com.google.Chrome']
+frontmost_app_names = ['Google Chrome']
+url_contains = ['plausible.io']
 
 [contexts.slack]
 name = 'Slack'
@@ -264,8 +267,8 @@ context = 'github'
 [[commands]]
 uuid = '7a690bd0-c35c-00b7-704c-61e8ba667c71'
 action = 'chrome-cli open https://linkedin.com/in/pablobfonseca'
-label = 'Linkedin'
 icon = 'social.linkedin'
+label = 'Linkedin'
 type = 'action'
 context = ''
 main = true
@@ -416,89 +419,9 @@ type = 'action'
 context = 'googlemeet'
 
 [[commands]]
-uuid = '26034f29-21ec-45de-ab52-ecbf8a5c8637'
-icon = 'doc.text.fill'
-label = 'Notion'
-type = 'context'
-context = 'notion'
-main = true
-
-[[commands]]
-uuid = 'cb466ae1-93a7-4f2f-bac8-1f85ba990eb5'
-action = "osascript -e 'tell application \"System Events\" to key code 45 using {command down}'"
-icon = 'plus.circle.fill'
-label = 'New Page'
-type = 'action'
-context = 'notion'
-
-[[commands]]
-uuid = '441fe661-c58f-4f70-a110-43238ebb42c5'
-action = "osascript -e 'tell application \"System Events\" to key code 35 using {command down}'"
-icon = 'magnifyingglass'
-label = 'Quick Find'
-type = 'action'
-context = 'notion'
-
-[[commands]]
-uuid = '5c29c539-b74a-4602-a152-e286790a1d9b'
-action = "osascript -e 'tell application \"System Events\" to key code 31 using {command down, shift down}'"
-icon = 'sidebar.left'
-label = 'Toggle Sidebar'
-type = 'action'
-context = 'notion'
-
-[[commands]]
-uuid = '66f73452-c2a1-4fb8-93f9-bf00e7f1f324'
-action = "osascript -e 'tell application \"System Events\" to key code 46 using {command down, shift down}'"
-icon = 'bubble.left'
-label = 'Comment'
-type = 'action'
-context = 'notion'
-
-[[commands]]
-uuid = 'd4efc178-9da8-4e64-ac96-5d15d08721fb'
-action = "osascript -e 'tell application \"System Events\" to key code 11 using {command down}'"
-icon = 'bold'
-label = 'Bold Text'
-type = 'action'
-context = 'notion'
-
-[[commands]]
-uuid = '526778e9-bacb-4fd2-a83e-17bba5451f8a'
-action = "osascript -e 'tell application \"System Events\" to key code 34 using {command down}'"
-icon = 'italic'
-label = 'Italic Text'
-type = 'action'
-context = 'notion'
-
-[[commands]]
-uuid = '07eef040-a4d7-436c-9cb5-d2916145089f'
-action = "osascript -e 'tell application \"System Events\" to key code 14 using {command down, shift down}'"
-icon = 'chevron.left.forwardslash.chevron.right'
-label = 'Code Block'
-type = 'action'
-context = 'notion'
-
-[[commands]]
-uuid = 'bcf48311-bbb4-492f-b2e4-1b8b247fb37c'
-action = "osascript -e 'tell application \"System Events\" to key code 40 using {command down}'"
-icon = 'link'
-label = 'Add Link'
-type = 'action'
-context = 'notion'
-
-[[commands]]
-uuid = 'deeced56-ca69-49ab-b148-83ef83baf784'
-label = 'Xcode'
-icon = 'hammer.fill'
-type = 'context'
-context = 'xcode'
-main = true
-
-[[commands]]
 uuid = 'f8c143d9-5ce6-4b06-b90b-6a7eeba6c66a'
 description = 'Build'
-action = "osascript -e 'tell application \"System Events\" to key code 11 using {command down}'"
+action = "osascript -e 'tell application \"System Events\" to key code 15 using {command down}'"
 icon = 'play.fill'
 type = 'action'
 context = 'xcode'
@@ -512,12 +435,76 @@ type = 'action'
 context = 'xcode'
 
 [[commands]]
+uuid = 'c2556e6e-e64d-49fc-8da4-cfee1e8c8386'
+app = 'xCode'
+action = 'open'
+icon = 'hammer.fill'
+type = 'action'
+context = 'xcode'
+
+[[commands]]
 uuid = '7b003e9f-12f7-49fb-8141-44bff12a60f9'
 description = 'Find Files'
 action = "osascript -e 'tell application \"System Events\" to key code 31 using {command down, shift down}'"
 icon = 'magnifyingglass'
 type = 'action'
 context = 'xcode'
+
+[[commands]]
+uuid = 'eef1019b-9862-44b9-ac8b-6f4f6dd0a855'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"/away\"' -e 'tell application \"System Events\" to key code 36'\n"
+icon = 'moon.fill'
+label = 'Toggle Away'
+type = 'action'
+context = 'slack'
+
+[[commands]]
+uuid = '9fd656ec-6745-4627-bd87-d3b25b740ab3'
+icon = 'chart.bar'
+label = 'Plausible'
+type = 'context'
+context = 'plausible'
+main = true
+
+[[commands]]
+uuid = '079800e4-9681-4e75-b658-b7018e886dca'
+action = "osascript -e 'tell application \"System Events\" to key code 2'"
+icon = 'calendar'
+label = 'Toggle Today View'
+type = 'action'
+context = 'plausible'
+
+[[commands]]
+uuid = 'd5aea929-0020-4642-841a-a0fc3906f0fd'
+action = "open 'https://plausible.io/upscope.com?f=contains,page,/uv'"
+icon = 'chart.line.uptrend.xyaxis'
+label = 'Userview'
+type = 'action'
+context = 'plausible'
+
+[[commands]]
+uuid = 'fd1609d4-f606-4363-b3b5-60f2f5b50536'
+action = "open 'https://plausible.io/upscope.com?f=contains,page,/hs'"
+icon = 'chart.pie'
+label = 'Helloscreen'
+type = 'action'
+context = 'plausible'
+
+[[commands]]
+uuid = '71f863b6-117a-4711-a0c6-c25ee4efca23'
+action = "osascript -e 'tell application \"System Events\" to key code 15 using {command down}'"
+icon = 'arrow.clockwise'
+label = 'Refresh Data'
+type = 'action'
+context = 'plausible'
+
+[[commands]]
+uuid = '9c159b82-0a56-418b-9b22-2027f6dc9077'
+action = "open 'https://plausible.io/upscope.com'"
+icon = 'house.fill'
+label = 'Dashboard Home'
+type = 'action'
+context = 'plausible'
 
 [workflows]
 [workflows.ask_ai]
