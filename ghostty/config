@@ -1,17 +1,21 @@
-shell-integration = "zsh"
-font-family = "Iosevka Nerd Font"
+shell-integration = zsh
+font-family = Iosevka Nerd Font
 font-size = 16
+adjust-cell-height = 1
+font-thicken = true
+font-thicken-strength = 1
+
 theme = Catppuccin Mocha
 
-cursor-style = "block"
+cursor-style = block
 cursor-style-blink = true
-shell-integration-features = "no-cursor"
+shell-integration-features = no-cursor
 
-macos-titlebar-style = "hidden"
-macos-titlebar-proxy-icon = "hidden"
+macos-titlebar-style = hidden
+macos-titlebar-proxy-icon = hidden
 
 window-width = 115
 window-height = 45
-
+window-decoration = false
 window-padding-y = 25,1
 window-padding-x = 1,1
