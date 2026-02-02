@@ -1,5 +1,9 @@
 local M = {}
 
+function M.gh(repo)
+  return "https://github.com/" .. repo
+end
+
 local function is_abs(path)
   -- POSIX: starts with /
   if path:sub(1, 1) == "/" then

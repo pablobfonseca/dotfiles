@@ -94,15 +94,15 @@ o.shada = { "'10", "<0", "s10", "h" } -- shared data options
 vim.g.editorconfig = true -- respect editorconfig files
 o.more = false
 -- disable arrow keys
-local arrow_keys = { "<up>", "<left>", "<down>", "<right>" }
-for _, key in ipairs(arrow_keys) do
-  vim.keymap.set("n", key, function()
-    vim.notify("Use hjkl Brav!", vim.log.levels.ERROR)
-  end, {
-    noremap = true,
-    silent = true,
-  })
-end
+--local arrow_keys = { "<up>", "<left>", "<down>", "<right>" }
+--for _, key in ipairs(arrow_keys) do
+--  vim.keymap.set("n", key, function()
+--    vim.notify("Use hjkl Brav!", vim.log.levels.ERROR)
+--  end, {
+--    noremap = true,
+--    silent = true,
+--  })
+--end
 
 -- Cursor settings
 o.guicursor =

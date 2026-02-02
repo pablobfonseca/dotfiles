@@ -1,9 +1,14 @@
-vim.pack.add {
-  { src = "https://github.com/nvim-mini/mini.ai" },
-  { src = "https://github.com/nvim-mini/mini.surround" },
+return {
+  {
+    "echasnovski/mini.ai",
+    event = "VeryLazy",
+    opts = {
+      n_lines = 500,
+    },
+  },
+  {
+    "echasnovski/mini.surround",
+    event = "VeryLazy",
+    opts = {},
+  },
 }
-require("mini.ai").setup {
-  n_lines = 500,
-}
-
-require("mini.surround").setup()
