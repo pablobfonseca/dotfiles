@@ -1,1 +1,4 @@
-vim.pack.add({ "https://github.com/tpope/vim-abolish" }, { load = true })
+return {
+  "tpope/vim-abolish",
+  event = "VeryLazy",
+}

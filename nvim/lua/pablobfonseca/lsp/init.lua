@@ -26,6 +26,8 @@ vim.lsp.enable {
   "gopls",
   "tailwindcssls",
   "html",
+  "pyright",
+  "python-lsp-server",
   "emmet-language-server",
   "harper-ls",
   "json-ls",

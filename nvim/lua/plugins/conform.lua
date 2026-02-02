@@ -1,29 +1,24 @@
-vim.pack.add { "https://github.com/stevearc/conform.nvim" }
-
-local conform = require "conform"
-
-conform.setup {
-  formatters_by_ft = {
-    lua = { "stylua" },
-    html = { "prettierd", "deno_fmt", stop_after_first = true },
-    typescript = { "prettierd", "deno_fmt", stop_after_first = true },
-    typescriptreact = { "prettierd", "deno_fmt", stop_after_first = true },
-    javascript = { "prettierd" },
-    markdown = { "prettierd" },
-    json = { "prettierd" },
-    yaml = { "prettierd" },
-    elm = { "elm_format" },
-    go = { "gofmt", "goimports" },
-  },
-}
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-  group = vim.api.nvim_create_augroup("custom-conform", { clear = true }),
-  callback = function(args)
-    require("conform").format {
-      bufnr = args.buf,
+return {
+  "stevearc/conform.nvim",
+  event = "BufWritePre",
+  cmd = "ConformInfo",
+  opts = {
+    formatters_by_ft = {
+      lua = { "stylua" },
+      html = { "prettierd", "deno_fmt", stop_after_first = true },
+      typescript = { "prettierd", "deno_fmt", stop_after_first = true },
+      typescriptreact = { "prettierd", "deno_fmt", stop_after_first = true },
+      javascript = { "prettierd" },
+      python = { "autopep8", "black", stop_after_first = true },
+      markdown = { "prettierd" },
+      json = { "prettierd" },
+      yaml = { "prettierd" },
+      elm = { "elm_format" },
+      go = { "gofmt", "goimports" },
+    },
+    format_on_save = {
       lsp_fallback = true,
       quiet = true,
-    }
-  end,
-})
+    },
+  },
+}
