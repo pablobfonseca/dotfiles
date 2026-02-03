@@ -1,6 +1,12 @@
 [log]
 level = 'debug'
 
+[ai]
+provider = 'openai'
+
+[proxy]
+enable = true
+
 [layout]
 columns = 3
 landscape_columns = 5
@@ -26,6 +32,23 @@ priority = 50
 frontmost_bundle_ids = ['com.google.Chrome']
 frontmost_app_names = ['Google Chrome', 'Chrome']
 
+[contexts.dev]
+name = 'Dev Utilities'
+deck = 'dev'
+priority = 50
+
+[contexts.dev.match]
+
+[contexts.ghostty-terminal]
+name = 'Ghostty'
+deck = 'ghostty-terminal'
+priority = 50
+
+[contexts.ghostty-terminal.match]
+frontmost_bundle_ids = ['com.mitchellh.ghostty']
+frontmost_app_names = ['Ghostty']
+title_contains = ['ghostty']
+
 [contexts.github]
 name = 'Github'
 deck = 'github'
@@ -39,13 +62,21 @@ url_contains = ['github.com']
 [contexts.googlemeet]
 name = 'Google Meet'
 deck = 'googlemeet'
-priority = 60
+priority = 90
 
 [contexts.googlemeet.match]
-frontmost_bundle_ids = ['com.google.Chrome', 'com.apple.Safari']
-frontmost_app_names = ['Google Chrome', 'Safari']
+frontmost_bundle_ids = ['com.google.Chrome']
+frontmost_app_names = ['Google Chrome']
 url_contains = ['meet.google.com']
-title_contains = ['Google Meet']
+title_contains = ['Meet']
+
+[contexts.ollama]
+name = 'Ollama'
+deck = 'ollama'
+priority = 50
+
+[contexts.ollama.match]
+frontmost_bundle_ids = ['com.electron.ollama']
 
 [contexts.plausible]
 name = 'Plausible Analytics'
@@ -75,6 +106,15 @@ priority = 60
 frontmost_bundle_ids = ['app.tuple.app']
 frontmost_app_names = ['Tuple']
 
+[contexts.tuple-pair-programming]
+name = 'Tuple Pair Programming'
+deck = 'tuple-pair-programming'
+priority = 50
+
+[contexts.tuple-pair-programming.match]
+frontmost_bundle_ids = ['app.tuple.app']
+frontmost_app_names = ['Tuple']
+
 [contexts.xcode]
 name = 'Xcode'
 deck = 'xcode'
@@ -95,11 +135,14 @@ frontmost_app_names = ['zoom.us', 'Zoom']
 
 [[commands]]
 uuid = 'a42dcc2f-3739-e9c7-8326-f980b564aaf6'
+app = 'Google Chrome'
+action = 'open'
 icon = 'globe'
 label = 'Google Chrome'
-type = 'context'
-context = 'chrome'
+type = 'action'
+context = ''
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'd054d997-e87a-63e5-25b1-a3e3fbe9bb64'
@@ -108,22 +151,17 @@ icon = 'arrow.clockwise'
 label = 'Reload tab'
 type = 'action'
 context = 'chrome'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '57577bc7-7000-5f0f-2461-1df2fe9118e5'
-icon = 'social.slack'
-label = 'Slack'
-type = 'context'
-context = 'slack'
-main = true
-
-[[commands]]
-uuid = 'b2d4e6f8-9a1c-3d5e-7f9a-1b3c5d7e9f1a'
 app = 'Slack'
 action = 'open'
-label = 'Open'
+icon = 'social.slack'
 type = 'action'
-context = 'slack'
+context = ''
+main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '3f8a9c2d-1e4b-5a6f-9d2e-7c1b8a3f4e5d'
@@ -132,6 +170,25 @@ icon = 'person.crop.circle'
 label = 'Pardeep'
 type = 'action'
 context = 'slack'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '2518589f-4096-46ea-b94d-c61240bd62cd'
+action = "osascript -e 'tell application \"Slack\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke \"Henry\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
+icon = 'person.crop.circle'
+label = 'Henry'
+type = 'action'
+context = 'slack'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'a148537e-296b-41e6-9f40-92208536f91d'
+action = "osascript -e 'tell application \"Slack\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke \"Sojeong\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
+icon = 'person.crop.circle'
+label = 'Sojeong'
+type = 'action'
+context = 'slack'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'd3e5f3c0-f43d-4e46-9c0a-26df72336551'
@@ -140,6 +197,7 @@ icon = 'person.crop.circle'
 label = 'Seongkuk'
 type = 'action'
 context = 'slack'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '8a3f9c2d-1e4b-5a6f-9d2e-7c1b8a3f4e5d'
@@ -148,6 +206,7 @@ icon = 'person.crop.circle'
 label = 'Joe'
 type = 'action'
 context = 'slack'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '6122ea2b-079d-8228-cc0b-28a745d4f594'
@@ -157,6 +216,7 @@ icon = 'terminal'
 type = 'action'
 context = ''
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '10982278-acb5-4509-de6b-03c2fb32ec7d'
@@ -166,6 +226,7 @@ icon = 'calendar'
 type = 'action'
 context = ''
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '5ec77d17-646f-cb52-4398-8264efbab61c'
@@ -175,6 +236,7 @@ icon = 'doc.text'
 type = 'action'
 context = ''
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '40606c41-63f4-57f1-3e9f-e721acae73dc'
@@ -183,6 +245,7 @@ label = 'Preferences'
 type = 'context'
 context = 'preferences'
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'fa38a306-2327-9ff8-918a-a2c863909fcf'
@@ -190,6 +253,7 @@ action = "osascript -e 'set volume output volume ((output volume of (get volume 
 icon = 'speaker.minus'
 type = 'action'
 context = 'preferences'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '866d8406-a56f-0103-f45c-7f454974816f'
@@ -197,6 +261,7 @@ action = "osascript -e 'set volume output volume ((output volume of (get volume 
 icon = 'speaker.plus'
 type = 'action'
 context = 'preferences'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'df6dd3ab-c339-01a0-0749-e93920825f40'
@@ -206,6 +271,7 @@ label = 'Lock screen'
 type = 'action'
 context = ''
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '377dc6e8-f303-9d09-2f71-1e2d5ba96ee8'
@@ -214,6 +280,7 @@ label = 'Github'
 type = 'context'
 context = 'github'
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'c1f05f64-f3b5-8245-beaf-adf180913a36'
@@ -222,6 +289,7 @@ icon = 'circle.hexagonpath'
 label = 'Tribez'
 type = 'action'
 context = 'github'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'd2be4836-5818-ba52-e6ab-24b40af5103d'
@@ -230,6 +298,7 @@ icon = 'circle.circle.fill'
 label = 'Upscope'
 type = 'action'
 context = 'github'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'e6420c0a-a7f0-3011-6fe1-7801bb2a7141'
@@ -238,6 +307,7 @@ icon = 'square.grid.3x3.square'
 label = 'DevDeck Server'
 type = 'action'
 context = 'github'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '4728117f-c61f-2a7c-3fdb-373439edf33b'
@@ -246,6 +316,7 @@ icon = 'square.grid.3x3.square'
 label = 'DevDeck App'
 type = 'action'
 context = 'github'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'a1b2c3d4-e5f6-7890-1234-567890abcdef'
@@ -254,6 +325,7 @@ icon = 'exclamationmark.circle'
 label = 'Issues'
 type = 'action'
 context = 'github'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'b2c3d4e5-f6a7-8901-2345-678901bcdef0'
@@ -262,6 +334,7 @@ icon = 'arrow.triangle.pull'
 label = 'PRs'
 type = 'action'
 context = 'github'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'c3d4e5f6-a7b8-9012-3456-789012cdef01'
@@ -270,6 +343,7 @@ icon = 'play.circle'
 label = 'Actions'
 type = 'action'
 context = 'github'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'd4e5f6a7-b8c9-0123-4567-890123def012'
@@ -278,6 +352,7 @@ icon = 'chevron.left.forwardslash.chevron.right'
 label = 'Code'
 type = 'action'
 context = 'github'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '7a690bd0-c35c-00b7-704c-61e8ba667c71'
@@ -287,6 +362,7 @@ label = 'Linkedin'
 type = 'action'
 context = ''
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '236f5646-b090-527c-b8e3-3407b72b8ef9'
@@ -296,6 +372,7 @@ icon = 'message'
 type = 'action'
 context = ''
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '4d8eefad-8329-dae0-0df0-3e9dbf1a271e'
@@ -303,8 +380,17 @@ action = 'chrome-cli open https://gmail.com'
 icon = 'envelope'
 label = 'Gmail'
 type = 'action'
-context = ''
-main = true
+context = 'chrome'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '9addcd3b-b255-49d5-986f-f68a05f796c9'
+action = 'chrome-cli open https://protonmail.com'
+icon = 'envelope'
+label = 'Proton'
+type = 'action'
+context = 'chrome'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '08aeff51-cd4b-c656-cead-5a40921ecb79'
@@ -313,6 +399,7 @@ label = 'Analytics'
 type = 'context'
 context = 'analytics'
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '0c1f10df-3269-d4ca-976f-6919d9fdc7fb'
@@ -320,6 +407,7 @@ action = 'chrome-cli open https://plausible.io/upscope.com?f=contains,page,/uv:'
 label = 'Userview'
 type = 'action'
 context = 'analytics'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'e931cb31-f319-5a99-5968-456c763183a7'
@@ -327,6 +415,7 @@ action = 'chrome-cli open https://plausible.io/upscope.com?f=contains,page,/hs:'
 label = 'Helloscreen'
 type = 'action'
 context = 'analytics'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'ab4a582d-6998-4a95-825c-69832cf50127'
@@ -335,6 +424,7 @@ icon = 'sun.max'
 label = 'Reduce Brightness'
 type = 'action'
 context = 'preferences'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '1826a693-7675-4c59-bc97-71b69cf63d6e'
@@ -343,6 +433,7 @@ icon = 'sun.max.fill'
 label = 'Increase Brightness'
 type = 'action'
 context = 'preferences'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '6d952584-b909-4333-8332-3d77269d40a2'
@@ -352,14 +443,7 @@ label = 'Claude'
 type = 'action'
 context = 'main'
 main = true
-
-[[commands]]
-uuid = '92cfc154-1adf-4bbd-bf45-ca6b5e874f3e'
-action = '/Users/pablobfonseca/.config/devdeck/scripts/clear_notifications.sh'
-icon = 'bell.slash'
-label = 'Clear Notifications'
-type = 'action'
-context = 'preferences'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '4cf10a7d-4c9a-4e36-a1ae-62ce958ae1f8'
@@ -368,6 +452,7 @@ label = 'Google Meet'
 type = 'context'
 context = 'googlemeet'
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '8360ab9f-ffec-48e2-bcd3-7400924b9051'
@@ -376,14 +461,16 @@ icon = 'mic.slash'
 label = 'Mute/Unmute'
 type = 'action'
 context = 'googlemeet'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'ebf71d82-c874-41a3-bd19-556e9d47584d'
-action = "osascript -e 'tell application \"System Events\" to key code 14 using {command down}'"
+action = "osascript -e 'tell application \"System Events\" to keystroke \"e\" using {command down}'"
 icon = 'video.slash'
 label = 'Camera On/Off'
 type = 'action'
 context = 'googlemeet'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'a07dbd8c-52a2-410e-a00f-567ded7b6066'
@@ -392,6 +479,7 @@ icon = 'phone.down.fill'
 label = 'Leave Meeting'
 type = 'action'
 context = 'googlemeet'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '9895ffc7-0542-4127-bd86-db25faefb5b4'
@@ -400,6 +488,7 @@ icon = 'bubble.left'
 label = 'Chat Toggle'
 type = 'action'
 context = 'googlemeet'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'ff04b270-4bd3-4acc-abda-e7f4a526c5f8'
@@ -408,6 +497,7 @@ icon = 'display'
 label = 'Present Screen'
 type = 'action'
 context = 'googlemeet'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '8db7aebc-4eeb-4bb5-a62d-bf2bc2350cba'
@@ -416,6 +506,7 @@ icon = 'hand.raised'
 label = 'Raise Hand'
 type = 'action'
 context = 'googlemeet'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '42649ebc-f15e-453e-a964-1eeb5d266fdd'
@@ -424,6 +515,7 @@ icon = 'person.2'
 label = 'Participants'
 type = 'action'
 context = 'googlemeet'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '08436db0-4080-4337-a80a-b4ef32a08912'
@@ -432,6 +524,7 @@ icon = 'arrow.up.left.and.arrow.down.right'
 label = 'Full Screen'
 type = 'action'
 context = 'googlemeet'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'f8c143d9-5ce6-4b06-b90b-6a7eeba6c66a'
@@ -440,14 +533,16 @@ icon = 'play.fill'
 label = 'Build'
 type = 'action'
 context = 'xcode'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '55c26e6e-e64d-49fc-8da4-cfee1e88c386'
-action = "osascript -e 'tell application \"System Events\" to key code 40 using {command down, shift down}'"
+action = "osascript -e 'tell application \"System Events\" to keystroke \"e\" using {command down}'"
 icon = 'trash'
 label = 'Clean Build Folder'
 type = 'action'
 context = 'xcode'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'c2556e6e-e64d-49fc-8da4-cfee1e8c8386'
@@ -456,6 +551,7 @@ action = 'open'
 icon = 'hammer.fill'
 type = 'action'
 context = 'xcode'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '7b003e9f-12f7-49fb-8141-44bff12a60f9'
@@ -464,6 +560,7 @@ icon = 'magnifyingglass'
 label = 'Find Files'
 type = 'action'
 context = 'xcode'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'eef1019b-9862-44b9-ac8b-6f4f6dd0a855'
@@ -472,14 +569,17 @@ icon = 'moon.fill'
 label = 'Toggle Away'
 type = 'action'
 context = 'slack'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '9fd656ec-6745-4627-bd87-d3b25b740ab3'
 icon = 'chart.bar'
 label = 'Plausible'
-type = 'context'
+type = 'action'
+action = 'browser_navigate:https://plausible.io'
 context = 'plausible'
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '079800e4-9681-4e75-b658-b7018e886dca'
@@ -488,6 +588,7 @@ icon = 'calendar'
 label = 'Toggle Today View'
 type = 'action'
 context = 'plausible'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'd5aea929-0020-4642-841a-a0fc3906f0fd'
@@ -496,6 +597,7 @@ icon = 'chart.line.uptrend.xyaxis'
 label = 'Userview'
 type = 'action'
 context = 'plausible'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'fd1609d4-f606-4363-b3b5-60f2f5b50536'
@@ -504,6 +606,7 @@ icon = 'chart.pie'
 label = 'Helloscreen'
 type = 'action'
 context = 'plausible'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '71f863b6-117a-4711-a0c6-c25ee4efca23'
@@ -512,6 +615,7 @@ icon = 'arrow.clockwise'
 label = 'Refresh Data'
 type = 'action'
 context = 'plausible'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '9c159b82-0a56-418b-9b22-2027f6dc9077'
@@ -520,6 +624,7 @@ icon = 'house.fill'
 label = 'Dashboard Home'
 type = 'action'
 context = 'plausible'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '08d7bf53-7d08-4b2c-a3c6-9f6d92ef052f'
@@ -528,6 +633,7 @@ label = 'Zoom'
 type = 'context'
 context = 'zoom'
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'f33046f2-48f4-440d-8def-8d17ee6170f8'
@@ -536,6 +642,7 @@ icon = 'mic.slash'
 label = 'Mute/Unmute'
 type = 'action'
 context = 'zoom'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'd1ad19cc-97e7-4278-abbe-114291d78a02'
@@ -544,6 +651,7 @@ icon = 'video'
 label = 'Video On/Off'
 type = 'action'
 context = 'zoom'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '483fd7da-7ac8-4977-a9e8-d5f35dd1917f'
@@ -552,6 +660,7 @@ icon = 'rectangle.on.rectangle'
 label = 'Share Screen'
 type = 'action'
 context = 'zoom'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '9f6ec8ee-01f4-4c81-a5c1-682a9f171d3b'
@@ -560,6 +669,7 @@ icon = 'bubble.left'
 label = 'Chat'
 type = 'action'
 context = 'zoom'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'b2a37173-8840-4a4f-8605-6c0a220d0ce2'
@@ -568,6 +678,7 @@ icon = 'person.2'
 label = 'Participants'
 type = 'action'
 context = 'zoom'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '417608f3-0e93-4a28-8779-af1b630f517a'
@@ -576,6 +687,7 @@ icon = 'phone.down'
 label = 'Leave Meeting'
 type = 'action'
 context = 'zoom'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'f7d4dd8f-b02e-43d2-8a94-c4e28cb88a3e'
@@ -584,6 +696,7 @@ icon = 'hand.raised'
 label = 'Raise Hand'
 type = 'action'
 context = 'zoom'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'f0257fda-9df1-4c68-ade7-f8125fa55a3d'
@@ -592,14 +705,7 @@ icon = 'square.grid.2x2'
 label = 'Gallery View'
 type = 'action'
 context = 'zoom'
-
-[[commands]]
-uuid = '9b000821-6273-49d3-b6a0-72da8fd3e96f'
-icon = 'person.2.fill'
-label = 'Tuple'
-type = 'context'
-context = 'tuple'
-main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = '95dea517-4054-4b22-8196-62de00e12477'
@@ -608,6 +714,7 @@ icon = 'mic.slash'
 label = 'Mute'
 type = 'action'
 context = 'tuple'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '8f923007-77fa-4b2e-87d6-45371d30d258'
@@ -616,6 +723,7 @@ icon = 'video.slash'
 label = 'Camera Toggle'
 type = 'action'
 context = 'tuple'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '087ac781-7d0a-434f-aac0-650e5aa9cd90'
@@ -624,6 +732,7 @@ icon = 'rectangle.on.rectangle'
 label = 'Screen Share'
 type = 'action'
 context = 'tuple'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'cc49dc6e-65b1-49c3-a136-f0c7b220a97a'
@@ -632,6 +741,7 @@ icon = 'phone.down.fill'
 label = 'Leave Call'
 type = 'action'
 context = 'tuple'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '96a4918f-a44a-4fa9-a08c-40380d3eb487'
@@ -640,6 +750,7 @@ icon = 'bubble.left'
 label = 'Toggle Chat'
 type = 'action'
 context = 'tuple'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '73381437-32e0-4ac2-903e-f85340f8a99c'
@@ -648,6 +759,7 @@ icon = 'minus.circle'
 label = 'Minimize'
 type = 'action'
 context = 'tuple'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '3886c74b-7eae-401b-b9cf-ec704d182ec9'
@@ -656,6 +768,7 @@ icon = 'plus.circle'
 label = 'New Event'
 type = 'action'
 context = 'calendar'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '01a30203-0ebb-4ba7-a5b1-32594a89efeb'
@@ -664,6 +777,7 @@ icon = 'house.fill'
 label = 'Today'
 type = 'action'
 context = 'calendar'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '511d2bf1-5db6-4bd0-8f00-3ba8252429a2'
@@ -672,6 +786,7 @@ icon = 'calendar.badge.clock'
 label = 'Week View'
 type = 'action'
 context = 'calendar'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'faff1cba-86af-4bc3-94d2-75b4540ea39a'
@@ -680,6 +795,7 @@ icon = 'calendar'
 label = 'Month View'
 type = 'action'
 context = 'calendar'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '0db56ea9-0088-46c9-ad69-0dde9afc0ff0'
@@ -688,6 +804,7 @@ icon = 'sun.max.fill'
 label = 'Day View'
 type = 'action'
 context = 'calendar'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '5a069de5-b80c-49fb-9b67-d646904bf72b'
@@ -696,6 +813,7 @@ icon = 'magnifyingglass'
 label = 'Search'
 type = 'action'
 context = 'calendar'
+WorkflowInputs = []
 
 [[commands]]
 uuid = '73b7835a-cd4c-4212-a9ca-43b909fc117e'
@@ -704,6 +822,7 @@ icon = 'arrow.right'
 label = 'Next Period'
 type = 'action'
 context = 'calendar'
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'c302d21c-802d-4b72-aaca-711570dcae57'
@@ -712,6 +831,212 @@ icon = 'arrow.left'
 label = 'Previous Period'
 type = 'action'
 context = 'calendar'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'c8d5733c-f505-4a45-9d6b-e9e00bf80b34'
+description = 'Start Call'
+action = "osascript -e 'tell application \"System Events\" to key code 11 using {command down}'"
+icon = 'phone.fill'
+label = 'Start Call'
+type = 'action'
+context = 'tuple-pair-programming'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '80e0e67e-b8f7-4b74-9c97-e7a3146466a7'
+description = 'End Call'
+action = "osascript -e 'tell application \"System Events\" to key code 14 using {command down}'"
+icon = 'phone.down.fill'
+label = 'End Call'
+type = 'action'
+context = 'tuple-pair-programming'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '3adbccac-56ea-41fc-b634-b1fa94b4d68f'
+description = 'Toggle Microphone'
+action = "osascript -e 'tell application \"System Events\" to key code 46 using {command down}'"
+icon = 'mic.slash'
+label = 'Toggle Microphone'
+type = 'action'
+context = 'tuple-pair-programming'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'd74f03b9-3563-484e-bd50-32b7f57df178'
+description = 'Share Screen'
+action = "osascript -e 'tell application \"System Events\" to key code 1 using {command down}'"
+icon = 'rectangle.on.rectangle'
+label = 'Share Screen'
+type = 'action'
+context = 'tuple-pair-programming'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '13c2de9c-ef27-4393-af0c-a2d5e94b22cc'
+description = 'Take Control'
+action = "osascript -e 'tell application \"System Events\" to key code 8 using {command down}'"
+icon = 'hand.raised.fill'
+label = 'Take Control'
+type = 'action'
+context = 'tuple-pair-programming'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'e3aed15e-eb53-44e3-87f6-798a2e8a05c0'
+description = 'Open Tuple'
+app = 'app.tuple.app'
+icon = 'app.fill'
+label = 'Open Tuple'
+type = 'action'
+context = 'tuple-pair-programming'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '21f18d35-bf4b-47ff-8a91-82023fe85cc0'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"k\" using {command down}'\n"
+icon = 'trash.fill'
+label = 'Clear Logs'
+type = 'action'
+context = 'xcode'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'eaa38794-a9af-462f-8e21-10ca7a0f06f9'
+action = "osascript -e 'tell application \"Slack\" to quit'\n"
+icon = 'x.circle'
+label = 'Quit Slack'
+type = 'action'
+context = 'slack'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '15c72f2e-a178-4033-b384-61991e2bf1e4'
+icon = 'folder.fill'
+label = 'Ollama'
+type = 'context'
+context = 'ollama'
+main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = '924fa5a0-9a65-4fc4-9307-aed950d69d06'
+description = 'New Prompt'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"n\" using command down'"
+icon = 'square.and.arrow.down.fill'
+label = 'New Prompt'
+type = 'action'
+context = 'ollama'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'f1491be7-2297-48c3-9248-385075a19445'
+icon = 'folder.fill'
+label = 'dev'
+type = 'context'
+context = 'dev'
+main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = '3f8a54d0-8f71-4d5a-9ac0-43ab41553c6d'
+description = 'Generate UUID'
+action = '/Users/pablobfonseca/.config/devdeck/scripts/generate_uuid.sh'
+icon = 'doc.on.clipboard'
+label = 'Generate UUID'
+type = 'action'
+context = 'dev'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '054ac169-665b-4bb3-9c7f-bee38c3ba407'
+description = 'Timestamp'
+action = '/Users/pablobfonseca/.config/devdeck/scripts/timestamp.sh'
+icon = 'clock'
+label = 'Timestamp'
+type = 'action'
+context = 'dev'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'eba935b9-4c2c-4504-a4c3-4440089d0d26'
+description = 'Random String'
+action = '/Users/pablobfonseca/.config/devdeck/scripts/random_string.sh'
+icon = 'shuffle'
+label = 'Random String'
+type = 'action'
+context = 'dev'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'ed5780c8-8d75-4b7e-a121-8f9705a3ecd8'
+description = 'Base64 Encode'
+action = '/Users/pablobfonseca/.config/devdeck/scripts/base64_encode.sh'
+icon = 'arrow.up.circle'
+label = 'Base64 Encode'
+type = 'action'
+context = 'dev'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'e87af584-2a1d-436d-998d-edf1b4cbd409'
+description = 'Base64 Decode'
+action = '/Users/pablobfonseca/.config/devdeck/scripts/base64_decode.sh'
+icon = 'arrow.down.circle'
+label = 'Base64 Decode'
+type = 'action'
+context = 'dev'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'eaaaa17a-defc-428f-ad03-a15f2e8ccbd7'
+icon = 'folder.fill'
+label = 'ghostty-terminal'
+type = 'context'
+context = 'ghostty-terminal'
+main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = '461feebb-3e8b-40ae-bfc5-836e498ac66c'
+description = 'New Tab'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"t\" using {command down}'"
+icon = 'plus.square'
+label = 'New Tab'
+type = 'action'
+context = 'ghostty-terminal'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '3f879d4d-55b0-417e-9a07-4f2d0cf76d9c'
+description = 'Close Tab'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"w\" using {command down}'"
+icon = 'xmark.square'
+label = 'Close Tab'
+type = 'action'
+context = 'ghostty-terminal'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'cad677d4-4260-461c-9c9e-d3b895ed837d'
+description = 'Split Pane'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"d\" using {command down, shift down}'"
+icon = 'rectangle.split.3x1'
+label = 'Split Pane'
+type = 'action'
+context = 'ghostty-terminal'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '5a873e32-d764-4bd9-8281-9a21c1ceae28'
+description = 'Toggle Full Screen'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"f\" using {command down, control down}'"
+icon = 'arrow.up.left.and.arrow.down.right'
+label = 'Toggle Full Screen'
+type = 'action'
+context = 'ghostty-terminal'
+WorkflowInputs = []
 
 [workflows]
 [workflows.ask_ai]
@@ -770,3 +1095,13 @@ selector = 'button[data-testid="send-button"]'
 name = 'AI Command'
 icon = 'brain'
 inputs = ['prompt']
+
+# AI-generated command
+[[commands]]
+uuid = "71a80d6f-67d2-4e53-a027-7ba590ca3a80"
+label = "Clear Notifications"
+action = "/Users/pablobfonseca/.config/devdeck/scripts/clear_notifications.applescript"
+icon = "bell.slash"
+type = "action"
+context = "main"
+main = true
