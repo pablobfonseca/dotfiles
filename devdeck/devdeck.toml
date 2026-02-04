@@ -5,7 +5,7 @@ level = 'debug'
 provider = 'openai'
 
 [proxy]
-enable = true
+enable = false
 
 [layout]
 columns = 3
@@ -39,16 +39,6 @@ priority = 50
 
 [contexts.dev.match]
 
-[contexts.ghostty-terminal]
-name = 'Ghostty'
-deck = 'ghostty-terminal'
-priority = 50
-
-[contexts.ghostty-terminal.match]
-frontmost_bundle_ids = ['com.mitchellh.ghostty']
-frontmost_app_names = ['Ghostty']
-title_contains = ['ghostty']
-
 [contexts.github]
 name = 'Github'
 deck = 'github'
@@ -58,17 +48,6 @@ priority = 80
 frontmost_bundle_ids = ['com.google.Chrome']
 frontmost_app_names = ['Google Chrome']
 url_contains = ['github.com']
-
-[contexts.googlemeet]
-name = 'Google Meet'
-deck = 'googlemeet'
-priority = 90
-
-[contexts.googlemeet.match]
-frontmost_bundle_ids = ['com.google.Chrome']
-frontmost_app_names = ['Google Chrome']
-url_contains = ['meet.google.com']
-title_contains = ['Meet']
 
 [contexts.ollama]
 name = 'Ollama'
@@ -446,87 +425,6 @@ main = true
 WorkflowInputs = []
 
 [[commands]]
-uuid = '4cf10a7d-4c9a-4e36-a1ae-62ce958ae1f8'
-icon = 'video.fill'
-label = 'Google Meet'
-type = 'context'
-context = 'googlemeet'
-main = true
-WorkflowInputs = []
-
-[[commands]]
-uuid = '8360ab9f-ffec-48e2-bcd3-7400924b9051'
-action = "osascript -e 'tell application \"System Events\" to key code 2 using {command down}'"
-icon = 'mic.slash'
-label = 'Mute/Unmute'
-type = 'action'
-context = 'googlemeet'
-WorkflowInputs = []
-
-[[commands]]
-uuid = 'ebf71d82-c874-41a3-bd19-556e9d47584d'
-action = "osascript -e 'tell application \"System Events\" to keystroke \"e\" using {command down}'"
-icon = 'video.slash'
-label = 'Camera On/Off'
-type = 'action'
-context = 'googlemeet'
-WorkflowInputs = []
-
-[[commands]]
-uuid = 'a07dbd8c-52a2-410e-a00f-567ded7b6066'
-action = "osascript -e 'tell application \"System Events\" to key code 13 using {control down}'"
-icon = 'phone.down.fill'
-label = 'Leave Meeting'
-type = 'action'
-context = 'googlemeet'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '9895ffc7-0542-4127-bd86-db25faefb5b4'
-action = "osascript -e 'tell application \"System Events\" to key code 8 using {command down, shift down}'"
-icon = 'bubble.left'
-label = 'Chat Toggle'
-type = 'action'
-context = 'googlemeet'
-WorkflowInputs = []
-
-[[commands]]
-uuid = 'ff04b270-4bd3-4acc-abda-e7f4a526c5f8'
-action = "osascript -e 'tell application \"System Events\" to key code 35 using {command down}'"
-icon = 'display'
-label = 'Present Screen'
-type = 'action'
-context = 'googlemeet'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '8db7aebc-4eeb-4bb5-a62d-bf2bc2350cba'
-action = "osascript -e 'tell application \"System Events\" to key code 15 using {command down, shift down}'"
-icon = 'hand.raised'
-label = 'Raise Hand'
-type = 'action'
-context = 'googlemeet'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '42649ebc-f15e-453e-a964-1eeb5d266fdd'
-action = "osascript -e 'tell application \"System Events\" to key code 34 using {command down, shift down}'"
-icon = 'person.2'
-label = 'Participants'
-type = 'action'
-context = 'googlemeet'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '08436db0-4080-4337-a80a-b4ef32a08912'
-action = "osascript -e 'tell application \"System Events\" to key code 3 using {command down, shift down}'"
-icon = 'arrow.up.left.and.arrow.down.right'
-label = 'Full Screen'
-type = 'action'
-context = 'googlemeet'
-WorkflowInputs = []
-
-[[commands]]
 uuid = 'f8c143d9-5ce6-4b06-b90b-6a7eeba6c66a'
 action = "osascript -e 'tell application \"System Events\" to key code 15 using {command down}'"
 icon = 'play.fill'
@@ -546,11 +444,12 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'c2556e6e-e64d-49fc-8da4-cfee1e8c8386'
-app = 'xCode'
+app = 'Xcode'
 action = 'open'
 icon = 'hammer.fill'
 type = 'action'
 context = 'xcode'
+main = true
 WorkflowInputs = []
 
 [[commands]]
@@ -573,10 +472,10 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '9fd656ec-6745-4627-bd87-d3b25b740ab3'
+action = 'browser_navigate:https://plausible.io'
 icon = 'chart.bar'
 label = 'Plausible'
 type = 'action'
-action = 'browser_navigate:https://plausible.io'
 context = 'plausible'
 main = true
 WorkflowInputs = []
@@ -990,52 +889,13 @@ context = 'dev'
 WorkflowInputs = []
 
 [[commands]]
-uuid = 'eaaaa17a-defc-428f-ad03-a15f2e8ccbd7'
-icon = 'folder.fill'
-label = 'ghostty-terminal'
-type = 'context'
-context = 'ghostty-terminal'
+uuid = '71a80d6f-67d2-4e53-a027-7ba590ca3a80'
+action = '/Users/pablobfonseca/.config/devdeck/scripts/clear_notifications.applescript'
+icon = 'bell.slash'
+label = 'Clear Notifications'
+type = 'action'
+context = 'main'
 main = true
-WorkflowInputs = []
-
-[[commands]]
-uuid = '461feebb-3e8b-40ae-bfc5-836e498ac66c'
-description = 'New Tab'
-action = "osascript -e 'tell application \"System Events\" to keystroke \"t\" using {command down}'"
-icon = 'plus.square'
-label = 'New Tab'
-type = 'action'
-context = 'ghostty-terminal'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '3f879d4d-55b0-417e-9a07-4f2d0cf76d9c'
-description = 'Close Tab'
-action = "osascript -e 'tell application \"System Events\" to keystroke \"w\" using {command down}'"
-icon = 'xmark.square'
-label = 'Close Tab'
-type = 'action'
-context = 'ghostty-terminal'
-WorkflowInputs = []
-
-[[commands]]
-uuid = 'cad677d4-4260-461c-9c9e-d3b895ed837d'
-description = 'Split Pane'
-action = "osascript -e 'tell application \"System Events\" to keystroke \"d\" using {command down, shift down}'"
-icon = 'rectangle.split.3x1'
-label = 'Split Pane'
-type = 'action'
-context = 'ghostty-terminal'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '5a873e32-d764-4bd9-8281-9a21c1ceae28'
-description = 'Toggle Full Screen'
-action = "osascript -e 'tell application \"System Events\" to keystroke \"f\" using {command down, control down}'"
-icon = 'arrow.up.left.and.arrow.down.right'
-label = 'Toggle Full Screen'
-type = 'action'
-context = 'ghostty-terminal'
 WorkflowInputs = []
 
 [workflows]
@@ -1095,13 +955,3 @@ selector = 'button[data-testid="send-button"]'
 name = 'AI Command'
 icon = 'brain'
 inputs = ['prompt']
-
-# AI-generated command
-[[commands]]
-uuid = "71a80d6f-67d2-4e53-a027-7ba590ca3a80"
-label = "Clear Notifications"
-action = "/Users/pablobfonseca/.config/devdeck/scripts/clear_notifications.applescript"
-icon = "bell.slash"
-type = "action"
-context = "main"
-main = true
