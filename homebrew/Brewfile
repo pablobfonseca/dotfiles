@@ -2,6 +2,7 @@ tap "codecrafters-io/tap"
 tap "homebrew/bundle"
 tap "homebrew/services"
 tap "mutagen-io/mutagen"
+tap "devdeck-app/homebrew-devdeck-server"
 
 brew "atuin", restart_service: true
 brew "automake"
@@ -59,3 +60,4 @@ cask "slack"
 cask "wezterm"
 cask "zoom"
 cask "karabiner-elements"
+cask "devdeck-server"
