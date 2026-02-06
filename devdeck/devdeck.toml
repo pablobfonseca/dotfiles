@@ -2,10 +2,10 @@
 level = 'debug'
 
 [ai]
-provider = 'openai'
+provider = 'anthropic'
 
 [proxy]
-enable = false
+enable = true
 
 [layout]
 columns = 3
@@ -44,10 +44,20 @@ name = 'Github'
 deck = 'github'
 priority = 80
 
+[contexts.tribez]
+name = 'Tribez'
+deck = 'tribez'
+priority = 90
+
 [contexts.github.match]
 frontmost_bundle_ids = ['com.google.Chrome']
 frontmost_app_names = ['Google Chrome']
 url_contains = ['github.com']
+
+[contexts.tribez.match]
+frontmost_bundle_ids = ['com.google.Chrome']
+frontmost_app_names = ['Google Chrome']
+url_contains = ['app.tribez.io']
 
 [contexts.ollama]
 name = 'Ollama'
@@ -849,16 +859,6 @@ context = 'dev'
 WorkflowInputs = []
 
 [[commands]]
-uuid = '054ac169-665b-4bb3-9c7f-bee38c3ba407'
-description = 'Timestamp'
-action = '/Users/pablobfonseca/.config/devdeck/scripts/timestamp.sh'
-icon = 'clock'
-label = 'Timestamp'
-type = 'action'
-context = 'dev'
-WorkflowInputs = []
-
-[[commands]]
 uuid = 'eba935b9-4c2c-4504-a4c3-4440089d0d26'
 description = 'Random String'
 action = '/Users/pablobfonseca/.config/devdeck/scripts/random_string.sh'
@@ -896,6 +896,43 @@ label = 'Clear Notifications'
 type = 'action'
 context = 'main'
 main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = '8e2931a0-ec37-429c-9811-3a808f869c79'
+action = 'chrome-cli open https://app.tribez.io'
+icon = 'circle.hexagonpath'
+label = 'Tribez'
+type = 'action'
+context = 'tribez'
+main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = '78e5c8c4-5e9c-4985-bbce-892e3a88b845'
+action = 'browser_navigate:https://app.tribez.io/admin'
+icon = 'person.fill'
+label = 'Admin'
+type = 'action'
+context = 'tribez'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '13a2f557-c0d4-4156-b2b8-cef6f83fbd87'
+action = 'browser_navigate:https://app.tribez.io/admin/sessions'
+icon = 'person.3.fill'
+label = 'Sessions'
+type = 'action'
+context = 'tribez'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '753f75cf-04af-4238-abb4-6c28778d47ae'
+action = 'browser_navigate:https://app.tribez.io/admin/sessions'
+icon = 'person.3.fill'
+label = 'Sessions'
+type = 'action'
+context = 'tribez'
 WorkflowInputs = []
 
 [workflows]
