@@ -20,3 +20,8 @@ windows:
       root: ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/SecondBrain
       panes:
         - nvim .
+  - devdeck:
+      layout: main-vertical
+      root: ~/code/DevDeck/devdeck-server
+      panes:
+        - ./devdeck-server
