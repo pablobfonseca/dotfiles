@@ -115,11 +115,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
--- Update packages
-vim.api.nvim_create_user_command("PackUpdate", function()
-  vim.pack.update()
-end, { desc = "Update packages" })
-
 -- LSP Info
 vim.api.nvim_create_user_command("LspInfo", function()
   local clients = vim.lsp.get_clients { bufnr = 0 }
