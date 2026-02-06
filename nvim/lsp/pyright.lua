@@ -38,6 +38,7 @@ return {
     python = {
       analysis = {
         autoSearchPaths = true,
+        autoImportCompletions = true,
         useLibraryCodeForTypes = true,
         diagnosticMode = "openFilesOnly",
       },
