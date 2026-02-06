@@ -74,8 +74,8 @@ export BAT_THEME="tokyonight_night"
 export PATH="$HOME/.luarocks/bin:$PATH"
 
 # Pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+# export PYENV_ROOT="$HOME/.pyenv"
+# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 
 export OBSIDIAN_VAULTS="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/"
 
@@ -399,8 +399,8 @@ function mdfc() {
   pbpaste > FILE.md
 }
 
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
 eval "$(zoxide init zsh)"
 
 # fnm
@@ -447,5 +447,3 @@ bindkey "^x^n" atuin-search-vicmd # C-x C-n starts atuin in normal mode
 # This section can be safely removed at any time if needed.
 [[ ! -r "$HOME/.opam/opam-init/init.zsh" ]] || source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2> /dev/null
 # END opam configuration
-
-alias claude="/Users/pablobfonseca/.claude/local/claude"
