@@ -1,9 +1,16 @@
 return {
   "stevearc/oil.nvim",
+  lazy = false,
   dependencies = { "nvim-tree/nvim-web-devicons" },
   keys = {
     { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
-    { "<C-x>d", function() require("oil").toggle_float() end, desc = "Oil float" },
+    {
+      "<C-x>d",
+      function()
+        require("oil").toggle_float()
+      end,
+      desc = "Oil float",
+    },
   },
   opts = {
     default_file_explorer = true,
