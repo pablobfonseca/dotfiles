@@ -166,7 +166,7 @@ app = 'Slack'
 action = 'open'
 icon = 'social.slack'
 type = 'action'
-context = ''
+context = 'slack'
 main = true
 WorkflowInputs = []
 
@@ -937,9 +937,9 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '13a2f557-c0d4-4156-b2b8-cef6f83fbd87'
-action = 'browser_navigate:https://app.tribez.io/admin/sessions'
-icon = 'person.3.fill'
-label = 'Sessions'
+action = 'browser_navigate:https://app.tribez.io/admin/accounts'
+icon = 'person.crop.circle'
+label = 'Accounts'
 type = 'action'
 context = 'tribez'
 WorkflowInputs = []
@@ -1027,7 +1027,6 @@ label = 'Deselect All'
 type = 'action'
 context = 'gmail'
 WorkflowInputs = []
-
 
 [[commands]]
 uuid = 'c53df7bd-8806-4f9c-90e5-4355a7c76e5f'
