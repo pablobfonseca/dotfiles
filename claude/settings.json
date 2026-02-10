@@ -74,7 +74,8 @@
     "security-guidance@claude-code-plugins": true,
     "reflexion@context-engineering-kit": true,
     "superpowers@superpowers-marketplace": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true
 }

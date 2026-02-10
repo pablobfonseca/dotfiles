@@ -2,7 +2,8 @@
 level = 'debug'
 
 [ai]
-provider = 'anthropic'
+provider = 'openai'
+model = 'gpt-5.2'
 
 [proxy]
 enable = true
@@ -44,20 +45,27 @@ name = 'Github'
 deck = 'github'
 priority = 80
 
-[contexts.tribez]
-name = 'Tribez'
-deck = 'tribez'
-priority = 90
-
 [contexts.github.match]
 frontmost_bundle_ids = ['com.google.Chrome']
 frontmost_app_names = ['Google Chrome']
 url_contains = ['github.com']
 
-[contexts.tribez.match]
-frontmost_bundle_ids = ['com.google.Chrome']
-frontmost_app_names = ['Google Chrome']
-url_contains = ['app.tribez.io']
+[contexts.gmail]
+name = 'Gmail'
+deck = 'gmail'
+priority = 60
+
+[contexts.gmail.match]
+frontmost_bundle_ids = ['com.google.Chrome', 'com.apple.Safari']
+frontmost_app_names = ['Google Chrome', 'Safari']
+url_contains = ['mail.google.com']
+
+[contexts.learning]
+name = 'Learning'
+deck = 'learning'
+priority = 50
+
+[contexts.learning.match]
 
 [contexts.ollama]
 name = 'Ollama'
@@ -85,6 +93,16 @@ priority = 70
 [contexts.slack.match]
 frontmost_bundle_ids = ['com.tinyspeck.slackmacgap']
 frontmost_app_names = ['Slack']
+
+[contexts.tribez]
+name = 'Tribez'
+deck = 'tribez'
+priority = 90
+
+[contexts.tribez.match]
+frontmost_bundle_ids = ['com.google.Chrome']
+frontmost_app_names = ['Google Chrome']
+url_contains = ['app.tribez.io']
 
 [contexts.tuple]
 name = 'Tuple'
@@ -681,7 +699,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '01a30203-0ebb-4ba7-a5b1-32594a89efeb'
-action = "osascript -e 'tell application \"System Events\" to key code 17 using {command down}'"
+action = "osascript -e 'tell application \"System Events\" to keystroke \"t\" using {command down}'"
 icon = 'house.fill'
 label = 'Today'
 type = 'action'
@@ -690,7 +708,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '511d2bf1-5db6-4bd0-8f00-3ba8252429a2'
-action = "osascript -e 'tell application \"System Events\" to key code 13 using {command down}'"
+action = "osascript -e 'tell application \"System Events\" to keystroke \"2\" using {command down}'"
 icon = 'calendar.badge.clock'
 label = 'Week View'
 type = 'action'
@@ -699,7 +717,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'faff1cba-86af-4bc3-94d2-75b4540ea39a'
-action = "osascript -e 'tell application \"System Events\" to key code 46 using {command down}'"
+action = "osascript -e 'tell application \"System Events\" to keystroke \"3\" using {command down}'"
 icon = 'calendar'
 label = 'Month View'
 type = 'action'
@@ -708,7 +726,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '0db56ea9-0088-46c9-ad69-0dde9afc0ff0'
-action = "osascript -e 'tell application \"System Events\" to key code 2 using {command down}'"
+action = "osascript -e 'tell application \"System Events\" to keystroke \"1\" using {command down}'"
 icon = 'sun.max.fill'
 label = 'Day View'
 type = 'action'
@@ -717,7 +735,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '5a069de5-b80c-49fb-9b67-d646904bf72b'
-action = "osascript -e 'tell application \"System Events\" to key code 3 using {command down}'"
+action = "osascript -e 'tell application \"System Events\" to keystroke \"f\" using {command down}'"
 icon = 'magnifyingglass'
 label = 'Search'
 type = 'action'
@@ -933,6 +951,122 @@ icon = 'person.3.fill'
 label = 'Sessions'
 type = 'action'
 context = 'tribez'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'a90c6e13-4ad0-48e1-9e82-1d72efa58361'
+icon = 'graduationcap.fill'
+label = 'Learning'
+type = 'context'
+context = 'learning'
+main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = '5d45886a-58fc-4598-8a26-bc64914243ae'
+description = 'Exercism'
+action = 'open https://exercism.io'
+label = 'Exercism'
+type = 'action'
+context = 'learning'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '2df0a981-75b3-447f-bdc3-5443464f89a8'
+description = 'CodeCrafters'
+action = 'open https://codecrafters.io'
+label = 'CodeCrafters'
+type = 'action'
+context = 'learning'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '9cc19ce5-decf-4988-94ae-6cff30420cb0'
+description = 'Boot.dev'
+action = 'open https://boot.dev'
+label = 'Boot.dev'
+type = 'action'
+context = 'learning'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '9a9dc4e9-a1ab-4438-9227-2434e27dd60b'
+icon = 'folder.fill'
+label = 'gmail'
+type = 'context'
+context = 'gmail'
+main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = '7703f84b-8e3a-4149-af1a-d2ac0b4715ca'
+description = 'Select Unread'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"*u\"'"
+icon = 'envelope.badge'
+label = 'Select Unread'
+type = 'action'
+context = 'gmail'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'b84cb342-6932-4b34-836c-abfb71daea02'
+description = 'Select All'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"*a\"'"
+icon = 'checkmark.circle'
+label = 'Select All'
+type = 'action'
+context = 'gmail'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '0302f71b-9ed9-43e2-a65e-61e48425907a'
+description = 'Deselect All'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"*n\"'"
+icon = 'square.on.square'
+label = 'Deselect All'
+type = 'action'
+context = 'gmail'
+WorkflowInputs = []
+
+
+[[commands]]
+uuid = 'c53df7bd-8806-4f9c-90e5-4355a7c76e5f'
+description = 'Search Mail'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"/\"'"
+icon = 'magnifyingglass'
+label = 'Search Mail'
+type = 'action'
+context = 'gmail'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '6de602a0-5b70-420b-bc15-e759b14bfea1'
+description = 'Compose'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"c\"'"
+icon = 'square.and.pencil'
+label = 'Compose'
+type = 'action'
+context = 'gmail'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'c8e0a6e1-aba4-4ddd-85eb-2aba4f959738'
+description = 'Delete'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"#\"'"
+icon = 'trash'
+label = 'Delete'
+type = 'action'
+context = 'gmail'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '8fed8325-43d4-4265-9777-54d41a1b18d7'
+description = 'Reply'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"r\"'"
+icon = 'arrowshape.turn.up.left'
+label = 'Reply'
+type = 'action'
+context = 'gmail'
 WorkflowInputs = []
 
 [workflows]
