@@ -143,19 +143,36 @@ frontmost_app_names = ['zoom.us', 'Zoom']
 [[commands]]
 uuid = 'a42dcc2f-3739-e9c7-8326-f980b564aaf6'
 app = 'Google Chrome'
-action = 'open'
 icon = 'globe'
 label = 'Google Chrome'
-type = 'action'
+type = 'context'
 context = ''
 main = true
 WorkflowInputs = []
 
 [[commands]]
 uuid = 'd054d997-e87a-63e5-25b1-a3e3fbe9bb64'
-action = 'chrome-cli reload'
-icon = 'arrow.clockwise'
-label = 'Reload tab'
+action = 'open https://app.tribez.io'
+icon = 'circle.hexagonpath'
+label = 'Tribez'
+type = 'action'
+context = 'chrome'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '2f7b90f5-7cd9-4ade-92d3-3229306a8883'
+action = 'open https://upscope.com'
+icon = 'circle.circle.fill'
+label = 'Upscope'
+type = 'action'
+context = 'chrome'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'a7c6ea96-6a3b-4b1f-bc0e-4c29851bf5cd'
+action = 'open https://devdeck.app'
+icon = 'square.grid.3x3.square'
+label = 'Devdeck'
 type = 'action'
 context = 'chrome'
 WorkflowInputs = []
@@ -213,16 +230,6 @@ icon = 'person.crop.circle'
 label = 'Joe'
 type = 'action'
 context = 'slack'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '6122ea2b-079d-8228-cc0b-28a745d4f594'
-app = 'Wezterm'
-action = 'open'
-icon = 'terminal'
-type = 'action'
-context = ''
-main = true
 WorkflowInputs = []
 
 [[commands]]
@@ -294,6 +301,15 @@ uuid = 'c1f05f64-f3b5-8245-beaf-adf180913a36'
 action = 'chrome-cli open https://github.com/ZeTribez/tribez/pulls'
 icon = 'circle.hexagonpath'
 label = 'Tribez'
+type = 'action'
+context = 'github'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'ddd511ca-4626-46fd-8ade-af25d6a23cd9'
+action = 'chrome-cli open https://github.com/devdeck-app/website'
+icon = 'square.grid.3x3.square'
+label = 'Website'
 type = 'action'
 context = 'github'
 WorkflowInputs = []
@@ -1066,6 +1082,16 @@ icon = 'arrowshape.turn.up.left'
 label = 'Reply'
 type = 'action'
 context = 'gmail'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '77bad61c-95e6-44fe-85be-edb7161d1341'
+app = 'Reminders'
+icon = 'checkmark.circle.fill'
+label = 'Open Reminders'
+type = 'action'
+context = 'main'
+main = true
 WorkflowInputs = []
 
 [workflows]
