@@ -2,16 +2,15 @@
 level = 'debug'
 
 [ai]
-provider = 'openai'
-model = 'gpt-5.2'
+provider = 'anthropic'
 
 [proxy]
-enable = true
+enable = false
 
 [layout]
 columns = 3
 landscape_columns = 5
-background_color = '#000'
+background_color = '#000000'
 show_labels = true
 
 [contexts]
@@ -94,15 +93,15 @@ priority = 70
 frontmost_bundle_ids = ['com.tinyspeck.slackmacgap']
 frontmost_app_names = ['Slack']
 
-[contexts.tribez]
-name = 'Tribez'
-deck = 'tribez'
+[contexts.tribemap]
+name = 'TribeMap'
+deck = 'tribemap'
 priority = 90
 
-[contexts.tribez.match]
+[contexts.tribemap.match]
 frontmost_bundle_ids = ['com.google.Chrome']
 frontmost_app_names = ['Google Chrome']
-url_contains = ['app.tribez.io']
+url_contains = ['app.tribemap.ai']
 
 [contexts.tuple]
 name = 'Tuple'
@@ -152,9 +151,9 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'd054d997-e87a-63e5-25b1-a3e3fbe9bb64'
-action = 'open https://app.tribez.io'
+action = 'open https://app.tribemap.ai'
 icon = 'circle.hexagonpath'
-label = 'Tribez'
+label = 'TribeMap'
 type = 'action'
 context = 'chrome'
 WorkflowInputs = []
@@ -185,6 +184,15 @@ icon = 'social.slack'
 type = 'action'
 context = 'slack'
 main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'c81d3f8b-5547-47c0-a840-4e73a2f87a53'
+action = "osascript -e 'tell application \"Slack\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"2\" using command down'"
+icon = 'circle.hexagonpath'
+label = 'TribeMap'
+type = 'action'
+context = 'slack'
 WorkflowInputs = []
 
 [[commands]]
@@ -300,7 +308,7 @@ WorkflowInputs = []
 uuid = 'c1f05f64-f3b5-8245-beaf-adf180913a36'
 action = 'chrome-cli open https://github.com/ZeTribez/tribez/pulls'
 icon = 'circle.hexagonpath'
-label = 'Tribez'
+label = 'TribeMap'
 type = 'action'
 context = 'github'
 WorkflowInputs = []
@@ -934,45 +942,46 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '8e2931a0-ec37-429c-9811-3a808f869c79'
-action = 'chrome-cli open https://app.tribez.io'
+action = 'chrome-cli open https://app.tribemap.ai'
 icon = 'circle.hexagonpath'
-label = 'Tribez'
+label = 'TribeMap'
 type = 'action'
-context = 'tribez'
+context = 'tribemap'
 main = true
 WorkflowInputs = []
 
 [[commands]]
 uuid = '78e5c8c4-5e9c-4985-bbce-892e3a88b845'
-action = 'browser_navigate:https://app.tribez.io/admin'
+action = 'browser_navigate:https://app.tribemap.ai/admin'
 icon = 'person.fill'
 label = 'Admin'
 type = 'action'
-context = 'tribez'
+context = 'tribemap'
 WorkflowInputs = []
 
 [[commands]]
 uuid = '13a2f557-c0d4-4156-b2b8-cef6f83fbd87'
-action = 'browser_navigate:https://app.tribez.io/admin/accounts'
+action = 'browser_navigate:https://app.tribemap.ai/admin/accounts'
 icon = 'person.crop.circle'
 label = 'Accounts'
 type = 'action'
-context = 'tribez'
+context = 'tribemap'
 WorkflowInputs = []
 
 [[commands]]
 uuid = '753f75cf-04af-4238-abb4-6c28778d47ae'
-action = 'browser_navigate:https://app.tribez.io/admin/sessions'
+action = 'browser_navigate:https://app.tribemap.ai/admin/sessions'
 icon = 'person.3.fill'
 label = 'Sessions'
 type = 'action'
-context = 'tribez'
+context = 'tribemap'
 WorkflowInputs = []
 
 [[commands]]
 uuid = 'a90c6e13-4ad0-48e1-9e82-1d72efa58361'
+description = 'Code Learning'
 icon = 'graduationcap.fill'
-label = 'Learning'
+label = 'Code Learning'
 type = 'context'
 context = 'learning'
 main = true
@@ -1130,22 +1139,19 @@ continue_on_error = true
 type = 'open_url'
 url = 'https://www.perplexity.ai/?q={{query}}'
 
-[workflows.ask_chatgpt]
-name = 'Ask ChatGPT'
-icon = 'bubble.left.and.bubble.right'
-inputs = ['query']
-
-[[workflows.ask_chatgpt.steps]]
+[[workflows.ask_ai.steps]]
 type = 'open_url'
-url = 'https://chat.openai.com/?prompt={{query}}'
+url = 'https://gemini.google.com'
 
-[[workflows.ask_chatgpt.steps]]
+[[workflows.ask_ai.steps]]
 type = 'delay'
-duration = 5
+duration = 3
 
-[[workflows.ask_chatgpt.steps]]
-type = 'click_element'
-selector = 'button[data-testid="send-button"]'
+[[workflows.ask_ai.steps]]
+type = 'fill_form'
+
+[workflows.ask_ai.steps.fields]
+prompt = '{{query}}'
 
 [workflows.generate_command]
 name = 'AI Command'
