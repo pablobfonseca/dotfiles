@@ -447,3 +447,11 @@ bindkey "^x^n" atuin-search-vicmd # C-x C-n starts atuin in normal mode
 # This section can be safely removed at any time if needed.
 [[ ! -r "$HOME/.opam/opam-init/init.zsh" ]] || source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2> /dev/null
 # END opam configuration
+
+# pnpm
+export PNPM_HOME="/Users/pablobfonseca/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
