@@ -5,7 +5,7 @@ level = 'debug'
 provider = 'anthropic'
 
 [proxy]
-enable = false
+enable = true
 
 [layout]
 columns = 3
@@ -143,7 +143,7 @@ frontmost_app_names = ['zoom.us', 'Zoom']
 uuid = 'a42dcc2f-3739-e9c7-8326-f980b564aaf6'
 description = 'Google Chrome'
 app = 'Google Chrome'
-icon = 'custom:google-chrome'
+icon = 'custom:chrome'
 icon_color = '#e53e3e'
 IconURL = ''
 label = 'Google Chrome'
@@ -167,6 +167,7 @@ uuid = '2f7b90f5-7cd9-4ade-92d3-3229306a8883'
 description = 'Upscope'
 action = 'open https://upscope.com'
 icon = 'custom:upscope'
+icon_color = '#bc0b0b'
 IconURL = ''
 label = 'Upscope'
 type = 'action'
@@ -270,7 +271,7 @@ WorkflowInputs = []
 uuid = '5ec77d17-646f-cb52-4398-8264efbab61c'
 app = 'Obsidian'
 action = 'open'
-icon = 'custom:obisidian'
+icon = 'custom:obsidian'
 IconURL = ''
 type = 'action'
 context = 'main'
@@ -328,7 +329,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'c1f05f64-f3b5-8245-beaf-adf180913a36'
-action = 'chrome-cli open https://github.com/ZeTribez/tribez/pulls'
+action = 'browser_open:https://github.com/ZeTribez/tribez/pulls'
 icon = 'circle.hexagonpath'
 IconURL = ''
 label = 'TribeMap'
@@ -338,7 +339,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'ddd511ca-4626-46fd-8ade-af25d6a23cd9'
-action = 'chrome-cli open https://github.com/devdeck-app/website'
+action = 'browser_open:https://github.com/devdeck-app/website'
 icon = 'square.grid.3x3.square'
 IconURL = ''
 label = 'Website'
@@ -349,7 +350,7 @@ WorkflowInputs = []
 [[commands]]
 uuid = 'd2be4836-5818-ba52-e6ab-24b40af5103d'
 description = 'Upscope'
-action = 'chrome-cli open https://github.com/upscopeio/upscope/pulls'
+action = 'browser_open:https://github.com/upscopeio/upscope/pulls'
 icon = 'custom:upscope'
 IconURL = ''
 label = 'Upscope'
@@ -359,7 +360,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'e6420c0a-a7f0-3011-6fe1-7801bb2a7141'
-action = 'chrome-cli open https://github.com/devdeck-app/devdeck-server/pulls'
+action = 'browser_open:https://github.com/devdeck-app/devdeck-server/pulls'
 icon = 'square.grid.3x3.square'
 IconURL = ''
 label = 'DevDeck Server'
@@ -369,7 +370,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '4728117f-c61f-2a7c-3fdb-373439edf33b'
-action = 'chrome-cli open https://github.com/devdeck-app/dev-deck/pulls'
+action = 'browser_open:https://github.com/devdeck-app/dev-deck/pulls'
 icon = 'square.grid.3x3.square'
 IconURL = ''
 label = 'DevDeck App'
@@ -420,7 +421,7 @@ WorkflowInputs = []
 [[commands]]
 uuid = '7a690bd0-c35c-00b7-704c-61e8ba667c71'
 description = 'Linkedin'
-action = 'chrome-cli open https://linkedin.com/in/pablobfonseca'
+action = 'browser_open:https://linkedin.com/in/pablobfonseca'
 icon = 'social.linkedin'
 icon_color = '#0a66c2'
 IconURL = ''
@@ -443,8 +444,9 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '4d8eefad-8329-dae0-0df0-3e9dbf1a271e'
-action = 'chrome-cli open https://gmail.com'
-icon = 'envelope'
+description = 'Gmail'
+action = 'browser_open:https://gmail.com'
+icon = 'custom:gmail'
 IconURL = ''
 label = 'Gmail'
 type = 'action'
@@ -454,8 +456,9 @@ WorkflowInputs = []
 [[commands]]
 uuid = '9addcd3b-b255-49d5-986f-f68a05f796c9'
 description = 'Proton'
-action = 'chrome-cli open https://protonmail.com'
+action = 'browser_open:https://protonmail.com'
 icon = 'custom:proton'
+icon_color = '#ff1a1a'
 IconURL = ''
 label = 'Proton'
 type = 'action'
@@ -474,7 +477,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '0c1f10df-3269-d4ca-976f-6919d9fdc7fb'
-action = 'chrome-cli open https://plausible.io/upscope.com?f=contains,page,/uv:'
+action = 'browser_open:https://plausible.io/upscope.com?f=contains,page,/uv:'
 IconURL = ''
 label = 'Userview'
 type = 'action'
@@ -483,7 +486,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'e931cb31-f319-5a99-5968-456c763183a7'
-action = 'chrome-cli open https://plausible.io/upscope.com?f=contains,page,/hs:'
+action = 'browser_open:https://plausible.io/upscope.com?f=contains,page,/hs:'
 IconURL = ''
 label = 'Helloscreen'
 type = 'action'
@@ -973,9 +976,11 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'f1491be7-2297-48c3-9248-385075a19445'
+description = 'Development'
 icon = 'folder.fill'
+icon_color = '#0067c7'
 IconURL = ''
-label = 'dev'
+label = 'Development'
 type = 'context'
 context = 'dev'
 main = true
@@ -1038,7 +1043,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '8e2931a0-ec37-429c-9811-3a808f869c79'
-action = 'chrome-cli open https://app.tribemap.ai'
+action = 'browser_open:https://app.tribemap.ai'
 icon = 'circle.hexagonpath'
 IconURL = ''
 label = 'TribeMap'
@@ -1120,9 +1125,10 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '9a9dc4e9-a1ab-4438-9227-2434e27dd60b'
-icon = 'folder.fill'
+description = 'GMail'
+icon = 'custom:gmail'
 IconURL = ''
-label = 'gmail'
+label = 'GMail'
 type = 'context'
 context = 'gmail'
 main = true
