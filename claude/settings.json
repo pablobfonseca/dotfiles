@@ -5,28 +5,6 @@
   },
   "includeCoAuthoredBy": false,
   "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "SESSION_ID=$(jq -r '.session_id' 2>/dev/null); if [ -n \"$TMUX\" ] && [ -n \"$SESSION_ID\" ]; then mkdir -p ~/.claude/sessions && tmux display-message -p '#{session_name}:#{window_index}.#{pane_index}' > ~/.claude/sessions/${SESSION_ID}.target; fi; WEZTERM_PANE=$(wezterm cli list --format json 2>/dev/null | jq -r '.[] | select(.is_active) | .pane_id' | head -1); if [ -n \"$WEZTERM_PANE\" ] && [ -n \"$SESSION_ID\" ]; then echo \"$WEZTERM_PANE\" > ~/.claude/sessions/${SESSION_ID}.wezterm_pane; fi; exit 0"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "SESSION_ID=$(jq -r '.session_id' 2>/dev/null); rm -f ~/.claude/sessions/${SESSION_ID}.target ~/.claude/sessions/${SESSION_ID}.wezterm_pane; exit 0"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
@@ -44,7 +22,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "SESSION_ID=$(jq -r '.session_id' 2>/dev/null); PANE_FILE=~/.claude/sessions/${SESSION_ID}.wezterm_pane; PANE_ID=$(cat $PANE_FILE 2>/dev/null); TARGET_FILE=~/.claude/sessions/${SESSION_ID}.target; TMUX_TARGET=$(cat $TARGET_FILE 2>/dev/null); terminal-notifier -group \"claude-${SESSION_ID}\" -title 'Claude Code' -subtitle \"Input Required - $(basename $PWD)\" -message 'Waiting for your input' -sound 'default' -execute \"osascript -e 'tell application \\\"WezTerm\\\" to activate' && wezterm cli activate-pane --pane-id ${PANE_ID} && tmux select-window -t ${TMUX_TARGET%.*} && tmux select-pane -t ${TMUX_TARGET}\""
+            "command": "terminal-notifier -group \"claude-$(jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Input Required - $(basename $PWD)\" -message 'Waiting for your input' -sound 'default'"
           }
         ]
       },
@@ -53,7 +31,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "SESSION_ID=$(jq -r '.session_id' 2>/dev/null); PANE_FILE=~/.claude/sessions/${SESSION_ID}.wezterm_pane; PANE_ID=$(cat $PANE_FILE 2>/dev/null); TARGET_FILE=~/.claude/sessions/${SESSION_ID}.target; TMUX_TARGET=$(cat $TARGET_FILE 2>/dev/null); terminal-notifier -group \"claude-${SESSION_ID}\" -title 'Claude Code' -subtitle \"Permission Required - $(basename $PWD)\" -message 'Needs your approval' -sound 'default' -execute \"osascript -e 'tell application \\\"WezTerm\\\" to activate' && wezterm cli activate-pane --pane-id ${PANE_ID} && tmux select-window -t ${TMUX_TARGET%.*} && tmux select-pane -t ${TMUX_TARGET}\""
+            "command": "terminal-notifier -group \"claude-$(jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Permission Required - $(basename $PWD)\" -message 'Needs your approval' -sound 'default'"
           }
         ]
       }
