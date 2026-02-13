@@ -419,12 +419,14 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '7a690bd0-c35c-00b7-704c-61e8ba667c71'
+description = 'Linkedin'
 action = 'chrome-cli open https://linkedin.com/in/pablobfonseca'
 icon = 'social.linkedin'
+icon_color = '#0a66c2'
 IconURL = ''
 label = 'Linkedin'
 type = 'action'
-context = ''
+context = 'main'
 main = true
 WorkflowInputs = []
 
