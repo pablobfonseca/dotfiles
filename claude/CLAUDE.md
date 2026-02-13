@@ -78,6 +78,43 @@
    To undo: git reset HEAD~1
 ```
 
+## Agent Routing
+
+When writing or modifying code, delegate to the matching agent via the Task tool.
+
+### By language / file type
+
+| File pattern / Language | Agent (`subagent_type`) |
+|---|---|
+| `*.go` | `golang-pro` |
+| `*.tsx`, `*.jsx`, React components | `react-specialist` |
+| `*.ts` (non-React) | `typescript-pro` |
+| `*.js` (non-React) | `javascript-pro` |
+| `*.py` | `python-pro` |
+| `*.swift` | `swift-expert` |
+| React Native / Flutter | `mobile-developer` |
+
+### By role / task type
+
+| Work type | Agent (`subagent_type`) |
+|---|---|
+| API design (endpoints, schemas, OpenAPI specs) | `api-designer` |
+| Backend logic (server, DB, middleware, auth) | `backend-developer` |
+| Frontend (HTML, CSS, browser-side code) | `frontend-developer` |
+| Mixed frontend + backend changes | `fullstack-developer` |
+| UI/UX (styling, layouts, design systems, visual polish) | `ui-designer` |
+
+### Routing priority
+1. **Role agents take precedence** when the task is clearly role-scoped (e.g., designing an API → `api-designer`, even if files are `.ts`)
+2. **Language agents** for pure implementation work within a single language
+3. **Both in parallel** when a task spans roles + languages (e.g., new API endpoint with Go backend + React frontend → `api-designer` + `golang-pro` + `react-specialist`)
+
+### Rules
+- Use agents for writing/editing implementation code (not for quick reads or simple searches)
+- For mixed-language/role changes, launch multiple agents in parallel
+- Skip agent delegation for trivial single-line edits (typo fixes, import additions)
+- When unsure (e.g., `.ts` that might be React), check file contents first
+
 ## Workflow Documentation
 
 Reference docs for detailed guidance:
