@@ -5,7 +5,7 @@ level = 'debug'
 provider = 'anthropic'
 
 [proxy]
-enable = true
+enable = false
 
 [layout]
 columns = 3
@@ -348,6 +348,16 @@ context = 'github'
 WorkflowInputs = []
 
 [[commands]]
+uuid = '1b4d981e-b416-44f1-94d4-2902c6d4eb9c'
+action = 'browser_open:https://github.com/devdeck-app/devdeck-releases'
+icon = 'square.grid.3x3.square'
+IconURL = ''
+label = 'Releases'
+type = 'action'
+context = 'github'
+WorkflowInputs = []
+
+[[commands]]
 uuid = 'd2be4836-5818-ba52-e6ab-24b40af5103d'
 description = 'Upscope'
 action = 'browser_open:https://github.com/upscopeio/upscope/pulls'
@@ -635,16 +645,6 @@ IconURL = ''
 label = 'Dashboard Home'
 type = 'action'
 context = 'plausible'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '08d7bf53-7d08-4b2c-a3c6-9f6d92ef052f'
-icon = 'video.fill'
-IconURL = ''
-label = 'Zoom'
-type = 'context'
-context = 'zoom'
-main = true
 WorkflowInputs = []
 
 [[commands]]
@@ -954,16 +954,6 @@ context = 'slack'
 WorkflowInputs = []
 
 [[commands]]
-uuid = '15c72f2e-a178-4033-b384-61991e2bf1e4'
-icon = 'folder.fill'
-IconURL = ''
-label = 'Ollama'
-type = 'context'
-context = 'ollama'
-main = true
-WorkflowInputs = []
-
-[[commands]]
 uuid = '924fa5a0-9a65-4fc4-9307-aed950d69d06'
 description = 'New Prompt'
 action = "osascript -e 'tell application \"System Events\" to keystroke \"n\" using command down'"
@@ -1220,6 +1210,27 @@ label = 'Open Reminders'
 type = 'action'
 context = 'main'
 main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = '6e4ca954-fbd5-4d48-9bd0-9e5eb40e7e40'
+action = 'browser_open:https://chrome.google.com/webstore/devconsole'
+icon = 'square.grid.3x3.square'
+icon_color = '#5452ff'
+IconURL = ''
+label = 'Chrome Dev Dashboard'
+type = 'action'
+context = 'chrome'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '73b07fcd-07c4-44d6-8cb3-2d0748ea7512'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"i\" using shift down'\n"
+icon = 'envelope.open'
+IconURL = ''
+label = 'Mark as read'
+type = 'action'
+context = 'gmail'
 WorkflowInputs = []
 
 [workflows]
