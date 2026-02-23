@@ -348,6 +348,17 @@ context = 'github'
 WorkflowInputs = []
 
 [[commands]]
+uuid = '7a66b92e-7932-402e-9540-bbf6d03a82de'
+action = 'browser_open:https://github.com/devdeck-app/devdeck-hub'
+icon = 'square.grid.3x3.square'
+IconURL = ''
+label = 'HUB'
+type = 'action'
+context = 'github'
+WorkflowInputs = []
+
+
+[[commands]]
 uuid = 'd2be4836-5818-ba52-e6ab-24b40af5103d'
 description = 'Upscope'
 action = 'browser_open:https://github.com/upscopeio/upscope/pulls'
