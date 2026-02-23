@@ -1215,3 +1215,13 @@ type = 'fill_form'
 
 [workflows.ask_ai.steps.fields]
 prompt = '{{query}}'
+
+# AI-generated command
+[[commands]]
+uuid = "350e1d37-48d0-48be-bda3-ffebc0a8f5da"
+label = "Caffeinate"
+action = "caffeinate -d"
+icon = "bolt.fill"
+type = "action"
+context = "main"
+main = true
