@@ -74,16 +74,6 @@ priority = 50
 [contexts.ollama.match]
 frontmost_bundle_ids = ['com.electron.ollama']
 
-[contexts.plausible]
-name = 'Plausible Analytics'
-deck = 'plausible'
-priority = 90
-
-[contexts.plausible.match]
-frontmost_bundle_ids = ['com.google.Chrome']
-frontmost_app_names = ['Google Chrome']
-url_contains = ['plausible.io']
-
 [contexts.slack]
 name = 'Slack'
 deck = 'slack'
@@ -476,34 +466,6 @@ context = 'chrome'
 WorkflowInputs = []
 
 [[commands]]
-uuid = '08aeff51-cd4b-c656-cead-5a40921ecb79'
-icon = 'chart.bar.xaxis'
-IconURL = ''
-label = 'Analytics'
-type = 'context'
-context = 'analytics'
-main = true
-WorkflowInputs = []
-
-[[commands]]
-uuid = '0c1f10df-3269-d4ca-976f-6919d9fdc7fb'
-action = 'browser_open:https://plausible.io/upscope.com?f=contains,page,/uv:'
-IconURL = ''
-label = 'Userview'
-type = 'action'
-context = 'analytics'
-WorkflowInputs = []
-
-[[commands]]
-uuid = 'e931cb31-f319-5a99-5968-456c763183a7'
-action = 'browser_open:https://plausible.io/upscope.com?f=contains,page,/hs:'
-IconURL = ''
-label = 'Helloscreen'
-type = 'action'
-context = 'analytics'
-WorkflowInputs = []
-
-[[commands]]
 uuid = 'ab4a582d-6998-4a95-825c-69832cf50127'
 action = "osascript -e 'tell application \"System Events\" to key code 107'\n"
 icon = 'sun.max'
@@ -584,67 +546,6 @@ IconURL = ''
 label = 'Toggle Away'
 type = 'action'
 context = 'slack'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '9fd656ec-6745-4627-bd87-d3b25b740ab3'
-action = 'browser_navigate:https://plausible.io'
-icon = 'chart.bar'
-IconURL = ''
-label = 'Plausible'
-type = 'action'
-context = 'plausible'
-main = true
-WorkflowInputs = []
-
-[[commands]]
-uuid = '079800e4-9681-4e75-b658-b7018e886dca'
-action = "osascript -e 'tell application \"System Events\" to key code 2'"
-icon = 'calendar'
-IconURL = ''
-label = 'Toggle Today View'
-type = 'action'
-context = 'plausible'
-WorkflowInputs = []
-
-[[commands]]
-uuid = 'd5aea929-0020-4642-841a-a0fc3906f0fd'
-action = 'browser_navigate:https://plausible.io/upscope.com?f=contains,page,/uv'
-icon = 'chart.line.uptrend.xyaxis'
-IconURL = ''
-label = 'Userview'
-type = 'action'
-context = 'plausible'
-WorkflowInputs = []
-
-[[commands]]
-uuid = 'fd1609d4-f606-4363-b3b5-60f2f5b50536'
-action = 'browser_navigate:https://plausible.io/upscope.com?f=contains,page,/hs'
-icon = 'chart.pie'
-IconURL = ''
-label = 'Helloscreen'
-type = 'action'
-context = 'plausible'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '71f863b6-117a-4711-a0c6-c25ee4efca23'
-action = "osascript -e 'tell application \"System Events\" to key code 15 using {command down}'"
-icon = 'arrow.clockwise'
-IconURL = ''
-label = 'Refresh Data'
-type = 'action'
-context = 'plausible'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '9c159b82-0a56-418b-9b22-2027f6dc9077'
-action = 'browser_navigate:https://plausible.io/upscope.com'
-icon = 'house.fill'
-IconURL = ''
-label = 'Dashboard Home'
-type = 'action'
-context = 'plausible'
 WorkflowInputs = []
 
 [[commands]]
@@ -1094,6 +995,16 @@ context = 'learning'
 WorkflowInputs = []
 
 [[commands]]
+uuid = 'f46ccaaf-c19f-4ff1-b2e5-2b40738960b4'
+description = 'Roadmap'
+action = 'open https://roadmap.sh'
+IconURL = ''
+label = 'Roadmap'
+type = 'action'
+context = 'learning'
+WorkflowInputs = []
+
+[[commands]]
 uuid = '2df0a981-75b3-447f-bdc3-5443464f89a8'
 description = 'CodeCrafters'
 action = 'open https://codecrafters.io'
@@ -1219,6 +1130,28 @@ icon = 'square.grid.3x3.square'
 icon_color = '#5452ff'
 IconURL = ''
 label = 'Chrome Dev Dashboard'
+type = 'action'
+context = 'chrome'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '71fb336d-4055-40d7-82d4-5e54d305df84'
+action = 'browser_open:https://tribemap.sentry.io/issues'
+icon = 'custom:sentry'
+icon_color = '#5452ff'
+IconURL = ''
+label = 'Tribez Sentry'
+type = 'action'
+context = 'chrome'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'bd01cc90-1252-42d4-af52-ea1bb608bc55'
+action = 'browser_open:https://tribemap.sentry.io/explore/logs'
+icon = 'custom:sentry'
+icon_color = '#5452ff'
+IconURL = ''
+label = 'Tribez Sentry Logs'
 type = 'action'
 context = 'chrome'
 WorkflowInputs = []
