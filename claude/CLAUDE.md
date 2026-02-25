@@ -37,14 +37,15 @@
 ## Plans
 
 - At the end of each plan, give me a list of unresolved questions to answer, if any. Make the questions extremely concise. Sacrifice grammar for the sake of concision.
-
 - For large plans, always break it down into phases and suggest creating a Github issue containing the current plan, including all of the items checked off the plan list.
+- NEVER commit plans
 
 ## Commit Approval
 
 **Preference**: Auto-Commit Low-Stakes (Option B)
 
 **Auto-commit when ALL criteria met:**
+
 - [ ] Single file OR multiple files with isolated changes
 - [ ] All tests passing
 - [ ] No external API changes
@@ -54,6 +55,7 @@
 - [ ] Confidence level: 100%
 
 **Always ask approval for:**
+
 - Multi-file changes with dependencies
 - Refactoring commits (external APIs might be affected)
 - First commit of new feature
@@ -61,6 +63,7 @@
 - Any uncertainty
 
 **Auto-commit examples:**
+
 - ✅ Single-file bug fix with test
 - ✅ Documentation updates
 - ✅ Extracting single constant
@@ -69,6 +72,7 @@
 - ❌ API changes (ask first)
 
 **Notification format:**
+
 ```
 ✅ Committed: 'feat: add email validation'
    All tests passing (42/42)
@@ -84,32 +88,34 @@ When writing or modifying code, delegate to the matching agent via the Task tool
 
 ### By language / file type
 
-| File pattern / Language | Agent (`subagent_type`) |
-|---|---|
-| `*.go` | `golang-pro` |
-| `*.tsx`, `*.jsx`, React components | `react-specialist` |
-| `*.ts` (non-React) | `typescript-pro` |
-| `*.js` (non-React) | `javascript-pro` |
-| `*.py` | `python-pro` |
-| `*.swift` | `swift-expert` |
-| React Native / Flutter | `mobile-developer` |
+| File pattern / Language            | Agent (`subagent_type`) |
+| ---------------------------------- | ----------------------- |
+| `*.go`                             | `golang-pro`            |
+| `*.tsx`, `*.jsx`, React components | `react-specialist`      |
+| `*.ts` (non-React)                 | `typescript-pro`        |
+| `*.js` (non-React)                 | `javascript-pro`        |
+| `*.py`                             | `python-pro`            |
+| `*.swift`                          | `swift-expert`          |
+| React Native / Flutter             | `mobile-developer`      |
 
 ### By role / task type
 
-| Work type | Agent (`subagent_type`) |
-|---|---|
-| API design (endpoints, schemas, OpenAPI specs) | `api-designer` |
-| Backend logic (server, DB, middleware, auth) | `backend-developer` |
-| Frontend (HTML, CSS, browser-side code) | `frontend-developer` |
-| Mixed frontend + backend changes | `fullstack-developer` |
-| UI/UX (styling, layouts, design systems, visual polish) | `ui-designer` |
+| Work type                                               | Agent (`subagent_type`) |
+| ------------------------------------------------------- | ----------------------- |
+| API design (endpoints, schemas, OpenAPI specs)          | `api-designer`          |
+| Backend logic (server, DB, middleware, auth)            | `backend-developer`     |
+| Frontend (HTML, CSS, browser-side code)                 | `frontend-developer`    |
+| Mixed frontend + backend changes                        | `fullstack-developer`   |
+| UI/UX (styling, layouts, design systems, visual polish) | `ui-designer`           |
 
 ### Routing priority
+
 1. **Role agents take precedence** when the task is clearly role-scoped (e.g., designing an API → `api-designer`, even if files are `.ts`)
 2. **Language agents** for pure implementation work within a single language
 3. **Both in parallel** when a task spans roles + languages (e.g., new API endpoint with Go backend + React frontend → `api-designer` + `golang-pro` + `react-specialist`)
 
 ### Rules
+
 - Use agents for writing/editing implementation code (not for quick reads or simple searches)
 - For mixed-language/role changes, launch multiple agents in parallel
 - Skip agent delegation for trivial single-line edits (typo fixes, import additions)
@@ -125,6 +131,7 @@ Reference docs for detailed guidance:
 - [Exploration Mode](~/.claude/skills/exploration/SKILL.md) - Debugging and prototyping workflow
 
 **Quick reference:**
+
 - Skills = knowledge to follow
 - Agents = autonomous workers to invoke
 - Exploration mode = debugging without TDD (then return to TDD)
