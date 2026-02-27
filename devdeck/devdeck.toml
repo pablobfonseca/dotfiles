@@ -5,7 +5,7 @@ level = 'debug'
 provider = 'anthropic'
 
 [proxy]
-enable = false
+enable = true
 
 [layout]
 columns = 3
@@ -140,6 +140,18 @@ label = 'Google Chrome'
 type = 'context'
 context = 'chrome'
 main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = '05a77ec3-8c0d-4e26-aebf-62275d87e9e4'
+action = "osascript -e 'tell application \"Telegram\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke \"Shikamaru\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
+icon = 'brain'
+icon_color = '#7E8E7C'
+IconURL = ''
+label = 'Shikamaru'
+type = 'action'
+main = true
+context = 'main'
 WorkflowInputs = []
 
 [[commands]]
@@ -356,7 +368,6 @@ label = 'HUB'
 type = 'action'
 context = 'github'
 WorkflowInputs = []
-
 
 [[commands]]
 uuid = 'd2be4836-5818-ba52-e6ab-24b40af5103d'
@@ -1177,6 +1188,17 @@ type = 'action'
 context = 'gmail'
 WorkflowInputs = []
 
+[[commands]]
+uuid = '350e1d37-48d0-48be-bda3-ffebc0a8f5da'
+action = 'caffeinate -d'
+icon = 'bolt.fill'
+IconURL = ''
+label = 'Caffeinate'
+type = 'action'
+context = 'main'
+main = true
+WorkflowInputs = []
+
 [workflows]
 [workflows.ask_ai]
 name = 'Ask AI'
@@ -1226,13 +1248,3 @@ type = 'fill_form'
 
 [workflows.ask_ai.steps.fields]
 prompt = '{{query}}'
-
-# AI-generated command
-[[commands]]
-uuid = "350e1d37-48d0-48be-bda3-ffebc0a8f5da"
-label = "Caffeinate"
-action = "caffeinate -d"
-icon = "bolt.fill"
-type = "action"
-context = "main"
-main = true
