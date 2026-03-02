@@ -144,14 +144,14 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = '05a77ec3-8c0d-4e26-aebf-62275d87e9e4'
-action = "osascript -e 'tell application \"Telegram\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke \"Shikamaru\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
+action = "osascript -e 'tell application \"Telegram\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"k\" using command down' -e 'delay 0.5' -e 'tell application \"System Events\" to keystroke \"Shikamaru\"' -e 'delay 0.3' -e 'tell application \"System Events\" to keystroke return' "
 icon = 'brain'
 icon_color = '#7E8E7C'
 IconURL = ''
 label = 'Shikamaru'
 type = 'action'
-main = true
 context = 'main'
+main = true
 WorkflowInputs = []
 
 [[commands]]
