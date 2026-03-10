@@ -106,13 +106,21 @@ When writing or modifying code, delegate to the matching agent via the Task tool
 | Backend logic (server, DB, middleware, auth)            | `backend-developer`     |
 | Frontend (HTML, CSS, browser-side code)                 | `frontend-developer`    |
 | Mixed frontend + backend changes                        | `fullstack-developer`   |
-| UI/UX (styling, layouts, design systems, visual polish) | `ui-designer`           |
+| UI/UX (styling, layouts, design systems, visual polish, redesign, improve component look/feel, modern UI, UX improvements) | `ui-designer` + `frontend-design` skill |
 
 ### Routing priority
 
 1. **Role agents take precedence** when the task is clearly role-scoped (e.g., designing an API → `api-designer`, even if files are `.ts`)
 2. **Language agents** for pure implementation work within a single language
 3. **Both in parallel** when a task spans roles + languages (e.g., new API endpoint with Go backend + React frontend → `api-designer` + `golang-pro` + `react-specialist`)
+
+### UI/UX trigger keywords
+
+Any request containing these patterns → route to `ui-designer` agent AND invoke `frontend-design` skill:
+- "improve", "redesign", "modernize", "polish", "restyle" a component/page/UI
+- "better UX", "better UI", "look and feel", "visual upgrade"
+- "implement UI for", "design a component", "build a page/screen"
+- Any mention of styling, layout, responsiveness, animations, dark mode, accessibility in UI context
 
 ### Rules
 
