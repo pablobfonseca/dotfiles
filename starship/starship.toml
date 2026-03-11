@@ -1,164 +1,176 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-command_timeout = 2000
+palette = 'cyberpunk_storm'
 
-[aws]
-symbol = "  "
+format = """
+$username[◆](fg_dim) $directory$git_branch$git_status$c$rust$golang$python$nodejs$lua$java$ruby$php$elixir$swift$kotlin$zig$docker_context$conda$cmd_duration\n$character"""
 
-[buf]
-symbol = " "
+add_newline = true
 
-[c]
-symbol = " "
+[palettes.cyberpunk_storm]
+bg_deep = '#060a0f'
+bg_mid = '#1a1f25'
+bg_panel = '#0a0e14'
+fg = '#e0e6f0'
+fg_dim = '#3b4458'
+comment = '#6a7b9a'
+neon_pink = '#ff007f'
+neon_cyan = '#00ffff'
+neon_green = '#00ff41'
+neon_purple = '#bf00ff'
+neon_orange = '#ff8800'
+neon_blue = '#0080ff'
+neon_yellow = '#ffff00'
 
-[conda]
-symbol = " "
+[palettes.cyberpunk_neon]
+bg_deep = '#000000'
+bg_mid = '#0d0d0d'
+bg_panel = '#000000'
+fg = '#f0f6ff'
+fg_dim = '#303850'
+comment = '#303850'
+neon_pink = '#ff0099'
+neon_cyan = '#00ffff'
+neon_green = '#00ff00'
+neon_purple = '#dd00ff'
+neon_orange = '#ff6600'
+neon_blue = '#0099ff'
+neon_yellow = '#ffff00'
 
-[crystal]
-symbol = " "
+[palettes.cyberpunk_night]
+bg_deep = '#020508'
+bg_mid = '#12171c'
+bg_panel = '#05080d'
+fg = '#d0d8e8'
+fg_dim = '#2d3850'
+comment = '#2d3850'
+neon_pink = '#cc0066'
+neon_cyan = '#00cccc'
+neon_green = '#00cc33'
+neon_purple = '#9900cc'
+neon_orange = '#cc6e00'
+neon_blue = '#0066cc'
+neon_yellow = '#cccc00'
 
-[dart]
-symbol = " "
+[character]
+success_symbol = '[❯](bold neon_cyan)'
+error_symbol = '[❯](bold neon_pink)'
+vimcmd_symbol = '[❮](bold neon_green)'
+vimcmd_replace_one_symbol = '[❯](bold neon_orange)'
+vimcmd_replace_symbol = '[❯](bold neon_orange)'
+vimcmd_visual_symbol = '[❯](bold neon_purple)'
+
+[username]
+show_always = true
+style_user = "bold neon_pink"
+style_root = "bold neon_pink"
+format = '[ $user]($style)'
 
 [directory]
-read_only = " 󰌾"
+style = "bold neon_cyan"
+format = '[ $path]($style) '
+truncation_length = 3
+truncation_symbol = "…/"
 
-[docker_context]
-symbol = " "
-
-[elixir]
-symbol = " "
-
-[elm]
-symbol = " "
-
-[fennel]
-symbol = " "
-
-[fossil_branch]
-symbol = " "
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"code" = " "
 
 [git_branch]
-symbol = " "
+symbol = ""
+style = "bold neon_purple"
+format = '[$symbol $branch]($style) '
 
-[golang]
-symbol = " "
+[git_status]
+style = "comment"
+format = '([$all_status$ahead_behind]($style) )'
+modified = '[~${count}](neon_orange)'
+staged = '[+${count}](neon_green)'
+untracked = '[?${count}](neon_yellow)'
+deleted = '[✗${count}](neon_pink)'
+ahead = '[⇡${count}](neon_cyan)'
+behind = '[⇣${count}](neon_cyan)'
+diverged = '[⇕⇡${ahead_count}⇣${behind_count}](neon_orange)'
+conflicted = '[!${count}](bold neon_pink)'
 
-[guix_shell]
-symbol = " "
-
-[haskell]
-symbol = " "
-
-[haxe]
-symbol = " "
-
-[hg_branch]
-symbol = " "
-
-[hostname]
-ssh_symbol = " "
-
-[java]
-symbol = " "
-
-[julia]
-symbol = " "
-
-[kotlin]
-symbol = " "
-
-[lua]
-symbol = " "
-
-[memory_usage]
-symbol = "󰍛 "
-
-[meson]
-symbol = "󰔷 "
-
-[nim]
-symbol = "󰆥 "
-
-[nix_shell]
-symbol = " "
-
-[nodejs]
-symbol = " "
-
-[ocaml]
-symbol = " "
-
-[os.symbols]
-Alpaquita = " "
-Alpine = " "
-Amazon = " "
-Android = " "
-Arch = " "
-Artix = " "
-CentOS = " "
-Debian = " "
-DragonFly = " "
-Emscripten = " "
-EndeavourOS = " "
-Fedora = " "
-FreeBSD = " "
-Garuda = "󰛓 "
-Gentoo = " "
-HardenedBSD = "󰞌 "
-Illumos = "󰈸 "
-Linux = " "
-Mabox = " "
-Macos = " "
-Manjaro = " "
-Mariner = " "
-MidnightBSD = " "
-Mint = " "
-NetBSD = " "
-NixOS = " "
-OpenBSD = "󰈺 "
-openSUSE = " "
-OracleLinux = "󰌷 "
-Pop = " "
-Raspbian = " "
-Redhat = " "
-RedHatEnterprise = " "
-Redox = "󰀘 "
-Solus = "󰠳 "
-SUSE = " "
-Ubuntu = " "
-Unknown = " "
-Windows = "󰍲 "
-
-[package]
-symbol = "󰏗 "
-
-[perl]
-symbol = " "
-
-[php]
-symbol = " "
-
-[pijul_channel]
-symbol = " "
-
-[python]
-symbol = " "
-
-[rlang]
-symbol = "󰟔 "
-
-[ruby]
-symbol = " "
+[c]
+symbol = ""
+style = "bold neon_blue"
+format = '[$symbol $version]($style) '
 
 [rust]
-symbol = " "
+symbol = ""
+style = "bold neon_orange"
+format = '[$symbol $version]($style) '
 
-[scala]
-symbol = " "
+[golang]
+symbol = ""
+style = "bold neon_cyan"
+format = '[$symbol $version]($style) '
+
+[python]
+symbol = ""
+style = "bold neon_yellow"
+format = '[$symbol $version]($style) '
+
+[nodejs]
+symbol = ""
+style = "bold neon_green"
+format = '[$symbol $version]($style) '
+
+[lua]
+symbol = ""
+style = "bold neon_blue"
+format = '[$symbol $version]($style) '
+
+[java]
+symbol = ""
+style = "bold neon_orange"
+format = '[$symbol $version]($style) '
+
+[ruby]
+symbol = ""
+style = "bold neon_pink"
+format = '[$symbol $version]($style) '
+
+[php]
+symbol = ""
+style = "bold neon_purple"
+format = '[$symbol $version]($style) '
+
+[elixir]
+symbol = ""
+style = "bold neon_purple"
+format = '[$symbol $version]($style) '
 
 [swift]
-symbol = " "
+symbol = ""
+style = "bold neon_orange"
+format = '[$symbol $version]($style) '
+
+[kotlin]
+symbol = ""
+style = "bold neon_purple"
+format = '[$symbol $version]($style) '
 
 [zig]
-symbol = " "
+symbol = ""
+style = "bold neon_yellow"
+format = '[$symbol $version]($style) '
+
+[docker_context]
+symbol = ""
+style = "bold neon_cyan"
+format = '[$symbol $context]($style) '
+
+[conda]
+style = "bold neon_green"
+format = '[ $environment]($style) '
+
+[cmd_duration]
+min_time = 2_000
+style = "comment"
+format = '[ $duration]($style) '
