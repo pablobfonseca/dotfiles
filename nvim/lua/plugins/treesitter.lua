@@ -8,6 +8,7 @@ return {
       "css",
       "dockerfile",
       "elm",
+      "http",
       "gitcommit",
       "go",
       "haskell",

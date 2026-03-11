@@ -1,1 +1,1 @@
-vim.o.winborder = "rounded"
+-- winborder managed by cyberpunk theme (lsp.ui = true)
