@@ -9,6 +9,8 @@ return {
   },
   config = function()
     local cmp = require "cmp"
+    local border = require("cyberpunk.lsp").cmp_border()
+    local whl = "Normal:NormalFloat,FloatBorder:CmpBorder,CursorLine:Visual,Search:None"
 
     cmp.setup {
       sources = cmp.config.sources {
@@ -30,15 +32,8 @@ return {
         },
       },
       window = {
-        completion = {
-          border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-          scrollbar = false,
-          winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
-        },
-        documentation = {
-          border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-          winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
-        },
+        completion = { border = border, winhighlight = whl },
+        documentation = { border = border, winhighlight = whl },
       },
     }
 

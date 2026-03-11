@@ -5,7 +5,6 @@ return {
     ft = "markdown",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "MeanderingProgrammer/render-markdown.nvim",
     },
     keys = {
       { "<leader>OT", ":ObsidianOpen todo<cr>", desc = "Obsidian TODO" },
@@ -43,6 +42,8 @@ return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = "markdown",
-    opts = {},
+    opts = {
+      completions = { lsp = { enabled = true } },
+    },
   },
 }

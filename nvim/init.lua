@@ -29,7 +29,7 @@ require("lazy").setup("plugins", {
     lazy = true,
   },
   install = {
-    colorscheme = { "tokyonight", "habamax" },
+    colorscheme = { "cyberpunk", "habamax" },
   },
   checker = {
     enabled = false,
@@ -52,4 +52,3 @@ require("lazy").setup("plugins", {
 
 -- Load LSP config after plugins
 require "pablobfonseca.lsp"
-require "pablobfonseca.lsp.ui"
