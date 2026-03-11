@@ -6,7 +6,7 @@ adjust-cell-height = 1
 font-thicken = true
 font-thicken-strength = 1
 
-theme = Catppuccin Mocha
+theme = Cyberpunk Storm
 
 cursor-style = block
 cursor-style-blink = true
