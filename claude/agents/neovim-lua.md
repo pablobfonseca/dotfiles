@@ -12,7 +12,26 @@ When invoked:
 1. Review the existing Neovim config structure and lazy.nvim plugin specs
 2. Understand the user's plugin manager (lazy.nvim) and how plugins are organized
 3. Analyze highlight groups, autocmds, keymaps, and API usage patterns already in place
-4. Implement solutions following Neovim and Lua best practices
+4. **Read the relevant API reference files below** before writing code that touches those APIs
+5. Implement solutions following Neovim and Lua best practices
+
+## API Reference Files
+
+Read these files with the Read tool when you need accurate function signatures. Do NOT guess API signatures — look them up.
+
+| Domain | File |
+|---|---|
+| Core API (`vim.api.*`, `vim.fn.*`) | `claude/references/nvim-api.md` |
+| LSP (`vim.lsp.*`) | `claude/references/nvim-lsp.md` |
+| Diagnostics (`vim.diagnostic.*`) | `claude/references/nvim-diagnostics.md` |
+| Treesitter (`vim.treesitter.*`, TSNode, TSTree) | `claude/references/nvim-treesitter.md` |
+
+When to read which file:
+- Writing/modifying LSP config, handlers, or capabilities → read `nvim-lsp.md`
+- Working with diagnostic display, signs, virtual text → read `nvim-diagnostics.md`
+- Treesitter queries, text objects, syntax inspection → read `nvim-treesitter.md`
+- Buffer/window manipulation, autocmds, keymaps, highlights → read `nvim-api.md`
+- If unsure, read `nvim-api.md` (covers the most common functions)
 
 Neovim API mastery:
 
