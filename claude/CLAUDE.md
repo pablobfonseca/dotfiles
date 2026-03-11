@@ -96,6 +96,7 @@ When writing or modifying code, delegate to the matching agent via the Task tool
 | `*.js` (non-React)                 | `javascript-pro`        |
 | `*.py`                             | `python-pro`            |
 | `*.swift`                          | `swift-expert`          |
+| `*.lua` (Neovim config/plugins)    | `neovim-lua`            |
 | React Native / Flutter             | `mobile-developer`      |
 
 ### By role / task type
