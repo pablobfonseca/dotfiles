@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REFS_DIR="$SCRIPT_DIR/../references"
+
+mkdir -p "$REFS_DIR"
+
+echo "Generating nvim-api.md..."
+nvim --headless -l "$SCRIPT_DIR/generate-vim-skill.lua" "$REFS_DIR/nvim-api.md"
+
+echo "Generating nvim-lsp.md..."
+nvim --headless -l "$SCRIPT_DIR/generate-vim-lsp-skill.lua" "$REFS_DIR/nvim-lsp.md"
+
+echo "Generating nvim-diagnostics.md..."
+nvim --headless -l "$SCRIPT_DIR/generate-vim-diagnostics-skill.lua" "$REFS_DIR/nvim-diagnostics.md"
+
+echo "Generating nvim-treesitter.md..."
+nvim --headless -l "$SCRIPT_DIR/generate-vim-treesitter-skill.lua" "$REFS_DIR/nvim-treesitter.md"
+
+echo "Done! References updated in $REFS_DIR"
