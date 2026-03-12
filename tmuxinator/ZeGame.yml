@@ -1,6 +1,0 @@
-name: ZeGame
-root: ~/code/tribez
-
-windows:
-  - nvim:
-    layout: main

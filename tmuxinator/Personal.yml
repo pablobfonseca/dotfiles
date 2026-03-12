@@ -15,13 +15,13 @@ windows:
   - go-workspace:
       layout: main-vertical
       root: ~/code/go-workspace/src/github.com/pablobfonseca
-  - notes:
+  - obsidian:
       layout: main-vertical
-      root: ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/SecondBrain
+      root: ~/obsidian/SecondBrain
       panes:
         - nvim .
   - devdeck:
       layout: main-vertical
       root: ~/code/DevDeck/devdeck-server
       panes:
-        - ./devdeck-server
+        -
