@@ -1,0 +1,8 @@
+name: Tribemap
+root: ~/code/tribez
+
+windows:
+  - nvim:
+    layout: main-vertical
+    panes:
+      - claude
