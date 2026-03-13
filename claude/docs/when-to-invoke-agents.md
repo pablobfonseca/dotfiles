@@ -7,14 +7,6 @@ Is this a significant multi-step task?
 ├─ YES: Use progress-guardian to create PLAN/WIP/LEARNINGS
 └─ NO: Follow skills directly
 
-Am I about to write production code?
-├─ YES, unsure about TDD: Invoke tdd-guardian (proactive)
-└─ NO, already following TDD: Follow TDD skill
-
-Tests just turned green?
-├─ Complex refactoring needed: Invoke refactor-scan
-└─ Simple/obvious refactoring: Follow refactoring skill
-
 Discovered important insight?
 ├─ Architectural decision: Invoke adr agent
 ├─ Working knowledge/gotcha: Invoke learn agent
@@ -27,16 +19,13 @@ Writing/reviewing documentation?
 ## Agents vs Skills
 
 ### Skills = Knowledge I Follow
-- **tdd**: RED-GREEN-REFACTOR workflow
 - **functional**: Immutability, pure functions
-- **testing**: Factory patterns, behavior testing
-- **planning**: Three-document model
-- **refactoring**: When and how to refactor
+- **typescript-strict**: TypeScript strict mode patterns
+- **front-end-testing**: DOM Testing Library patterns
+- Superpowers plugin provides: TDD, planning, debugging, verification
 
 ### Agents = Autonomous Workers I Invoke
 - **progress-guardian**: Manages PLAN/WIP/LEARNINGS
-- **tdd-guardian**: Coaches TDD, verifies compliance
-- **refactor-scan**: Assesses refactoring opportunities
 - **learn**: Documents insights to CLAUDE.md
 - **adr**: Creates architecture decision records
 - **docs-guardian**: Reviews/improves documentation
@@ -55,33 +44,6 @@ Writing/reviewing documentation?
 - Single-file bug fixes
 - Documentation updates
 - Obvious small changes
-
----
-
-### `tdd-guardian`
-
-**Invoke when:**
-- **Proactive**: About to implement feature, want TDD guidance
-- **Reactive**: Code written, need compliance verification
-- Unsure if TDD was followed correctly
-
-**Don't invoke if:**
-- Already naturally following TDD workflow
-- Tests green, coverage 100%, obvious compliance
-
----
-
-### `refactor-scan`
-
-**Invoke when:**
-- Tests just turned green (complex codebase)
-- Unsure about abstraction decision
-- Multiple refactoring opportunities visible
-
-**Don't invoke if:**
-- Code obviously clean
-- Simple one-liner refactoring
-- Following refactoring skill directly
 
 ---
 
@@ -129,13 +91,11 @@ Writing/reviewing documentation?
 ## Auto-Invoke Guidelines
 
 **Claude should auto-invoke:**
-- `refactor-scan` after every GREEN (if complex)
 - `learn` when user says "I wish I'd known..."
 - `adr` when user evaluates technology options
 
 **Claude should wait for request:**
 - `progress-guardian` (user decides workflow)
-- `tdd-guardian` proactive (user decides coaching level)
 - `docs-guardian` (user decides quality bar)
 
 ## Parallel Invocation
@@ -145,9 +105,6 @@ Some agents work well in parallel:
 ```bash
 # After feature complete
 Invoke: learn + adr (if decision made) + docs-guardian (if docs changed)
-
-# After GREEN
-Invoke: refactor-scan (blocking) → learn (if insights found)
 ```
 
 ## Significance Thresholds

@@ -23,7 +23,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -group \"claude-$(jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Input Required - $(basename $PWD)\" -message 'Waiting for your input' -sound 'default'"
+            "command": "input=$(cat); echo \"$input\" | claude-session-manager hook-status idle_prompt; echo \"$input\" | terminal-notifier -group \"claude-$(echo \"$input\" | jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Input Required - $(basename $PWD)\" -message 'Waiting for your input' -sound 'default'"
           }
         ]
       },
@@ -32,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -group \"claude-$(jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Permission Required - $(basename $PWD)\" -message 'Needs your approval' -sound 'default'"
+            "command": "input=$(cat); echo \"$input\" | claude-session-manager hook-status permission_prompt; echo \"$input\" | terminal-notifier -group \"claude-$(echo \"$input\" | jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Permission Required - $(basename $PWD)\" -message 'Needs your approval' -sound 'default'"
           }
         ]
       }
@@ -40,7 +40,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "npx -y @pablobfonseca/claude-cyberpunk-powerline --style=storm"
+    "command": "npx -y @pablobfonseca/claude-cyberpunk-powerline --style=storm --vim-mode --git"
   },
   "enabledPlugins": {
     "frontend-design@claude-code-plugins": true,
@@ -57,5 +57,6 @@
     "swift-lsp@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "voiceEnabled": false
 }

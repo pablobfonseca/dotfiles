@@ -135,13 +135,9 @@ Any request containing these patterns → route to `ui-designer` agent AND invok
 Reference docs for detailed guidance:
 
 - [When to Invoke Agents vs Follow Skills](~/.claude/docs/when-to-invoke-agents.md) - Decision tree for agent invocation
-- [Commit Approval Guidelines](~/.claude/docs/commit-approval-guidelines.md) - Detailed workflow options
 - [Conciseness Clarification](~/.claude/docs/conciseness-clarification.md) - Domain-specific conciseness rules
-- [Exploration Mode](~/.claude/skills/exploration/SKILL.md) - Debugging and prototyping workflow
-
 **Quick reference:**
 
 - Skills = knowledge to follow
 - Agents = autonomous workers to invoke
-- Exploration mode = debugging without TDD (then return to TDD)
 - Conciseness = communication (not code correctness)
