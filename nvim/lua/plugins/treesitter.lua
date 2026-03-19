@@ -35,9 +35,6 @@ return {
     indent = {
       enable = true,
     },
-    endwise = {
-      enable = true,
-    },
     sync_install = false,
     auto_install = true,
     incremental_selection = {

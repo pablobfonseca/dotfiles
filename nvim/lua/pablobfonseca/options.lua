@@ -57,7 +57,6 @@ o.pumblend = 10 -- Popup menu transparency
 o.winblend = 0 -- Floating window transparency
 o.conceallevel = 0 -- Don't hide markup
 o.concealcursor = "" -- Don't hide cursor line markup
-o.lazyredraw = true -- Don't redraw during macros
 o.synmaxcol = 300 -- Syntax highlight limit
 o.shortmess:append "sI" -- Disable neovim intro
 o.inccommand = "split" -- shows the effects of substitution
@@ -80,7 +79,7 @@ o.hidden = true -- Allow hidden buffers
 o.errorbells = false -- No error bells
 o.backspace = "indent,eol,start" -- Better backspace behavior
 o.autochdir = false -- Don't auto change directory
-o.path:append "**" -- include subdirectories in search
+-- Removed path:append "**" — causes slow :find in large projects (use :Files instead)
 o.selection = "exclusive" -- Selection behavior
 o.mouse = "" -- Disable mouse
 o.clipboard:append "unnamedplus" -- Use system clipboard
@@ -126,7 +125,7 @@ o.wildignore:append "**/.git/**,**/node_modules/**,**/dist/**,**/build/**"
 o.diffopt:append "linematch:60"
 
 -- Performance improvements
-o.redrawtime = 10000
+o.redrawtime = 2000
 o.maxmempattern = 20000
 
 -- Create undo directory if it doesn't exist
