@@ -19,6 +19,7 @@ return {
     format_on_save = {
       lsp_fallback = true,
       quiet = true,
+      timeout_ms = 2000,
     },
   },
 }

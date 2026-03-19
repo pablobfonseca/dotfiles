@@ -177,6 +177,17 @@ vim.api.nvim_create_autocmd("CursorMoved", {
       vim.loop.timer_stop(highlight_timer)
       highlight_timer = nil
     end
-    vim.lsp.buf.clear_references()
+    -- Debounce clear_references to avoid LSP IPC on every cursor move
+    local timer = vim.loop.new_timer()
+    highlight_timer = timer
+    timer:start(150, 0, vim.schedule_wrap(function()
+      if timer == highlight_timer then
+        highlight_timer = nil
+        vim.lsp.buf.clear_references()
+      end
+      if not timer:is_closing() then
+        timer:close()
+      end
+    end))
   end,
 })
