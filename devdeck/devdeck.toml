@@ -155,13 +155,15 @@ main = true
 WorkflowInputs = []
 
 [[commands]]
-uuid = "f3f45989-e5b9-44ba-8b9a-2370c573a6fa"
-label = "Open Claude"
-app = "Claude"
-icon = "custom:claude"
-type = "action"
-context = "main"
+uuid = 'f3f45989-e5b9-44ba-8b9a-2370c573a6fa'
+app = 'Claude'
+icon = 'custom:claude'
+IconURL = ''
+label = 'Open Claude'
+type = 'action'
+context = 'main'
 main = true
+WorkflowInputs = []
 
 [[commands]]
 uuid = 'd054d997-e87a-63e5-25b1-a3e3fbe9bb64'
