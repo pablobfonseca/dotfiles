@@ -342,7 +342,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'c1f05f64-f3b5-8245-beaf-adf180913a36'
-action = 'browser_open:https://github.com/ZeTribez/tribez/pulls'
+action = 'browser_open:https://github.com/Tribemap/tribemap/pulls'
 icon = 'circle.hexagonpath'
 IconURL = ''
 label = 'TribeMap'
@@ -1173,7 +1173,7 @@ action = 'browser_open:https://tribemap.sentry.io/issues'
 icon = 'custom:sentry'
 icon_color = '#5452ff'
 IconURL = ''
-label = 'Tribez Sentry'
+label = 'Tribemap Sentry'
 type = 'action'
 context = 'chrome'
 WorkflowInputs = []
@@ -1184,7 +1184,7 @@ action = 'browser_open:https://tribemap.sentry.io/explore/logs'
 icon = 'custom:sentry'
 icon_color = '#5452ff'
 IconURL = ''
-label = 'Tribez Sentry Logs'
+label = 'Tribemap Sentry Logs'
 type = 'action'
 context = 'chrome'
 WorkflowInputs = []
