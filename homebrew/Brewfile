@@ -43,7 +43,6 @@ brew "zsh-syntax-highlighting"
 brew "pandoc"
 brew "btop"
 brew "fnm"
-brew "bun"
 brew "deno"
 
 cask "1password"
