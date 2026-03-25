@@ -1,91 +1,114 @@
 prSections:
-    - title: My Pull Requests
-      filters: is:open author:@me
-    - title: Needs My Review
-      filters: is:open review-requested:@me
-    - title: Involved
-      filters: is:open involves:@me -author:@me
+  - title: My Pull Requests
+    filters: is:open author:@me
+  - title: Needs My Review
+    filters: is:open review-requested:@me
+  - title: Involved
+    filters: is:open involves:@me -author:@me
 issuesSections:
-    - title: My Issues
-      filters: is:open author:@me
-    - title: Assigned
-      filters: is:open assignee:@me
-    - title: Involved
-      filters: is:open involves:@me -author:@me
+  - title: My Issues
+    filters: is:open author:@me
+  - title: Assigned
+    filters: is:open assignee:@me
+  - title: Involved
+    filters: is:open involves:@me -author:@me
 notificationsSections:
-    - title: All
-      filters: ""
-    - title: Created
-      filters: reason:author
-    - title: Participating
-      filters: reason:participating
-    - title: Mentioned
-      filters: reason:mention
-    - title: Review Requested
-      filters: reason:review-requested
-    - title: Assigned
-      filters: reason:assign
-    - title: Subscribed
-      filters: reason:subscribed
-    - title: Team Mentioned
-      filters: reason:team-mention
+  - title: All
+    filters: ""
+  - title: Created
+    filters: reason:author
+  - title: Participating
+    filters: reason:participating
+  - title: Mentioned
+    filters: reason:mention
+  - title: Review Requested
+    filters: reason:review-requested
+  - title: Assigned
+    filters: reason:assign
+  - title: Subscribed
+    filters: reason:subscribed
+  - title: Team Mentioned
+    filters: reason:team-mention
 repo:
-    branchesRefetchIntervalSeconds: 30
-    prsRefetchIntervalSeconds: 60
+  branchesRefetchIntervalSeconds: 30
+  prsRefetchIntervalSeconds: 60
 defaults:
-    preview:
-        open: true
-        width: 0.45
-    prsLimit: 20
-    prApproveComment: LGTM
-    issuesLimit: 20
-    notificationsLimit: 20
-    view: prs
-    layout:
-        prs:
-            updatedAt:
-                width: 5
-            createdAt:
-                width: 5
-            repo:
-                width: 20
-            author:
-                width: 15
-            authorIcon:
-                hidden: false
-            assignees:
-                width: 20
-                hidden: true
-            base:
-                width: 15
-                hidden: true
-            lines:
-                width: 15
-        issues:
-            updatedAt:
-                width: 5
-            createdAt:
-                width: 5
-            repo:
-                width: 15
-            creator:
-                width: 10
-            creatorIcon:
-                hidden: false
-            assignees:
-                width: 20
-                hidden: true
-    refetchIntervalMinutes: 30
+  preview:
+    open: true
+    width: 0.45
+  prsLimit: 20
+  prApproveComment: LGTM
+  issuesLimit: 20
+  notificationsLimit: 20
+  view: prs
+  layout:
+    prs:
+      updatedAt:
+        width: 5
+      createdAt:
+        width: 5
+      repo:
+        width: 20
+      author:
+        width: 15
+      authorIcon:
+        hidden: false
+      assignees:
+        width: 20
+        hidden: true
+      base:
+        width: 15
+        hidden: true
+      lines:
+        width: 15
+    issues:
+      updatedAt:
+        width: 5
+      createdAt:
+        width: 5
+      repo:
+        width: 15
+      creator:
+        width: 10
+      creatorIcon:
+        hidden: false
+      assignees:
+        width: 20
+        hidden: true
+  refetchIntervalMinutes: 30
 keybindings: {}
 repoPaths: {}
 theme:
-    ui:
-        sectionsShowCount: true
-        table:
-            showSeparator: true
-            compact: false
+  ui:
+    sectionsShowCount: true
+    table:
+      showSeparator: true
+      compact: false
+  colors:
+    text:
+      primary: "#00ffff"
+      secondary: "#b4bcc8"
+      inverted: "#0a0e14"
+      faint: "#6a7b9a"
+      warning: "#ff8800"
+      success: "#00ff41"
+      actor: "#bf00ff"
+    background:
+      selected: "#2a1f3d"
+    border:
+      primary: "#ff007f"
+      secondary: "#2a3441"
+      faint: "#3b4458"
+    inline:
+      icons:
+        newcontributor: "#ffff00"
+        contributor: "#00ff41"
+        collaborator: "#00ffff"
+        member: "#0080ff"
+        owner: "#ff007f"
+        unknownrole: "#6a7b9a"
 pager:
-    diff: ""
+  diff: ""
 confirmQuit: false
 showAuthorIcons: true
 smartFilteringAtLaunch: true
