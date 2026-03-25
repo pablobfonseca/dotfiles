@@ -44,7 +44,6 @@ brew "zlib"
 brew "zoxide"
 brew "zsh-syntax-highlighting"
 brew "pandoc"
-brew "tmux-fingers"
 brew "btop"
 
 cask "1password-cli"
