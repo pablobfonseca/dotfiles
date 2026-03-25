@@ -1,6 +1,4 @@
 tap "codecrafters-io/tap"
-tap "homebrew/bundle"
-tap "homebrew/services"
 tap "mutagen-io/mutagen"
 tap "devdeck-app/homebrew-devdeck-server"
 
@@ -45,6 +43,8 @@ brew "zsh-syntax-highlighting"
 brew "pandoc"
 brew "btop"
 brew "fnm"
+brew "bun"
+brew "deno"
 
 cask "1password"
 cask "docker"
