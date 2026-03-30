@@ -6,3 +6,4 @@ windows:
     layout: main-vertical
     panes:
       - claude
+  - repo: gh dash
