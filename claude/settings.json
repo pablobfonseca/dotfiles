@@ -55,7 +55,6 @@
     "dev-browser@dev-browser-marketplace": true,
     "ast-grep@ast-grep-marketplace": true,
     "reflexion@context-engineering-kit": true,
-    "superpowers@superpowers-marketplace": true,
     "typescript-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": true,
@@ -66,7 +65,8 @@
     "obsidian@obsidian-skills": true,
     "plugin-dev@claude-plugins-official": false,
     "hookify@claude-plugins-official": true,
-    "learning-output-style@claude-plugins-official": true
+    "learning-output-style@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "dev-browser-marketplace": {
@@ -85,12 +85,6 @@
       "source": {
         "source": "github",
         "repo": "NeoLabHQ/context-engineering-kit"
-      }
-    },
-    "superpowers-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "obra/superpowers-marketplace"
       }
     },
     "ui-ux-pro-max-skill": {
@@ -113,6 +107,6 @@
     }
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "voiceEnabled": false
 }
