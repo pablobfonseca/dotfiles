@@ -9,6 +9,7 @@ return {
         "js-debug-adapter",
         "fixjson",
         "goimports",
+        "html-lsp",
         "gopls",
         "json-lsp",
         "lua-language-server",
@@ -17,6 +18,7 @@ return {
         "stylua",
         "tailwindcss-language-server",
         "typescript-language-server",
+        "yaml-language-server",
       },
     },
     config = function(_, opts)
