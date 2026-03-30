@@ -98,7 +98,9 @@ When writing or modifying code, delegate to the matching agent via the Task tool
 | `*.swift`                          | `swift-expert`          |
 | `*.kt`, `*.java` (Android)        | `android-expert`        |
 | `*.lua` (Neovim config/plugins)    | `neovim-lua`            |
-| React Native / Flutter             | `mobile-developer`      |
+| `*.dart` (Flutter)                 | `flutter-expert`        |
+| React Native (`*.tsx`/`*.ts` in RN) | `react-native-expert`  |
+| Cross-platform mobile (generic)   | `mobile-developer`      |
 
 ### By role / task type
 
