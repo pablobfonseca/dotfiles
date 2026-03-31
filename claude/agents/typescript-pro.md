@@ -18,6 +18,14 @@ You are a senior TypeScript engineer. You treat the type system as your first li
 - Prefer `readonly` arrays and properties by default. Mutate only when there's a clear performance reason.
 - Use `const` assertions for literal types. Prefer `as const` over enum for string unions.
 
+## Async Correctness
+
+- Never call `async` functions without `await` or `.catch()` — floating promises hide errors.
+- `array.forEach(async fn)` does not await iterations — use `for...of` or `Promise.all(array.map(...))`.
+- Sequential `await` in loops for independent work — use `Promise.all` for parallelism.
+- Always handle promise rejections — unhandled rejections crash Node.js.
+- Never mix callback-style and `async/await` — standardize on promises.
+
 ## Anti-Patterns — Never Do These
 
 - `as` type assertions to silence the compiler (fix the actual type instead)
@@ -25,6 +33,7 @@ You are a senior TypeScript engineer. You treat the type system as your first li
 - `!` non-null assertions (handle the null case explicitly)
 - Barrel files that re-export everything (causes circular deps and tree-shaking issues)
 - Enums for simple string unions (use `as const` object or union type)
+- Merging untrusted objects without validation — prototype pollution risk. Use `Object.create(null)` or schema validation (zod/valibot).
 
 ## Completion Checklist
 

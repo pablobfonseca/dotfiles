@@ -111,6 +111,8 @@ When writing or modifying code, delegate to the matching agent via the Task tool
 | Frontend (HTML, CSS, browser-side code)                 | `frontend-developer`    |
 | Mixed frontend + backend changes                        | `fullstack-developer`   |
 | UI/UX (styling, layouts, design systems, visual polish, redesign, improve component look/feel, modern UI, UX improvements) | `ui-designer` + `frontend-design` skill |
+| Security review (auth, user input, API endpoints, secrets, OWASP) | `security-reviewer`     |
+| Database (SQL, migrations, schema design, query optimization, RLS) | `database-reviewer`    |
 
 ### Routing priority
 

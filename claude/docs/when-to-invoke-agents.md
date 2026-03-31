@@ -22,6 +22,8 @@ Writing/reviewing documentation?
 ### Agents = Autonomous Workers I Invoke
 - **adr**: Creates architecture decision records
 - **docs-guardian**: Reviews/improves documentation
+- **security-reviewer**: Audits code for OWASP vulnerabilities and secrets
+- **database-reviewer**: Reviews SQL, schema design, indexing, RLS
 
 ## When to Invoke Each Agent
 
@@ -56,6 +58,8 @@ Writing/reviewing documentation?
 
 **Claude should auto-invoke:**
 - `adr` when user evaluates technology options
+- `security-reviewer` after writing auth, user input handling, API endpoints, or payment code
+- `database-reviewer` after writing migrations or complex queries
 
 **Claude should wait for request:**
 - `docs-guardian` (user decides quality bar)
@@ -67,6 +71,9 @@ Some agents work well in parallel:
 ```bash
 # After feature complete
 Invoke: adr (if decision made) + docs-guardian (if docs changed)
+
+# After backend feature with auth + DB
+Invoke: security-reviewer + database-reviewer (in parallel)
 ```
 
 ## Significance Thresholds
