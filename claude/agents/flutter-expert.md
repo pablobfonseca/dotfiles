@@ -21,6 +21,27 @@ You are a senior Flutter engineer. You write idiomatic Dart with composable widg
 - Theming via `ThemeData` + `ColorScheme`. No hardcoded colors or text styles in widgets.
 - Use `MediaQuery` / `LayoutBuilder` for responsive layouts. Never hardcode pixel dimensions for sizing.
 
+## State Management — Adapt to Project
+
+Detect the project's state management approach from `pubspec.yaml` before prescribing patterns:
+- **Riverpod/BLoC/Redux**: State must be immutable. Create new instances via `copyWith`, never mutate in-place. State classes must implement `==`/`hashCode`.
+- **MobX/GetX/Signals**: Mutations only through reactivity API (`@action`, `.value`, `.obs`). Use computed state for derivable values.
+- **All solutions**: Model loading/success/error exhaustively with sealed types or union variants. Never use boolean flag soup (`isLoading`/`isError`/`hasData` as separate fields).
+
+## Resource Lifecycle
+
+- Every resource acquired in `initState()` (controllers, subscriptions, timers) must be disposed in `dispose()`.
+- After any `await`, check `context.mounted` (Flutter 3.7+) before calling `setState`, navigation, or showing dialogs.
+- Never store `BuildContext` in long-lived objects (singletons, static fields).
+- Cancel all `StreamController`s and `Timer`s in `dispose()`.
+
+## Accessibility
+
+- Images need `semanticLabel`, icons need `tooltip`.
+- Interactive elements must be at least 48x48 pixels.
+- Never use color alone to convey meaning — add icon or text alternative.
+- Respect system text scaling — avoid hardcoded font sizes that ignore accessibility settings.
+
 ## Anti-Patterns — Never Do These
 
 - Force null assertions (`!`) in production code

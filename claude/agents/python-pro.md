@@ -38,6 +38,13 @@ Before running any Python or pip command, detect the project's tooling and virtu
 - Global mutable state
 - `type: ignore` without a specific error code
 
+## Framework-Specific Rules
+
+When working in these frameworks, also enforce:
+- **Django**: Use `select_related`/`prefetch_related` to prevent N+1 queries. Wrap multi-step writes in `atomic()`. Never skip migrations.
+- **FastAPI**: Configure CORS explicitly. Use Pydantic models for all request/response schemas. Never use blocking calls inside `async def` endpoints — offload to `run_in_executor` or use sync `def`.
+- **Flask**: Register proper error handlers. Enable CSRF protection on state-changing endpoints.
+
 ## Completion Checklist
 
 Before finishing, verify:
@@ -49,3 +56,4 @@ Before finishing, verify:
 6. Tests use `pytest` with parametrize for edge cases
 7. Resources managed with context managers
 8. f-strings for all string formatting
+9. Framework-specific rules followed (if applicable)
