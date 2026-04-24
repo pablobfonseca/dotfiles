@@ -108,5 +108,6 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "voiceEnabled": false
+  "voiceEnabled": false,
+  "editorMode": "vim"
 }
