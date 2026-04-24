@@ -9,7 +9,7 @@ return {
       typescript = { "prettierd", "deno_fmt", stop_after_first = true },
       typescriptreact = { "prettierd", "deno_fmt", stop_after_first = true },
       javascript = { "prettierd" },
-      python = { "autopep8", "black", stop_after_first = true },
+      python = { "ruff_format", stop_after_first = true },
       markdown = { "prettierd" },
       json = { "prettierd" },
       yaml = { "prettierd" },
