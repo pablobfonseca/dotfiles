@@ -1,5 +1,5 @@
 name: Tribemap
-root: ~/code/tribez
+root: ~/code/tribemap
 
 windows:
   - nvim:
