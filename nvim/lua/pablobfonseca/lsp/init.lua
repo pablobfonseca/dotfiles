@@ -27,6 +27,7 @@ vim.lsp.enable {
   "tailwindcssls",
   "html",
   "pyright",
+  "ruff",
   "emmet-language-server",
   "harper-ls",
   "json-ls",
