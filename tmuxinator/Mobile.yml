@@ -1,0 +1,24 @@
+name: Mobile
+root: ~/code/cobrowsing-mobile
+
+windows:
+  - android:
+      layout: main-vertical
+      root: ~/code/cobrowsing-mobile/android-sdk
+      panes:
+        - claude
+  - ios:
+      layout: main-vertical
+      root: ~/code/cobrowsing-mobile/ios-sdk
+      panes:
+        - claude
+  - flutter:
+      layout: main-vertical
+      root: ~/code/cobrowsing-mobile/flutter-sdk
+      panes:
+        - claude
+  - react-native:
+      layout: main-vertical
+      root: ~/code/cobrowsing-mobile/react-native-sdk
+      panes:
+        - claude
