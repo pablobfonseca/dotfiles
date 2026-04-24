@@ -14,6 +14,7 @@ return {
         "json-lsp",
         "lua-language-server",
         "prettier",
+        "eslint-lsp",
         "prettierd",
         "stylua",
         "tailwindcss-language-server",
