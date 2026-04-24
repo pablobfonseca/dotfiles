@@ -31,4 +31,5 @@ vim.lsp.enable {
   "harper-ls",
   "json-ls",
   "yaml-ls",
+  "eslint-ls",
 }
