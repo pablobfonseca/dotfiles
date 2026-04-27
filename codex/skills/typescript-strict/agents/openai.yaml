@@ -1,0 +1,4 @@
+interface:
+  display_name: "TypeScript Strict"
+  short_description: "Strict TypeScript patterns"
+  default_prompt: "Use $typescript-strict when writing or reviewing TypeScript code."

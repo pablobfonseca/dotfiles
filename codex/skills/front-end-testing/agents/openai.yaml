@@ -1,0 +1,4 @@
+interface:
+  display_name: "Front-End Testing"
+  short_description: "DOM Testing Library practices"
+  default_prompt: "Use $front-end-testing when testing front-end behavior."

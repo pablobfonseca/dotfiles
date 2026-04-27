@@ -1,0 +1,32 @@
+# User-level Codex defaults managed from ~/.dotfiles/codex.
+
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+model_verbosity = "low"
+personality = "pragmatic"
+
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+web_search = "disabled"
+
+project_doc_max_bytes = 65536
+tool_output_token_limit = 20000
+
+[agents]
+max_threads = 6
+max_depth = 1
+
+[projects."/Users/pablobfonseca/code/tribemap"]
+trust_level = "trusted"
+
+[projects."/Users/pablobfonseca/.dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/pablobfonseca/Documents/Codex/2026-04-27/i-have-this-assingment-and-my"]
+trust_level = "trusted"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 2
+
+[plugins."github@openai-curated"]
+enabled = true
