@@ -1,0 +1,4 @@
+interface:
+  display_name: "Functional Patterns"
+  short_description: "Immutable functional code patterns"
+  default_prompt: "Use $functional when writing data transformations or business logic."

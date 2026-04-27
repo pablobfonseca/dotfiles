@@ -13,7 +13,7 @@
 | **Multiplexer** | tmux + tpm | `tmux/`, `tmuxinator/` |
 | **Window Manager** | AeroSpace | `aerospace/` |
 | **Git** | git + lazygit + delta | `git/`, `lazygit/` |
-| **AI** | Claude Code | `claude/` |
+| **AI** | Claude Code, Codex | `claude/`, `codex/` |
 | **macOS** | Hammerspoon, Karabiner | `hammerspoon/`, `karabiner/` |
 | **File Manager** | yazi | `yazi/` |
 | **Utilities** | bat, btop, atuin, fzf | `bat/`, `btop/`, `atuin/` |
@@ -49,6 +49,10 @@ Prefix: `C-a` | Vi mode | [Cyberpunk theme](https://github.com/pablobfonseca/cyb
 ## Claude Code
 
 22 specialized agents (language + role-based), 13 plugins (4 LSP servers, superpowers, frontend-design, dev-browser, ast-grep, reflexion), auto-format hooks for TypeScript.
+
+## Codex
+
+Best-practice Codex setup with global `AGENTS.md`, conservative CLI defaults, focused reusable skills, GitHub plugin enabled, and narrow custom agents for review-oriented work.
 
 ## Shell
 

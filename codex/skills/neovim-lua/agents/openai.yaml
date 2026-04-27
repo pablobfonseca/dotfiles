@@ -1,0 +1,4 @@
+interface:
+  display_name: "Neovim Lua"
+  short_description: "Neovim Lua and API guidance"
+  default_prompt: "Use $neovim-lua when editing Neovim Lua config or plugins."
