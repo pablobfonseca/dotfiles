@@ -25,8 +25,36 @@ trust_level = "trusted"
 [projects."/Users/pablobfonseca/Documents/Codex/2026-04-27/i-have-this-assingment-and-my"]
 trust_level = "trusted"
 
+[projects."/Users/pablobfonseca/Documents/Codex/2026-05-04/how-to-avoid-this-in-python"]
+trust_level = "trusted"
+
+[projects."/Users/pablobfonseca/Documents/Codex/2026-05-04/i-have-this-assignemnt-recursion-practice"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 2
 
 [plugins."github@openai-curated"]
 enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."browser-use@openai-bundled"]
+enabled = true
+
+[marketplaces.openai-bundled]
+last_updated = "2026-05-04T19:12:22Z"
+source_type = "local"
+source = "/Users/pablobfonseca/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-05-04T13:50:51Z"
+source_type = "local"
+source = "/Users/pablobfonseca/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
