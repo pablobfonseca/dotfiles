@@ -6,4 +6,5 @@ windows:
     layout: main-vertical
     panes:
       - claude
+  - lazydocker: tribez lazydocker
   - repo: gh dash
