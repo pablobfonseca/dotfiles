@@ -109,6 +109,8 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
+  "editorMode": "vim",
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": false,
-  "editorMode": "vim"
+  "agentPushNotifEnabled": true
 }
