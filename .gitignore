@@ -63,3 +63,17 @@ zsh/.aliases.local
 zsh/env_variables.zsh
 fish/fish_variables
 /emacs.d/elpa/
+
+# codex runtime state (secrets, caches, session DBs)
+codex/auth.json
+codex/installation_id
+codex/.personality_migration
+codex/version.json
+codex/models_cache.json
+codex/cache/
+codex/plugins/
+codex/skills/.system/
+codex/logs_*.sqlite
+codex/state_*.sqlite
+codex/state_*.sqlite-shm
+codex/state_*.sqlite-wal
