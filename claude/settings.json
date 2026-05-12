@@ -1,10 +1,30 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
     "MAX_THINKING_TOKENS": "31999"
   },
-  "includeCoAuthoredBy": false,
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/.env)",
+      "Read(./**/.env.*)",
+      "Read(./secrets/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/credentials)",
+      "Read(~/.aws/config)",
+      "Bash(curl * | sh)",
+      "Bash(curl * | bash)",
+      "Bash(wget * | sh)",
+      "Bash(wget * | bash)"
+    ]
+  },
   "hooks": {
     "PostToolUse": [
       {
@@ -116,7 +136,11 @@
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
   "editorMode": "vim",
-  "skipAutoPermissionPrompt": true,
-  "voiceEnabled": false,
-  "agentPushNotifEnabled": true
+  "voice": {
+    "enabled": false
+  },
+  "tui": "fullscreen",
+  "autoUpdatesChannel": "stable",
+  "teammateMode": "in-process",
+  "cleanupPeriodDays": 14
 }
