@@ -459,3 +459,6 @@ esac
 # pnpm end
 
 alias claude-mem='bun "/Users/pablobfonseca/.claude/plugins/cache/thedotmack/claude-mem/10.6.2/scripts/worker-service.cjs"'
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
