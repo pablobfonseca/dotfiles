@@ -105,6 +105,12 @@
         "source": "github",
         "repo": "kepano/obsidian-skills"
       }
+    },
+    "pixijs-skills": {
+      "source": {
+        "source": "github",
+        "repo": "pixijs/pixijs-skills"
+      }
     }
   },
   "alwaysThinkingEnabled": true,
