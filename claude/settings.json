@@ -1,5 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 14,
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
@@ -135,12 +136,12 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "editorMode": "vim",
+  "autoUpdatesChannel": "stable",
+  "tui": "fullscreen",
   "voice": {
     "enabled": false
   },
-  "tui": "fullscreen",
-  "autoUpdatesChannel": "stable",
+  "editorMode": "vim",
   "teammateMode": "in-process",
-  "cleanupPeriodDays": 14
+  "skipAutoPermissionPrompt": true
 }
