@@ -144,5 +144,6 @@
   },
   "editorMode": "vim",
   "teammateMode": "in-process",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }
