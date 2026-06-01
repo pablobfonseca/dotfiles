@@ -137,7 +137,7 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "autoUpdatesChannel": "stable",
+  "autoUpdatesChannel": "latest",
   "tui": "fullscreen",
   "voice": {
     "enabled": false
