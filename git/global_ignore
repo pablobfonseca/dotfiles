@@ -31,3 +31,5 @@ http-client.env.json
 tribez_todo.md
 tribes_queries.sql
 devdeck_ideas.md
+
+**/.claude/settings.local.json
