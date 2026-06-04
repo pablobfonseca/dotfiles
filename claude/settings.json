@@ -89,7 +89,8 @@
     "learning-output-style@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "pixijs-skills@pixijs-skills": true
+    "pixijs-skills@pixijs-skills": true,
+    "harness@harness-marketplace": true
   },
   "extraKnownMarketplaces": {
     "dev-browser-marketplace": {
@@ -132,6 +133,12 @@
       "source": {
         "source": "github",
         "repo": "pixijs/pixijs-skills"
+      }
+    },
+    "harness-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "revfactory/harness"
       }
     }
   },
