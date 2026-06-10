@@ -90,7 +90,8 @@
     "superpowers@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
     "pixijs-skills@pixijs-skills": true,
-    "harness@harness-marketplace": true
+    "harness@harness-marketplace": true,
+    "stripe@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "dev-browser-marketplace": {
