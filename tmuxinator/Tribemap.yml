@@ -1,10 +1,9 @@
 name: Tribemap
-root: ~/code/tribemap
+root: ~/code/upscope-env/tribemap
 
 windows:
   - nvim:
     layout: main-vertical
     panes:
       - claude
-  - lazydocker: tribez lazydocker
-  - repo: gh dash
+  - lazydocker: upscope tribemap
