@@ -1,11 +1,9 @@
 name: Upscope
-root: ~/code/upscope
+root: ~/code/upscope-env
 
 windows:
   - nvim:
       layout: main-vertical
       panes:
         - nvim
-        -
   - lazydocker: upscope lazydocker
-  - types-watch: upscope build types -w
