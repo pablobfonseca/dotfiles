@@ -2,8 +2,14 @@ name: Upscope
 root: ~/code/upscope-env
 
 windows:
-  - nvim:
+  - userview:
       layout: main-vertical
+      root: ~/code/upscope-env/userview
       panes:
         - nvim
-  - lazydocker: upscope lazydocker
+  - tribemap:
+      layout: main-vertical
+      root: ~/code/upscope-env/tribemap
+  - cli:
+      layout: main-vertical
+      root: ~/code/upscope-env/upscope-cli
