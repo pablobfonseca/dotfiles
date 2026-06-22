@@ -27,6 +27,7 @@ return {
       desc = "Find file",
     },
     { "<leader>f", function() require("custom.telescope.multi-ripgrep")() end, desc = "Live Grep" },
+    { "<leader>fg", function() require("custom.telescope.glob-files")() end, desc = "Find files (glob)" },
     {
       "<C-x>b",
       function()
