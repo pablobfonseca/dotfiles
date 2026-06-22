@@ -319,7 +319,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'c1f05f64-f3b5-8245-beaf-adf180913a36'
-action = 'browser_open:https://github.com/Tribemap/tribemap/pulls'
+action = 'browser_open:https://github.com/upscopeio/tribemap/pulls'
 icon = 'circle.hexagonpath'
 IconURL = ''
 label = 'TribeMap'
@@ -329,7 +329,7 @@ WorkflowInputs = []
 
 [[commands]]
 uuid = 'ddd511ca-4626-46fd-8ade-af25d6a23cd9'
-action = 'browser_open:https://github.com/devdeck-app/website'
+action = 'browser_open:https://github.com/devdeck-app/devdeck-web'
 icon = 'square.grid.3x3.square'
 IconURL = ''
 label = 'Website'
