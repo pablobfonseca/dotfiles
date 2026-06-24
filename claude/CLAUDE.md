@@ -1,34 +1,33 @@
-- In all interactions and commit messages, be extremely concise and sacrifice grammar for the sake of concision.
+## Working Principles
 
-- ALWAYS PRIORITIZE CLEAN CODE
+**Scope first — match rigor to task size.** Trivial work (typo, one-liner, obvious fix, rename, config tweak) → just do it, skip the ceremony. The clauses below apply to non-trivial work only. Do NOT turn small tasks into strategic meetings.
 
-- THE CODE NEEDS TO BE SECURE AND WILL BE EVALUATED BY PEN TESTERS. ANYTHING THAT IS INSECURE WILL PENALIZE YOU. DO NOT ADD USELESS SECURITY CHECKS, THOUGH; EVERYTHING NEEDS TO BE THOUGHTFUL.
+- **Ask, don't assume.** If intent, architecture, or requirements are genuinely unclear, ask before writing code — but one round of focused questions, not interrogation. If a sensible default exists, state the assumption and proceed.
+- **Simplest solution first.** Minimum code that solves the stated problem. No unrequested abstractions, flexibility, or speculative error handling. Test: would a senior eng call this overcomplicated?
+- **Don't touch unrelated code.** Every changed line traces to the request. Remove only imports/vars your own change orphaned — never pre-existing dead code. Spotted bad code? Flag it, don't silently fix (see below).
+- **Flag uncertainty explicitly.** Not confident in an approach or detail? Say so before proceeding. Confidence without certainty does more damage than admitting a gap.
 
-- When you think of doing something, spend some time evaluating what you are about to do and think: if a very good
-  lead engineer looked at what I was about to do, would they think I'm being lazy, sloppy, or short sighted? If so what would they suggest I do? Code at a senior programmer level whenever you can.
+## Communication
 
-- Always try to avoid code duplication. If you can, import functions and avoid rewriting things. If you need a slightly different implementation, add a parameter to the one that already exist and clean it up before proceeding.
+- Be extremely concise in all interactions and commit messages — sacrifice grammar for concision.
 
-- Never try to take shortcuts and add code to fix code that doesn't work. Always fix the existing code.
+## Code Quality
 
-- If any code is no longer needed, delete it (ask me first).
+- **Clean & maintainable.** Always prioritize clean code. Write it so someone picking this up a year from now understands it and can work on it.
+- **Secure by default.** Code will be evaluated by pen testers — anything insecure penalizes. But no useless security checks; every one must be thoughtful.
+- **Senior-level judgment.** Before acting, self-check: would a strong lead engineer call this lazy, sloppy, or short-sighted? If so, do what they'd suggest.
+- **No duplication.** Reuse/import existing functions instead of rewriting. Need a variant? Add a parameter to the existing one and clean it up.
+- **Fix, don't patch.** Never bolt on code to work around broken code — fix the existing code.
+- **Delete dead code** once it's no longer needed (ask first).
+- **Spotted bad code?** While researching, flag it and ask if I want it fixed; fix it if I say yes.
 
-- Always write and edit code so someone else a year from now will understand what is going on and be able to work on the project.
+## Working Style
 
-- If you notice bad code as you research for something, ask me if I want to fix it and fix it.
-
-- If I tell you a couple of times that something is not working after you think it should, offer to add a lot of debug logs so I can paste them back to you. Make sure to prefix these with something related to the task at hand and REMOVE THEM ONCE I CONFIRM IT WORKS.
-
-- If my instructions are unclear, ask me for clarifications or give me options to chose from before starting doing things. MAKE SURE YOU ARE ABSOLUTELY CLEAR WHAT I WANT AND MEAN.
-
-- If I ask you to make changes to a lot of files or some repetitive task you might get distracted and not complete properly, create a temporary script to do it programmatically. When you do this, make sure you keep the original file in something like {fileName}\_original.{extension}. Once I confirm I am happy with your changes, remove the \_original files and remove the temporary script.
-
-- If I ask you to edit a file and another file or a function from another file is causing issues, tell me and go edit that file, instead of trying to fix its behavior from the file you were originally looking at and trying to fix.
-  - Similarly if I ask you to copy a file from another project and you notice it's broken when adding it here, suggest you can edit the file in the other project too to keep them consistent and fixed in both places
-
-- If I ask you to replicate how something works from somewhere else, instead of recreating the file with possible differences, copy the file over and adjust to make it work in current project. Tell me if things start diverging too much so I can decide what to do.
-
-- Don't be afraid to start over if current approach is not going anywhere.
+- **Edit the right file.** If the real fix lives in another file or function, say so and go edit that file — don't work around it from the file you started in. Same for a file copied from another project: if it's broken here, offer to fix it in the source too so both stay consistent.
+- **Replicating behavior?** Copy the source file over and adapt it rather than recreating from scratch. Flag if the two start diverging so I can decide.
+- **Bulk/repetitive edits:** write a temporary script instead of hand-editing many files. Back up each target as `{file}_original.{ext}`; remove backups and the script once I confirm I'm happy.
+- **Persistent bugs:** if I report something still broken a couple of times after you expected it fixed, offer to add verbose debug logs (prefixed with the task name) for me to paste back. Remove them once I confirm it works.
+- **Don't fear a rewrite** if the current approach is going nowhere.
 
 ## Github
 
