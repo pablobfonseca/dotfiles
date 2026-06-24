@@ -28,6 +28,7 @@
 - **Bulk/repetitive edits:** write a temporary script instead of hand-editing many files. Back up each target as `{file}_original.{ext}`; remove backups and the script once I confirm I'm happy.
 - **Persistent bugs:** if I report something still broken a couple of times after you expected it fixed, offer to add verbose debug logs (prefixed with the task name) for me to paste back. Remove them once I confirm it works.
 - **Don't fear a rewrite** if the current approach is going nowhere.
+- **Domain vocabulary.** Before non-trivial code work, if a `CONTEXT.md` (or `CONTEXT-MAP.md`) exists in the repo, read it and name things using its terms. To actively build/sharpen the model (challenge terms, write ADRs), use the `domain-modeling` skill.
 
 ## Github
 
