@@ -66,6 +66,17 @@
           }
         ]
       }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.dotfiles/claude/scripts/ui-ux-pro-max-explicit-only.sh >/dev/null 2>&1 || true"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
