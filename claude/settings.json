@@ -75,7 +75,7 @@
   "enabledPlugins": {
     "dev-browser@dev-browser-marketplace": true,
     "ast-grep@ast-grep-marketplace": true,
-    "reflexion@context-engineering-kit": true,
+    "reflexion@context-engineering-kit": false,
     "typescript-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": true,
