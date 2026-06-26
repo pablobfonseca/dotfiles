@@ -1,5 +1,5 @@
 [log]
-level = 'debug'
+level = 'info'
 
 [ai]
 provider = 'anthropic'
@@ -1140,28 +1140,6 @@ icon = 'square.grid.3x3.square'
 icon_color = '#5452ff'
 IconURL = ''
 label = 'Chrome Dev Dashboard'
-type = 'action'
-context = 'chrome'
-WorkflowInputs = []
-
-[[commands]]
-uuid = '71fb336d-4055-40d7-82d4-5e54d305df84'
-action = 'browser_open:https://tribemap.sentry.io/issues'
-icon = 'custom:sentry'
-icon_color = '#5452ff'
-IconURL = ''
-label = 'Tribemap Sentry'
-type = 'action'
-context = 'chrome'
-WorkflowInputs = []
-
-[[commands]]
-uuid = 'bd01cc90-1252-42d4-af52-ea1bb608bc55'
-action = 'browser_open:https://tribemap.sentry.io/explore/logs'
-icon = 'custom:sentry'
-icon_color = '#5452ff'
-IconURL = ''
-label = 'Tribemap Sentry Logs'
 type = 'action'
 context = 'chrome'
 WorkflowInputs = []
