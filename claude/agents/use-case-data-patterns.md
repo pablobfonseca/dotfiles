@@ -3,7 +3,6 @@ name: use-case-data-patterns
 description: >
   Use this agent when you need to analyze how a user-facing use case maps to the underlying data access patterns and architectural implementation in the codebase.
 tools: Read, Grep, Glob
-model: sonnet
 color: orange
 ---
 
