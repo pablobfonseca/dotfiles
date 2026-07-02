@@ -10,6 +10,7 @@
 ## Communication
 
 - Be extremely concise in all interactions and commit messages — sacrifice grammar for concision.
+- Open-ended design questions: ask freeform in prose. Only use multiple-choice prompts when the options are genuinely enumerable.
 
 ## Code Quality
 
@@ -43,98 +44,24 @@
 
 ## Commit Approval
 
-**Preference**: Auto-Commit Low-Stakes (Option B)
+- **Auto-commit** only when ALL true: single-file or isolated changes, tests passing, established pattern, no API/public-interface changes, no architectural decisions, full confidence. Notify with a one-line summary + files changed + how to undo.
+- **Ask first**: multi-file changes with dependencies, refactors, first commit of a feature, plan deviations, any uncertainty.
 
-**Auto-commit when ALL criteria met:**
+## Agent Delegation
 
-- [ ] Single file OR multiple files with isolated changes
-- [ ] All tests passing
-- [ ] No external API changes
-- [ ] No refactoring of public interfaces
-- [ ] Following established pattern
-- [ ] No architectural decisions
-- [ ] Confidence level: 100%
+- Delegate specialized or parallelizable implementation work to the matching agent (pick by agent description); skip delegation for trivial edits, quick reads, and simple searches.
+- UI/UX work → `ui-designer` agent + `frontend-design` skill together.
+- Changes touching auth, access scoping, user input handling, or API endpoints → run `security-reviewer` before reporting done.
 
-**Always ask approval for:**
+## Verification
 
-- Multi-file changes with dependencies
-- Refactoring commits (external APIs might be affected)
-- First commit of new feature
-- Plan deviations
-- Any uncertainty
+- After code changes, exercise the affected flow (run the app/tests, hit the endpoint) before reporting done — don't rely on me to QA. State what you verified.
 
-**Auto-commit examples:**
+## Environment
 
-- ✅ Single-file bug fix with test
-- ✅ Documentation updates
-- ✅ Extracting single constant
-- ✅ Adding types
-- ❌ Multi-file refactor (ask first)
-- ❌ API changes (ask first)
-
-**Notification format:**
-
-```
-✅ Committed: 'feat: add email validation'
-   All tests passing (42/42)
-   src/validation/email.ts | 23 +++++++
-
-   To review: git show HEAD
-   To undo: git reset HEAD~1
-```
-
-## Agent Routing
-
-When writing or modifying code, delegate to the matching agent via the Task tool.
-
-### By language / file type
-
-| File pattern / Language            | Agent (`subagent_type`) |
-| ---------------------------------- | ----------------------- |
-| `*.go`                             | `golang-pro`            |
-| `*.tsx`, `*.jsx`, React components | `react-specialist`      |
-| `*.ts` (non-React)                 | `typescript-pro`        |
-| `*.js` (non-React)                 | `javascript-pro`        |
-| `*.py`                             | `python-pro`            |
-| `*.swift`                          | `swift-expert`          |
-| `*.kt`, `*.java` (Android)        | `android-expert`        |
-| `*.lua` (Neovim config/plugins)    | `neovim-lua`            |
-| `*.dart` (Flutter)                 | `flutter-expert`        |
-| React Native (`*.tsx`/`*.ts` in RN) | `react-native-expert`  |
-| Cross-platform mobile (generic)   | `mobile-developer`      |
-
-### By role / task type
-
-| Work type                                               | Agent (`subagent_type`) |
-| ------------------------------------------------------- | ----------------------- |
-| API design (endpoints, schemas, OpenAPI specs)          | `api-designer`          |
-| Backend logic (server, DB, middleware, auth)            | `backend-developer`     |
-| Frontend (HTML, CSS, browser-side code)                 | `frontend-developer`    |
-| Mixed frontend + backend changes                        | `fullstack-developer`   |
-| UI/UX (styling, layouts, design systems, visual polish, redesign, improve component look/feel, modern UI, UX improvements) | `ui-designer` + `frontend-design` skill |
-| Security review (auth, user input, API endpoints, secrets, OWASP) | `security-reviewer`     |
-| Database (SQL, migrations, schema design, query optimization, RLS) | `database-reviewer`    |
-
-### Routing priority
-
-1. **Role agents take precedence** when the task is clearly role-scoped (e.g., designing an API → `api-designer`, even if files are `.ts`)
-2. **Language agents** for pure implementation work within a single language
-3. **Both in parallel** when a task spans roles + languages (e.g., new API endpoint with Go backend + React frontend → `api-designer` + `golang-pro` + `react-specialist`)
-
-### UI/UX trigger keywords
-
-Any request containing these patterns → route to `ui-designer` agent AND invoke `frontend-design` skill:
-- "improve", "redesign", "modernize", "polish", "restyle" a component/page/UI
-- "better UX", "better UI", "look and feel", "visual upgrade"
-- "implement UI for", "design a component", "build a page/screen"
-- Any mention of styling, layout, responsiveness, animations, dark mode, accessibility in UI context
-
-### Rules
-
-- Use agents for writing/editing implementation code (not for quick reads or simple searches)
-- For mixed-language/role changes, launch multiple agents in parallel
-- Skip agent delegation for trivial single-line edits (typo fixes, import additions)
-- When unsure (e.g., `.ts` that might be React), check file contents first
+- Shell is **zsh**: unmatched globs hard-fail (`no matches found`). Quote glob args (`--include='*.go'`) or prefer `rg`/`fd` over bare globs.
+- `~/.claude/{CLAUDE.md,settings.json,agents,commands,skills,docs,hooks}` are symlinks into `~/.dotfiles/claude/` — edit the dotfiles path, not the symlink.
+- Derive the `gh` repo from `git remote get-url origin`; never guess owner/slug.
 
 ## Workflow Documentation
 
