@@ -47,6 +47,7 @@ on searchAndCloseNotifications(elemRef)
       return true
     end if
   end tell
+  return false
 end searchAndCloseNotifications
 
 
@@ -85,5 +86,3 @@ on run
     end tell
   end tell
 end run
-
-# Error: System Events got an error: No result was returned from some part of this expression.
