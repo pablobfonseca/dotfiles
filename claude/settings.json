@@ -26,6 +26,7 @@
       "Bash(wget * | bash)"
     ]
   },
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "PostToolUse": [
       {
@@ -102,7 +103,8 @@
     "frontend-design@claude-plugins-official": true,
     "pixijs-skills@pixijs-skills": true,
     "harness@harness-marketplace": true,
-    "stripe@claude-plugins-official": true
+    "stripe@claude-plugins-official": true,
+    "taste-skill@taste-skill": true
   },
   "extraKnownMarketplaces": {
     "dev-browser-marketplace": {
@@ -151,6 +153,12 @@
       "source": {
         "source": "github",
         "repo": "revfactory/harness"
+      }
+    },
+    "taste-skill": {
+      "source": {
+        "source": "github",
+        "repo": "Leonxlnx/taste-skill"
       }
     }
   },
