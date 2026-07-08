@@ -1,0 +1,4 @@
+interface:
+  display_name: "Diagnosing Bugs"
+  short_description: "Feedback-loop-first bug diagnosis"
+  default_prompt: "Use $diagnosing-bugs to diagnose a hard bug with a tight repro loop."

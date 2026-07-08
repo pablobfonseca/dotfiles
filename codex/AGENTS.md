@@ -24,6 +24,7 @@
 - If a requested file reveals the real bug lives elsewhere, fix the real source instead of compensating locally.
 - If a copied implementation starts diverging heavily from its source, pause and call out the tradeoff.
 - If something fails twice after it should work, offer targeted debug logs with a task-specific prefix. Remove them after confirmation.
+- Before non-trivial code work, read `CONTEXT.md` or `CONTEXT-MAP.md` when present and use the project's domain terms. Use the `domain-modeling` skill when actively changing that language or recording decisions.
 
 ## Plans And Clarifications
 
@@ -34,11 +35,17 @@
 ## Git And GitHub
 
 - Use the GitHub plugin or `gh` for GitHub work.
+- Derive the GitHub repository from `git remote get-url origin`; never guess owner or slug.
 - Do not commit unless explicitly asked to commit, publish, or open a PR.
 - When committing is requested, use concise conventional-style subjects such as `fix: handle empty state`.
 
 ## Codex-Specific
 
 - Use relevant skills when their descriptions match the task. Load detailed references only when needed.
-- Use subagents only when the user explicitly asks for agents, delegation, or parallel work.
+- Use custom subagents when the user explicitly asks for agents, delegation, or parallel work, or when the task itself calls for a specialized review agent such as `security_reviewer` or `database_reviewer`.
 - Prefer built-in `explorer` for read-only codebase questions and `worker` for bounded implementation work unless a custom agent is a better match.
+
+## Environment
+
+- Shell is `zsh`: unmatched globs fail. Quote glob patterns or prefer `rg`/`fd`.
+- `~/.codex` is symlinked into this repo at `~/.dotfiles/codex`; edit the dotfiles path.

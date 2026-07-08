@@ -1,0 +1,4 @@
+interface:
+  display_name: "Handoff"
+  short_description: "Write compact session handoffs"
+  default_prompt: "Use $handoff to summarize this session for a future agent."
