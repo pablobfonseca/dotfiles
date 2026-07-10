@@ -1,15 +1,15 @@
 ## Working Principles
 
-**Scope first — match rigor to task size.** Trivial work (typo, one-liner, obvious fix, rename, config tweak) → just do it, skip the ceremony. The clauses below apply to non-trivial work only. Do NOT turn small tasks into strategic meetings.
+**Scope first: match rigor to task size.** Trivial work (typo, one-liner, obvious fix, rename, config tweak) → just do it, skip the ceremony. The clauses below apply to non-trivial work only. Do NOT turn small tasks into strategic meetings.
 
-- **Ask, don't assume.** If intent, architecture, or requirements are genuinely unclear, ask before writing code — but one round of focused questions, not interrogation. If a sensible default exists, state the assumption and proceed.
+- **Ask, don't assume.** If intent, architecture, or requirements are genuinely unclear, ask before writing code, but one round of focused questions, not interrogation. If a sensible default exists, state the assumption and proceed.
 - **Simplest solution first.** Minimum code that solves the stated problem. No unrequested abstractions, flexibility, or speculative error handling. Test: would a senior eng call this overcomplicated?
-- **Don't touch unrelated code.** Every changed line traces to the request. Remove only imports/vars your own change orphaned — never pre-existing dead code. Spotted bad code? Flag it, don't silently fix (see below).
+- **Don't touch unrelated code.** Every changed line traces to the request. Remove only imports/vars your own change orphaned, never pre-existing dead code. Spotted bad code? Flag it, don't silently fix (see below).
 - **Flag uncertainty explicitly.** Not confident in an approach or detail? Say so before proceeding. Confidence without certainty does more damage than admitting a gap.
 
 ## Communication
 
-- Be extremely concise in all interactions and commit messages — sacrifice grammar for concision.
+- Be extremely concise in all interactions and commit messages. Sacrifice grammar for concision.
 - Open-ended design questions: ask freeform in prose. Only use multiple-choice prompts when the options are genuinely enumerable.
 
 ### Prose style
@@ -25,16 +25,16 @@ Applies to text you write for humans: chat replies, commit messages, PR descript
 ## Code Quality
 
 - **Clean & maintainable.** Always prioritize clean code. Write it so someone picking this up a year from now understands it and can work on it.
-- **Secure by default.** Code will be evaluated by pen testers — anything insecure penalizes. But no useless security checks; every one must be thoughtful.
+- **Secure by default.** Code will be evaluated by pen testers. Anything insecure penalizes. But no useless security checks; every one must be thoughtful.
 - **Senior-level judgment.** Before acting, self-check: would a strong lead engineer call this lazy, sloppy, or short-sighted? If so, do what they'd suggest.
 - **No duplication.** Reuse/import existing functions instead of rewriting. Need a variant? Add a parameter to the existing one and clean it up.
-- **Fix, don't patch.** Never bolt on code to work around broken code — fix the existing code.
+- **Fix, don't patch.** Never bolt on code to work around broken code. Fix the existing code.
 - **Delete dead code** once it's no longer needed (ask first).
 - **Spotted bad code?** While researching, flag it and ask if I want it fixed; fix it if I say yes.
 
 ## Working Style
 
-- **Edit the right file.** If the real fix lives in another file or function, say so and go edit that file — don't work around it from the file you started in. Same for a file copied from another project: if it's broken here, offer to fix it in the source too so both stay consistent.
+- **Edit the right file.** If the real fix lives in another file or function, say so and go edit that file. Don't work around it from the file you started in. Same for a file copied from another project: if it's broken here, offer to fix it in the source too so both stay consistent.
 - **Replicating behavior?** Copy the source file over and adapt it rather than recreating from scratch. Flag if the two start diverging so I can decide.
 - **Bulk/repetitive edits:** write a temporary script instead of hand-editing many files. Back up each target as `{file}_original.{ext}`; remove backups and the script once I confirm I'm happy.
 - **Persistent bugs:** if I report something still broken a couple of times after you expected it fixed, offer to add verbose debug logs (prefixed with the task name) for me to paste back. Remove them once I confirm it works.
@@ -65,12 +65,12 @@ Applies to text you write for humans: chat replies, commit messages, PR descript
 
 ## Verification
 
-- After code changes, exercise the affected flow (run the app/tests, hit the endpoint) before reporting done — don't rely on me to QA. State what you verified.
+- After code changes, exercise the affected flow (run the app/tests, hit the endpoint) before reporting done. Don't rely on me to QA. State what you verified.
 
 ## Environment
 
 - Shell is **zsh**: unmatched globs hard-fail (`no matches found`). Quote glob args (`--include='*.go'`) or prefer `rg`/`fd` over bare globs.
-- `~/.claude/{CLAUDE.md,settings.json,agents,commands,skills,docs,hooks}` are symlinks into `~/.dotfiles/claude/` — edit the dotfiles path, not the symlink.
+- `~/.claude/{CLAUDE.md,settings.json,agents,commands,skills,docs,hooks}` are symlinks into `~/.dotfiles/claude/`. Edit the dotfiles path, not the symlink.
 - Derive the `gh` repo from `git remote get-url origin`; never guess owner/slug.
 
 ## Workflow Documentation
