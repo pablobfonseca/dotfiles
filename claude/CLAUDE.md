@@ -12,6 +12,16 @@
 - Be extremely concise in all interactions and commit messages — sacrifice grammar for concision.
 - Open-ended design questions: ask freeform in prose. Only use multiple-choice prompts when the options are genuinely enumerable.
 
+### Prose style
+
+Applies to text you write for humans: chat replies, commit messages, PR descriptions, comments, docstrings, docs.
+
+- No em-dashes or other long dashes. Use commas, periods, or parentheses.
+- Cut filler and hedging: "basically", "essentially", "it's worth noting", "of course".
+- No LLM tells: no "it's not just X, it's Y", no "delve", no overwrought openers.
+- Vary sentence length. Don't pad a short correct statement, don't chain choppy fragments.
+- Reread before finishing. Delete anything that doesn't earn its place.
+
 ## Code Quality
 
 - **Clean & maintainable.** Always prioritize clean code. Write it so someone picking this up a year from now understands it and can work on it.
