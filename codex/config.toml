@@ -31,8 +31,11 @@ trust_level = "trusted"
 [projects."/Users/pablobfonseca/Documents/Codex/2026-05-04/i-have-this-assignemnt-recursion-practice"]
 trust_level = "trusted"
 
+[projects."/Users/pablobfonseca/code/upscope-env/upscope-cli"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
-"gpt-5.5" = 3
+"gpt-5.5" = 4
 
 [plugins."github@openai-curated"]
 enabled = true
