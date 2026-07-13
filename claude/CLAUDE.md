@@ -45,6 +45,7 @@ Applies to text you write for humans: chat replies, commit messages, PR descript
 
 - Your primary method for interacting with Github should be the Github CLI.
 - NEVER include "Generated with Claude Code" (or any similar Claude/Co-Authored-By attribution) in PR descriptions.
+- When opening a PR, always assign me (`--assignee @me`).
 
 ## Plans
 
