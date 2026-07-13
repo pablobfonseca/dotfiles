@@ -200,38 +200,6 @@ function branch_clean() {
     git checkout master && git branch --merged | grep -v master | xargs git branch -d
 }
 
-docker_rmi() {
-    local image
-    image=$(docker images | awk '(NR>1) { print $1 " " $3; }' | fzf --tmux) \
-    && docker rmi $(cut -d' ' -f2 <<< "$image") --force
-}
-
-docker_attach() {
-    local container
-    container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf --tmux) \
-    && docker attach $(cut -d' ' -f1 <<< "$container")
-}
-
-docker_stop() {
-    local container
-    container=$(docker ps | awk 'NR>1 { print $1 " " $NF; }' | fzf --tmux) \
-    && docker stop $(cut -d' ' -f1 <<< "$container")
-}
-
-# TODO: check if the service is found
-function _ur() {
-   local service;
-   service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf --tmux --prompt 'Select a service to restart: ')"
-   upscope restart $service
-}
-
-# TODO: check if the service is found
-function _ul() {
-  local service;
-  service="$(yq '.services | keys' $UPSCOPE_DIR/docker-compose.yaml | sed 's/- //' | fzf --tmux --prompt 'Select a service to see the logs: ')"
-  upscope logs $service
-}
-
 function git_test() {
   local file;
   file=$(git status --porcelain -- '*.test.ts' | cut -c4- | fzf --tmux --prompt "Select a test file: ") \
@@ -303,7 +271,6 @@ alias sb="cd $OBSIDIAN_VAULTS"
 # ctags
 alias ctags="$(brew --prefix ctags)/bin/ctags"
 
-eval "$(op completion zsh)"; compdef _op op
 eval "$(starship init zsh)"
 
 # upscope 
