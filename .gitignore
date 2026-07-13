@@ -73,7 +73,6 @@ codex/models_cache.json
 codex/cache/
 codex/plugins/
 codex/skills/.system/
-codex/logs_*.sqlite
-codex/state_*.sqlite
-codex/state_*.sqlite-shm
-codex/state_*.sqlite-wal
+codex/shell_snapshots/
+codex/history.jsonl
+codex/*.sqlite*
