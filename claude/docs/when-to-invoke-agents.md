@@ -14,9 +14,11 @@ Writing/reviewing documentation?
 ## Agents vs Skills
 
 ### Skills = Knowledge I Follow
-- **functional**: Immutability, pure functions
 - **typescript-strict**: TypeScript strict mode patterns
-- **front-end-testing**: DOM Testing Library patterns
+- **codebase-design**: deep-module design vocabulary
+- **domain-modeling**: ubiquitous language, ADRs, CONTEXT.md
+- **diagnosing-bugs** (manual invoke): repro-loop-first debugging
+- **handoff** (manual invoke): compact session state for a fresh session
 - Superpowers plugin provides: TDD, planning, debugging, verification
 
 ### Agents = Autonomous Workers I Invoke
@@ -24,6 +26,35 @@ Writing/reviewing documentation?
 - **docs-guardian**: Reviews/improves documentation
 - **security-reviewer**: Audits code for OWASP vulnerabilities and secrets
 - **database-reviewer**: Reviews SQL, schema design, indexing, RLS
+
+## Agent Routing Table
+
+Pick by primary task type. When two match, prefer the more specific one.
+
+| Task | Agent |
+| --- | --- |
+| Go / Python / JS / TS / Swift implementation | golang-pro / python-pro / javascript-pro / typescript-pro / swift-expert |
+| React web app | react-specialist |
+| Frontend across React/Vue/Angular | frontend-developer |
+| React Native | react-native-expert |
+| Flutter | flutter-expert |
+| Cross-platform mobile, 80%+ shared code | mobile-developer |
+| Native Android (Kotlin/Compose) | android-expert |
+| Server-side APIs, microservices | backend-developer |
+| API design, OpenAPI specs, versioning | api-designer |
+| Feature spanning DB + API + frontend | fullstack-developer |
+| Neovim config, plugins, colorschemes, Lua | neovim-lua |
+| Visual design, design systems, components | ui-designer (+ frontend-design skill) |
+| Locate files/components | codebase-locator |
+| Explain how existing code works | codebase-analyzer |
+| Find similar existing patterns to model after | codebase-pattern-finder |
+| Map a use case to its data access patterns | use-case-data-patterns |
+| Security audit | security-reviewer |
+| SQL, schema, indexes, migrations | database-reviewer |
+| Documentation quality | docs-guardian |
+| Architecture decision records | adr |
+| Replicate a screenshot as UI | screenshot-replicator |
+| Web research | web-search-researcher |
 
 ## When to Invoke Each Agent
 
