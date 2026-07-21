@@ -104,7 +104,8 @@
     "pixijs-skills@pixijs-skills": true,
     "harness@harness-marketplace": true,
     "stripe@claude-plugins-official": true,
-    "taste-skill@taste-skill": true
+    "taste-skill@taste-skill": true,
+    "warp@claude-code-warp": true
   },
   "extraKnownMarketplaces": {
     "dev-browser-marketplace": {
@@ -159,6 +160,12 @@
       "source": {
         "source": "github",
         "repo": "Leonxlnx/taste-skill"
+      }
+    },
+    "claude-code-warp": {
+      "source": {
+        "source": "github",
+        "repo": "warpdotdev/claude-code-warp"
       }
     }
   },
