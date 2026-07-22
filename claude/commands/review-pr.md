@@ -1,14 +1,17 @@
 ---
 description: Review the inline comments on a PR and analyse whether each one makes sense before acting
-argument-hint: "[pr-number]"
-allowed-tools: Bash(gh:*), Bash(git:*), Read, Grep, Glob
+argument-hint: "[pr-number] [--apply] [--watch]"
+allowed-tools: Bash(gh:*), Bash(git:*), Read, Grep, Glob, Edit, Write
 ---
 
 ## Task
 
 Review the **inline review comments** on a pull request and, for each one, decide whether the comment is valid. Analyse first — do NOT blindly apply suggestions.
 
-Target PR: `$ARGUMENTS` (if empty, use the PR for the current branch).
+Parse `$ARGUMENTS`:
+- First non-flag token is the PR number (if empty, use the PR for the current branch).
+- `--apply`: after analysis, apply fixes for valid comments once the user confirms (see **Apply mode**).
+- `--watch`: keep re-reviewing every 5 minutes until Copilot signals it is done (see **Watch mode**).
 
 ## Steps
 
@@ -26,7 +29,7 @@ Target PR: `$ARGUMENTS` (if empty, use the PR for the current branch).
    - **Is it correct?** Verify against the real code. Consider: is the claim factually true here, does the suggestion introduce bugs/regressions, does it fit the codebase conventions (check neighbouring code), is it in scope for this PR?
    - **Verdict:** `Agree` / `Partially agree` / `Disagree` / `Needs clarification` — with a concise reason.
 
-4. **Report.** Output a per-comment breakdown, then a short summary. Do NOT edit any files or push commits. Recommend actions and wait for the user to decide what to apply.
+4. **Report.** Output a per-comment breakdown, then a short summary. By default do NOT edit any files or push commits — recommend actions and wait for the user to decide what to apply. If `--apply` is set, continue to **Apply mode**.
 
 ## Output format
 
@@ -50,8 +53,35 @@ End with:
 - Recommended next steps: <bullet list>
 ```
 
+## Apply mode (`--apply`)
+
+Only reachable after the full analysis in step 3. Two conditions must BOTH hold before any file is touched:
+
+1. **The reviewer is right.** Only threads whose verdict is `Agree` (or the agreed-on part of `Partially agree`) are eligible. Never apply a fix for a `Disagree` or `Needs clarification` thread.
+2. **The user says so.** After the report, list the eligible fixes and ask the user which to apply (accept "all", a subset, or "none"). Do not edit anything until they confirm.
+
+Then, for each confirmed fix:
+- Make the minimal edit that resolves the concern, matching surrounding code style. Do not expand scope beyond the comment.
+- After all edits, show a diff summary. Commit only if the user asks (follow the repo's commit conventions); otherwise leave the changes staged for them to review.
+- Reply to each resolved thread with a one-line note of what changed, if the user wants the threads answered: `gh api repos/{owner}/{repo}/pulls/<number>/comments/<comment_id>/replies -f body='...'`.
+
+## Watch mode (`--watch`)
+
+Keep the PR under review until Copilot has nothing left to say. Delegate the 5-minute interval to the `/loop` skill rather than sleeping in-band:
+
+- Start the loop with the review command minus `--watch`, e.g. `/loop 5m /review-pr <number> --apply`. Each firing runs one full pass (steps 1–4, plus Apply mode if `--apply` is set).
+- **Termination check** (run at the end of every pass): fetch Copilot's latest output and look for the phrase **`and generated no new comments`** (case-insensitive):
+  - Reviews: `gh api "repos/{owner}/{repo}/pulls/<number>/reviews" --paginate`
+  - Issue comments: `gh api "repos/{owner}/{repo}/issues/<number>/comments" --paginate`
+  - Consider only entries authored by the Copilot bot (`user.login` containing `copilot`).
+- If the phrase is present in Copilot's most recent output, **stop the loop** (end the `/loop` run) and report a final summary. Otherwise let `/loop` fire the next pass in 5 minutes.
+
+Guardrails:
+- Only act on comments not already handled in a previous pass (track comment IDs already analysed / applied).
+- Stop the loop with a status if Copilot never signals done after a reasonable number of passes (e.g. 12 ≈ 1 hour), rather than looping indefinitely.
+
 ## Rules
 
 - Analyse before agreeing. A reviewer can be wrong — say so, with evidence from the code.
 - Read the real code, not just the diff hunk.
-- Never apply changes in this command; it is review-only.
+- Never edit files unless `--apply` is set AND the user has confirmed the specific fixes. Default remains review-only.
