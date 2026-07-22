@@ -10,7 +10,7 @@ Review the **inline review comments** on a pull request and, for each one, decid
 
 Parse `$ARGUMENTS`:
 - First non-flag token is the PR number (if empty, use the PR for the current branch).
-- `--apply`: after analysis, apply fixes for valid comments once the user confirms (see **Apply mode**).
+- `--apply`: after analysis, automatically apply fixes for valid comments (see **Apply mode**).
 - `--watch`: keep re-reviewing every 5 minutes until Copilot signals it is done (see **Watch mode**).
 
 ## Steps
@@ -55,12 +55,11 @@ End with:
 
 ## Apply mode (`--apply`)
 
-Only reachable after the full analysis in step 3. Two conditions must BOTH hold before any file is touched:
+Only reachable after the full analysis in step 3. Apply fixes without asking for confirmation — the analysis verdict is the gate:
 
-1. **The reviewer is right.** Only threads whose verdict is `Agree` (or the agreed-on part of `Partially agree`) are eligible. Never apply a fix for a `Disagree` or `Needs clarification` thread.
-2. **The user says so.** After the report, list the eligible fixes and ask the user which to apply (accept "all", a subset, or "none"). Do not edit anything until they confirm.
+- **The reviewer is right.** Only threads whose verdict is `Agree` (or the agreed-on part of `Partially agree`) are eligible. Never apply a fix for a `Disagree` or `Needs clarification` thread — those are reported only.
 
-Then, for each confirmed fix:
+For each eligible fix:
 - Make the minimal edit that resolves the concern, matching surrounding code style. Do not expand scope beyond the comment.
 - After all edits, show a diff summary. Commit only if the user asks (follow the repo's commit conventions); otherwise leave the changes staged for them to review.
 - Reply to each resolved thread with a one-line note of what changed, if the user wants the threads answered: `gh api repos/{owner}/{repo}/pulls/<number>/comments/<comment_id>/replies -f body='...'`.
@@ -84,4 +83,4 @@ Guardrails:
 
 - Analyse before agreeing. A reviewer can be wrong — say so, with evidence from the code.
 - Read the real code, not just the diff hunk.
-- Never edit files unless `--apply` is set AND the user has confirmed the specific fixes. Default remains review-only.
+- Never edit files unless `--apply` is set. Default remains review-only. With `--apply`, only `Agree`/`Partially agree` fixes are applied — no confirmation prompt.
