@@ -964,6 +964,16 @@ context = 'tribemap'
 WorkflowInputs = []
 
 [[commands]]
+uuid = '649b1ccb-50d5-4b8d-9b27-865516c1ceed'
+action = 'browser_navigate:https://app.tribemap.ai/admin/ai'
+icon = 'apple.intelligence'
+IconURL = ''
+label = 'AI'
+type = 'action'
+context = 'tribemap'
+WorkflowInputs = []
+
+[[commands]]
 uuid = '13a2f557-c0d4-4156-b2b8-cef6f83fbd87'
 action = 'browser_navigate:https://app.tribemap.ai/admin/accounts'
 icon = 'person.crop.circle'
