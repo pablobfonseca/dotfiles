@@ -56,10 +56,18 @@ notebook_font_size = 14.0
 [appearance.vertical_tabs]
 enabled = true
 
+[appearance.panes]
+should_dim_inactive_panes = true
+
 [terminal]
 osc52_clipboard_access = "write_only"
 
+[terminal.input]
+input_box_type_setting = "universal"
+honor_ps1 = false
+
 [notifications]
+toast_duration_secs = 8
 
 [notifications.preferences]
 is_agent_task_completed_enabled = true
@@ -69,3 +77,6 @@ is_password_prompt_enabled = true
 long_running_threshold = 30
 mode = "dismissed"
 play_notification_sound = true
+
+[account]
+is_settings_sync_enabled = true
