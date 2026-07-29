@@ -11,6 +11,7 @@
     "pr": ""
   },
   "permissions": {
+    "additionalDirectories": ["~/obsidian/SecondBrain"],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",

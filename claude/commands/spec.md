@@ -1,9 +1,9 @@
 ---
 description: Turn a queue item into a ready-to-run /fable-plan brief
-argument-hint: <project name> | <item text or issue #>
+argument-hint: <project name> | <item: qN, #issue, or text>
 ---
 
-Compose the brief that `/fable-plan` should receive for one queue item. Arguments: `$ARGUMENTS` — project name, then the item (text fragment or `#issue`).
+Compose the brief that `/fable-plan` should receive for one queue item. Arguments: `$ARGUMENTS` — project name, then the item (`qN` ID, `#issue`, or text fragment). The vault is `~/obsidian/SecondBrain`; every vault path in this command resolves there, whatever the cwd.
 
 **This command does not plan.** `/fable-plan` plans, on Fable, in its own session — the model is chosen at session start, so no command can delegate to it in-process. What this command does is make `/fable-plan`'s brainstorming step cheap by handing it everything the vault already knows, so it starts informed instead of interrogating you about context you wrote down months ago.
 
@@ -11,7 +11,7 @@ Writes performed: the queue line's state marker, and nothing else.
 
 ## 1. Resolve the item
 
-- Find the line in `projects/<project>/Queue.md`. If the fragment matches several lines, list them and ask which. If it matches none, say so and stop.
+- Find the line in `projects/<project>/Queue.md`, trying in order: a block ID (`q14`, `14` and `^q14` all mean the line ending in `^q14`), an issue ref (`#901` means the line carrying `(#901)`), else a text fragment. If a fragment matches several lines, list them with their `^qN` IDs and ask which. If nothing matches, say so and stop.
 - Read `projects/<project>.md` for the goal, current state and `repo:`.
 - Read every note the line wikilinks, plus any audit, incident or plan note in `projects/<project>/` whose subject overlaps the item. This is the part you cannot skip — an item like "server stability" is meaningless without the two incident write-ups behind it.
 
@@ -49,7 +49,7 @@ Then print exactly:
 Brief ready for: <queue line>
 
 Next: exit, then run from the repo <repo>
-  claude --model fable --add-dir <vault path>
+  claude --model fable
   /fable-plan "<the brief>"
 
 Then: /implement-plan, and /sync <project> once a PR exists.
