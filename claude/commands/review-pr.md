@@ -62,7 +62,14 @@ Only reachable after the full analysis in step 3. Apply fixes without asking for
 For each eligible fix:
 - Make the minimal edit that resolves the concern, matching surrounding code style. Do not expand scope beyond the comment.
 - After all edits, show a diff summary. Commit only if the user asks (follow the repo's commit conventions); otherwise leave the changes staged for them to review.
-- Reply to each resolved thread with a one-line note of what changed, if the user wants the threads answered: `gh api repos/{owner}/{repo}/pulls/<number>/comments/<comment_id>/replies -f body='...'`.
+- Reply to each addressed thread with a one-line note of what changed: `gh api repos/{owner}/{repo}/pulls/<number>/comments/<comment_id>/replies -f body='...'`.
+- **Always resolve the conversation** after addressing it. Thread IDs come from GraphQL, not the REST comment ID — map each thread by its first comment's `databaseId`:
+  - `gh api graphql -f query='query($owner:String!,$repo:String!,$pr:Int!){repository(owner:$owner,name:$repo){pullRequest(number:$pr){reviewThreads(first:100){nodes{id isResolved comments(first:1){nodes{databaseId}}}}}}}' -f owner=<owner> -f repo=<repo> -F pr=<number>`
+  - `gh api graphql -f query='mutation($id:ID!){resolveReviewThread(input:{threadId:$id}){thread{isResolved}}}' -f id=<threadId>`
+
+For each `Disagree` thread:
+- Add a 👎 reaction to the comment: `gh api repos/{owner}/{repo}/pulls/comments/<comment_id>/reactions -f content='-1'`.
+- Reply with the one-line reason from the analysis so the reviewer sees why it was declined. Leave the thread unresolved.
 
 ## Watch mode (`--watch`)
 
@@ -84,3 +91,4 @@ Guardrails:
 - Analyse before agreeing. A reviewer can be wrong — say so, with evidence from the code.
 - Read the real code, not just the diff hunk.
 - Never edit files unless `--apply` is set. Default remains review-only. With `--apply`, only `Agree`/`Partially agree` fixes are applied — no confirmation prompt.
+- Replies, 👎 reactions, and thread resolution are `--apply`-only side effects. In default mode, report only.
