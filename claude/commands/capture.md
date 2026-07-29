@@ -7,6 +7,8 @@ Capture `$ARGUMENTS`. This command optimises for one thing: never losing a thoug
 
 ## Destination
 
+The vault is `~/obsidian/SecondBrain`; both destinations below resolve there, whatever the cwd.
+
 - If the text starts with a known project name followed by `|`, append to `projects/<project>/Inbox.md` under `## Raw`.
 - Otherwise append to `inbox/Inbox dump.md`.
 - If the target file does not exist, create it with the frontmatter from `CLAUDE.md`.
@@ -14,7 +16,7 @@ Capture `$ARGUMENTS`. This command optimises for one thing: never losing a thoug
 ## Rules
 
 - Append **verbatim**. Do not fix the grammar, expand the abbreviation, or add context the user did not write. A capture note is evidence of what they thought, not a polished artifact.
-- Prefix with `- [ ] ` only if the text is phrased as something to do. Otherwise leave it as a bare line.
+- Prefix with `- [ ] ` unless the text is plainly not work: a question or a bare URL stays a bare line. Erring toward the checkbox keeps `/queue` the single place where triage happens. The Raycast capture extension (`~/code/Playground/capture-obsidian`) applies the same rule; change both together.
 - Never triage, size, tag, relane or promote. That is `/queue`'s job and it happens later, deliberately.
 - Never touch any other line in the file.
 

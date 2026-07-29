@@ -3,7 +3,7 @@ description: Groom a project's Queue.md and propose the next 5 by leverage
 argument-hint: <project name>
 ---
 
-Groom `projects/$ARGUMENTS/Queue.md`. Read `CLAUDE.md` → Task queues first; its invariants bind you. If the file does not exist, list `projects/` and stop.
+Groom `projects/$ARGUMENTS/Queue.md`. The vault is `~/obsidian/SecondBrain`; every vault path in this command resolves there, whatever the cwd. Read the vault's `CLAUDE.md` → Task queues first; its invariants bind you. If the file does not exist, list `projects/` and stop.
 
 ## 1. Read the whole picture before touching a line
 
@@ -20,7 +20,8 @@ Anything in Inbox.md that names an observable symptom or a desired end state bec
 
 In this order, and only these:
 
-- **Split** anything that is two deliverables. Note the split in your report.
+- **Stamp** an ID on any line missing one: append `^qN` as the last token, where N = the highest `^q` number anywhere in the file + 1. IDs are immutable — never renumber, never reuse (dropped and shipped lines keep theirs), never strip. Leave `## Shipped` lines that predate IDs alone.
+- **Split** anything that is two deliverables. Note the split in your report; each half gets its own fresh `^qN`, the original ID stays on the half closest to the original wording.
 - **Size** unsized lines: `~XS` under an hour, `~S` a sitting, `~M` a day, `~L` needs decomposition.
 - **Tag** with at most what applies: `#bug` `#feat` `#sec` `#ops`, plus `#claude` only if an agent could finish it unattended with no product decision to make.
 - **Relane**: vague → `## Needs spec` with a `→` question naming what is undetermined; waiting on something → `## Blocked` with a `→` dependency; explicitly-not-now → `## Someday`.

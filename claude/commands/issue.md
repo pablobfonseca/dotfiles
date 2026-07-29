@@ -1,15 +1,15 @@
 ---
 description: File a queue item as a GitHub issue and write the number back
-argument-hint: <project name> | <item text> [--repo owner/name]
+argument-hint: <project name> | <item: qN or text> [--repo owner/name]
 ---
 
-File a queue item as a GitHub issue. Arguments: `$ARGUMENTS`.
+File a queue item as a GitHub issue. Arguments: `$ARGUMENTS` — project name, then the item (`qN` ID or text fragment). The vault is `~/obsidian/SecondBrain`; every vault path in this command resolves there, whatever the cwd.
 
 ## 1. Preflight — fail loudly, not silently
 
 - `gh auth status`. If unauthenticated, say so and stop.
 - Resolve the repo: `--repo` if given, else the `repo:` key in `projects/<project>.md` frontmatter, else ask. Never guess a repo.
-- Find the queue line. **If it already carries a `(#N)`, stop and report the existing issue.** Issue refs are immutable and one line gets one issue, ever.
+- Find the queue line: `q14`/`14`/`^q14` means the line ending in `^q14`, else match by text fragment. **If it already carries a `(#N)`, stop and report the existing issue.** Issue refs are immutable and one line gets one issue, ever.
 - Refuse items in `## Needs spec` or `## Someday`. An issue nobody can act on is noise; run `/spec` first.
 
 ## 2. Compose the body
@@ -28,7 +28,7 @@ Title is the queue line's text, trimmed of markers, sentence case, under 80 char
 
 ## 4. Write back
 
-Append ` (#N)` to the queue line, before any `[[PLAN]]` link. If a plan note exists, add the issue URL under its Goal section.
+Append ` (#N)` to the queue line, before any `[[PLAN]]` link and before a trailing `^qN` — the block ID stays the last token. If a plan note exists, add the issue URL under its Goal section.
 
 ## 5. Report
 

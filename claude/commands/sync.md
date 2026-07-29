@@ -5,7 +5,7 @@ argument-hint: <project name> [--repo owner/name]
 
 Make `projects/$ARGUMENTS/Queue.md` true. This command reads artifacts — plan files, PRs, issues — and writes what they prove back onto the queue. It never asks you what happened.
 
-Run it from the repo with the vault added (`claude --add-dir <vault>`), since it needs both trees.
+Run it from the repo. The vault is `~/obsidian/SecondBrain`, available in every session via `permissions.additionalDirectories` — no `--add-dir` needed.
 
 ## 1. Preflight
 
@@ -22,7 +22,7 @@ queue: projects/<project>/Queue.md
 queue_item: <the original queue line>
 ```
 
-For each match against this project's queue, write `→plan:docs/plans/<file>.md` onto the line and move it from `## Needs spec` to `## Ready`. A plan existing is what makes an item ready — that is the whole contract.
+Match `queue_item:` to a queue line by its `^qN` block ID when the frontmatter carries one; fall back to verbatim text for older plans. For each match against this project's queue, write `→plan:docs/plans/<file>.md` onto the line and move it from `## Needs spec` to `## Ready`. Anything you append to a line (`→plan:`, `→pr:`, `(#N)`) goes before a trailing `^qN` — the block ID stays the last token. A plan existing is what makes an item ready — that is the whole contract.
 
 Plans with no `queue_item:` are orphans: list them in your report so they can be adopted or deleted. Never invent a queue line to adopt one.
 
