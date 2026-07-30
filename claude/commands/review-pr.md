@@ -29,7 +29,17 @@ Parse `$ARGUMENTS`:
    - **Is it correct?** Verify against the real code. Consider: is the claim factually true here, does the suggestion introduce bugs/regressions, does it fit the codebase conventions (check neighbouring code), is it in scope for this PR?
    - **Verdict:** `Agree` / `Partially agree` / `Disagree` / `Needs clarification` — with a concise reason.
 
-4. **Report.** Output a per-comment breakdown, then a short summary. By default do NOT edit any files or push commits — recommend actions and wait for the user to decide what to apply. If `--apply` is set, continue to **Apply mode**.
+4. **Check CI.** `gh pr checks <number>` — record pass / fail / pending per check. A failing or pending check means the PR is not mergeable yet, whatever the comment threads say.
+
+5. **Report.** Output a per-comment breakdown, then a short summary including the CI status. By default do NOT edit any files or push commits — recommend actions and wait for the user to decide what to apply. If `--apply` is set, continue to **Apply mode**.
+
+   **Mergeable verdict:** the PR is mergeable when all CI checks pass and no thread is left at `Agree` or `Needs clarification` unaddressed. When it is, end the summary with:
+
+   ```
+   Mergeable. Merge it, then /sync <project> — or it reconciles on your next /queue.
+   ```
+
+   (Name the project from the plan/queue reference in the PR body if there is one; otherwise print `/sync` bare.)
 
 ## Output format
 
@@ -75,7 +85,7 @@ For each `Disagree` thread:
 
 Keep the PR under review until Copilot has nothing left to say. Delegate the 5-minute interval to the `/loop` skill rather than sleeping in-band:
 
-- Start the loop with the review command minus `--watch`, e.g. `/loop 5m /review-pr <number> --apply`. Each firing runs one full pass (steps 1–4, plus Apply mode if `--apply` is set).
+- Start the loop with the review command minus `--watch`, e.g. `/loop 5m /review-pr <number> --apply`. Each firing runs one full pass (steps 1–5, plus Apply mode if `--apply` is set).
 - **Termination check** (run at the end of every pass): fetch Copilot's latest output and look for the phrase **`and generated no new comments`** (case-insensitive):
   - Reviews: `gh api "repos/{owner}/{repo}/pulls/<number>/reviews" --paginate`
   - Issue comments: `gh api "repos/{owner}/{repo}/issues/<number>/comments" --paginate`

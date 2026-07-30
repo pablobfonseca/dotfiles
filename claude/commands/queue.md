@@ -5,6 +5,10 @@ argument-hint: <project name>
 
 Groom `projects/$ARGUMENTS/Queue.md`. The vault is `~/obsidian/SecondBrain`; every vault path in this command resolves there, whatever the cwd. Read the vault's `CLAUDE.md` → Task queues first; its invariants bind you. If the file does not exist, list `projects/` and stop.
 
+## 0. Reconcile first
+
+Grooming a stale queue ranks fiction. Before anything else, run the full reconciliation defined in `~/.claude/commands/sync.md` (plans → queue, PRs → queue, issues → queue) — read that file and follow it; it is the single source of truth for reconciliation rules. If `gh` is unauthenticated, do the plans half and say the GitHub half was skipped. Merged work lands in `## Shipped` before you rank what's left.
+
 ## 1. Read the whole picture before touching a line
 
 - `projects/$ARGUMENTS.md` — goal, status, next steps. This is what "leverage" is measured against.
