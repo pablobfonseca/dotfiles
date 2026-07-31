@@ -11,7 +11,6 @@
     "pr": ""
   },
   "permissions": {
-    "additionalDirectories": ["~/obsidian/SecondBrain"],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",
@@ -26,6 +25,9 @@
       "Bash(wget * | sh)",
       "Bash(wget * | bash)",
       "Bash(gh pr merge:*)"
+    ],
+    "additionalDirectories": [
+      "~/obsidian/SecondBrain"
     ]
   },
   "model": "claude-fable-5[1m]",
