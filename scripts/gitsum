@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# gitsum — git repo status summary
+set -euo pipefail
+
+STATUS_LIMIT=20
+
+if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+    echo "Not inside a git repository." >&2
+    exit 1
+fi
+
+if [[ -t 1 && -z ${NO_COLOR:-} ]]; then
+    BOLD=$'\033[1m'
+    CYAN=$'\033[0;36m'
+    YELLOW=$'\033[0;33m'
+    GREEN=$'\033[0;32m'
+    RESET=$'\033[0m'
+else
+    BOLD='' CYAN='' YELLOW='' GREEN='' RESET=''
+fi
+
+ROOT=$(git rev-parse --show-toplevel)
+BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || true)
+
+printf '%sRepository:%s %s\n' "$BOLD" "$RESET" "$(basename "$ROOT")"
+if [[ -n "$BRANCH" ]]; then
+    printf '%sBranch:%s     %s%s%s\n' "$BOLD" "$RESET" "$CYAN" "$BRANCH" "$RESET"
+else
+    printf '%sBranch:%s     %s%s (detached)%s\n' \
+        "$BOLD" "$RESET" "$YELLOW" "$(git rev-parse --short HEAD)" "$RESET"
+fi
+
+# The branch's own tracking ref: the first remote listed is not always the one.
+UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null || true)
+if [[ -n "$UPSTREAM" ]]; then
+    read -r BEHIND AHEAD < <(git rev-list --left-right --count "${UPSTREAM}...HEAD")
+    printf '%sRemote:%s     %s (↑%s ↓%s)\n' "$BOLD" "$RESET" "${UPSTREAM%%/*}" "$AHEAD" "$BEHIND"
+elif [[ -n "$(git remote)" ]]; then
+    printf '%sRemote:%s     %s (no upstream set)\n' "$BOLD" "$RESET" "$(git remote | head -1)"
+fi
+
+echo ""
+printf '%sWorking tree:%s\n' "$BOLD" "$RESET"
+STATUS=$(git status --short)
+if [[ -z "$STATUS" ]]; then
+    printf '  %sClean%s\n' "$GREEN" "$RESET"
+else
+    printf '%s\n' "$STATUS" | awk -v limit="$STATUS_LIMIT" '
+        NR <= limit { print "  " $0 }
+        END { if (NR > limit) printf "  ... and %d more\n", NR - limit }'
+fi
+
+echo ""
+printf '%sRecent commits:%s\n' "$BOLD" "$RESET"
+git --no-pager log --oneline --graph --decorate -8
+
+echo ""
+STASHES=$(git stash list | wc -l | tr -d '[:space:]')
+[[ "$STASHES" == 1 ]] && LABEL=entry || LABEL=entries
+printf '%sStash:%s %s %s\n' "$BOLD" "$RESET" "$STASHES" "$LABEL"

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# findlarge - find the largest files under a path
+# Usage: findlarge [directory] [min_size_MB] [count]
+set -euo pipefail
+
+DIR="${1:-.}"
+MIN_MB="${2:-100}"
+COUNT="${3:-20}"
+
+if [[ ! -d "$DIR" ]]; then
+  echo "findlarge: '$DIR' is not a directory" >&2
+  exit 1
+fi
+if [[ ! "$MIN_MB" =~ ^[0-9]+$ || ! "$COUNT" =~ ^[0-9]+$ ]]; then
+  echo "findlarge: size and count must be numbers" >&2
+  exit 1
+fi
+
+# find -printf is GNU-only; stat covers both, with different flags per flavor.
+if stat --version >/dev/null 2>&1; then
+  stat_cmd=(stat -c $'%s\t%n')
+else
+  stat_cmd=(stat -f $'%z\t%N')
+fi
+
+echo "Finding files larger than ${MIN_MB}MB under ${DIR} ..."
+echo ""
+find "$DIR" -type f -size +"${MIN_MB}M" -print0 2>/dev/null \
+    | xargs -0 "${stat_cmd[@]}" 2>/dev/null \
+    | sort -rn \
+    | awk -F'\t' -v count="$COUNT" '
+        NR <= count {
+            size=$1
+            path=$2
+            found=1
+            if (size >= 1073741824)
+                printf "  %7.2f GB  %s\n", size/1073741824, path
+            else
+                printf "  %7.2f MB  %s\n", size/1048576, path
+        }
+        END { if (!found) print "  No files that large." }'
