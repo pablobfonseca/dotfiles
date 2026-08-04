@@ -137,9 +137,12 @@ zplug load
 # This loads fnm
 [[ $(command -v "fnm") ]] && eval "$(fnm env --use-on-cd --shell zsh)"
 
-function take {
-  mkdir $1
-  cd $1
+function mkcd {
+  if [ -z "$1" ]; then
+    echo "Usage: mkcd <directory_path>"
+    return 1
+  fi
+  mkdir -p "$1" && cd "$1"
 }
 
 rvmlist() {
@@ -256,6 +259,7 @@ alias ip="curl -s ifconfig.me"
 alias cvim="nvim -u NONE"
 alias fman="compgen -c | fzf --tmux --prompt='Search for a command: ' | xargs man"
 alias emacs="open /Applications/Emacs.app"
+alias opus="claude --model opus"
 
 # Devdeck
 alias logdevdeck="log stream --predicate 'process == \"DevDeck\"' --info"
