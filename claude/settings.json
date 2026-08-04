@@ -50,6 +50,15 @@
             "command": "node ~/.claude/hooks/context-monitor.js"
           }
         ]
+      },
+      {
+        "matcher": "CronCreate|CronDelete",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/hooks/cron-bridge.js"
+          }
+        ]
       }
     ],
     "Notification": [
@@ -79,6 +88,21 @@
           {
             "type": "command",
             "command": "~/.dotfiles/claude/scripts/ui-ux-pro-max-explicit-only.sh >/dev/null 2>&1 || true"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.claude/hooks/cron-bridge.js"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/hooks/cron-bridge.js"
           }
         ]
       }
@@ -86,7 +110,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "npx -y @pablobfonseca/claude-cyberpunk-powerline --style=storm --vim-mode --git"
+    "command": "npx -y @pablobfonseca/claude-cyberpunk-powerline --style=storm --vim-mode --git --cron"
   },
   "enabledPlugins": {
     "dev-browser@dev-browser-marketplace": true,
