@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# extract - universal archive extractor
+# Usage: extract <file> [file ...]
+set -euo pipefail
+
+if [[ $# -eq 0 ]]; then
+  echo "Usage: extract <archive> [archive ...]" >&2
+  exit 1
+fi
+
+for file in "$@"; do
+  if [[ ! -f "$file" ]]; then
+    echo "extract: '$file' not found" >&2
+    continue
+  fi
+  echo "Extracting $file"
+  case "$file" in
+    *.tar.bz2|*.tbz2)  tar xjf "$file"     ;;
+    *.tar.gz|*.tgz)    tar xzf "$file"     ;;
+    *.tar.xz|*.txz)    tar xJf "$file"     ;;
+    *.tar.zst)         tar --zstd -xf "$file" ;;
+    *.tar)             tar xf "$file"      ;;
+    *.bz2)             bunzip2 "$file"     ;;
+    *.gz)              gunzip "$file"      ;;
+    *.xz)              unxz "$file"        ;;
+    *.zip)             unzip "$file"       ;;
+    *.7z)              7z x "$file"        ;;
+    *.rar)             unrar x "$file"     ;;
+    *.Z)               uncompress "$file"  ;;
+    *.deb)
+      mkdir -p "${file%.deb}"
+      dpkg-deb -xv "$file" "${file%.deb}"
+      ;;
+    *.rpm)
+      mkdir -p "${file%.rpm}"
+      cd "${file%.rpm}" && rpm2cpio "../$file" | cpio -idmv
+      cd ..
+      ;;
+    *)
+      echo "extract: unknown format — '$file'" >&2
+      ;;
+  esac
+done
