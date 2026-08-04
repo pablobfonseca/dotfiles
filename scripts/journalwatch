@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+# journalwatch - follow several services at once with color-coded, prefixed output
+# Usage: journalwatch [-n LINES] <service|logfile> [service|logfile ...]
+# Sources: systemd units (Linux), unified log (macOS), or any file path on either.
+set -euo pipefail
+
+LINES=10
+
+usage() {
+  cat >&2 <<'EOF'
+Usage: journalwatch [-n LINES] <service|logfile> [service|logfile ...]
+
+  -n LINES   backlog lines to show before following (default 10)
+
+Targets are systemd units on Linux, process/subsystem names on macOS, or a
+path to a log file on either platform. macOS streaming has no backlog, so
+-n only applies to files there.
+EOF
+  exit 1
+}
+
+while getopts ':n:h' opt; do
+  case "$opt" in
+    n) LINES="$OPTARG" ;;
+    h) usage ;;
+    *) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+[[ $# -eq 0 ]] && usage
+[[ $LINES =~ ^[0-9]+$ ]] || { echo "journalwatch: -n expects a number" >&2; exit 1; }
+
+OS="$(uname -s)"
+targets=("$@")
+
+# Reject anything that could break out of the macOS predicate string.
+for target in "${targets[@]}"; do
+  if [[ ! -e $target && ! $target =~ ^[A-Za-z0-9._@:+-]+$ ]]; then
+    echo "journalwatch: '$target' is neither an existing file nor a valid service name" >&2
+    exit 1
+  fi
+done
+
+if [[ -t 1 && -z ${NO_COLOR:-} ]]; then
+  colors=($'\033[31m' $'\033[32m' $'\033[33m' $'\033[34m' $'\033[35m' $'\033[36m')
+  reset=$'\033[0m'
+else
+  colors=('')
+  reset=''
+fi
+
+# Align prefixes so log bodies line up across services.
+width=0
+for target in "${targets[@]}"; do
+  name="$(basename "$target")"
+  ((${#name} > width)) && width=${#name}
+done
+
+# journalctl block-buffers when stdout is a pipe; stdbuf keeps -f responsive.
+if command -v stdbuf >/dev/null 2>&1; then
+  unbuffer=(stdbuf -oL)
+else
+  unbuffer=()
+fi
+
+stream() {
+  local target="$1"
+
+  if [[ -e $target ]]; then
+    exec "${unbuffer[@]}" tail -n "$LINES" -F "$target"
+  fi
+
+  case "$OS" in
+    Linux)
+      exec "${unbuffer[@]}" journalctl --no-pager -n "$LINES" -fu "$target"
+      ;;
+    Darwin)
+      exec log stream --style syslog \
+        --predicate "process == \"$target\" OR subsystem == \"$target\""
+      ;;
+    *)
+      echo "journalwatch: unsupported platform '$OS'" >&2
+      exit 1
+      ;;
+  esac
+}
+
+# Each stream execs into journalctl/log/tail, so our direct children are the
+# whole tree: reaping them leaves nothing following the logs after we exit.
+cleanup() {
+  trap - INT TERM EXIT
+  pkill -P $$ >/dev/null 2>&1 || true
+  exit 0
+}
+trap cleanup INT TERM EXIT
+
+for i in "${!targets[@]}"; do
+  target="${targets[$i]}"
+  name="$(basename "$target")"
+  color="${colors[$((i % ${#colors[@]}))]}"
+
+  stream "$target" 2>&1 |
+    while IFS= read -r line; do
+      printf '%s[%-*s]%s %s\n' "$color" "$width" "$name" "$reset" "$line"
+    done &
+done
+
+wait

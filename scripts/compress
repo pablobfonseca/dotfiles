@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# compress - compress files or directories
+# Usage: compress <target> [format]
+# Formats: gz (default), bz2, xz, zip, zst
+set -euo pipefail
+
+TARGET="${1:-}"
+FORMAT="${2:-gz}"
+if [[ -z "$TARGET" ]]; then
+  echo "Usage: compress <file-or-dir> [gz|bz2|xz|zst|zip]" >&2
+  exit 1
+fi
+if [[ ! -e "$TARGET" ]]; then
+  echo "compress: '$TARGET' not found" >&2
+  exit 1
+fi
+
+# Strip trailing slash
+TARGET="${TARGET%/}"
+NAME="$(basename "$TARGET")"
+PARENT="$(cd "$(dirname "$TARGET")" && pwd)"
+STAMP=$(date +"%Y%m%d_%H%M%S")
+
+case "$FORMAT" in
+  gz)  OUTNAME="${NAME}_${STAMP}.tar.gz";  TAR_OPTS=(-czf) ;;
+  bz2) OUTNAME="${NAME}_${STAMP}.tar.bz2"; TAR_OPTS=(-cjf) ;;
+  xz)  OUTNAME="${NAME}_${STAMP}.tar.xz";  TAR_OPTS=(-cJf) ;;
+  zst) OUTNAME="${NAME}_${STAMP}.tar.zst"; TAR_OPTS=(--zstd -cf) ;;
+  zip) OUTNAME="${NAME}_${STAMP}.zip" ;;
+  *)
+    echo "compress: unknown format '$FORMAT'. Use: gz bz2 xz zst zip" >&2
+    exit 1
+    ;;
+esac
+
+OUTPUT="$PWD/$OUTNAME"
+if [[ -e "$OUTPUT" ]]; then
+  echo "compress: '$OUTNAME' already exists" >&2
+  exit 1
+fi
+
+# Archive from the target's parent so entries are relative, not the full path.
+if [[ "$FORMAT" == zip ]]; then
+  (cd "$PARENT" && zip -rq "$OUTPUT" "$NAME")
+else
+  tar -C "$PARENT" "${TAR_OPTS[@]}" "$OUTPUT" "$NAME"
+fi
+
+SIZE=$(du -sh "$OUTPUT" | cut -f1)
+echo "  Created: $OUTNAME ($SIZE)"
