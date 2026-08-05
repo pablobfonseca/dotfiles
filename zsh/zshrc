@@ -200,7 +200,10 @@ chromeaction() {
 }
 
 function branch_clean() {
-    git checkout master && git branch --merged | grep -v master | xargs git branch -d
+    git checkout master || return
+    git branch --format='%(refname:short)%09%(worktreepath)' --merged \
+      | awk -F'\t' '$1 != "master" && $2 == "" { print $1 }' \
+      | xargs -r git branch -d
 }
 
 function git_test() {
