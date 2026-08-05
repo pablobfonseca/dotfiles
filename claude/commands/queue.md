@@ -5,7 +5,9 @@ argument-hint: <project name>
 
 Groom `projects/$ARGUMENTS/Queue.md`. The vault is `~/obsidian/SecondBrain`; every vault path in this command resolves there, whatever the cwd. Read the vault's `CLAUDE.md` → Task queues first; its invariants bind you. If the file does not exist, list `projects/` and stop.
 
-## 0. Reconcile first
+## 0. Pull, then reconcile
+
+`git -C ~/obsidian/SecondBrain pull` before reading anything. ID minting races across machines: a stale queue mints duplicate `^qN`s. If the pull hits a conflict, stop and report — never stamp IDs onto an unmerged queue. If offline, say so and continue; the duplicate scan in sync's preflight is the safety net.
 
 Grooming a stale queue ranks fiction. Before anything else, run the full reconciliation defined in `~/.claude/commands/sync.md` (plans → queue, PRs → queue, issues → queue) — read that file and follow it; it is the single source of truth for reconciliation rules. If `gh` is unauthenticated, do the plans half and say the GitHub half was skipped. Merged work lands in `## Shipped` before you rank what's left.
 
@@ -58,4 +60,4 @@ Never move an item into `## Next` yourself. The blockquote is the whole delivera
 - Anything you deliberately left alone and why.
 - Which lines are now the largest unknowns in the queue.
 
-Do not commit unless asked.
+If you stamped any new `^qN`, commit Queue.md and push right away (`queue: stamp ^qN–^qM`) — an unpublished allocation is what lets the other machine mint the same ID. Everything else: do not commit unless asked.
