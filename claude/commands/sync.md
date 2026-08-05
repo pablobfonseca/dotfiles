@@ -12,6 +12,7 @@ Run it from anywhere: plans live in the vault and PRs/issues come via `gh`, so n
 - `gh auth status`. If unauthenticated, skip the GitHub half and say so rather than failing the whole run.
 - Resolve the repo: `--repo`, else `repo:` in `projects/$ARGUMENTS.md` frontmatter, else ask. Never guess.
 - Read `CLAUDE.md` → Task queues. Its invariants bind you, especially: nothing is deleted, and issue refs are immutable.
+- Scan the queue for any line-ending `^qN` appearing on more than one line (`grep -oE '\^q[0-9]+$' | sort | uniq -d` — mid-line mentions in the proposed blockquote or wikilinks are references, not IDs) — the two-machine race can merge cleanly and leave silent duplicates. If found: make no writebacks to the duplicated IDs, and report the duplicate lines so the human can restamp one (the line with no inbound links or refs, normally). Never renumber yourself.
 
 ## 2. Plans → queue
 
