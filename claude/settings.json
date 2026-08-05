@@ -110,7 +110,8 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "npx -y @pablobfonseca/claude-cyberpunk-powerline --style=storm --vim-mode --git --cron"
+    "command": "npx -y @pablobfonseca/claude-cyberpunk-powerline --style=storm --vim-mode --git --cron",
+    "refreshInterval": 5
   },
   "enabledPlugins": {
     "dev-browser@dev-browser-marketplace": true,
