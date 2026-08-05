@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# Re-apply `disable-model-invocation: true` to ui-ux-pro-max skills so they stay
+# Re-apply `disable-model-invocation: true` to ui-ux-pro-max sub-skills so they stay
 # explicit-invoke-only (no auto-firing). Plugin auto-updates revert the frontmatter,
 # so run this after any ui-ux-pro-max update.
+# The main ui-ux-pro-max skill is intentionally left model-invocable: CLAUDE.md
+# directs it (with the taste-skill package) for UI/UX work.
 set -euo pipefail
 
 BASE="$HOME/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max"
@@ -10,6 +12,10 @@ SKILLS_DIR="$VER_DIR/.claude/skills"
 
 for f in "$SKILLS_DIR"/*/SKILL.md; do
   [ -f "$f" ] || continue
+  case "$f" in */ui-ux-pro-max/SKILL.md)
+    sed -i '' '/^disable-model-invocation: true$/d' "$f"
+    continue;;
+  esac
   if grep -q 'disable-model-invocation' "$f"; then
     echo "already set: $f"; continue
   fi
