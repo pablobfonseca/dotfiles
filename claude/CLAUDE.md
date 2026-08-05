@@ -81,7 +81,7 @@ If a check can't run (no test suite, needs my credentials), say so explicitly in
 ## Agent Delegation
 
 - Delegate specialized or parallelizable implementation work to the matching agent (pick by agent description); skip delegation for trivial edits, quick reads, and simple searches.
-- UI/UX work → `ui-designer` agent + `frontend-design` skill together.
+- UI/UX work → `ui-ux-pro-max` skill + a `taste-skill` package skill together (pick the taste variant that fits the aesthetic: `taste-skill`, `minimalist-skill`, `brutalist-skill`, `soft-skill`, `redesign-skill`, etc.).
 - Changes touching auth, access scoping, user input handling, or API endpoints → run `security-reviewer` before reporting done.
 - Migrations or complex SQL → run `database-reviewer` before reporting done.
 
