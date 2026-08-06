@@ -27,7 +27,8 @@
       "Bash(gh pr merge:*)"
     ],
     "additionalDirectories": [
-      "~/obsidian/SecondBrain"
+      "~/obsidian/SecondBrain",
+      "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/SecondBrain"
     ]
   },
   "model": "claude-fable-5[1m]",
