@@ -6,4 +6,4 @@ windows:
     layout: main-vertical
     panes:
       - claude
-  - lazydocker: upscope tribemap
+  - SecondBrain: cd ~/obsidian/SecondBrain
