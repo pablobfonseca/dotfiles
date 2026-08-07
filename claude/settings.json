@@ -93,6 +93,11 @@
           {
             "type": "command",
             "command": "node ~/.claude/hooks/cron-bridge.js"
+          },
+          {
+            "type": "command",
+            "command": "awk 'f; /^---$/{if(++c==2)f=1}' ~/.claude/skills/i-have-adhd/SKILL.md 2>/dev/null || true",
+            "statusMessage": "Loading i-have-adhd ruleset..."
           }
         ]
       }
