@@ -263,7 +263,7 @@ alias cvim="nvim -u NONE"
 alias fman="compgen -c | fzf --tmux --prompt='Search for a command: ' | xargs man"
 alias emacs="open /Applications/Emacs.app"
 alias opus="claude --model opus"
-alias opus_workspace="claude --workspace --model opus"
+alias opus_worktree="claude --worktree --model opus"
 
 # Devdeck
 alias logdevdeck="log stream --predicate 'process == \"DevDeck\"' --info"
