@@ -1,0 +1,14 @@
+#!/bin/zsh
+# Kills WallpaperAerialsExtension when it wedges in a decode loop (macOS 26 bug).
+# launchd restarts it cleanly with near-zero CPU. Runs via LaunchAgent every 10 min.
+
+THRESHOLD=50
+LOG=~/Library/Logs/wallpaper-watchdog.log
+
+pid=$(pgrep -x WallpaperAerialsExtension) || exit 0
+cpu=$(ps -o %cpu= -p "$pid" | tr -d ' ')
+
+if (( ${cpu%.*} >= THRESHOLD )); then
+  kill "$pid"
+  echo "$(date '+%Y-%m-%d %H:%M:%S') killed pid $pid at ${cpu}% CPU" >> "$LOG"
+fi
