@@ -17,7 +17,7 @@ Resolve the plan file from `$ARGUMENTS`:
 
 1. **Load the plan.** Read it fully, including its stop-and-ask list. Invoke `superpowers:executing-plans` and follow its checkpoint discipline.
 
-2. **Implement.** New branch named after the plan topic. Follow the plan exactly, phase by phase. Commit per phase using the repo's commit conventions. Run each phase's verbatim check commands and compare against the plan's expected results before moving on.
+2. **Implement.** First check for a worktree: if `git rev-parse --git-dir` and `git rev-parse --git-common-dir` differ, the session is in a linked worktree - do all work inside it (root: `git rev-parse --show-toplevel`), never touch the main checkout, and reuse its current branch if it's a topic branch (otherwise create the plan branch there). In the main checkout, create a new branch named after the plan topic. Follow the plan exactly, phase by phase. Commit per phase using the repo's commit conventions. Run each phase's verbatim check commands and compare against the plan's expected results before moving on.
 
 3. **Stop and ask** the moment any trigger fires - the plan's own stop-and-ask list plus these defaults:
    - Reality deviates from the plan (file moved, API changed, signature mismatch).
