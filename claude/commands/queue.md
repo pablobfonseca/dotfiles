@@ -20,7 +20,7 @@ Grooming a stale queue ranks fiction. Before anything else, run the full reconci
 
 ## 2. Promote from Inbox
 
-Anything in Inbox.md that names an observable symptom or a desired end state becomes a queue line. Prose, half-thoughts and reference material stay in Inbox.md. Say which items you promoted and leave Inbox.md's non-actionable content untouched.
+Anything in Inbox.md that names an observable symptom or a desired end state becomes a queue line. Delete the promoted line from Inbox.md outright — no "moved to Queue" annotation or breadcrumb; the queue line is the record. Prose, half-thoughts and reference material stay in Inbox.md. Say which items you promoted and leave Inbox.md's non-actionable content untouched.
 
 ## 3. Groom each open line
 
