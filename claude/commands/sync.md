@@ -43,14 +43,17 @@ Match PRs to queue lines by, in order of confidence: a `(#N)` issue ref the PR c
 
 ## 4. Issues → queue
 
-```
-gh issue list --repo <repo> --state all --limit 200 --json number,title,state,stateReason,url
-```
+`/issue` is retired — no new refs are minted, but existing `(#N)` refs are immutable and still reconcile. Fetch only what the queue references, never a full listing:
+
+- The referenced numbers are the dump's `issue` fields (step 1).
+- `gh issue list --repo <repo> --state open --json number` — any referenced number in this set is still open; nothing to do for it.
+- Each referenced number **not** in the open set: `gh issue view <n> --repo <repo> --json state,stateReason,url`.
+
+Then:
 
 - Closed issue, open line → `## Shipped` as `- [x]`. If `stateReason` is `not_planned`, make it `- [-]` with the reason instead; declined is not shipped.
 - Open issue, line marked done → **report the disagreement, change nothing.** Never silently reopen.
 - Referenced issue missing → flag it, leave the `(#N)` alone.
-- Open issues with no queue line → list under `## Unqueued` in your report only, never in the file.
 
 ## 5. Precedence
 
@@ -60,6 +63,6 @@ The plan file in `projects/<project>/plans/` is the single authority — never d
 
 ## 6. Report
 
-A table of every line that moved: item, lane before → after, and the artifact that justified it. Then, separately, the things needing your judgment — disagreements, orphan plans, closed-unmerged PRs, unqueued issues, and low-confidence title matches.
+A table of every line that moved: item, lane before → after, and the artifact that justified it. Then, separately, the things needing your judgment — disagreements, orphan plans, closed-unmerged PRs, and low-confidence title matches.
 
 Do not commit unless asked.
