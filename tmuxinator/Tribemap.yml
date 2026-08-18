@@ -7,3 +7,4 @@ windows:
     panes:
       - claude
   - SecondBrain: cd ~/obsidian/SecondBrain
+  - lazyactions: lazyactions
