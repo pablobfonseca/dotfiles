@@ -16,7 +16,7 @@ If empty, ask for it and stop.
 
 ## Steps (queue form)
 
-1. **Resolve the item.** Find the line in `projects/<project>/Queue.md`, trying in order: a block ID (`q14`, `14` and `^q14` all mean the line ending in `^q14`), an issue ref (`#901` means the line carrying `(#901)`), else a text fragment. If a fragment matches several lines, list them with their `^qN` IDs and ask which. If nothing matches, say so and stop.
+1. **Resolve the item.** `~/.dotfiles/claude/scripts/queue-tool find <project> <item>` — it resolves a block ID (`q14`, `14` and `^q14` all mean the line ending in `^q14`), an issue ref (`#901` means the line carrying `(#901)`), or a text fragment, and returns the line parsed as JSON. If a fragment matches several lines it lists them with their `^qN` IDs; relay that and ask which. If nothing matches, say so and stop.
 
 2. **Read what the vault already knows.** `projects/<project>.md` for the goal, current state and `repo:`. Then every note the queue line wikilinks, plus any audit, incident or plan note in `projects/<project>/` whose subject overlaps the item. This is the part you cannot skip — an item like "server stability" is meaningless without the incident write-ups behind it. Arrive at brainstorming knowing what is established (with note names), what you inferred, and what the vault does not settle.
 
