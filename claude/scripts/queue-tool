@@ -121,14 +121,20 @@ def cmd_plans(args):
         entry = {"file": f.name, "queue": None, "queue_item": None, "queue_item_id": None}
         lines = f.read_text().splitlines()
         if lines and lines[0].strip() == "---":
+            key = None
             for line in lines[1:]:
                 if line.strip() == "---":
                     break
                 m = re.match(r"(queue|queue_item):\s*(.*)$", line)
                 if m:
-                    entry[m.group(1)] = m.group(2).strip().strip("\"'") or None
+                    key, value = m.group(1), m.group(2).strip().strip("\"'")
+                    entry[key] = None if value in ("", ">-", ">", "|-", "|") else value
+                elif key and line.startswith("  "):
+                    entry[key] = ((entry[key] + " ") if entry[key] else "") + line.strip()
+                else:
+                    key = None
         if entry["queue_item"]:
-            m = ANY_ID.search(entry["queue_item"])
+            m = TRAILING_ID.search(entry["queue_item"])
             entry["queue_item_id"] = f"q{m.group(1)}" if m else None
         out.append(entry)
     print(json.dumps(out, indent=2))
