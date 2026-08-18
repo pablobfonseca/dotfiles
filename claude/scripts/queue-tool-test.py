@@ -42,7 +42,7 @@ QUEUE = """# Tribemap Queue
 
 PLAN_WITH_BACKLINK = """---
 queue: projects/Tribemap/Queue.md
-queue_item: "Fix crawl dedupe on empty sitemap ^q3"
+queue_item: "Fix crawl dedupe on empty sitemap — absorbs ^q9's retry logic ^q3"
 ---
 
 # Plan
@@ -53,6 +53,16 @@ tags: []
 ---
 
 # Orphan plan
+"""
+
+PLAN_FOLDED = """---
+queue: projects/Tribemap/Queue.md
+queue_item: >-
+  - [/] Vague thing → what does
+  done mean ^q4
+---
+
+# Folded-scalar plan
 """
 
 
@@ -74,6 +84,8 @@ class QueueToolTest(unittest.TestCase):
             f.write(PLAN_WITH_BACKLINK)
         with open(os.path.join(proj, "plans", "2026-07-21-orphan.md"), "w") as f:
             f.write(PLAN_ORPHAN)
+        with open(os.path.join(proj, "plans", "2026-07-22-folded.md"), "w") as f:
+            f.write(PLAN_FOLDED)
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -154,6 +166,8 @@ class QueueToolTest(unittest.TestCase):
         self.assertEqual(linked["queue_item_id"], "q3")
         orphan = by_file["2026-07-21-orphan.md"]
         self.assertIsNone(orphan["queue_item"])
+        folded = by_file["2026-07-22-folded.md"]
+        self.assertEqual(folded["queue_item_id"], "q4")
 
     def test_missing_queue_fails_loudly(self):
         r = run("dump", "NoSuch", "--vault", self.vault)
