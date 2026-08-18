@@ -14,7 +14,7 @@ Grooming a stale queue ranks fiction. Before anything else, run the full reconci
 ## 1. Read the whole picture before touching a line
 
 - `projects/$ARGUMENTS.md` — goal, status, next steps. This is what "leverage" is measured against.
-- `projects/$ARGUMENTS/Queue.md` — the queue itself.
+- `~/.dotfiles/claude/scripts/queue-tool dump $ARGUMENTS` — the queue, parsed: every line's lane, state and markers as JSON, plus `duplicates`, `unstamped` and `next_id`. Trust this parse instead of reading the markers by eye; open `projects/$ARGUMENTS/Queue.md` raw only to edit it.
 - `projects/$ARGUMENTS/Inbox.md` if present — loose capture that may contain promotable items.
 - Every support note in `projects/$ARGUMENTS/` whose title suggests a plan, audit or incident. You cannot rank without knowing what is already specced.
 
@@ -26,7 +26,7 @@ Anything in Inbox.md that names an observable symptom or a desired end state bec
 
 In this order, and only these:
 
-- **Stamp** an ID on any line missing one: append `^qN` as the last token, where N = the highest `^q` number anywhere in the file + 1. IDs are immutable — never renumber, never reuse (dropped and shipped lines keep theirs), never strip. Leave `## Shipped` lines that predate IDs alone.
+- **Stamp** an ID on any line missing one: append `^qN` as the last token, where N = the highest `^q` number anywhere in the file + 1 — the dump's `next_id`, and its `unstamped` list is the worklist. IDs are immutable — never renumber, never reuse (dropped and shipped lines keep theirs), never strip. Leave `## Shipped` lines that predate IDs alone.
 - **Split** anything that is two deliverables. Note the split in your report; each half gets its own fresh `^qN`, the original ID stays on the half closest to the original wording.
 - **Size** unsized lines: `~XS` under an hour, `~S` a sitting, `~M` a day, `~L` needs decomposition.
 - **Tag** with at most what applies: `#bug` `#feat` `#sec` `#ops`, plus `#claude` only if an agent could finish it unattended with no product decision to make.

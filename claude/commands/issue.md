@@ -9,7 +9,7 @@ File a queue item as a GitHub issue. Arguments: `$ARGUMENTS` — project name, t
 
 - `gh auth status`. If unauthenticated, say so and stop.
 - Resolve the repo: `--repo` if given, else the `repo:` key in `projects/<project>.md` frontmatter, else ask. Never guess a repo.
-- Find the queue line: `q14`/`14`/`^q14` means the line ending in `^q14`, else match by text fragment. **If it already carries a `(#N)`, stop and report the existing issue.** Issue refs are immutable and one line gets one issue, ever.
+- Find the queue line: `~/.dotfiles/claude/scripts/queue-tool find <project> <item>` (`q14`/`14`/`^q14` means the line ending in `^q14`, else a text fragment; ambiguity lists the candidates and fails). **If the result's `issue` field is set, stop and report the existing issue.** Issue refs are immutable and one line gets one issue, ever.
 - Refuse items in `## Needs spec` or `## Someday`. An issue nobody can act on is noise; run `/fable-plan <project> | qN` first.
 
 ## 2. Compose the body

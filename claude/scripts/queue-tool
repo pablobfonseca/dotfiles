@@ -1,0 +1,156 @@
+#!/usr/bin/env python3
+"""Deterministic parser for vault queue files (see SecondBrain CLAUDE.md, Task queues).
+
+Subcommands:
+  dump <project>            queue as JSON: items, duplicate IDs, unstamped lines, next free ^qN
+  find <project> <qN|text>  one queue line as JSON, matched by ID or text fragment
+  plans <project>           frontmatter backlinks (queue:/queue_item:) of every plan file
+"""
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+
+DEFAULT_VAULT = Path.home() / "obsidian" / "SecondBrain"
+LANES = ["Next", "Ready", "Needs spec", "Blocked", "Someday", "Shipped"]
+STATES = {" ": "open", "/": "in_progress", "x": "done", "-": "dropped"}
+CHECKBOX = re.compile(r"^- \[([ /x-])\] (.*)$")
+TRAILING_ID = re.compile(r"\s+\^q(\d+)\s*$")
+ANY_ID = re.compile(r"\^q(\d+)")
+TAGS = re.compile(r"#(claude|bug|feat|sec|ops)\b")
+SIZE = re.compile(r"~(XS|S|M|L)\b")
+ISSUE = re.compile(r"\(#(\d+)\)")
+PLAN = re.compile(r"→plan:(\[\[[^\]]+\]\]|\S+)")
+PR = re.compile(r"→pr:(\S+)")
+
+
+def die(msg, code=2):
+    print(msg, file=sys.stderr)
+    sys.exit(code)
+
+
+def queue_path(vault, project):
+    p = Path(vault) / "projects" / project / "Queue.md"
+    if not p.is_file():
+        die(f"no such file: {p}")
+    return p
+
+
+def parse_item(state_char, body, lane, line_no, raw):
+    item = {"line": line_no, "lane": lane, "state": STATES[state_char], "raw": raw}
+    m = TRAILING_ID.search(body)
+    item["id"] = f"q{m.group(1)}" if m else None
+    if m:
+        body = body[: m.start()]
+    item["tags"] = TAGS.findall(body)
+    m = SIZE.search(body)
+    item["size"] = m.group(1) if m else None
+    m = ISSUE.search(body)
+    item["issue"] = int(m.group(1)) if m else None
+    m = PLAN.search(body)
+    item["plan"] = m.group(1) if m else None
+    m = PR.search(body)
+    item["pr"] = m.group(1) if m else None
+    text = body
+    for pat in (PR, PLAN, ISSUE, SIZE, TAGS):
+        text = pat.sub("", text)
+    item["text"] = re.sub(r"\s+", " ", text).strip()
+    return item
+
+
+def parse_queue(path):
+    lane = None
+    items = []
+    ending_ids = []
+    all_ids = []
+    for line_no, raw in enumerate(path.read_text().splitlines(), 1):
+        all_ids.extend(int(n) for n in ANY_ID.findall(raw))
+        if raw.startswith("## "):
+            title = raw[3:].strip()
+            lane = title if title in LANES else None
+            continue
+        if lane is None or raw.startswith(">"):
+            continue
+        m = CHECKBOX.match(raw)
+        if not m:
+            continue
+        item = parse_item(m.group(1), m.group(2), lane, line_no, raw)
+        if item["id"]:
+            ending_ids.append(item["id"])
+        items.append(item)
+    dup = sorted({i for i in ending_ids if ending_ids.count(i) > 1},
+                 key=lambda i: int(i[1:]))
+    return {
+        "file": str(path),
+        "items": items,
+        "duplicates": dup,
+        "unstamped": [i for i in items if not i["id"] and i["lane"] != "Shipped"],
+        "next_id": f"q{max(all_ids, default=0) + 1}",
+    }
+
+
+def cmd_dump(args):
+    print(json.dumps(parse_queue(queue_path(args.vault, args.project)), indent=2))
+
+
+def cmd_find(args):
+    q = parse_queue(queue_path(args.vault, args.project))
+    m = re.fullmatch(r"\^?q?(\d+)", args.item)
+    issue = re.fullmatch(r"#(\d+)", args.item)
+    if m:
+        matches = [i for i in q["items"] if i["id"] == f"q{m.group(1)}"]
+    elif issue:
+        matches = [i for i in q["items"] if i["issue"] == int(issue.group(1))]
+    else:
+        needle = args.item.lower()
+        matches = [i for i in q["items"] if needle in i["text"].lower()]
+    if not matches:
+        die(f"no queue line matches {args.item!r}", 1)
+    if len(matches) > 1:
+        for i in matches:
+            print(i["raw"], file=sys.stderr)
+        die(f"{len(matches)} queue lines match {args.item!r}; be more specific", 1)
+    print(json.dumps(matches[0], indent=2))
+
+
+def cmd_plans(args):
+    plans_dir = Path(args.vault) / "projects" / args.project / "plans"
+    out = []
+    for f in sorted(plans_dir.glob("*.md")) if plans_dir.is_dir() else []:
+        entry = {"file": f.name, "queue": None, "queue_item": None, "queue_item_id": None}
+        lines = f.read_text().splitlines()
+        if lines and lines[0].strip() == "---":
+            for line in lines[1:]:
+                if line.strip() == "---":
+                    break
+                m = re.match(r"(queue|queue_item):\s*(.*)$", line)
+                if m:
+                    entry[m.group(1)] = m.group(2).strip().strip("\"'") or None
+        if entry["queue_item"]:
+            m = ANY_ID.search(entry["queue_item"])
+            entry["queue_item_id"] = f"q{m.group(1)}" if m else None
+        out.append(entry)
+    print(json.dumps(out, indent=2))
+
+
+def main():
+    parser = argparse.ArgumentParser(prog="queue-tool", description=__doc__)
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    for name, fn, extra in (
+        ("dump", cmd_dump, []),
+        ("find", cmd_find, ["item"]),
+        ("plans", cmd_plans, []),
+    ):
+        p = sub.add_parser(name)
+        p.add_argument("project")
+        for a in extra:
+            p.add_argument(a)
+        p.add_argument("--vault", default=DEFAULT_VAULT)
+        p.set_defaults(fn=fn)
+    args = parser.parse_args()
+    args.fn(args)
+
+
+if __name__ == "__main__":
+    main()

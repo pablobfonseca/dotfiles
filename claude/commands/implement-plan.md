@@ -9,7 +9,7 @@ Execute a plan produced by `/fable-plan` in a cheaper-model session. The plan is
 
 Resolve the plan file from `$ARGUMENTS`:
 
-- **Queue form** — `<project> | <item>`: find the line in `projects/<project>/Queue.md` in the vault (`~/obsidian/SecondBrain`, reachable from any cwd) by `qN` ID, `#issue` ref, or text fragment, and follow its `→plan:[[...]]` wikilink to `projects/<project>/plans/`. If the line has no `→plan:`, stop and tell the user to run `/fable-plan <project> | qN` first.
+- **Queue form** — `<project> | <item>`: resolve the line with `~/.dotfiles/claude/scripts/queue-tool find <project> <item>` (`qN` ID, `#issue` ref, or text fragment; the vault is `~/obsidian/SecondBrain`, reachable from any cwd) and follow the result's `plan` wikilink to `projects/<project>/plans/`. If the line has no `→plan:`, stop and tell the user to run `/fable-plan <project> | qN` first.
 - **Path form** — a file path, read as given.
 - **Empty** — use the newest file in `docs/plans/`; if none exists, stop and tell the user to run `/fable-plan` first.
 
