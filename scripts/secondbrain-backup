@@ -1,0 +1,22 @@
+#!/bin/zsh
+# Commits and pushes the SecondBrain vault. Single-writer git backup:
+# runs only on this machine via LaunchAgent; other devices sync via iCloud.
+
+VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/SecondBrain"
+LOG=~/Library/Logs/secondbrain-backup.log
+
+cd "$VAULT" || exit 1
+
+if [[ -n $(git ls-files -u) ]]; then
+  echo "$(date '+%Y-%m-%d %H:%M:%S') unresolved conflicts, skipping" >> "$LOG"
+  exit 1
+fi
+
+git add -A
+git diff --cached --quiet && exit 0
+
+git commit -q -m "vault backup: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG" 2>&1
+if ! git push -q >> "$LOG" 2>&1; then
+  git pull -q --rebase --autostash >> "$LOG" 2>&1 && git push -q >> "$LOG" 2>&1 \
+    || echo "$(date '+%Y-%m-%d %H:%M:%S') push failed" >> "$LOG"
+fi
