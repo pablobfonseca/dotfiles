@@ -3,7 +3,7 @@ mutt/cache/*
 mutt/certificates
 tags
 *~
-*.sw*
+*.sw[a-p]
 .VimballRecord
 .netrwhist
 .DS_Store
