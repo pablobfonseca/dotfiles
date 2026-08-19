@@ -307,5 +307,63 @@ class MutationTest(unittest.TestCase):
         self.assertIn("- [x] Ancient pre-id line\n", out)
 
 
+class TransactTest(unittest.TestCase):
+    def test_state_commits_and_pushes(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        os.makedirs(os.path.join(vault, "projects", "Tribemap"))
+        r = run_tool(a, "state", "Tribemap", "q1", "wip", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        sh(b, "git", "pull", "-q")
+        with open(os.path.join(b, "Tribemap", "Queue.md")) as f:
+            self.assertIn("- [/] Committed item", f.read())
+        with open(os.path.join(vault, "projects", "Tribemap", "Queue.md")) as f:
+            view = f.read()
+        self.assertIn("Generated view", view)
+        self.assertIn("- [/] Committed item", view)
+
+    def test_state_merges_concurrent_remote_edit(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        os.makedirs(os.path.join(vault, "projects", "Tribemap"))
+        qb = os.path.join(b, "Tribemap", "Queue.md")
+        with open(qb) as f:
+            content = f.read()
+        with open(qb, "w") as f:
+            f.write(content.replace("Maybe later ^q6", "Maybe later soon ^q6"))
+        sh(b, "git", "commit", "-aqm", "b edit")
+        sh(b, "git", "push", "-q")
+        r = run_tool(a, "state", "Tribemap", "q1", "wip", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        sh(b, "git", "pull", "-q")
+        with open(qb) as f:
+            final = f.read()
+        self.assertIn("Maybe later soon ^q6", final)
+        self.assertIn("- [/] Committed item", final)
+
+    def test_state_offline_commits_locally(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        os.makedirs(os.path.join(vault, "projects", "Tribemap"))
+        sh(a, "git", "remote", "set-url", "origin", "/nonexistent")
+        r = run_tool(a, "state", "Tribemap", "q1", "wip", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("unpushed", r.stderr)
+        log = sh(a, "git", "log", "--oneline", "-1").stdout
+        self.assertIn("q: state Tribemap q1 wip", log)
+
+    def test_duplicate_ids_refuse_mutation(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        qa = os.path.join(a, "Tribemap", "Queue.md")
+        with open(qa, "a") as f:
+            f.write("\n- [ ] Dup line ^q1\n")
+        sh(a, "git", "commit", "-aqm", "corrupt")
+        sh(a, "git", "push", "-q")
+        r = run_tool(a, "state", "Tribemap", "q6", "wip", "--vault", vault)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("duplicate", r.stderr.lower())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
