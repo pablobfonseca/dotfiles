@@ -28,9 +28,17 @@ Free-form editing (splits, merges, rewording, the > proposed: blockquote):
   edit <project> begin        pull, then print the authoritative file path to edit
   edit <project> commit -m M  dup-scan, commit, push that file
 
+Recovery (every mutation is a git commit, so history is the undo buffer):
+  log <project> [-n N]        recent queue commits for that project, newest first
+  undo <project>              revert the last one as a new commit; refuses if that
+                              would remove an existing ^qN, since IDs are immutable
+
 Maintenance:
   push                        flush unpushed commits, regenerate every view
   view <project> | view --all regenerate the vault view without mutating
+
+Mutations refuse to run while the queues repo has uncommitted changes, so an
+`edit begin` in flight is never swept into an unrelated commit or reset away.
 """
 import argparse
 import json
@@ -291,6 +299,7 @@ def transact(repo, vault, project, message, mutate, require_remote=False):
     if not is_git_repo(repo):
         die(f"{repo} is not a git checkout; clone vault-queues there first")
     path = repo_queue_path(repo, project)
+    require_clean(repo)
     for attempt in range(3):
         online = pull_rebase(repo)
         if require_remote and not online:
@@ -400,6 +409,70 @@ def cmd_edit(args):
     write_view(args.repo, args.vault, args.project)
 
 
+def dirty_paths(repo):
+    out = git_run(repo, "status", "--porcelain").stdout.splitlines()
+    return [l[3:].strip() for l in out if l.strip() and not l.startswith("??")]
+
+
+def require_clean(repo):
+    dirty = dirty_paths(repo)
+    if dirty:
+        die(f"queues repo has uncommitted changes ({', '.join(dirty)}); "
+            "finish them with `queue-tool edit <project> commit -m ...`, "
+            f"or discard with `git -C {repo} checkout --`")
+
+
+def queue_ids(text):
+    return set(ANY_ID.findall(text))
+
+
+def last_queue_commit(repo, path):
+    return git_run(repo, "log", "-1", "--format=%H", "--", str(path)).stdout.strip()
+
+
+def cmd_log(args):
+    pull_rebase(args.repo)
+    path = repo_queue_path(args.repo, args.project)
+    r = git_run(args.repo, "log", f"-{args.count}", "--format=%h  %ad  %s",
+                "--date=short", "--", str(path))
+    print(r.stdout.rstrip())
+
+
+def cmd_undo(args):
+    repo = args.repo
+    if not is_git_repo(repo):
+        die(f"{repo} is not a git checkout; clone vault-queues there first")
+    path = repo_queue_path(repo, args.project)
+    require_clean(repo)
+    if not pull_rebase(repo):
+        die("offline: undo publishes a revert and needs the remote")
+    sha = last_queue_commit(repo, path)
+    if not sha:
+        die(f"no queue commits found for {args.project}")
+    subject = git_run(repo, "log", "-1", "--format=%s", sha).stdout.strip()
+    touched = git_run(repo, "show", "--name-only", "--format=", sha).stdout.split()
+    if set(touched) != {f"{args.project}/Queue.md"}:
+        die(f"{sha[:8]} ({subject}) touches {', '.join(sorted(touched))}; "
+            "undo only handles commits confined to one queue")
+    before = queue_ids(path.read_text())
+    r = git_run(repo, "revert", "--no-edit", sha, check=False)
+    if r.returncode != 0:
+        git_run(repo, "revert", "--abort", check=False)
+        die(f"could not revert {sha[:8]} ({subject}) cleanly; resolve it by hand")
+    after = path.read_text()
+    lost = sorted(before - queue_ids(after), key=int)
+    if lost:
+        git_run(repo, "reset", "--hard", "HEAD~1", check=False)
+        die(f"refusing: undoing {subject!r} would remove ^q{', ^q'.join(lost)}. "
+            "IDs are immutable — use `state <qN> dropped --reason \"...\"` instead")
+    check_no_duplicates(after, "after the undo")
+    if not push_head(repo):
+        git_run(repo, "reset", "--hard", "HEAD~1", check=False)
+        die("push failed; nothing was undone")
+    write_view(repo, args.vault, args.project)
+    print(json.dumps({"undone": subject, "commit": sha[:8]}))
+
+
 def cmd_dump(args):
     pull_rebase(args.repo)
     print(json.dumps(parse_queue(repo_queue_path(args.repo, args.project)), indent=2))
@@ -487,6 +560,9 @@ def main():
     p = add("edit", cmd_edit, "project")
     p.add_argument("action", choices=["begin", "commit"])
     p.add_argument("-m", dest="message")
+    p = add("log", cmd_log, "project")
+    p.add_argument("-n", dest="count", type=int, default=10)
+    add("undo", cmd_undo, "project")
 
     args = parser.parse_args()
     args.fn(args)

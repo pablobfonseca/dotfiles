@@ -35,6 +35,7 @@ That help output is the syntax reference. Read it instead of guessing flags; thi
 | New item | `add <P> "<text>" --lane <Lane>` (mints the ID) |
 | Reading state before deciding | `dump <P>` or `find <P> <qN\|#N\|text>` |
 | Split, merge, reword, `> proposed:` blockquote | `edit <P> begin` → edit the printed path → `edit <P> commit -m "<what>"` |
+| Undoing a queue change you just made | `log <P>` to see it, then `undo <P>` |
 
 Single-line changes use the atomic subcommands. Reach for `edit` only when the change is genuinely free-form.
 
@@ -53,6 +54,8 @@ Report these, do not resolve them yourself:
 - `duplicate IDs …` — a two-machine race left the same `^qN` twice. The human picks which line gets restamped.
 - `rebase conflict in …` — the transaction aborted the rebase. Never hand-resolve it.
 - `offline: this operation mints IDs` — `add` and `stamp` refuse offline on purpose. Wait for network; never hand-write the ID.
+- `queues repo has uncommitted changes …` — an `edit begin` is in flight, or a previous edit was left unfinished. Finish it with `edit commit`, or discard it; never work around the refusal.
+- `refusing: undoing … would remove ^qN` — `undo` will not free an ID for re-minting. Drop the line with `state <qN> dropped --reason "..."` instead.
 
 ## Common mistakes
 

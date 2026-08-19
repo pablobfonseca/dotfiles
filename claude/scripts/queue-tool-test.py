@@ -463,5 +463,88 @@ class EditTest(unittest.TestCase):
         self.assertIn("duplicate", r.stderr.lower())
 
 
+class DirtyTreeTest(unittest.TestCase):
+    def test_refuses_when_queue_file_is_dirty(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        qa = os.path.join(a, "Tribemap", "Queue.md")
+        with open(qa, "a") as f:
+            f.write("\n- [ ] Half-finished grooming in progress ^q7\n")
+        r = run_tool(a, "state", "Tribemap", "q1", "wip", "--vault", vault)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("uncommitted", r.stderr.lower())
+        with open(qa) as f:
+            self.assertIn("Half-finished grooming in progress", f.read())
+
+    def test_refuses_when_another_file_is_dirty(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        os.makedirs(os.path.join(a, "Other"), exist_ok=True)
+        with open(os.path.join(a, "Other", "Queue.md"), "w") as f:
+            f.write(CLEAN_QUEUE)
+        sh(a, "git", "add", "-A")
+        sh(a, "git", "commit", "-qm", "other")
+        with open(os.path.join(a, "Other", "Queue.md"), "a") as f:
+            f.write("\n- [ ] Edit in flight ^q9\n")
+        r = run_tool(a, "state", "Tribemap", "q1", "wip", "--vault", vault)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("uncommitted", r.stderr.lower())
+
+    def test_untracked_file_does_not_block(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        os.makedirs(os.path.join(vault, "projects", "Tribemap"))
+        with open(os.path.join(a, "scratch-notes.txt"), "w") as f:
+            f.write("ignore me")
+        r = run_tool(a, "state", "Tribemap", "q1", "wip", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+
+class LogUndoTest(unittest.TestCase):
+    def setup_pair(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        os.makedirs(os.path.join(vault, "projects", "Tribemap"))
+        return a, b, vault
+
+    def test_log_lists_mutations(self):
+        a, b, vault = self.setup_pair()
+        run_tool(a, "state", "Tribemap", "q1", "wip", "--vault", vault)
+        run_tool(a, "lane", "Tribemap", "q4", "Ready", "--vault", vault)
+        r = run_tool(a, "log", "Tribemap", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("q: lane Tribemap q4 Ready", r.stdout)
+        self.assertIn("q: state Tribemap q1 wip", r.stdout)
+
+    def test_undo_reverts_last_change_as_new_commit(self):
+        a, b, vault = self.setup_pair()
+        run_tool(a, "state", "Tribemap", "q1", "wip", "--vault", vault)
+        r = run_tool(a, "undo", "Tribemap", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("q: state Tribemap q1 wip", json.loads(r.stdout)["undone"])
+        sh(b, "git", "pull", "-q")
+        with open(os.path.join(b, "Tribemap", "Queue.md")) as f:
+            self.assertIn("- [ ] Committed item", f.read())
+        log = sh(a, "git", "log", "--oneline").stdout
+        self.assertIn("q: state Tribemap q1 wip", log)
+
+    def test_undo_refuses_to_drop_an_id(self):
+        a, b, vault = self.setup_pair()
+        r = run_tool(a, "add", "Tribemap", "Brand new ~S", "--lane", "Ready", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        r = run_tool(a, "undo", "Tribemap", "--vault", vault)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("q7", r.stderr)
+        with open(os.path.join(a, "Tribemap", "Queue.md")) as f:
+            self.assertIn("Brand new ~S ^q7", f.read())
+
+    def test_undo_with_no_commits_dies(self):
+        a, b, vault = self.setup_pair()
+        sh(a, "git", "rm", "-q", "Tribemap/Queue.md")
+        sh(a, "git", "commit", "-qm", "drop")
+        r = run_tool(a, "undo", "Tribemap", "--vault", vault)
+        self.assertNotEqual(r.returncode, 0)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
