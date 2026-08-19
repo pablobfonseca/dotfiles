@@ -8,7 +8,9 @@ Subcommands:
 """
 import argparse
 import json
+import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -23,6 +25,7 @@ SIZE = re.compile(r"~(XS|S|M|L)\b")
 ISSUE = re.compile(r"\(#(\d+)\)")
 PLAN = re.compile(r"→plan:(\[\[[^\]]+\]\]|\S+)")
 PR = re.compile(r"→pr:(\S+)")
+QUEUES_REPO = Path(os.environ.get("VAULT_QUEUES", Path.home() / ".local/share/vault-queues"))
 
 
 def die(msg, code=2):
@@ -30,11 +33,42 @@ def die(msg, code=2):
     sys.exit(code)
 
 
-def queue_path(vault, project):
-    p = Path(vault) / "projects" / project / "Queue.md"
+def repo_queue_path(repo, project):
+    p = Path(repo) / project / "Queue.md"
     if not p.is_file():
         die(f"no such file: {p}")
     return p
+
+
+def git_run(repo, *args, check=True):
+    return subprocess.run(["git", "-C", str(repo), *args],
+                          capture_output=True, text=True, check=check)
+
+
+def is_git_repo(repo):
+    return (Path(repo) / ".git").exists()
+
+
+def rebase_in_progress(repo):
+    g = Path(repo) / ".git"
+    return (g / "rebase-merge").exists() or (g / "rebase-apply").exists()
+
+
+def pull_rebase(repo):
+    if not is_git_repo(repo):
+        return False
+    r = git_run(repo, "pull", "--rebase", "--quiet", check=False)
+    if r.returncode == 0:
+        return True
+    if rebase_in_progress(repo):
+        git_run(repo, "rebase", "--abort", check=False)
+        die(f"rebase conflict in {repo}: resolve manually, then retry")
+    print(f"warning: remote unreachable, using local state ({repo})", file=sys.stderr)
+    return False
+
+
+def push_head(repo):
+    return git_run(repo, "push", "--quiet", check=False).returncode == 0
 
 
 def parse_item(state_char, body, lane, line_no, raw):
@@ -59,12 +93,12 @@ def parse_item(state_char, body, lane, line_no, raw):
     return item
 
 
-def parse_queue(path):
+def parse_queue_text(text, file="<memory>"):
     lane = None
     items = []
     ending_ids = []
     all_ids = []
-    for line_no, raw in enumerate(path.read_text().splitlines(), 1):
+    for line_no, raw in enumerate(text.splitlines(), 1):
         all_ids.extend(int(n) for n in ANY_ID.findall(raw))
         if raw.startswith("## "):
             title = raw[3:].strip()
@@ -82,7 +116,7 @@ def parse_queue(path):
     dup = sorted({i for i in ending_ids if ending_ids.count(i) > 1},
                  key=lambda i: int(i[1:]))
     return {
-        "file": str(path),
+        "file": file,
         "items": items,
         "duplicates": dup,
         "unstamped": [i for i in items if not i["id"] and i["lane"] != "Shipped"],
@@ -90,12 +124,18 @@ def parse_queue(path):
     }
 
 
+def parse_queue(path):
+    return parse_queue_text(path.read_text(), str(path))
+
+
 def cmd_dump(args):
-    print(json.dumps(parse_queue(queue_path(args.vault, args.project)), indent=2))
+    pull_rebase(args.repo)
+    print(json.dumps(parse_queue(repo_queue_path(args.repo, args.project)), indent=2))
 
 
 def cmd_find(args):
-    q = parse_queue(queue_path(args.vault, args.project))
+    pull_rebase(args.repo)
+    q = parse_queue(repo_queue_path(args.repo, args.project))
     m = re.fullmatch(r"\^?q?(\d+)", args.item)
     issue = re.fullmatch(r"#(\d+)", args.item)
     if m:
@@ -153,6 +193,7 @@ def main():
         for a in extra:
             p.add_argument(a)
         p.add_argument("--vault", default=DEFAULT_VAULT)
+        p.add_argument("--repo", default=QUEUES_REPO)
         p.set_defaults(fn=fn)
     args = parser.parse_args()
     args.fn(args)
