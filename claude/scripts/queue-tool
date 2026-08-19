@@ -354,6 +354,26 @@ def cmd_view(args):
         write_view(args.repo, args.vault, project)
 
 
+def cmd_edit(args):
+    path = repo_queue_path(args.repo, args.project)
+    if args.action == "begin":
+        pull_rebase(args.repo)
+        print(path)
+        return
+    if not args.message:
+        die("edit commit requires -m")
+    if not git_run(args.repo, "status", "--porcelain", "--", str(path)).stdout.strip():
+        die("nothing to commit; edit the file printed by `edit begin` first")
+    check_no_duplicates(path.read_text(), "in your edit")
+    git_run(args.repo, "add", str(path))
+    git_run(args.repo, "commit", "--quiet", "-m", f"q: edit {args.project}: {args.message}")
+    if push_head(args.repo) or (pull_rebase(args.repo) and push_head(args.repo)):
+        write_view(args.repo, args.vault, args.project)
+        return
+    print("committed locally, unpushed: run `queue-tool push` when online", file=sys.stderr)
+    write_view(args.repo, args.vault, args.project)
+
+
 def cmd_dump(args):
     pull_rebase(args.repo)
     print(json.dumps(parse_queue(repo_queue_path(args.repo, args.project)), indent=2))
@@ -437,6 +457,9 @@ def main():
     p = add("view", cmd_view)
     p.add_argument("project", nargs="?")
     p.add_argument("--all", action="store_true")
+    p = add("edit", cmd_edit, "project")
+    p.add_argument("action", choices=["begin", "commit"])
+    p.add_argument("-m", dest="message")
 
     args = parser.parse_args()
     args.fn(args)
