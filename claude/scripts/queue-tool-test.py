@@ -429,5 +429,39 @@ class SubcommandTest(unittest.TestCase):
             self.assertIn("Generated view", f.read())
 
 
+class EditTest(unittest.TestCase):
+    def test_begin_prints_path_then_commit_pushes(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        os.makedirs(os.path.join(vault, "projects", "Tribemap"))
+        r = run_tool(a, "edit", "Tribemap", "begin", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        path = r.stdout.strip()
+        self.assertTrue(path.endswith("Tribemap/Queue.md"))
+        with open(path, "a") as f:
+            f.write("\n- [ ] Groomed in free-form ^q7\n")
+        r = run_tool(a, "edit", "Tribemap", "commit", "-m", "groom", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        sh(b, "git", "pull", "-q")
+        with open(os.path.join(b, "Tribemap", "Queue.md")) as f:
+            self.assertIn("Groomed in free-form", f.read())
+
+    def test_commit_with_no_changes_dies(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        r = run_tool(a, "edit", "Tribemap", "commit", "-m", "noop", "--vault", vault)
+        self.assertNotEqual(r.returncode, 0)
+
+    def test_commit_refuses_duplicate_ids(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        qa = os.path.join(a, "Tribemap", "Queue.md")
+        with open(qa, "a") as f:
+            f.write("\n- [ ] Oops dup ^q1\n")
+        r = run_tool(a, "edit", "Tribemap", "commit", "-m", "bad", "--vault", vault)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("duplicate", r.stderr.lower())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
