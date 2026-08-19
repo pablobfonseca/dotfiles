@@ -1,0 +1,7 @@
+[[plugin.deps]]
+use = "AnirudhG07/rich-preview"
+rev = "02597c4"
+hash = "33982a6e2d6df07619a2a0fc163a0950"
+
+[flavor]
+deps = []

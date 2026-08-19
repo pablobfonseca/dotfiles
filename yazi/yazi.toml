@@ -3,5 +3,7 @@ show_hidden = true
 
 [plugin]
 prepend_previewers = [
-  { name = "*.md", run = "mdcat" },
+  { url = "*.md", run = "rich-preview" },
+  { url = "*.csv", run = "rich-preview" },
+  { url = "*.json", run = "rich-preview" },
 ]
