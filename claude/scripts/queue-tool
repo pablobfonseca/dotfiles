@@ -231,6 +231,79 @@ def mutate_stamp(text):
     return joined(lines), stamped
 
 
+VIEW_BANNER = [
+    "",
+    "> [!warning] Generated view (read-only)",
+    "> Authority: the vault-queues repo. Edit with queue-tool or the /queue, /sync, /fable-plan, /implement-plan commands. Manual edits here are overwritten on the next queue write.",
+    "",
+]
+
+
+def write_view(repo, vault, project):
+    src = Path(repo) / project / "Queue.md"
+    dst = Path(vault) / "projects" / project / "Queue.md"
+    if not dst.parent.is_dir():
+        print(f"warning: no vault project dir {dst.parent}, view skipped", file=sys.stderr)
+        return
+    lines = src.read_text().splitlines()
+    end_fm = 0
+    if lines and lines[0].strip() == "---":
+        for j in range(1, len(lines)):
+            if lines[j].strip() == "---":
+                end_fm = j + 1
+                break
+    dst.write_text(joined(lines[:end_fm] + VIEW_BANNER + lines[end_fm:]))
+
+
+def check_no_duplicates(text, context):
+    dup = parse_queue_text(text)["duplicates"]
+    if dup:
+        die(f"duplicate IDs {', '.join(dup)} {context}; fix before writing")
+
+
+def transact(repo, vault, project, message, mutate, require_remote=False):
+    if not is_git_repo(repo):
+        die(f"{repo} is not a git checkout; clone vault-queues there first")
+    path = repo_queue_path(repo, project)
+    for attempt in range(3):
+        online = pull_rebase(repo)
+        if require_remote and not online:
+            die("offline: this operation mints IDs and needs the latest remote")
+        before = path.read_text()
+        check_no_duplicates(before, "already in the queue")
+        result = mutate(before)
+        after, extra = result if isinstance(result, tuple) else (result, None)
+        if after == before:
+            print("no change", file=sys.stderr)
+            return None
+        check_no_duplicates(after, "would be written")
+        path.write_text(after)
+        git_run(repo, "add", str(path))
+        git_run(repo, "commit", "--quiet", "-m", message)
+        if not online:
+            print("committed locally, unpushed: run `queue-tool push` when online", file=sys.stderr)
+            write_view(repo, vault, project)
+            return extra
+        if push_head(repo):
+            write_view(repo, vault, project)
+            return extra
+        git_run(repo, "reset", "--hard", "HEAD~1", check=False)
+    die("push kept failing after 3 attempts")
+
+
+def norm_id(item):
+    m = re.fullmatch(r"\^?q?(\d+)", item)
+    if not m:
+        die(f"not a queue ID: {item!r}")
+    return f"q{m.group(1)}"
+
+
+def cmd_state(args):
+    transact(args.repo, args.vault, args.project,
+             f"q: state {args.project} {args.item} {args.state}",
+             lambda t: mutate_state(t, norm_id(args.item), args.state, args.reason))
+
+
 def cmd_dump(args):
     pull_rebase(args.repo)
     print(json.dumps(parse_queue(repo_queue_path(args.repo, args.project)), indent=2))
@@ -286,18 +359,23 @@ def cmd_plans(args):
 def main():
     parser = argparse.ArgumentParser(prog="queue-tool", description=__doc__)
     sub = parser.add_subparsers(dest="cmd", required=True)
-    for name, fn, extra in (
-        ("dump", cmd_dump, []),
-        ("find", cmd_find, ["item"]),
-        ("plans", cmd_plans, []),
-    ):
+
+    def add(name, fn, *pos):
         p = sub.add_parser(name)
-        p.add_argument("project")
-        for a in extra:
+        for a in pos:
             p.add_argument(a)
         p.add_argument("--vault", default=DEFAULT_VAULT)
         p.add_argument("--repo", default=QUEUES_REPO)
         p.set_defaults(fn=fn)
+        return p
+
+    add("dump", cmd_dump, "project")
+    add("find", cmd_find, "project", "item")
+    add("plans", cmd_plans, "project")
+    p = add("state", cmd_state, "project", "item")
+    p.add_argument("state", choices=sorted(STATE_CHARS))
+    p.add_argument("--reason")
+
     args = parser.parse_args()
     args.fn(args)
 
