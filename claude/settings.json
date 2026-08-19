@@ -215,28 +215,34 @@
   "autoMode": {
     "environment": [
       "### Org-wide",
-      "**Organization**: None configured",
+      "**Organization**: upscopeio (GitHub org; repo github.com:upscopeio/tribemap.git)",
       "**Cloud provider(s)**: None configured",
-      "**Repository visibility**: private (gx100-midi-control, confirmed via gh)",
+      "**Repository visibility**: Private — upscopeio/tribemap (rulesets active: Automatic Copilot code review, Copilot review, master, production)",
       "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
-      "**Secrets management**: None configured",
-      "**Default / protected branches**: main (default); no classic branch protection listed and rulesets not queryable here — do not assume unprotected",
-      "**CI/CD deploy targets**: None configured",
+      "**Secrets management**: env files (.env, gitignored) plus CI secrets AWS_ROLE_ARN, GH_APP_ID, GH_APP_PRIVATE_KEY, GITHUB_TOKEN, SLACK_WEBHOOK (names only, not values)",
+      "**Default / protected branches**: master (default); production (deploy branch, never push directly per CLAUDE.md); rulesets active on master and production (classic protected-branches list not queryable here — treat rulesets as authoritative protection)",
+      "**CI/CD deploy targets**: GitHub Actions (.github/workflows/ci-api.yml, ci-frontend.yml) → merge to master auto-opens a production PR → merging that into `production` deploys (deploy-production.yml). Never push to production directly.",
       "**Network posture**: None configured",
-      "**Source control**: github.com/pablobfonseca/gx100-midi-control (origin) only — no additional orgs configured",
-      "**Trusted internal domains**: None configured",
+      "**Source control**: github.com:upscopeio/tribemap.git (origin) — this repo and its remote only",
+      "**Trusted internal domains**: tribemap.local and subdomains (tribemap.local, app.tribemap.local, api.tribemap.local, sdk.tribemap.local, code.tribemap.local, s3.tribemap.local, mail.tribemap.local, demo.tribemap.local) — local dev hosts per hosts.txt",
       "**Trusted cloud buckets**: None configured",
-      "**Key internal services**: None configured",
+      "**Key internal services**: upscope CLI wrapper (remote docker machine via mutagen sync) for all docker/db/postgres operations in this repo; Sentry org `upscope`, project `tribemap-api`, region us.sentry.io",
       "**Internal package registry**: None configured",
-      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
+      "**Sensitive data locations & audiences**: .env / .env.prod.example / api/.env.example / frontend/.env.development(.local.example)/.env.production (credentials, never commit values); classification pipeline files (api/src/core/classification*.ts, api/src/services/classification*.ts) handle visitor behavioral data — no PII is stored per policy; docker-compose.prod.yml and main/Dockerfile.prod_eks are production infra definitions",
       "**Data retention / declassification**: None configured",
-      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited — e.g. matches `prod-db`, not `producer`)",
-      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
-      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "**Sensitive remote targets**: any namespace/host/container with `prod` or `production` as a whole word or segment — includes the `production` git branch and docker-compose.prod.yml / Dockerfile.prod_eks targets in this repo",
+      "**Protected deployment namespaces / environments**: `production` branch and its deploy pipeline (create-production-pr.yml, deploy-production.yml); prod admin AI Lab (/admin/ai) is Pablo-only per CLAUDE.md, never Claude's to invoke",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or segment (e.g. docker-compose.prod.yml, main/Dockerfile.prod_eks)",
       "### User-specific",
-      "**Primary use of Claude Code**: software development — GX-100 MIDI reverse-engineering/hardware-tooling project (Go CLI, ALB/SysEx parameter mapping)",
-      "**Trusted repo**: /Users/pablobfonseca/code/gx100-midi-control (working directory) and its origin remote github.com:pablobfonseca/gx100-midi-control.git; private repo, so confidential project material is fine to commit here but secrets/credentials are never cleared by visibility",
-      "**Org-specific CLIs**: None configured"
+      "**Primary use of Claude Code**: software development (TribeMap monorepo: SDK, API, frontend, demo, website)",
+      "**Trusted repo**: this repo (upscope-env/tribemap working tree) and its origin remote github.com:upscopeio/tribemap.git — private repo, so confidential business material is fine to commit here, but secrets/credentials are never cleared into it by visibility alone",
+      "**Org-specific CLIs**: `upscope` CLI (docker/db/console wrapper, alias `tm`; project commands defined in cli.yml) — 366 uses in shell history; `gh` (55×)",
+      "No routine <user>/ prefix qualifiers found in recon"
+    ],
+    "soft_deny": [
+      "$defaults",
+      "Bash(upscope tm db reset:*) in this repo — destructive drop+recreate of the dev DB, not covered by default Git Destructive / Cloud Storage Mass Delete labels",
+      "Direct docker/psql/drizzle commands bypassing the upscope CLI wrapper in this repo (per CLAUDE.md: never run docker, docker compose, psql, or drizzle commands directly against the local machine)"
     ]
   }
 }
