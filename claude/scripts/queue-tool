@@ -1,10 +1,36 @@
 #!/usr/bin/env python3
-"""Deterministic parser for vault queue files (see SecondBrain CLAUDE.md, Task queues).
+"""Transactional queue tool for the vault-queues repo (see SecondBrain CLAUDE.md, Task queues).
 
-Subcommands:
-  dump <project>            queue as JSON: items, duplicate IDs, unstamped lines, next free ^qN
-  find <project> <qN|text>  one queue line as JSON, matched by ID or text fragment
-  plans <project>           frontmatter backlinks (queue:/queue_item:) of every plan file
+Authority is <repo>/<project>/Queue.md in the vault-queues checkout ($VAULT_QUEUES,
+default ~/.local/share/vault-queues). Every mutation is one git transaction:
+pull --rebase, mutate, commit, push. The vault's projects/<project>/Queue.md is a
+generated read-only view, rewritten after each successful write. Never edit it by hand.
+
+Read:
+  dump <project>              queue as JSON: items, duplicate IDs, unstamped lines, next free ^qN
+  find <project> <qN|#N|text> one queue line as JSON, matched by ID, issue ref or text fragment
+  plans <project>             frontmatter backlinks (queue:/queue_item:) of every plan file
+
+Write (each commits and pushes, then regenerates the vault view):
+  state <project> <qN> open|wip|done|dropped [--reason R]
+                              set checkbox state; dropped requires --reason
+  lane <project> <qN> <Lane>  move between Next, Ready, Needs spec, Blocked, Someday, Shipped
+  mark <project> <qN> [--plan W] [--pr URL]
+                              set the →plan: wikilink or →pr: URL, before the trailing ^qN
+  add <project> <text> --lane <Lane>
+                              append a new line, minting its ^qN; prints {"id": ...}
+  stamp <project>             mint ^qN for every unstamped line; prints {"ids": [...]}
+
+add and stamp mint IDs and refuse to run offline, because minting against a stale
+remote is what collides across machines. The others commit locally when offline.
+
+Free-form editing (splits, merges, rewording, the > proposed: blockquote):
+  edit <project> begin        pull, then print the authoritative file path to edit
+  edit <project> commit -m M  dup-scan, commit, push that file
+
+Maintenance:
+  push                        flush unpushed commits, regenerate every view
+  view <project> | view --all regenerate the vault view without mutating
 """
 import argparse
 import json
@@ -427,7 +453,8 @@ def cmd_plans(args):
 
 
 def main():
-    parser = argparse.ArgumentParser(prog="queue-tool", description=__doc__)
+    parser = argparse.ArgumentParser(prog="queue-tool", description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     def add(name, fn, *pos):
