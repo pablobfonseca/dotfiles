@@ -20,11 +20,13 @@ If empty, ask for it and stop.
 
 2. **Read what the vault already knows.** `projects/<project>.md` for the goal, current state and `repo:`. Then every note the queue line wikilinks, plus any audit, incident or plan note in `projects/<project>/` whose subject overlaps the item. This is the part you cannot skip — an item like "server stability" is meaningless without the incident write-ups behind it. Arrive at brainstorming knowing what is established (with note names), what you inferred, and what the vault does not settle.
 
-3. **Mark planning in progress.** Set the queue line's state to `- [/]`. Do not change its lane; the lane changes when the plan exists.
+3. **Scan the rest of the queue.** `~/.dotfiles/claude/scripts/queue-tool dump <project>`, then read every open line. Collect items that share a file, surface, subsystem, root cause, or provenance (same PR review, same audit) with the target — the wording may share nothing; the connection is structural. These are input to brainstorming, never silent inclusions.
 
-4. **Refine requirements.** Invoke `superpowers:brainstorming` with the item — quote the queue line verbatim as the symptom (the user's phrasing encodes what they noticed; do not improve it) and bring the open questions from step 2 already drawn up. Resolve every ambiguity here, with the user; an ambiguity left in the plan becomes a judgment call for a model chosen precisely because it should not make them.
+4. **Mark planning in progress.** Set the queue line's state to `- [/]`. Do not change its lane; the lane changes when the plan exists.
 
-5. **Write the plan.** Invoke `superpowers:writing-plans`. Save to the vault: `projects/<project>/plans/YYYY-MM-DD-<topic>.md` (create `plans/` if missing). Frontmatter carries the vault's standard keys plus the backlink that lets `/sync` and `/implement-plan` trace it:
+5. **Refine requirements.** Invoke `superpowers:brainstorming` with the item — quote the queue line verbatim as the symptom (the user's phrasing encodes what they noticed; do not improve it) and bring the open questions from step 2 already drawn up. Present the related candidates from step 3; bundling, sequencing, or leaving each alone is the user's call, made here. Resolve every ambiguity here, with the user; an ambiguity left in the plan becomes a judgment call for a model chosen precisely because it should not make them.
+
+6. **Write the plan.** Invoke `superpowers:writing-plans`. Save to the vault: `projects/<project>/plans/YYYY-MM-DD-<topic>.md` (create `plans/` if missing). The plan carries a **Related queue items** section: every candidate `^qN` from step 3 with a verdict — `bundled (rides this PR)`, `successor`, `out of scope: <why>`, or `checked, unrelated`. No candidates → write "none found", so silence is distinguishable from a skipped scan. Frontmatter carries the vault's standard keys plus the backlink that lets `/sync` and `/implement-plan` trace it:
 
    ```yaml
    ---
@@ -37,17 +39,17 @@ If empty, ask for it and stop.
 
    The plan lives in the vault so it syncs between machines with the vault's own git backup, and so there is exactly one authority — never copy it into the repo.
 
-6. **Stamp the queue line.** Append `→plan:[[<project>/plans/YYYY-MM-DD-<topic>]]` to the line, before the trailing `^qN` — the block ID stays the last token.
+7. **Stamp the queue line.** Append `→plan:[[<project>/plans/YYYY-MM-DD-<topic>]]` to the line, before the trailing `^qN` — the block ID stays the last token. Stamp the same `→plan:` onto every line the user bundled in step 5; the plan's `queue_item:` stays the primary line only.
 
-7. **Make it executor-grade.** Beyond the writing-plans format, every phase must have:
+8. **Make it executor-grade.** Beyond the writing-plans format, every phase must have:
    - Exact file paths and function signatures for each change.
    - Verbatim commands for tests/lint/typecheck with expected results.
    - Acceptance checks: observable behavior, not "should work".
    - A **stop-and-ask list** at the top of the plan. Minimum triggers: reality deviates from the plan (file moved, API changed), tests still failing after 2 fix attempts, ambiguous requirement discovered mid-phase, any security-sensitive decision not spelled out in the plan.
 
-8. **Self-check.** Reread the plan as if you were Sonnet with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list.
+9. **Self-check.** Reread the plan as if you were Sonnet with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list.
 
-9. **Hand off.** Print exactly this and stop:
+10. **Hand off.** Print exactly this and stop:
 
    ```
    Plan ready: projects/<project>/plans/<file>.md  (^qN)
@@ -58,7 +60,7 @@ If empty, ask for it and stop.
 
 ## Steps (plain form)
 
-Same as above minus everything queue-related: brainstorm (step 4), write the plan to `docs/plans/YYYY-MM-DD-<topic>.md` relative to cwd, make it executor-grade (step 7), self-check (step 8). NEVER commit a `docs/plans/` plan (global rule); add `docs/plans/` to `.git/info/exclude` if the repo doesn't ignore it. Hand off with the path form: `/implement-plan docs/plans/<file>.md`.
+Same as above minus everything queue-related: brainstorm (step 5), write the plan to `docs/plans/YYYY-MM-DD-<topic>.md` relative to cwd, make it executor-grade (step 8), self-check (step 9). NEVER commit a `docs/plans/` plan (global rule); add `docs/plans/` to `.git/info/exclude` if the repo doesn't ignore it. Hand off with the path form: `/implement-plan docs/plans/<file>.md`.
 
 ## Rules
 
