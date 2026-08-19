@@ -247,5 +247,65 @@ class GitPlumbingTest(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stderr)
 
 
+class MutationTest(unittest.TestCase):
+    def tool(self):
+        import importlib.util
+        from importlib.machinery import SourceFileLoader
+        loader = SourceFileLoader("qt", TOOL)
+        spec = importlib.util.spec_from_loader("qt", loader)
+        mod = importlib.util.module_from_spec(spec)
+        loader.exec_module(mod)
+        return mod
+
+    def test_state_wip(self):
+        qt = self.tool()
+        out = qt.mutate_state(QUEUE, "q1", "wip")
+        self.assertIn("- [/] Committed item #feat ~S ^q1", out)
+
+    def test_state_dropped_requires_reason(self):
+        qt = self.tool()
+        with self.assertRaises(SystemExit):
+            qt.mutate_state(QUEUE, "q1", "dropped")
+        out = qt.mutate_state(QUEUE, "q1", "dropped", "superseded")
+        self.assertIn("- [-] Committed item #feat ~S (dropped: superseded) ^q1", out)
+
+    def test_state_unknown_id_dies(self):
+        qt = self.tool()
+        with self.assertRaises(SystemExit):
+            qt.mutate_state(QUEUE, "q999", "wip")
+
+    def test_lane_move_appends_to_target(self):
+        qt = self.tool()
+        out = qt.mutate_lane(QUEUE, "q4", "Ready")
+        ready = out.split("## Ready")[1].split("## Needs spec")[0]
+        self.assertIn("Vague thing", ready)
+        needs = out.split("## Needs spec")[1].split("## Blocked")[0]
+        self.assertNotIn("Vague thing", needs)
+
+    def test_mark_plan_inserts_before_id(self):
+        qt = self.tool()
+        out = qt.mutate_mark(QUEUE, "q1", plan="[[Tribemap/plans/x]]")
+        self.assertIn("- [ ] Committed item #feat ~S →plan:[[Tribemap/plans/x]] ^q1", out)
+
+    def test_mark_replaces_existing_pr(self):
+        qt = self.tool()
+        out = qt.mutate_mark(QUEUE, "q3", pr="https://x/2")
+        self.assertIn("→pr:https://x/2", out)
+        self.assertNotIn("→pr:https://github.com/o/r/pull/12", out)
+
+    def test_add_stamps_next_id(self):
+        qt = self.tool()
+        out, qid = qt.mutate_add(QUEUE, "Ready", "New thing #feat ~S")
+        self.assertEqual(qid, "q7")
+        self.assertIn("- [ ] New thing #feat ~S ^q7", out)
+
+    def test_stamp_all_skips_shipped(self):
+        qt = self.tool()
+        out, ids = qt.mutate_stamp(QUEUE)
+        self.assertEqual(ids, ["q7"])
+        self.assertIn("- [ ] Unstamped ready item ~XS ^q7", out)
+        self.assertIn("- [x] Ancient pre-id line\n", out)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

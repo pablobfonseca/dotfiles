@@ -128,6 +128,109 @@ def parse_queue(path):
     return parse_queue_text(path.read_text(), str(path))
 
 
+STATE_CHARS = {"open": " ", "wip": "/", "done": "x", "dropped": "-"}
+
+
+def find_item_index(lines, qid):
+    pat = re.compile(rf"\s\^{re.escape(qid)}\s*$")
+    hits = [i for i, l in enumerate(lines) if CHECKBOX.match(l) and pat.search(l)]
+    if not hits:
+        die(f"no queue line ends with ^{qid}")
+    if len(hits) > 1:
+        die(f"^{qid} is duplicated; restamp before mutating")
+    return hits[0]
+
+
+def insert_before_id(line, token):
+    m = TRAILING_ID.search(line)
+    if not m:
+        return f"{line} {token}"
+    return f"{line[:m.start()]} {token}{line[m.start():]}"
+
+
+def joined(lines):
+    return "\n".join(lines) + "\n"
+
+
+def mutate_state(text, qid, state, reason=None):
+    if state == "dropped" and not reason:
+        die("dropped requires --reason")
+    lines = text.splitlines()
+    i = find_item_index(lines, qid)
+    line = re.sub(r"^- \[[ /x-]\]", f"- [{STATE_CHARS[state]}]", lines[i])
+    if state == "dropped":
+        line = insert_before_id(line, f"(dropped: {reason})")
+    lines[i] = line
+    return joined(lines)
+
+
+def section_insert_index(lines, lane):
+    starts = [i for i, l in enumerate(lines) if l.strip() == f"## {lane}"]
+    if not starts:
+        die(f"no '## {lane}' section")
+    end = len(lines)
+    for j in range(starts[0] + 1, len(lines)):
+        if lines[j].startswith("## "):
+            end = j
+            break
+    while end > starts[0] + 1 and lines[end - 1].strip() == "":
+        end -= 1
+    return end
+
+
+def mutate_lane(text, qid, lane):
+    if lane not in LANES:
+        die(f"unknown lane {lane!r}; one of {', '.join(LANES)}")
+    lines = text.splitlines()
+    i = find_item_index(lines, qid)
+    line = lines.pop(i)
+    lines.insert(section_insert_index(lines, lane), line)
+    return joined(lines)
+
+
+def set_marker(line, pat, token):
+    if pat.search(line):
+        return pat.sub(lambda m: token, line, count=1)
+    return insert_before_id(line, token)
+
+
+def mutate_mark(text, qid, plan=None, pr=None):
+    if not plan and not pr:
+        die("mark needs --plan or --pr")
+    lines = text.splitlines()
+    i = find_item_index(lines, qid)
+    if plan:
+        lines[i] = set_marker(lines[i], PLAN, f"→plan:{plan}")
+    if pr:
+        lines[i] = set_marker(lines[i], PR, f"→pr:{pr}")
+    return joined(lines)
+
+
+def next_free_id(text):
+    return max((int(n) for n in ANY_ID.findall(text)), default=0) + 1
+
+
+def mutate_add(text, lane, item_text):
+    if ANY_ID.search(item_text):
+        die("item text must not carry a ^qN; the tool stamps it")
+    qid = f"q{next_free_id(text)}"
+    lines = text.splitlines()
+    lines.insert(section_insert_index(lines, lane), f"- [ ] {item_text} ^{qid}")
+    return joined(lines), qid
+
+
+def mutate_stamp(text):
+    lines = text.splitlines()
+    n = next_free_id(text)
+    stamped = []
+    for item in parse_queue_text(text)["unstamped"]:
+        qid = f"q{n}"
+        lines[item["line"] - 1] = f"{lines[item['line'] - 1].rstrip()} ^{qid}"
+        stamped.append(qid)
+        n += 1
+    return joined(lines), stamped
+
+
 def cmd_dump(args):
     pull_rebase(args.repo)
     print(json.dumps(parse_queue(repo_queue_path(args.repo, args.project)), indent=2))
