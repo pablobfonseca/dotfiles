@@ -29,7 +29,7 @@ Resolve the plan file from `$ARGUMENTS`:
 
 4. **Open the PR** once all phases pass their checks: push the branch, then `gh pr create --assignee @me` (derive repo from `git remote get-url origin`; no Claude attribution in the description). PR body: plan summary + per-phase checklist of what was verified.
 
-   If the plan came from a queue (queue form, or a plan whose frontmatter carries `queue:`/`queue_item:`), append `→pr:<url>` to the queue line — before the trailing `^qN`, the block ID stays the last token — and set the line to `- [/]` if it isn't already. The queue should show in-flight work without waiting for a reconcile.
+   If the plan came from a queue (queue form, or a plan whose frontmatter carries `queue:`/`queue_item:`), run `~/.dotfiles/claude/scripts/queue-tool mark <project> <qN> --pr <url>` and `~/.dotfiles/claude/scripts/queue-tool state <project> <qN> wip`. The queue should show in-flight work without waiting for a reconcile; never edit the vault's Queue.md by hand — it is a generated view.
 
 5. **Run `/review-pr --apply --watch`** on the new PR. Its analysis verdicts gate what gets applied; its termination rules end the loop. A `Needs clarification` verdict is a stop-and-ask trigger, not something to guess through.
 

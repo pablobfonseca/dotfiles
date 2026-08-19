@@ -8,7 +8,9 @@ Subcommands:
 """
 import argparse
 import json
+import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -23,6 +25,7 @@ SIZE = re.compile(r"~(XS|S|M|L)\b")
 ISSUE = re.compile(r"\(#(\d+)\)")
 PLAN = re.compile(r"→plan:(\[\[[^\]]+\]\]|\S+)")
 PR = re.compile(r"→pr:(\S+)")
+QUEUES_REPO = Path(os.environ.get("VAULT_QUEUES", Path.home() / ".local/share/vault-queues"))
 
 
 def die(msg, code=2):
@@ -30,11 +33,42 @@ def die(msg, code=2):
     sys.exit(code)
 
 
-def queue_path(vault, project):
-    p = Path(vault) / "projects" / project / "Queue.md"
+def repo_queue_path(repo, project):
+    p = Path(repo) / project / "Queue.md"
     if not p.is_file():
         die(f"no such file: {p}")
     return p
+
+
+def git_run(repo, *args, check=True):
+    return subprocess.run(["git", "-C", str(repo), *args],
+                          capture_output=True, text=True, check=check)
+
+
+def is_git_repo(repo):
+    return (Path(repo) / ".git").exists()
+
+
+def rebase_in_progress(repo):
+    g = Path(repo) / ".git"
+    return (g / "rebase-merge").exists() or (g / "rebase-apply").exists()
+
+
+def pull_rebase(repo):
+    if not is_git_repo(repo):
+        return False
+    r = git_run(repo, "pull", "--rebase", "--quiet", check=False)
+    if r.returncode == 0:
+        return True
+    if rebase_in_progress(repo):
+        git_run(repo, "rebase", "--abort", check=False)
+        die(f"rebase conflict in {repo}: resolve manually, then retry")
+    print(f"warning: remote unreachable, using local state ({repo})", file=sys.stderr)
+    return False
+
+
+def push_head(repo):
+    return git_run(repo, "push", "--quiet", check=False).returncode == 0
 
 
 def parse_item(state_char, body, lane, line_no, raw):
@@ -59,12 +93,12 @@ def parse_item(state_char, body, lane, line_no, raw):
     return item
 
 
-def parse_queue(path):
+def parse_queue_text(text, file="<memory>"):
     lane = None
     items = []
     ending_ids = []
     all_ids = []
-    for line_no, raw in enumerate(path.read_text().splitlines(), 1):
+    for line_no, raw in enumerate(text.splitlines(), 1):
         all_ids.extend(int(n) for n in ANY_ID.findall(raw))
         if raw.startswith("## "):
             title = raw[3:].strip()
@@ -82,7 +116,7 @@ def parse_queue(path):
     dup = sorted({i for i in ending_ids if ending_ids.count(i) > 1},
                  key=lambda i: int(i[1:]))
     return {
-        "file": str(path),
+        "file": file,
         "items": items,
         "duplicates": dup,
         "unstamped": [i for i in items if not i["id"] and i["lane"] != "Shipped"],
@@ -90,12 +124,264 @@ def parse_queue(path):
     }
 
 
+def parse_queue(path):
+    return parse_queue_text(path.read_text(), str(path))
+
+
+STATE_CHARS = {"open": " ", "wip": "/", "done": "x", "dropped": "-"}
+
+
+def find_item_index(lines, qid):
+    pat = re.compile(rf"\s\^{re.escape(qid)}\s*$")
+    hits = [i for i, l in enumerate(lines) if CHECKBOX.match(l) and pat.search(l)]
+    if not hits:
+        die(f"no queue line ends with ^{qid}")
+    if len(hits) > 1:
+        die(f"^{qid} is duplicated; restamp before mutating")
+    return hits[0]
+
+
+def insert_before_id(line, token):
+    m = TRAILING_ID.search(line)
+    if not m:
+        return f"{line} {token}"
+    return f"{line[:m.start()]} {token}{line[m.start():]}"
+
+
+def joined(lines):
+    return "\n".join(lines) + "\n"
+
+
+def mutate_state(text, qid, state, reason=None):
+    if state == "dropped" and not reason:
+        die("dropped requires --reason")
+    lines = text.splitlines()
+    i = find_item_index(lines, qid)
+    line = re.sub(r"^- \[[ /x-]\]", f"- [{STATE_CHARS[state]}]", lines[i])
+    if state == "dropped":
+        line = insert_before_id(line, f"(dropped: {reason})")
+    lines[i] = line
+    return joined(lines)
+
+
+def section_insert_index(lines, lane):
+    starts = [i for i, l in enumerate(lines) if l.strip() == f"## {lane}"]
+    if not starts:
+        die(f"no '## {lane}' section")
+    end = len(lines)
+    for j in range(starts[0] + 1, len(lines)):
+        if lines[j].startswith("## "):
+            end = j
+            break
+    while end > starts[0] + 1 and lines[end - 1].strip() == "":
+        end -= 1
+    return end
+
+
+def mutate_lane(text, qid, lane):
+    if lane not in LANES:
+        die(f"unknown lane {lane!r}; one of {', '.join(LANES)}")
+    lines = text.splitlines()
+    i = find_item_index(lines, qid)
+    line = lines.pop(i)
+    lines.insert(section_insert_index(lines, lane), line)
+    return joined(lines)
+
+
+def set_marker(line, pat, token):
+    if pat.search(line):
+        return pat.sub(lambda m: token, line, count=1)
+    return insert_before_id(line, token)
+
+
+def mutate_mark(text, qid, plan=None, pr=None):
+    if not plan and not pr:
+        die("mark needs --plan or --pr")
+    lines = text.splitlines()
+    i = find_item_index(lines, qid)
+    if plan:
+        lines[i] = set_marker(lines[i], PLAN, f"→plan:{plan}")
+    if pr:
+        lines[i] = set_marker(lines[i], PR, f"→pr:{pr}")
+    return joined(lines)
+
+
+def next_free_id(text):
+    return max((int(n) for n in ANY_ID.findall(text)), default=0) + 1
+
+
+def mutate_add(text, lane, item_text):
+    if ANY_ID.search(item_text):
+        die("item text must not carry a ^qN; the tool stamps it")
+    qid = f"q{next_free_id(text)}"
+    lines = text.splitlines()
+    lines.insert(section_insert_index(lines, lane), f"- [ ] {item_text} ^{qid}")
+    return joined(lines), qid
+
+
+def mutate_stamp(text):
+    lines = text.splitlines()
+    n = next_free_id(text)
+    stamped = []
+    for item in parse_queue_text(text)["unstamped"]:
+        qid = f"q{n}"
+        lines[item["line"] - 1] = f"{lines[item['line'] - 1].rstrip()} ^{qid}"
+        stamped.append(qid)
+        n += 1
+    return joined(lines), stamped
+
+
+VIEW_BANNER = [
+    "",
+    "> [!warning] Generated view (read-only)",
+    "> Authority: the vault-queues repo. Edit with queue-tool or the /queue, /sync, /fable-plan, /implement-plan commands. Manual edits here are overwritten on the next queue write.",
+    "",
+]
+
+
+def write_view(repo, vault, project):
+    src = Path(repo) / project / "Queue.md"
+    dst = Path(vault) / "projects" / project / "Queue.md"
+    if not dst.parent.is_dir():
+        print(f"warning: no vault project dir {dst.parent}, view skipped", file=sys.stderr)
+        return
+    lines = src.read_text().splitlines()
+    end_fm = 0
+    if lines and lines[0].strip() == "---":
+        for j in range(1, len(lines)):
+            if lines[j].strip() == "---":
+                end_fm = j + 1
+                break
+    dst.write_text(joined(lines[:end_fm] + VIEW_BANNER + lines[end_fm:]))
+
+
+def check_no_duplicates(text, context):
+    dup = parse_queue_text(text)["duplicates"]
+    if dup:
+        die(f"duplicate IDs {', '.join(dup)} {context}; fix before writing")
+
+
+def transact(repo, vault, project, message, mutate, require_remote=False):
+    if not is_git_repo(repo):
+        die(f"{repo} is not a git checkout; clone vault-queues there first")
+    path = repo_queue_path(repo, project)
+    for attempt in range(3):
+        online = pull_rebase(repo)
+        if require_remote and not online:
+            die("offline: this operation mints IDs and needs the latest remote")
+        before = path.read_text()
+        check_no_duplicates(before, "already in the queue")
+        result = mutate(before)
+        after, extra = result if isinstance(result, tuple) else (result, None)
+        if after == before:
+            print("no change", file=sys.stderr)
+            return None
+        check_no_duplicates(after, "would be written")
+        path.write_text(after)
+        git_run(repo, "add", str(path))
+        git_run(repo, "commit", "--quiet", "-m", message)
+        if not online:
+            print("committed locally, unpushed: run `queue-tool push` when online", file=sys.stderr)
+            write_view(repo, vault, project)
+            return extra
+        if push_head(repo):
+            write_view(repo, vault, project)
+            return extra
+        git_run(repo, "reset", "--hard", "HEAD~1", check=False)
+    die("push kept failing after 3 attempts")
+
+
+def norm_id(item):
+    m = re.fullmatch(r"\^?q?(\d+)", item)
+    if not m:
+        die(f"not a queue ID: {item!r}")
+    return f"q{m.group(1)}"
+
+
+def cmd_state(args):
+    transact(args.repo, args.vault, args.project,
+             f"q: state {args.project} {args.item} {args.state}",
+             lambda t: mutate_state(t, norm_id(args.item), args.state, args.reason))
+
+
+def cmd_lane(args):
+    transact(args.repo, args.vault, args.project,
+             f"q: lane {args.project} {args.item} {args.lane}",
+             lambda t: mutate_lane(t, norm_id(args.item), args.lane))
+
+
+def cmd_mark(args):
+    transact(args.repo, args.vault, args.project,
+             f"q: mark {args.project} {args.item}",
+             lambda t: mutate_mark(t, norm_id(args.item), args.plan, args.pr))
+
+
+def cmd_add(args):
+    qid = transact(args.repo, args.vault, args.project,
+                   f"q: add {args.project}",
+                   lambda t: mutate_add(t, args.lane, args.text),
+                   require_remote=True)
+    if qid:
+        print(json.dumps({"id": qid}))
+
+
+def cmd_stamp(args):
+    ids = transact(args.repo, args.vault, args.project,
+                   f"q: stamp {args.project}",
+                   lambda t: mutate_stamp(t),
+                   require_remote=True)
+    print(json.dumps({"ids": ids or []}))
+
+
+def all_projects(repo):
+    return sorted(p.parent.name for p in Path(repo).glob("*/Queue.md"))
+
+
+def cmd_push(args):
+    if not pull_rebase(args.repo):
+        die("remote unreachable; nothing pushed")
+    if not push_head(args.repo):
+        die("push failed")
+    for project in all_projects(args.repo):
+        write_view(args.repo, args.vault, project)
+
+
+def cmd_view(args):
+    projects = all_projects(args.repo) if args.all else [args.project]
+    if not projects or projects == [None]:
+        die("view needs a project or --all")
+    for project in projects:
+        write_view(args.repo, args.vault, project)
+
+
+def cmd_edit(args):
+    path = repo_queue_path(args.repo, args.project)
+    if args.action == "begin":
+        pull_rebase(args.repo)
+        print(path)
+        return
+    if not args.message:
+        die("edit commit requires -m")
+    if not git_run(args.repo, "status", "--porcelain", "--", str(path)).stdout.strip():
+        die("nothing to commit; edit the file printed by `edit begin` first")
+    check_no_duplicates(path.read_text(), "in your edit")
+    git_run(args.repo, "add", str(path))
+    git_run(args.repo, "commit", "--quiet", "-m", f"q: edit {args.project}: {args.message}")
+    if push_head(args.repo) or (pull_rebase(args.repo) and push_head(args.repo)):
+        write_view(args.repo, args.vault, args.project)
+        return
+    print("committed locally, unpushed: run `queue-tool push` when online", file=sys.stderr)
+    write_view(args.repo, args.vault, args.project)
+
+
 def cmd_dump(args):
-    print(json.dumps(parse_queue(queue_path(args.vault, args.project)), indent=2))
+    pull_rebase(args.repo)
+    print(json.dumps(parse_queue(repo_queue_path(args.repo, args.project)), indent=2))
 
 
 def cmd_find(args):
-    q = parse_queue(queue_path(args.vault, args.project))
+    pull_rebase(args.repo)
+    q = parse_queue(repo_queue_path(args.repo, args.project))
     m = re.fullmatch(r"\^?q?(\d+)", args.item)
     issue = re.fullmatch(r"#(\d+)", args.item)
     if m:
@@ -143,17 +429,38 @@ def cmd_plans(args):
 def main():
     parser = argparse.ArgumentParser(prog="queue-tool", description=__doc__)
     sub = parser.add_subparsers(dest="cmd", required=True)
-    for name, fn, extra in (
-        ("dump", cmd_dump, []),
-        ("find", cmd_find, ["item"]),
-        ("plans", cmd_plans, []),
-    ):
+
+    def add(name, fn, *pos):
         p = sub.add_parser(name)
-        p.add_argument("project")
-        for a in extra:
+        for a in pos:
             p.add_argument(a)
         p.add_argument("--vault", default=DEFAULT_VAULT)
+        p.add_argument("--repo", default=QUEUES_REPO)
         p.set_defaults(fn=fn)
+        return p
+
+    add("dump", cmd_dump, "project")
+    add("find", cmd_find, "project", "item")
+    add("plans", cmd_plans, "project")
+    p = add("state", cmd_state, "project", "item")
+    p.add_argument("state", choices=sorted(STATE_CHARS))
+    p.add_argument("--reason")
+    p = add("lane", cmd_lane, "project", "item")
+    p.add_argument("lane", choices=LANES)
+    p = add("mark", cmd_mark, "project", "item")
+    p.add_argument("--plan")
+    p.add_argument("--pr")
+    p = add("add", cmd_add, "project", "text")
+    p.add_argument("--lane", required=True, choices=LANES)
+    add("stamp", cmd_stamp, "project")
+    add("push", cmd_push)
+    p = add("view", cmd_view)
+    p.add_argument("project", nargs="?")
+    p.add_argument("--all", action="store_true")
+    p = add("edit", cmd_edit, "project")
+    p.add_argument("action", choices=["begin", "commit"])
+    p.add_argument("-m", dest="message")
+
     args = parser.parse_args()
     args.fn(args)
 

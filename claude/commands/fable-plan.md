@@ -22,7 +22,7 @@ If empty, ask for it and stop.
 
 3. **Scan the rest of the queue.** `~/.dotfiles/claude/scripts/queue-tool dump <project>`, then read every open line. Collect items that share a file, surface, subsystem, root cause, or provenance (same PR review, same audit) with the target — the wording may share nothing; the connection is structural. These are input to brainstorming, never silent inclusions.
 
-4. **Mark planning in progress.** Set the queue line's state to `- [/]`. Do not change its lane; the lane changes when the plan exists.
+4. **Mark planning in progress.** `~/.dotfiles/claude/scripts/queue-tool state <project> <qN> wip`. Do not change its lane; the lane changes when the plan exists.
 
 5. **Refine requirements.** Invoke `superpowers:brainstorming` with the item — quote the queue line verbatim as the symptom (the user's phrasing encodes what they noticed; do not improve it) and bring the open questions from step 2 already drawn up. Present the related candidates from step 3; bundling, sequencing, or leaving each alone is the user's call, made here. Resolve every ambiguity here, with the user; an ambiguity left in the plan becomes a judgment call for a model chosen precisely because it should not make them.
 
@@ -39,7 +39,7 @@ If empty, ask for it and stop.
 
    The plan lives in the vault so it syncs between machines with the vault's own git backup, and so there is exactly one authority — never copy it into the repo.
 
-7. **Stamp the queue line.** Append `→plan:[[<project>/plans/YYYY-MM-DD-<topic>]]` to the line, before the trailing `^qN` — the block ID stays the last token. Stamp the same `→plan:` onto every line the user bundled in step 5; the plan's `queue_item:` stays the primary line only.
+7. **Stamp the queue line.** `~/.dotfiles/claude/scripts/queue-tool mark <project> <qN> --plan '[[<project>/plans/YYYY-MM-DD-<topic>]]'` — the tool inserts it before the trailing `^qN`. Run the same `mark` for every line the user bundled in step 5; the plan's `queue_item:` stays the primary line only.
 
 8. **Make it executor-grade.** Beyond the writing-plans format, every phase must have:
    - Exact file paths and function signatures for each change.
