@@ -43,7 +43,9 @@ Match PRs to queue lines by, in order of confidence: a `(#N)` issue ref the PR c
 
 ## 4. Issues → queue
 
-`/issue` is retired — no new refs are minted, but existing `(#N)` refs are immutable and still reconcile. Fetch only what the queue references, never a full listing:
+**Skip this whole step when `projects/$ARGUMENTS.md` frontmatter carries `reconcile_issues: false`.** That project's queue is its own source of truth: existing `(#N)` refs stay on their lines as historical breadcrumbs, nothing is fetched, and an issue's state never moves a line or raises a flag. Say in the report that the pass was skipped by project policy — do not re-derive it as a finding.
+
+Otherwise: `/issue` is retired — no new refs are minted, but existing `(#N)` refs are immutable and still reconcile. Fetch only what the queue references, never a full listing:
 
 - The referenced numbers are the dump's `issue` fields (step 1).
 - `gh issue list --repo <repo> --state open --json number` — any referenced number in this set is still open; nothing to do for it.
@@ -57,7 +59,9 @@ Then:
 
 ## 5. Precedence
 
-When sources disagree, trust in this order: merged PR > closed issue > plan file > queue line. Say when you overrode something.
+When sources disagree, trust in this order: merged PR > closed issue > plan file > queue line. Say when you overrode something. Under `reconcile_issues: false` the chain is merged PR > plan file > queue line — issues are not a source.
+
+Only the project owner's own work is queue business. Other people's PRs and issues are not "unqueued lanes" to flag; leave them out of the report entirely.
 
 The plan file in `projects/<project>/plans/` is the single authority — never duplicate its contents onto the queue or into the repo. The queue stores the wikilink. Durable learnings reach the wiki through `/harvest` when the project ships, not before.
 
