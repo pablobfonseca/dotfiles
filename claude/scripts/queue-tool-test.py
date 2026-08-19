@@ -365,5 +365,69 @@ class TransactTest(unittest.TestCase):
         self.assertIn("duplicate", r.stderr.lower())
 
 
+class SubcommandTest(unittest.TestCase):
+    def setup_pair(self):
+        base, bare, a, b = make_repo_pair()
+        vault = tempfile.mkdtemp()
+        os.makedirs(os.path.join(vault, "projects", "Tribemap"))
+        return a, b, vault
+
+    def read(self, clone):
+        sh(clone, "git", "pull", "-q")
+        with open(os.path.join(clone, "Tribemap", "Queue.md")) as f:
+            return f.read()
+
+    def test_lane(self):
+        a, b, vault = self.setup_pair()
+        r = run_tool(a, "lane", "Tribemap", "q4", "Ready", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        ready = self.read(b).split("## Ready")[1].split("## Needs spec")[0]
+        self.assertIn("Vague thing", ready)
+
+    def test_mark_pr(self):
+        a, b, vault = self.setup_pair()
+        r = run_tool(a, "mark", "Tribemap", "q1", "--pr", "https://x/9", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("→pr:https://x/9 ^q1", self.read(b))
+
+    def test_add_mints_and_reports_id(self):
+        a, b, vault = self.setup_pair()
+        r = run_tool(a, "add", "Tribemap", "Brand new item ~S", "--lane", "Ready", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(json.loads(r.stdout)["id"], "q7")
+        self.assertIn("- [ ] Brand new item ~S ^q7", self.read(b))
+
+    def test_add_refuses_offline(self):
+        a, b, vault = self.setup_pair()
+        sh(a, "git", "remote", "set-url", "origin", "/nonexistent")
+        r = run_tool(a, "add", "Tribemap", "X", "--lane", "Ready", "--vault", vault)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("offline", r.stderr)
+
+    def test_stamp(self):
+        a, b, vault = self.setup_pair()
+        r = run_tool(a, "stamp", "Tribemap", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(json.loads(r.stdout)["ids"], ["q7"])
+        self.assertIn("Unstamped ready item ~XS ^q7", self.read(b))
+
+    def test_push_flushes_offline_commits(self):
+        a, b, vault = self.setup_pair()
+        url = sh(a, "git", "remote", "get-url", "origin").stdout.strip()
+        sh(a, "git", "remote", "set-url", "origin", "/nonexistent")
+        run_tool(a, "state", "Tribemap", "q1", "wip", "--vault", vault)
+        sh(a, "git", "remote", "set-url", "origin", url)
+        r = run_tool(a, "push", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("- [/] Committed item", self.read(b))
+
+    def test_view_all(self):
+        a, b, vault = self.setup_pair()
+        r = run_tool(a, "view", "--all", "--vault", vault)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        with open(os.path.join(vault, "projects", "Tribemap", "Queue.md")) as f:
+            self.assertIn("Generated view", f.read())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

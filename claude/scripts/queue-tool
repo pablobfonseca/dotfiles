@@ -304,6 +304,56 @@ def cmd_state(args):
              lambda t: mutate_state(t, norm_id(args.item), args.state, args.reason))
 
 
+def cmd_lane(args):
+    transact(args.repo, args.vault, args.project,
+             f"q: lane {args.project} {args.item} {args.lane}",
+             lambda t: mutate_lane(t, norm_id(args.item), args.lane))
+
+
+def cmd_mark(args):
+    transact(args.repo, args.vault, args.project,
+             f"q: mark {args.project} {args.item}",
+             lambda t: mutate_mark(t, norm_id(args.item), args.plan, args.pr))
+
+
+def cmd_add(args):
+    qid = transact(args.repo, args.vault, args.project,
+                   f"q: add {args.project}",
+                   lambda t: mutate_add(t, args.lane, args.text),
+                   require_remote=True)
+    if qid:
+        print(json.dumps({"id": qid}))
+
+
+def cmd_stamp(args):
+    ids = transact(args.repo, args.vault, args.project,
+                   f"q: stamp {args.project}",
+                   lambda t: mutate_stamp(t),
+                   require_remote=True)
+    print(json.dumps({"ids": ids or []}))
+
+
+def all_projects(repo):
+    return sorted(p.parent.name for p in Path(repo).glob("*/Queue.md"))
+
+
+def cmd_push(args):
+    if not pull_rebase(args.repo):
+        die("remote unreachable; nothing pushed")
+    if not push_head(args.repo):
+        die("push failed")
+    for project in all_projects(args.repo):
+        write_view(args.repo, args.vault, project)
+
+
+def cmd_view(args):
+    projects = all_projects(args.repo) if args.all else [args.project]
+    if not projects or projects == [None]:
+        die("view needs a project or --all")
+    for project in projects:
+        write_view(args.repo, args.vault, project)
+
+
 def cmd_dump(args):
     pull_rebase(args.repo)
     print(json.dumps(parse_queue(repo_queue_path(args.repo, args.project)), indent=2))
@@ -375,6 +425,18 @@ def main():
     p = add("state", cmd_state, "project", "item")
     p.add_argument("state", choices=sorted(STATE_CHARS))
     p.add_argument("--reason")
+    p = add("lane", cmd_lane, "project", "item")
+    p.add_argument("lane", choices=LANES)
+    p = add("mark", cmd_mark, "project", "item")
+    p.add_argument("--plan")
+    p.add_argument("--pr")
+    p = add("add", cmd_add, "project", "text")
+    p.add_argument("--lane", required=True, choices=LANES)
+    add("stamp", cmd_stamp, "project")
+    add("push", cmd_push)
+    p = add("view", cmd_view)
+    p.add_argument("project", nargs="?")
+    p.add_argument("--all", action="store_true")
 
     args = parser.parse_args()
     args.fn(args)
