@@ -1,6 +1,6 @@
 ---
 description: Plan a task on Fable so a cheaper model can execute it in a separate session (pairs with /implement-plan)
-argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task description"
+argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task description [--council]"
 ---
 
 ## Task
@@ -47,7 +47,7 @@ If empty, ask for it and stop.
    - Acceptance checks: observable behavior, not "should work".
    - A **stop-and-ask list** at the top of the plan. Minimum triggers: reality deviates from the plan (file moved, API changed), tests still failing after 2 fix attempts, ambiguous requirement discovered mid-phase, any security-sensitive decision not spelled out in the plan.
 
-9. **Self-check.** Reread the plan as if you were Sonnet with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list.
+9. **Self-check.** Reread the plan as if you were Sonnet with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list. With `--council`, run the council (see below) instead.
 
 10. **Hand off.** Print exactly this and stop:
 
@@ -61,6 +61,18 @@ If empty, ask for it and stop.
 ## Steps (plain form)
 
 Same as above minus everything queue-related: brainstorm (step 5), write the plan to `docs/plans/YYYY-MM-DD-<topic>.md` relative to cwd, make it executor-grade (step 8), self-check (step 9). NEVER commit a `docs/plans/` plan (global rule); add `docs/plans/` to `.git/info/exclude` if the repo doesn't ignore it. Hand off with the path form: `/implement-plan docs/plans/<file>.md`.
+
+## --council
+
+Adversarial review of the drafted plan, replacing step 9's self-check. Strip the flag from `$ARGUMENTS` before parsing the rest; applies to both forms. After step 8, dispatch three critics as parallel `general-purpose` agents in one message. Each gets only the plan file path and the repo root — no conversation context; the value is the cold read.
+
+- **Cold executor** — "You are Sonnet with zero context, about to execute this plan. List every step where two reasonable implementations exist, every instruction you cannot resolve to a concrete file or command, and every acceptance check you could not verify mechanically."
+- **Reality checker** — "Verify every file path, function signature, and command this plan references against the actual repo. Report anything stale, missing, or misnamed, with the correct value."
+- **Scope skeptic** — "Report what is overbuilt relative to the stated goal, what failure mode is missing from the stop-and-ask list, and any phase ordering that breaks."
+
+Triage each finding: fix the plan, or move the decision to the stop-and-ask list. Never silently drop one — a finding you disagree with on substance goes to the user with your reasoning. If triage forced structural changes (phases added, reordered, or rewritten), rerun the cold executor once on the new version; cosmetic fixes don't warrant a rerun.
+
+If the plan came out at one or two mechanical phases, say the council is overkill for it and ask before spending the tokens.
 
 ## Rules
 
