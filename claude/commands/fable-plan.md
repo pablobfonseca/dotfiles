@@ -70,6 +70,8 @@ Adversarial review of the drafted plan, replacing step 9's self-check. Strip the
 - **Reality checker** — "Verify every file path, function signature, and command this plan references against the actual repo. Report anything stale, missing, or misnamed, with the correct value."
 - **Scope skeptic** — "Report what is overbuilt relative to the stated goal, what failure mode is missing from the stop-and-ask list, and any phase ordering that breaks."
 
+Effort is not uniform: start the cold executor's prompt with `ultrathink` (ambiguity hunting is what shallow passes miss); the reality checker is mechanical, no thinking keyword; the scope skeptic runs at default.
+
 Triage each finding: fix the plan, or move the decision to the stop-and-ask list. Never silently drop one — a finding you disagree with on substance goes to the user with your reasoning. If triage forced structural changes (phases added, reordered, or rewritten), rerun the cold executor once on the new version; cosmetic fixes don't warrant a rerun.
 
 If the plan came out at one or two mechanical phases, say the council is overkill for it and ask before spending the tokens.
@@ -78,4 +80,4 @@ If the plan came out at one or two mechanical phases, say the council is overkil
 
 - NO implementation in this session. No code edits, no branches, no commits. Writing the plan file and stamping the queue line are the only writes this command performs.
 - Run from the repo being planned — the plan is grounded in real code, and brainstorming needs to read it.
-- Model guidance for the handoff line: suggest `sonnet` when every phase is mechanical (renames, config plumbing, well-specified CRUD), `opus` when phases need minor local decisions.
+- Model guidance for the handoff line: suggest `sonnet` when every phase is mechanical (renames, config plumbing, well-specified CRUD), `opus` when phases need minor local decisions. Append a "bump thinking effort" note to the handoff only when phases involve debugging or gnarly integration; otherwise say nothing about effort.
