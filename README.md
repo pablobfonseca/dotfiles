@@ -50,6 +50,13 @@ Prefix: `C-a` | Vi mode | [Cyberpunk theme](https://github.com/pablobfonseca/cyb
 
 22 specialized agents (language + role-based), 13 plugins (4 LSP servers, superpowers, frontend-design, dev-browser, ast-grep, reflexion), auto-format hooks for TypeScript.
 
+User-scope MCP servers live in `~/.claude.json` (runtime state, not versioned). On a new machine:
+
+```bash
+claude mcp add --scope user metabase --transport http https://metabase.tribemap.ai/api/metabase-mcp
+claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest
+```
+
 ## Codex
 
 Best-practice Codex setup with global `AGENTS.md`, conservative CLI defaults, focused reusable skills, GitHub plugin enabled, and narrow custom agents for review-oriented work.
