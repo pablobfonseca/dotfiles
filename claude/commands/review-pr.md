@@ -38,7 +38,7 @@ Parse `$ARGUMENTS`:
 
 6. **Report.** Output a per-comment breakdown, then a short summary including the CI status. By default do NOT edit any files or push commits — recommend actions and wait for the user to decide what to apply. If `--apply` is set, continue to **Apply mode**.
 
-   **Mergeable verdict:** the PR is mergeable when all CI checks pass and no thread is left at `Agree` or `Needs clarification` unaddressed. When it is, end the summary with:
+   **Mergeable verdict:** the PR is mergeable when all CI checks pass and no thread is left at `Agree` or `Needs clarification` unaddressed (a deferred `Agree` thread counts as addressed — see Apply mode). When it is, end the summary with:
 
    ```
    Mergeable. Merge it, then /sync <project> — or it reconciles on your next /queue.
@@ -88,6 +88,10 @@ For each `Disagree` thread:
 - Add a 👎 reaction to the comment: `gh api repos/{owner}/{repo}/pulls/comments/<comment_id>/reactions -f content='-1'`.
 - Reply with the one-line reason from the analysis so the reviewer sees why it was declined. Leave the thread unresolved.
 
+For each `Agree` thread you do **not** apply (out of scope for this PR, needs a contract/plan change, etc.) — a **deferred** thread:
+- Capture it so it is not lost: if the PR body references a plan/queue, append it to that project's inbox with `/capture`; otherwise `gh issue create` referencing the PR and thread URL.
+- Reply once with the reason and where it was captured, then resolve the thread like an addressed one. Never answer a bot's follow-up question (e.g. CodeRabbit offering to open an issue); the capture above is the follow-up.
+
 ## Watch mode (`--watch`)
 
 Keep the PR under review until every review bot on it has nothing left to say. Delegate the 5-minute interval to the `/loop` skill rather than sleeping in-band:
@@ -102,6 +106,7 @@ Keep the PR under review until every review bot on it has nothing left to say. D
 
 Guardrails:
 - Only act on comments not already handled in a previous pass (track comment IDs already analysed / applied).
+- A bot reply inside a thread you already replied to is not a new comment: ignore it unless it raises a claim the thread has not covered. Never reply to a bot reply that only acknowledges, restates, or asks a question — that starts a ping-pong.
 - Stop the loop with a status if a bot never signals done after a reasonable number of passes (e.g. 12 ≈ 1 hour), rather than looping indefinitely.
 
 ## Rules
