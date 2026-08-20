@@ -1224,3 +1224,12 @@ type = 'fill_form'
 
 [workflows.ask_ai.steps.fields]
 prompt = '{{query}}'
+
+# AI-generated command
+[[commands]]
+uuid = "f88cbe5a-b6fa-4be2-96fd-5fe2fb59ce03"
+label = "Argocd"
+action = "browser_open:https://argocd.upscope.io"
+icon = "custom:argocd"
+type = "action"
+context = "chrome"
