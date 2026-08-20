@@ -1233,3 +1233,12 @@ action = "browser_open:https://argocd.upscope.io"
 icon = "custom:argocd"
 type = "action"
 context = "chrome"
+
+# AI-generated command
+[[commands]]
+uuid = "7768cbc8-8e66-46fc-9e99-568ab7abb370"
+label = "Dotfiles"
+action = "browser_open:https://github.com/pablobfonseca/dotfiles"
+icon = "custom:dotfiles"
+type = "action"
+context = "chrome"
