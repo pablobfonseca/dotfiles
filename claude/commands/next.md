@@ -11,7 +11,7 @@ First token is the project. Every remaining token is an item ID (`q42`, `42` and
 
 ## 2. Show what is about to move
 
-Run `~/.dotfiles/claude/scripts/queue-tool find <project> <qN>` for each ID and print the line's text, lane and state. A bare `^qN` pasted from a proposal is easy to get wrong by one digit, and a wrong promote quietly reprioritises the week.
+Run `queue-tool find <project> <qN>` for each ID and print the line's text, lane and state. A bare `^qN` pasted from a proposal is easy to get wrong by one digit, and a wrong promote quietly reprioritises the week.
 
 Stop and ask, changing nothing, if any item:
 
@@ -26,7 +26,7 @@ Stop and ask, changing nothing, if any item:
 ## 4. Move them
 
 ```
-~/.dotfiles/claude/scripts/queue-tool lane <project> <qN> Next
+queue-tool lane <project> <qN> Next
 ```
 
 One call per ID, in the order the user gave them — that order is the leverage ranking. Each call is its own git transaction against the vault-queues repo and regenerates the vault view; there is nothing to commit in the vault afterwards.
