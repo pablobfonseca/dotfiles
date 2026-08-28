@@ -11,6 +11,13 @@
     "pr": ""
   },
   "permissions": {
+    "allow": [
+      "Bash(queue-tool dump:*)",
+      "Bash(queue-tool find:*)",
+      "Bash(queue-tool plans:*)",
+      "Bash(queue-tool log:*)",
+      "Bash(queue-tool --help)"
+    ],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",
@@ -40,7 +47,14 @@
           {
             "type": "command",
             "command": "~/.dotfiles/claude/hooks/guard-queue-views.sh",
-            "statusMessage": "Checking queue view guard..."
+            "statusMessage": "Checking queue view guard...",
+            "if": "Edit(**/SecondBrain/projects/**/Queue.md)"
+          },
+          {
+            "type": "command",
+            "command": "~/.dotfiles/claude/hooks/guard-queue-views.sh",
+            "statusMessage": "Checking queue view guard...",
+            "if": "Write(**/SecondBrain/projects/**/Queue.md)"
           }
         ]
       }
