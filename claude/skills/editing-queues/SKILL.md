@@ -1,6 +1,9 @@
 ---
 name: editing-queues
 description: Use when changing a project's task queue - marking an item done, wip or dropped, moving it between lanes, attaching a plan or PR link, promoting an item, or stamping ^qN block IDs - and always before editing any projects/*/Queue.md in the SecondBrain vault, in any repo or session.
+paths:
+  - "**/Queue.md"
+  - "**/vault-queues/**"
 ---
 
 # Editing Queues
@@ -16,7 +19,7 @@ Queue authority is the private **vault-queues** repo (`~/.local/share/vault-queu
 Never edit a `Queue.md` in the vault. Never hand-write a `^qN`. Every change goes through:
 
 ```bash
-~/.dotfiles/claude/scripts/queue-tool --help
+queue-tool --help
 ```
 
 That help output is the syntax reference. Read it instead of guessing flags; this skill covers only the judgment it cannot encode.

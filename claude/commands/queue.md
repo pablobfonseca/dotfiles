@@ -14,7 +14,7 @@ Grooming a stale queue ranks fiction. Before anything else, run the full reconci
 ## 1. Read the whole picture before touching a line
 
 - `projects/$ARGUMENTS.md` — goal, status, next steps. This is what "leverage" is measured against.
-- `~/.dotfiles/claude/scripts/queue-tool dump $ARGUMENTS` — the queue, parsed: every line's lane, state and markers as JSON, plus `duplicates`, `unstamped` and `next_id`. Trust this parse instead of reading the markers by eye; to change a line, use `queue-tool` rather than opening the vault's read-only view.
+- `queue-tool dump $ARGUMENTS` — the queue, parsed: every line's lane, state and markers as JSON, plus `duplicates`, `unstamped` and `next_id`. Trust this parse instead of reading the markers by eye; to change a line, use `queue-tool` rather than opening the vault's read-only view.
 - `projects/$ARGUMENTS/Inbox.md` if present — loose capture that may contain promotable items.
 - Every support note in `projects/$ARGUMENTS/` whose title suggests a plan, audit or incident. You cannot rank without knowing what is already specced.
 
@@ -26,7 +26,7 @@ Anything in Inbox.md that names an observable symptom or a desired end state bec
 
 In this order, and only these:
 
-- **Stamp**: run `~/.dotfiles/claude/scripts/queue-tool stamp $ARGUMENTS`; it mints and pushes IDs atomically (and refuses offline, because minting against a stale remote is the two-machine race). IDs are immutable — never renumber, never reuse, never strip.
+- **Stamp**: run `queue-tool stamp $ARGUMENTS`; it mints and pushes IDs atomically (and refuses offline, because minting against a stale remote is the two-machine race). IDs are immutable — never renumber, never reuse, never strip.
 - **Split** anything that is two deliverables. Note the split in your report; each half gets its own fresh `^qN`, the original ID stays on the half closest to the original wording.
 - **Size** unsized lines: `~XS` under an hour, `~S` a sitting, `~M` a day, `~L` needs decomposition.
 - **Tag** with at most what applies: `#bug` `#feat` `#sec` `#ops`, plus `#claude` only if an agent could finish it unattended with no product decision to make.
