@@ -38,7 +38,7 @@
       "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/SecondBrain"
     ]
   },
-  "model": "claude-fable-5[1m]",
+  "model": "fable[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -47,14 +47,14 @@
           {
             "type": "command",
             "command": "~/.dotfiles/claude/hooks/guard-queue-views.sh",
-            "statusMessage": "Checking queue view guard...",
-            "if": "Edit(**/SecondBrain/projects/**/Queue.md)"
+            "if": "Edit(**/SecondBrain/projects/**/Queue.md)",
+            "statusMessage": "Checking queue view guard..."
           },
           {
             "type": "command",
             "command": "~/.dotfiles/claude/hooks/guard-queue-views.sh",
-            "statusMessage": "Checking queue view guard...",
-            "if": "Write(**/SecondBrain/projects/**/Queue.md)"
+            "if": "Write(**/SecondBrain/projects/**/Queue.md)",
+            "statusMessage": "Checking queue view guard..."
           }
         ]
       }
@@ -238,7 +238,13 @@
   "teammateMode": "in-process",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
+  "remoteControlAtStartup": false,
   "autoMode": {
+    "soft_deny": [
+      "$defaults",
+      "Bash(upscope tm db reset:*) in this repo — destructive drop+recreate of the dev DB, not covered by default Git Destructive / Cloud Storage Mass Delete labels",
+      "Direct docker/psql/drizzle commands bypassing the upscope CLI wrapper in this repo (per CLAUDE.md: never run docker, docker compose, psql, or drizzle commands directly against the local machine)"
+    ],
     "environment": [
       "### Org-wide",
       "**Organization**: upscopeio (GitHub org; repo github.com:upscopeio/tribemap.git)",
@@ -264,11 +270,6 @@
       "**Trusted repo**: this repo (upscope-env/tribemap working tree) and its origin remote github.com:upscopeio/tribemap.git — private repo, so confidential business material is fine to commit here, but secrets/credentials are never cleared into it by visibility alone",
       "**Org-specific CLIs**: `upscope` CLI (docker/db/console wrapper, alias `tm`; project commands defined in cli.yml) — 366 uses in shell history; `gh` (55×)",
       "No routine <user>/ prefix qualifiers found in recon"
-    ],
-    "soft_deny": [
-      "$defaults",
-      "Bash(upscope tm db reset:*) in this repo — destructive drop+recreate of the dev DB, not covered by default Git Destructive / Cloud Storage Mass Delete labels",
-      "Direct docker/psql/drizzle commands bypassing the upscope CLI wrapper in this repo (per CLAUDE.md: never run docker, docker compose, psql, or drizzle commands directly against the local machine)"
     ]
   }
 }
