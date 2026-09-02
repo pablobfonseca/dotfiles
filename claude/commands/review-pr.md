@@ -100,7 +100,7 @@ Keep the PR under review until every review bot on it has nothing left to say. D
 - **Termination check** (run at the end of every pass): every bot that has reviewed the PR must signal done in its most recent output.
   - Reviews: `gh api "repos/{owner}/{repo}/pulls/<number>/reviews" --paginate`
   - Issue comments: `gh api "repos/{owner}/{repo}/issues/<number>/comments" --paginate`
-  - Copilot (`user.login` containing `copilot`): latest output contains **`and generated no new comments`** (case-insensitive).
+  - Copilot (`user.login` containing `copilot`): latest output contains a `Comments generated:` line whose value is **`0 new`** (inside the collapsed `Review details` block; ignore markdown bold markers), or the legacy phrase **`and generated no new comments`**. Case-insensitive either way. Any other value (e.g. `**Comments generated:** 3`) means another pass is needed; the `🟢 Approval recommended` / `🟡 Changes recommended` header alone is not the signal, since `0 new` also appears under `Changes recommended`.
   - CodeRabbit (`user.login` containing `coderabbit`): latest review body says **`Actionable comments posted: 0`**.
 - When every bot present has signalled done, **stop the loop** (end the `/loop` run) and report a final summary. Otherwise let `/loop` fire the next pass in 5 minutes.
 
