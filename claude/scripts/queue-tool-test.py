@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import contextlib
+import io
 import json
 import os
 import subprocess
@@ -268,6 +270,21 @@ class MutationTest(unittest.TestCase):
             qt.mutate_state(QUEUE, "q1", "dropped")
         out = qt.mutate_state(QUEUE, "q1", "dropped", "superseded")
         self.assertIn("- [-] Committed item #feat ~S (dropped: superseded) ^q1", out)
+
+    def test_state_done_warns_when_still_ranked_in_proposal(self):
+        qt = self.tool()
+        self.assertEqual(qt.proposal_rank(QUEUE, "q3"), 1)
+        self.assertIsNone(qt.proposal_rank(QUEUE, "q1"))
+        self.assertIsNone(qt.proposal_rank(QUEUE.replace("^q3]]", "^q30]]"), "q3"))
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            qt.mutate_state(QUEUE, "q3", "done")
+        self.assertIn("q3 is still rank 1", err.getvalue())
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            qt.mutate_state(QUEUE, "q3", "wip")
+            qt.mutate_state(QUEUE, "q1", "done")
+        self.assertEqual(err.getvalue(), "")
 
     def test_state_unknown_id_dies(self):
         qt = self.tool()
