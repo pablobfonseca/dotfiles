@@ -13,7 +13,8 @@ Read:
 
 Write (each commits and pushes, then regenerates the vault view):
   state <project> <qN> open|wip|done|dropped [--reason R]
-                              set checkbox state; dropped requires --reason
+                              set checkbox state; dropped requires --reason; done/dropped
+                              warn on stderr if the item is still in the proposed ranking
   lane <project> <qN> <Lane>  move between Next, Ready, Needs spec, Blocked, Someday, Shipped
   mark <project> <qN> [--plan W] [--pr URL]
                               set the →plan: wikilink or →pr: URL, before the trailing ^qN
@@ -186,6 +187,16 @@ def joined(lines):
     return "\n".join(lines) + "\n"
 
 
+def proposal_rank(text, qid):
+    """Rank of qid in the `> N. ...` proposed blockquote, or None if it is not ranked."""
+    cited = re.compile(rf"\^{re.escape(qid)}(?!\d)")
+    for line in text.splitlines():
+        m = re.match(r"^>\s*(\d+)\.\s", line)
+        if m and cited.search(line):
+            return int(m.group(1))
+    return None
+
+
 def mutate_state(text, qid, state, reason=None):
     if state == "dropped" and not reason:
         die("dropped requires --reason")
@@ -195,6 +206,11 @@ def mutate_state(text, qid, state, reason=None):
     if state == "dropped":
         line = insert_before_id(line, f"(dropped: {reason})")
     lines[i] = line
+    if state in ("done", "dropped"):
+        rank = proposal_rank(text, qid)
+        if rank is not None:
+            print(f"warning: {qid} is still rank {rank} in the proposed Next ranking; "
+                  "remove it with `queue-tool edit` or regroom", file=sys.stderr)
     return joined(lines)
 
 
