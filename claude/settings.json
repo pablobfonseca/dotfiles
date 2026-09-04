@@ -160,7 +160,6 @@
     "refreshInterval": 5
   },
   "enabledPlugins": {
-    "reflexion@context-engineering-kit": false,
     "typescript-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": true,
@@ -169,7 +168,6 @@
     "pyright-lsp@claude-plugins-official": true,
     "claude-mem@thedotmack": true,
     "obsidian@obsidian-skills": true,
-    "plugin-dev@claude-plugins-official": false,
     "hookify@claude-plugins-official": true,
     "learning-output-style@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
@@ -250,9 +248,9 @@
   },
   "editorMode": "vim",
   "teammateMode": "in-process",
+  "remoteControlAtStartup": false,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "remoteControlAtStartup": false,
   "autoMode": {
     "soft_deny": [
       "$defaults",
