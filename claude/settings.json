@@ -120,6 +120,14 @@
             "command": "input=$(cat); echo \"$input\" | claude-session-manager hook-status permission_prompt; echo \"$input\" | terminal-notifier -group \"claude-$(echo \"$input\" | jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Permission Required - $(basename $PWD)\" -message 'Needs your approval' -sound 'default'"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claudeos hook Notification"
+          }
+        ]
       }
     ],
     "SessionStart": [
@@ -149,6 +157,24 @@
           {
             "type": "command",
             "command": "node ~/.claude/hooks/cron-bridge.js"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claudeos hook SessionEnd"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claudeos hook Stop"
           }
         ]
       }
