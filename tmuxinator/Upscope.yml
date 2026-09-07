@@ -7,9 +7,6 @@ windows:
       root: ~/code/upscope-env/userview
       panes:
         - nvim
-  - tribemap:
-      layout: main-vertical
-      root: ~/code/upscope-env/tribemap
   - cli:
       layout: main-vertical
       root: ~/code/upscope-env/upscope-cli

@@ -5,6 +5,5 @@ windows:
   - nvim:
     layout: main-vertical
     panes:
-      - claude
-  - SecondBrain: cd ~/obsidian/SecondBrain
+      - claudeos
   - lazyactions: lazyactions
