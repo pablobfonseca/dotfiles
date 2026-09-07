@@ -12,5 +12,5 @@ Read `~/.claude/commands/fable-plan.md` and follow it exactly, with the deltas b
 ## Deltas
 
 - **Model guard.** This command assumes an Opus session. If this session is running a different model, say which and ask whether to continue before doing anything else.
-- **Handoff defaults to `sonnet`.** The planner should outrank the executor; suggest `opus` for execution only if a phase turned out less mechanical than expected, and say why.
+- **Executor defaults to `sonnet`.** The planner should outrank the executor, so write `model: sonnet` in the plan's frontmatter and print `sonnet` in the handoff; write `opus` in both only if a phase turned out less mechanical than expected, and say why.
 - **Escalation valve.** This is the cheap path, for tasks whose solution shape is already known. If brainstorming keeps failing to resolve an ambiguity, or the item turns out to carry architectural, security, or data-integrity weight, stop and recommend replanning with `/fable-plan` instead of shipping a plan with judgment calls left in it.
