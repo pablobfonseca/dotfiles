@@ -201,7 +201,7 @@
     "harness@harness-marketplace": true,
     "stripe@claude-plugins-official": true,
     "taste-skill@taste-skill": true,
-    "warp@claude-code-warp": true
+    "google-ads-api-developer-assistant@google-ads-assistant-local": true
   },
   "extraKnownMarketplaces": {
     "dev-browser-marketplace": {
@@ -258,10 +258,10 @@
         "repo": "Leonxlnx/taste-skill"
       }
     },
-    "claude-code-warp": {
+    "google-ads-assistant-local": {
       "source": {
-        "source": "github",
-        "repo": "warpdotdev/claude-code-warp"
+        "source": "directory",
+        "path": "/Users/pablobfonseca/code/Playground/google-ads-api-developer-assistant"
       }
     }
   },

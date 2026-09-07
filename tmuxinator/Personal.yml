@@ -7,21 +7,8 @@ windows:
   - dotfiles:
       layout: main-vertical
       root: ~/.dotfiles
+  - code:
+      layout: main-vertical
+      root: ~/code
       panes:
-        - nvim
-  - playground:
-      layout: main-vertical
-      root: ~/code/Playground
-  - go-workspace:
-      layout: main-vertical
-      root: ~/code/go-workspace/src/github.com/pablobfonseca
-  - obsidian:
-      layout: main-vertical
-      root: ~/obsidian/SecondBrain
-      panes:
-        - nvim .
-  - devdeck:
-      layout: main-vertical
-      root: ~/code/DevDeck/devdeck-server
-      panes:
-        -
+        - claudeos
