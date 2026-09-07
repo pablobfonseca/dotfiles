@@ -7,7 +7,9 @@ pull --rebase, mutate, commit, push. The vault's projects/<project>/Queue.md is 
 generated read-only view, rewritten after each successful write. Never edit it by hand.
 
 Read:
-  dump <project>              queue as JSON: items, duplicate IDs, unstamped lines, next free ^qN
+  dump <project> [--no-pull]  queue as JSON: items, duplicate IDs, unstamped lines, next free ^qN,
+                              and the > proposed: ranking under ## Next; --no-pull reads the
+                              local checkout as is (for the TUI's background reads)
   find <project> <qN|#N|text> one queue line as JSON, matched by ID, issue ref or text fragment
   plans <project>             frontmatter backlinks (queue:/queue_item:) of every plan file
 
@@ -60,6 +62,8 @@ SIZE = re.compile(r"~(XS|S|M|L)\b")
 ISSUE = re.compile(r"\(#(\d+)\)")
 PLAN = re.compile(r"→plan:(\[\[[^\]]+\]\]|\S+)")
 PR = re.compile(r"→pr:(\S+)")
+PROPOSED_HEADER = re.compile(r"^>\s*proposed:\s*(.*)$")
+PROPOSED_RANK = re.compile(r"^>\s*(\d+)\.\s*`?\^?(q\d+)`?")
 QUEUES_REPO = Path(os.environ.get("VAULT_QUEUES", Path.home() / ".local/share/vault-queues"))
 
 
@@ -128,6 +132,30 @@ def parse_item(state_char, body, lane, line_no, raw):
     return item
 
 
+def parse_proposed(text):
+    """The first `> proposed: <date>` blockquote under ## Next, or None."""
+    lane = None
+    lines = text.splitlines()
+    for i, raw in enumerate(lines):
+        if raw.startswith("## "):
+            lane = raw[3:].strip()
+            continue
+        if lane != "Next":
+            continue
+        m = PROPOSED_HEADER.match(raw)
+        if not m:
+            continue
+        ranks = []
+        for nxt in lines[i + 1:]:
+            if not nxt.startswith(">"):
+                break
+            r = PROPOSED_RANK.match(nxt)
+            if r:
+                ranks.append({"rank": int(r.group(1)), "id": r.group(2)})
+        return {"date": m.group(1).strip(), "ranks": ranks}
+    return None
+
+
 def parse_queue_text(text, file="<memory>"):
     lane = None
     items = []
@@ -156,6 +184,7 @@ def parse_queue_text(text, file="<memory>"):
         "duplicates": dup,
         "unstamped": [i for i in items if not i["id"] and i["lane"] != "Shipped"],
         "next_id": f"q{max(all_ids, default=0) + 1}",
+        "proposed": parse_proposed(text),
     }
 
 
@@ -490,7 +519,8 @@ def cmd_undo(args):
 
 
 def cmd_dump(args):
-    pull_rebase(args.repo)
+    if not args.no_pull:
+        pull_rebase(args.repo)
     print(json.dumps(parse_queue(repo_queue_path(args.repo, args.project)), indent=2))
 
 
@@ -555,7 +585,8 @@ def main():
         p.set_defaults(fn=fn)
         return p
 
-    add("dump", cmd_dump, "project")
+    p = add("dump", cmd_dump, "project")
+    p.add_argument("--no-pull", action="store_true")
     add("find", cmd_find, "project", "item")
     add("plans", cmd_plans, "project")
     p = add("state", cmd_state, "project", "item")
