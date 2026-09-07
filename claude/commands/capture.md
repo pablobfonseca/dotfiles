@@ -16,7 +16,7 @@ The vault is `~/obsidian/SecondBrain`; both destinations below resolve there, wh
 ## Rules
 
 - Append **verbatim**. Do not fix the grammar, expand the abbreviation, or add context the user did not write. A capture note is evidence of what they thought, not a polished artifact.
-- Prefix with `- [ ] ` unless the text is plainly not work: a question or a bare URL stays a bare line. Erring toward the checkbox keeps `/queue` the single place where triage happens. The Raycast capture extension (`~/code/Playground/capture-obsidian`) applies the same rule; change both together.
+- Prefix with `- [ ] ` unless the text is a bare URL or already a list item; a question gets the checkbox too (it is usually something to find out). Erring toward the checkbox keeps `/queue` the single place where triage happens. The Raycast capture extension (`~/code/Playground/capture-obsidian`) and `claudeos` (`internal/vault/capture.go`) apply the same rule; change all three together.
 - Never triage, size, tag, relane or promote. That is `/queue`'s job and it happens later, deliberately.
 - Never touch any other line in the file.
 
