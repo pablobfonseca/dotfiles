@@ -5,7 +5,7 @@ argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task desc
 
 ## Task
 
-Produce a plan file that a less capable model (Opus/Sonnet) can execute **without judgment calls**. This session plans only. The pipeline: this command → `claude --model opus` → `/implement-plan`.
+Produce a plan file that a less capable model (Opus/Sonnet) can execute **without judgment calls**. This session plans only. The pipeline: this command → `claude --model <model>` → `/implement-plan`, where `<model>` is the executor model this command picks and records.
 
 `$ARGUMENTS` takes two forms:
 
@@ -34,8 +34,11 @@ If empty, ask for it and stop.
    tags: [plan]
    queue: projects/<project>/Queue.md
    queue_item: <the queue line verbatim, markers included>
+   model: opus | sonnet
    ---
    ```
+
+   `model:` is the executor model this plan is graded for — `opus` or `sonnet`, nothing else — chosen by the rule in Rules. Tools read it instead of scraping the handoff, and step 10 prints the same value, so the frontmatter and the terminal never disagree.
 
    The plan lives in the vault so it syncs between machines with the vault's own git backup, and so there is exactly one authority — never copy it into the repo.
 
@@ -47,14 +50,14 @@ If empty, ask for it and stop.
    - Acceptance checks: observable behavior, not "should work".
    - A **stop-and-ask list** at the top of the plan. Minimum triggers: reality deviates from the plan (file moved, API changed), tests still failing after 2 fix attempts, ambiguous requirement discovered mid-phase, any security-sensitive decision not spelled out in the plan.
 
-9. **Self-check.** Reread the plan as if you were Sonnet with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list. With `--council`, run the council (see below) instead.
+9. **Self-check.** Reread the plan as if you were Sonnet with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list. With `--council`, run the council (see below) instead. If the pass changed the phases enough to change the executor grade, update the plan's `model:` before handing off.
 
-10. **Hand off.** Print exactly this and stop:
+10. **Hand off.** Print exactly this and stop, with `<model>` replaced by the value written to `model:` in step 6:
 
    ```
    Plan ready: projects/<project>/plans/<file>.md  (^qN)
    Next: exit, then run from the repo
-     claude --model opus     # sonnet if the plan is fully mechanical
+     claude --model <model>
      /implement-plan <project> | qN
    ```
 
@@ -82,4 +85,4 @@ If the plan came out at one or two mechanical phases, say the council is overkil
 
 - NO implementation in this session. No code edits, no branches, no commits. Writing the plan file and stamping the queue line are the only writes this command performs.
 - Run from the repo being planned — the plan is grounded in real code, and brainstorming needs to read it.
-- Model guidance for the handoff line: suggest `sonnet` when every phase is mechanical (renames, config plumbing, well-specified CRUD), `opus` when phases need minor local decisions. Append a "bump thinking effort" note to the handoff only when phases involve debugging or gnarly integration; otherwise say nothing about effort.
+- Executor model, one decision with two outputs: `sonnet` when every phase is mechanical (renames, config plumbing, well-specified CRUD), `opus` when phases need minor local decisions. Write it to `model:` in step 6 and print the same value in step 10's handoff; `opus` and `sonnet` are the only values `model:` takes. Append a "bump thinking effort" note to the handoff only when phases involve debugging or gnarly integration; otherwise say nothing about effort — effort stays a handoff note, never a frontmatter key.
