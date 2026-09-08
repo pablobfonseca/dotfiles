@@ -68,6 +68,7 @@ fish/fish_variables
 codex/auth.json
 codex/installation_id
 codex/.personality_migration
+codex/.sandbox_migration
 codex/version.json
 codex/models_cache.json
 codex/cache/
@@ -75,4 +76,6 @@ codex/plugins/
 codex/skills/.system/
 codex/shell_snapshots/
 codex/history.jsonl
+codex/session_index.jsonl
+codex/thread-writer-locks/
 codex/*.sqlite*
