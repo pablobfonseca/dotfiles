@@ -2,6 +2,7 @@ vault: ~/obsidian/SecondBrain
 queues: ~/.local/share/vault-queues
 state: ~/.local/state/claudeos
 defaults: { model: fable, worktree: true }
+telegram: { chat_id: "YOUR_TELEGRAM_CHAT_ID" }
 projects:
   ClaudeOS: { path: ~/code/claudeos }
   LazyActions: { path: ~/code/lazy-actions }
@@ -9,5 +10,5 @@ projects:
   GX100: { path: ~/code/gx100-midi-control }
   Devdeck: { path: ~/code/DevDeck }
   CobrowsingSDK: { path: ~/code/cobrowsing-mobile }
-  # LearningApp: { path: ~/code/Playground/LearningApp }
+  LearningApp: { path: ~/code/Playground/LearningApp }
   Dotfiles: { path: ~/.dotfiles }

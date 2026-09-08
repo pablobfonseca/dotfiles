@@ -79,3 +79,6 @@ codex/history.jsonl
 codex/session_index.jsonl
 codex/thread-writer-locks/
 codex/*.sqlite*
+
+# claudeos: per-machine config (telegram chat id), copy from config.example.yaml
+claudeos/config.yaml
