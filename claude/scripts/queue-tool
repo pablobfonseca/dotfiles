@@ -23,6 +23,10 @@ Write (each commits and pushes, then regenerates the vault view):
   add <project> <text> --lane <Lane>
                               append a new line, minting its ^qN; prints {"id": ...}
   stamp <project>             mint ^qN for every unstamped line; prints {"ids": [...]}
+  init <project> [--github owner/slug]
+                              create <project>/Queue.md with empty lanes for a project that
+                              has none, plus the vault's projects/<project>/ directory,
+                              main file and Inbox.md; refuses if the queue already exists
 
 add and stamp mint IDs and refuse to run offline, because minting against a stale
 remote is what collides across machines. The others commit locally when offline.
@@ -49,6 +53,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 DEFAULT_VAULT = Path.home() / "obsidian" / "SecondBrain"
@@ -65,6 +70,85 @@ PR = re.compile(r"→pr:([\w][^\s]*)")
 PROPOSED_HEADER = re.compile(r"^>\s*proposed:\s*(.*)$")
 PROPOSED_RANK = re.compile(r"^>\s*(\d+)\.\s*`?\^?(q\d+)`?")
 QUEUES_REPO = Path(os.environ.get("VAULT_QUEUES", Path.home() / ".local/share/vault-queues"))
+
+PROJECT_NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]*")
+
+TEMPLATE_QUEUE = """---
+id: {qid}
+aliases:
+  - {project} Queue
+tags:
+  - {tag}
+  - queue
+---
+
+# {project} Queue
+
+Backlog for [[{project}]]. Lanes, markers and invariants are defined in [CLAUDE.md](../../CLAUDE.md) -> Task queues. Groom with `/queue {project}`, plan with `/fable-plan {project} | qN` from the repo, build with `/implement-plan {project} | qN`.
+
+Created by `queue-tool init`.
+
+## Next
+
+Human-owned. Claude proposes below and stops.
+
+## Ready
+
+## Needs spec
+
+## Blocked
+
+## Someday
+
+## Shipped
+"""
+
+TEMPLATE_PROJECT = """---
+id: {pid}
+aliases: []
+tags: [{tag}, project]
+status: active
+repo: {repo}
+---
+
+# {project}
+
+## Problem
+
+## Current state
+
+## Next steps
+
+- See [[{project}/Queue|Queue]].
+
+## Notes
+
+- Capture goes to [[{project}/Inbox|Inbox]].
+"""
+
+TEMPLATE_INBOX = """---
+id: {iid}
+aliases: []
+tags:
+  - {tag}
+  - ideas
+---
+
+# Inbox
+
+Zero-friction capture for [[{project}]]. No structure required. Actionable items get promoted to [[{project}/Queue|Queue]] by `/queue {project}`; anything durable gets its own note.
+
+## Raw
+"""
+
+
+def valid_project_name(project):
+    return bool(PROJECT_NAME.fullmatch(project))
+
+
+def note_id(project, suffix):
+    letters = re.sub(r"[^A-Za-z]", "", project).upper()
+    return f"{int(time.time())}-{(letters[:2] + suffix)[:4]}"
 
 
 def die(msg, code=2):
@@ -340,16 +424,16 @@ def check_no_duplicates(text, context):
         die(f"duplicate IDs {', '.join(dup)} {context}; fix before writing")
 
 
-def transact(repo, vault, project, message, mutate, require_remote=False):
+def transact(repo, vault, project, message, mutate, require_remote=False, create=False):
     if not is_git_repo(repo):
         die(f"{repo} is not a git checkout; clone vault-queues there first")
-    path = repo_queue_path(repo, project)
+    path = Path(repo) / project / "Queue.md" if create else repo_queue_path(repo, project)
     require_clean(repo)
     for attempt in range(3):
         online = pull_rebase(repo)
         if require_remote and not online:
             die("offline: this operation mints IDs and needs the latest remote")
-        before = path.read_text()
+        before = path.read_text() if path.exists() else ""
         check_no_duplicates(before, "already in the queue")
         result = mutate(before)
         after, extra = result if isinstance(result, tuple) else (result, None)
@@ -357,6 +441,7 @@ def transact(repo, vault, project, message, mutate, require_remote=False):
             print("no change", file=sys.stderr)
             return None
         check_no_duplicates(after, "would be written")
+        path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(after)
         git_run(repo, "add", str(path))
         git_run(repo, "commit", "--quiet", "-m", message)
@@ -411,6 +496,30 @@ def cmd_stamp(args):
                    lambda t: mutate_stamp(t),
                    require_remote=True)
     print(json.dumps({"ids": ids or []}))
+
+
+def cmd_init(args):
+    if not valid_project_name(args.project):
+        die(f"not a project name: {args.project!r}; letters, digits, _ and - only")
+    path = Path(args.repo) / args.project / "Queue.md"
+    if path.is_file():
+        die(f"{args.project} already has a queue: {path}")
+    tag = args.project.lower()
+    project_dir = Path(args.vault) / "projects" / args.project
+    project_dir.mkdir(parents=True, exist_ok=True)
+    note = Path(args.vault) / "projects" / f"{args.project}.md"
+    if not note.exists():
+        note.write_text(TEMPLATE_PROJECT.format(
+            pid=note_id(args.project, "PR"), project=args.project, tag=tag,
+            repo=args.github or ""))
+    inbox = project_dir / "Inbox.md"
+    if not inbox.exists():
+        inbox.write_text(TEMPLATE_INBOX.format(
+            iid=note_id(args.project, "IN"), project=args.project, tag=tag))
+    body = TEMPLATE_QUEUE.format(
+        qid=note_id(args.project, "QU"), project=args.project, tag=tag)
+    transact(args.repo, args.vault, args.project,
+             f"q: init {args.project}", lambda _before: body, create=True)
 
 
 def all_projects(repo):
@@ -600,6 +709,8 @@ def main():
     p = add("add", cmd_add, "project", "text")
     p.add_argument("--lane", required=True, choices=LANES)
     add("stamp", cmd_stamp, "project")
+    p = add("init", cmd_init, "project")
+    p.add_argument("--github")
     add("push", cmd_push)
     p = add("view", cmd_view)
     p.add_argument("project", nargs="?")
