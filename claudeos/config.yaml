@@ -1,0 +1,12 @@
+vault: ~/obsidian/SecondBrain
+queues: ~/.local/share/vault-queues
+state: ~/.local/state/claudeos
+defaults: { model: fable, worktree: true }
+projects:
+  ClaudeOS: { path: ~/code/Playground/claudeos }
+  LazyActions: { path: ~/code/Playground/lazy-actions }
+  Tribemap: { path: ~/code/upscope-env/tribemap }
+  GX100: { path: ~/code/gx100-midi-control }
+  Devdeck: { path: ~/code/DevDeck }
+  LearningApp: { path: ~/code/Playground/LearningApp }
+  Dotfiles: { path: ~/.dotfiles }
