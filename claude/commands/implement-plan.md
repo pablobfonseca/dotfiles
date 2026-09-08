@@ -27,7 +27,7 @@ Resolve the plan file from `$ARGUMENTS`:
 
    When stopping: summarize state (phase, what fired, options), then wait. Do not improvise a resolution.
 
-4. **Open the PR** once all phases pass their checks: push the branch, then `gh pr create --assignee @me` (derive repo from `git remote get-url origin`; no Claude attribution in the description). PR body: plan summary + per-phase checklist of what was verified.
+4. **Open the PR** once all phases pass their checks: push the branch, then `gh pr create --assignee @me` (derive repo from `git remote get-url origin`; no Claude attribution in the description). PR body, in this order: first line exactly `Closes <project> ^qN.` when the plan came from a queue (this line is what `claudeos sync` matches, so it is required, not optional; a plain-form plan writes `Plan: docs/plans/<file>` instead); then the plan summary; then the per-phase checklist of what was verified; then `Plan: projects/<project>/plans/<file>.md (vault)`.
 
    If the plan came from a queue (queue form, or a plan whose frontmatter carries `queue:`/`queue_item:`), run `queue-tool mark <project> <qN> --pr <url>` and `queue-tool state <project> <qN> wip`. The queue should show in-flight work without waiting for a reconcile; never edit the vault's Queue.md by hand — it is a generated view.
 
