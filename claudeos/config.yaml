@@ -8,5 +8,5 @@ projects:
   Tribemap: { path: ~/code/upscope-env/tribemap }
   GX100: { path: ~/code/gx100-midi-control }
   Devdeck: { path: ~/code/DevDeck }
-  LearningApp: { path: ~/code/Playground/LearningApp }
+  # LearningApp: { path: ~/code/Playground/LearningApp }
   Dotfiles: { path: ~/.dotfiles }
