@@ -182,7 +182,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "npx -y @pablobfonseca/claude-cyberpunk-powerline --style=storm --vim-mode --git --cron --effort",
+    "command": "claudeos statusline -- npx -y @pablobfonseca/claude-cyberpunk-powerline --style=storm --vim-mode --git --cron --effort",
     "refreshInterval": 5
   },
   "enabledPlugins": {
