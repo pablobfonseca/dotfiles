@@ -1,7 +1,7 @@
 # User-level Codex defaults managed from ~/.dotfiles/codex.
 
-model = "gpt-5.5"
-model_reasoning_effort = "high"
+model = "gpt-6-astra"
+model_reasoning_effort = "medium"
 model_verbosity = "low"
 personality = "pragmatic"
 
@@ -37,8 +37,12 @@ trust_level = "trusted"
 [projects."/Users/pablobfonseca/code/upscope-env/tribemap"]
 trust_level = "trusted"
 
+[projects."/Users/pablobfonseca/code/claudeos"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
+gpt-6-astra = 1
 
 [plugins."github@openai-curated"]
 enabled = true
