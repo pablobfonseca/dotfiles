@@ -5,11 +5,23 @@ argument-hint: <project name>
 
 Groom `projects/$ARGUMENTS/Queue.md`. The vault is `~/obsidian/SecondBrain`; every vault path in this command resolves there, whatever the cwd. Read the vault's `CLAUDE.md` → Task queues first; its invariants bind you. If the file does not exist, list `projects/` and stop.
 
-## 0. Pull, then reconcile
+## How to work (read before anything)
 
-Queue authority lives in the vault-queues repo (`~/.local/share/vault-queues`), not the vault: `queue-tool` pulls it before every read and pushes every write, so freshness and ID minting are its job, not yours. The vault's `projects/<P>/Queue.md` is a generated read-only view: never edit it. If `queue-tool` reports a rebase conflict or duplicate IDs, stop and report; never resolve either yourself.
+You are the judgment half of grooming; every mechanical step already ran. Rules that keep a weaker session from doing damage:
 
-Grooming a stale queue ranks fiction. Before anything else, run the full reconciliation defined in `~/.claude/commands/sync.md` (plans → queue, PRs → queue, issues → queue) — read that file and follow it; it is the single source of truth for reconciliation rules. If `gh` is unauthenticated, do the plans half and say the GitHub half was skipped. Merged work lands in `## Shipped` before you rank what's left.
+- **Never reword a line into something more abstract.** Append markers (`#tag`, `~size`, `→ question`) with `queue-tool edit`; leave the user's words. A groomed line is *more* specific, never less.
+- **When unsure, do less.** Unsure whether an Inbox line is work → leave it in the Inbox. Unsure of a size → `~M`. Unsure whether two lines are one deliverable → leave both and say so in the report. Unsure whether an item shipped → leave it open and flag the evidence.
+- **Cite or do not rank.** Every line of the `> proposed:` blockquote names the note, plan, PR or incident that justifies it. A rank you cannot cite goes at the bottom with "no note supports this".
+- **One write per change, through `queue-tool`.** `add`, `stamp`, `state`, `lane`, `mark` for single lines; `edit begin` / `edit commit -m` only for splits, merges, rewording markers and the blockquote. Never open the vault's Queue.md.
+- **Report in the fixed shape of section 6**, nothing else appended.
+
+Worked example, one Inbox line: `- [ ] the jobs pane shows waiting after I answered` → `queue-tool add <P> "The jobs pane keeps showing waiting after the prompt is answered #bug ~S" --lane Ready` (symptom kept verbatim, tag and size appended, Ready because a stranger could start). A line like `think about telegram` stays in the Inbox: it names no symptom and no end state.
+
+## 0. Reconcile natively, then read
+
+Queue authority lives in the vault-queues repo; `queue-tool` pulls before every read and pushes every write, and the vault's `projects/<P>/Queue.md` is a generated read-only view — never edit it. If any `queue-tool` call reports a rebase conflict, duplicate IDs or a dirty repo, stop and report; never resolve it yourself.
+
+Grooming a stale queue ranks fiction, so first run `claudeos sync $ARGUMENTS` and print its output. It does the whole plans → PRs → issues reconciliation and writes what the artifacts prove; its `needs judgment` lines are input to your grooming below, not something to act on blindly. If it says the GitHub half was skipped, say so in your report. Do not re-derive any reconciliation by hand.
 
 ## 1. Read the whole picture before touching a line
 
@@ -44,7 +56,7 @@ For each open line, check the notes for evidence it shipped (a plan marked compl
 
 ## 5. Propose the next 5
 
-Replace the `> proposed:` blockquote under `## Next` with a fresh one, dated today. Five items, ranked, each with one or two sentences of *reasoning that cites a note* — not a restatement of the item.
+Replace the `> proposed:` blockquote under `## Next` with a fresh one, dated today. Five items, ranked, each with one or two sentences of *reasoning that cites a note* — not a restatement of the item. Write each rank as `> N. [[<P> Queue#^qNN]] — <reason, naming the note>`; `queue-tool dump` parses that shape.
 
 Rank by leverage, roughly in this order of precedence:
 

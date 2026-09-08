@@ -3,71 +3,10 @@ description: Reconcile a project's queue against plans, PRs and GitHub issues
 argument-hint: <project name> [--repo owner/name]
 ---
 
-Make `projects/$ARGUMENTS/Queue.md` true. This command reads artifacts — plan files, PRs, issues — and writes what they prove back onto the queue. It never asks you what happened.
+Make `projects/$ARGUMENTS/Queue.md` true. The work is deterministic and lives in the `claudeos` binary; this command only runs it and relays the report.
 
-Run it from anywhere: plans live in the vault and PRs/issues come via `gh`, so no repo checkout is needed. The vault is `~/obsidian/SecondBrain`, available in every session via `permissions.additionalDirectories`. `/queue` runs this same reconciliation as its step 0, so a standalone `/sync` is only needed when you want the queue fresh without grooming it.
+1. Run `claudeos sync $ARGUMENTS` (pass `--repo owner/name` through if given). It pulls the queue, matches plan frontmatter (`queue_item:` → `^qN`), PRs (`closingIssuesReferences` against `(#N)`, a `Closes … ^qN` body line, the plan file named in the body, or a body naming exactly one `^qN`) and issues (`gh issue view`), and writes through `queue-tool`: plan → `→plan:` and Needs spec → Ready; open PR → wip and `→pr:`; merged PR → done, `→pr:`, Shipped; closed issue → Shipped, `not_planned` → dropped with the reason. Precedence is merged PR > closed issue > plan > queue line. When several PRs claim one item, the one matched by the stronger rule owns it and the rest are reported. It honours `reconcile_issues: false`.
+2. Print its output verbatim. The `needs judgment` section — orphan plans, closed-unmerged PRs, branch or title lookalikes, disagreements between a line and its issue — is for the human. Do not act on any of it; do not run `queue-tool` yourself.
+3. If the binary is missing (`command not found`), say so and stop; the rules are not to be re-derived by hand. If it exits non-zero with `sync stopped:` (a `queue-tool` refusal — offline, duplicate IDs, rebase conflict, dirty repo), report the message and stop; never resolve it yourself.
 
-## 1. Preflight
-
-- `gh auth status`. If unauthenticated, skip the GitHub half and say so rather than failing the whole run.
-- Resolve the repo: `--repo`, else `repo:` in `projects/$ARGUMENTS.md` frontmatter, else ask. Never guess.
-- Read `CLAUDE.md` → Task queues. Its invariants bind you, especially: nothing is deleted, and issue refs are immutable.
-- Run `queue-tool dump $ARGUMENTS` — the whole queue parsed as JSON (lane, state, markers, `^qN` per line); work from this instead of parsing Queue.md by hand. Its `duplicates` field is the duplicate-ID scan (line-ending IDs only; mid-line mentions in the proposed blockquote or wikilinks are references, not IDs) — the two-machine race can merge cleanly and leave silent duplicates. If found: make no writebacks to the duplicated IDs, and report the duplicate lines so the human can restamp one (the line with no inbound links or refs, normally). Never renumber yourself.
-- All writebacks in steps 2-4 go through `queue-tool` (`state`, `lane`, `mark`); never edit `projects/$ARGUMENTS/Queue.md` directly — it is a generated view of the vault-queues repo.
-
-## 2. Plans → queue
-
-Run `queue-tool plans $ARGUMENTS` — one pass over `projects/$ARGUMENTS/plans/*.md` extracting the frontmatter written by `/fable-plan` (plus `queue_item_id`, the `^qN` pulled from `queue_item:`); read a plan file itself only when its entry needs judgment:
-
-```yaml
-queue: projects/<project>/Queue.md
-queue_item: <the original queue line>
-```
-
-Match `queue_item:` to a queue line by its `^qN` block ID when the frontmatter carries one; fall back to verbatim text for older plans. For each match against this project's queue, run `queue-tool mark $ARGUMENTS <qN> --plan '[[<project>/plans/<file>]]'` and, when the line sits in `## Needs spec`, `queue-tool lane $ARGUMENTS <qN> Ready`. Anything you append to a line (`→plan:`, `→pr:`, `(#N)`) goes before a trailing `^qN` — the block ID stays the last token. A plan existing is what makes an item ready — that is the whole contract.
-
-Older lines carrying `→plan:docs/plans/…` refer to plans that lived uncommitted in a repo; treat the reference as historical and don't rewrite it.
-
-Plans with no `queue_item:` are orphans: list them in your report so they can be adopted or deleted. Never invent a queue line to adopt one.
-
-## 3. PRs → queue
-
-```
-gh pr list --repo <repo> --state all --limit 100 --json number,title,state,url,headRefName,body,mergedAt
-```
-
-Match PRs to queue lines by, in order of confidence: a `(#N)` issue ref the PR closes, a plan path named in the PR body, then branch-name or title overlap. **Only the first two are conclusive.** Report title-similarity matches as suggestions and leave those lines untouched — a plausible-looking name is not evidence.
-
-- PR open → `queue-tool state $ARGUMENTS <qN> wip` and `queue-tool mark $ARGUMENTS <qN> --pr <url>`.
-- PR merged → `queue-tool state $ARGUMENTS <qN> done`, `queue-tool mark $ARGUMENTS <qN> --pr <url>`, then `queue-tool lane $ARGUMENTS <qN> Shipped`.
-- PR closed unmerged → leave the item open, write nothing, and report it. Abandoned work is a decision for the user, not a state to infer.
-
-## 4. Issues → queue
-
-**Skip this whole step when `projects/$ARGUMENTS.md` frontmatter carries `reconcile_issues: false`.** That project's queue is its own source of truth: existing `(#N)` refs stay on their lines as historical breadcrumbs, nothing is fetched, and an issue's state never moves a line or raises a flag. Say in the report that the pass was skipped by project policy — do not re-derive it as a finding.
-
-Otherwise: `/issue` is retired — no new refs are minted, but existing `(#N)` refs are immutable and still reconcile. Fetch only what the queue references, never a full listing:
-
-- The referenced numbers are the dump's `issue` fields (step 1).
-- `gh issue list --repo <repo> --state open --json number` — any referenced number in this set is still open; nothing to do for it.
-- Each referenced number **not** in the open set: `gh issue view <n> --repo <repo> --json state,stateReason,url`.
-
-Then:
-
-- Closed issue, open line → `queue-tool state $ARGUMENTS <qN> done` then `queue-tool lane $ARGUMENTS <qN> Shipped`. If `stateReason` is `not_planned`, instead `queue-tool state $ARGUMENTS <qN> dropped --reason "<why>"`; declined is not shipped.
-- Open issue, line marked done → **report the disagreement, change nothing.** Never silently reopen.
-- Referenced issue missing → flag it, leave the `(#N)` alone.
-
-## 5. Precedence
-
-When sources disagree, trust in this order: merged PR > closed issue > plan file > queue line. Say when you overrode something. Under `reconcile_issues: false` the chain is merged PR > plan file > queue line — issues are not a source.
-
-Only the project owner's own work is queue business. Other people's PRs and issues are not "unqueued lanes" to flag; leave them out of the report entirely.
-
-The plan file in `projects/<project>/plans/` is the single authority — never duplicate its contents onto the queue or into the repo. The queue stores the wikilink. Durable learnings reach the wiki through `/harvest` when the project ships, not before.
-
-## 6. Report
-
-A table of every line that moved: item, lane before → after, and the artifact that justified it. Then, separately, the things needing your judgment — disagreements, orphan plans, closed-unmerged PRs, and low-confidence title matches.
-
-Do not commit unless asked.
+The vault's `projects/<P>/Queue.md` is a generated view; nothing here edits it. Do not commit anything.
