@@ -87,6 +87,14 @@
             "command": "node ~/.claude/hooks/cron-bridge.js"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claudeos hook PostToolUse"
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
@@ -98,6 +106,14 @@
             "command": "~/.dotfiles/claude/hooks/session-title-queue.sh",
             "timeout": 15,
             "statusMessage": "Titling session from the queue item..."
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claudeos hook UserPromptSubmit"
           }
         ]
       }
