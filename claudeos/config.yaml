@@ -2,7 +2,7 @@ vault: ~/obsidian/SecondBrain
 queues: ~/.local/share/vault-queues
 state: ~/.local/state/claudeos
 defaults: { model: fable, worktree: true }
-telegram: { chat_id: "YOUR_TELEGRAM_CHAT_ID" }
+notify: false
 projects:
   ClaudeOS: { path: ~/code/claudeos }
   LazyActions: { path: ~/code/lazy-actions }
