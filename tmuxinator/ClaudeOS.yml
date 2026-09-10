@@ -1,0 +1,13 @@
+name: ClaudeOS
+root: ~/code/claudeos
+
+windows:
+  - claudeos:
+      layout: main-vertical
+      root: ~/code/claudeos
+      panes:
+        - claudeos
+  - lazyactions:
+      layout: main-vertical
+      panes:
+        - lazyactions
