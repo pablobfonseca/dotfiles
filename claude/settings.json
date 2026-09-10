@@ -124,7 +124,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "input=$(cat); echo \"$input\" | claude-session-manager hook-status idle_prompt; [ -z \"$CLAUDEOS_NOTIFY\" ] && echo \"$input\" | terminal-notifier -group \"claude-$(echo \"$input\" | jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Input Required - $(basename $PWD)\" -message 'Waiting for your input' -sound 'default'"
+            "command": "input=$(cat); [ -z \"$CLAUDEOS_NOTIFY\" ] && echo \"$input\" | terminal-notifier -group \"claude-$(echo \"$input\" | jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Input Required - $(basename $PWD)\" -message 'Waiting for your input' -sound 'default'"
           }
         ]
       },
@@ -133,7 +133,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "input=$(cat); echo \"$input\" | claude-session-manager hook-status permission_prompt; [ -z \"$CLAUDEOS_NOTIFY\" ] && echo \"$input\" | terminal-notifier -group \"claude-$(echo \"$input\" | jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Permission Required - $(basename $PWD)\" -message 'Needs your approval' -sound 'default'"
+            "command": "input=$(cat); [ -z \"$CLAUDEOS_NOTIFY\" ] && echo \"$input\" | terminal-notifier -group \"claude-$(echo \"$input\" | jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Permission Required - $(basename $PWD)\" -message 'Needs your approval' -sound 'default'"
           }
         ]
       },
