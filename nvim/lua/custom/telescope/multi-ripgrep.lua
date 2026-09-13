@@ -37,16 +37,9 @@ return function(opts)
         table.insert(args, prompt_split[1])
       end
 
-      if prompt_split[2] then
+      for i = 2, #prompt_split do
+        local pattern = opts.shortcuts[prompt_split[i]] or prompt_split[i]
         table.insert(args, "--iglob")
-
-        local pattern
-        if opts.shortcuts[prompt_split[2]] then
-          pattern = opts.shortcuts[prompt_split[2]]
-        else
-          pattern = prompt_split[2]
-        end
-
         table.insert(args, string.format(opts.pattern, pattern))
       end
 
