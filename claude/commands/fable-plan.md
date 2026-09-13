@@ -1,6 +1,6 @@
 ---
 description: Plan a task on Fable so a cheaper model can execute it in a separate session (pairs with /implement-plan)
-argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task description [--council[=gemini|codex|agy]]"
+argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task description [--council[=gemini|codex|agy]] [--auto]"
 ---
 
 ## Task
@@ -80,6 +80,15 @@ Bare `--council` runs the critics as `general-purpose` agents. Effort is not uni
 Triage each finding: fix the plan, or move the decision to the stop-and-ask list. Never silently drop one — a finding you disagree with on substance goes to the user with your reasoning. If triage forced structural changes (phases added, reordered, or rewritten), rerun the cold executor once on the new version; cosmetic fixes don't warrant a rerun.
 
 If the plan came out at one or two mechanical phases, say the council is overkill for it and ask before spending the tokens.
+
+## --auto
+
+Unattended planning, what `claudeos`'s `!` key sends. Strip the flag from `$ARGUMENTS` before parsing the rest; applies to both forms and combines with `--council`. Nobody is at the keyboard: claudeos ends this session with `/exit` on the first queue re-dump that shows the item's `→plan:` while the session is idle, then launches the implement in a worktree. Everything below follows from that.
+
+- **Step 5 asks nothing.** Do not call AskUserQuestion, do not stop to ask in prose, do not wait. The queue line (its `→ undetermined:` clause included) and what step 2 read are the whole brief. For every ambiguity take the most conventional resolution, and record each one under a **Decisions (auto)** section of the plan with the alternative rejected and why, so the user can overrule it before the implement lands. Step 3's related candidates are `out of scope` unless the queue line names them.
+- **Stop before step 6 when a default would be a guess at intent**, or when the item turns out to carry architectural, security or data-integrity weight. Write no plan, stamp nothing, leave the item `wip`, and end the turn with `Not planned: <one line why>` followed by `Run /fable-plan <project> | qN attended.` Nothing chains, because nothing was stamped; the idle session is how the user finds out.
+- **Steps 6 to 10 run as written**, self-check included, in the same turn. The handoff is the last thing the session prints; do not append questions or offers after it.
+- `model:` follows the usual rule. The chained implement reads it.
 
 ## Rules
 

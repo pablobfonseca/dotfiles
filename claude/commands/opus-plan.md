@@ -1,6 +1,6 @@
 ---
 description: Plan a mid-complexity task on Opus with max thinking, for Sonnet to execute (cheap-path sibling of /fable-plan)
-argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task description [--council[=gemini|codex|agy]]"
+argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task description [--council[=gemini|codex|agy]] [--auto]"
 ---
 
 ultrathink
@@ -14,3 +14,4 @@ Read `~/.claude/commands/fable-plan.md` and follow it exactly, with the deltas b
 - **Model guard.** This command assumes an Opus session. If this session is running a different model, say which and ask whether to continue before doing anything else.
 - **Executor defaults to `sonnet`.** The planner should outrank the executor, so write `model: sonnet` in the plan's frontmatter and print `sonnet` in the handoff; write `opus` in both only if a phase turned out less mechanical than expected, and say why.
 - **Escalation valve.** This is the cheap path, for tasks whose solution shape is already known. If brainstorming keeps failing to resolve an ambiguity, or the item turns out to carry architectural, security, or data-integrity weight, stop and recommend replanning with `/fable-plan` instead of shipping a plan with judgment calls left in it.
+- **`--auto`.** Follow fable-plan's `## --auto` section. Under it the escalation valve *is* that section's stop: end the turn with `Not planned: …` and the attended command to run; never replan in this session and never ask.
