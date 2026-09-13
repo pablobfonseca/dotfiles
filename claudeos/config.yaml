@@ -12,3 +12,5 @@ projects:
   CobrowsingSDK: { path: ~/code/cobrowsing-mobile }
   LearningApp: { path: ~/code/Playground/LearningApp }
   Dotfiles: { path: ~/.dotfiles }
+colors:
+  match: "#FFD602"
