@@ -15,15 +15,16 @@ Resolve the plan file from `$ARGUMENTS`:
 
 ## Steps
 
-1. **Load the plan.** Read it fully, including its stop-and-ask list. Invoke `superpowers:executing-plans` and follow its checkpoint discipline.
+1. **Load the plan.** Read it fully, including its stop-and-ask list. Invoke `superpowers:executing-plans` and follow its checkpoint discipline. A ticked box (`- [x]`) is a task an earlier session finished, committed and pushed, possibly on another machine; the plan file is the progress record a handoff reads. Treat those tasks as done and start at the first task with an open box, once the checkout is on the plan's branch with those commits in `git log --oneline` (step 3 stops otherwise).
 
-2. **Implement.** First check for a worktree: if `git rev-parse --git-dir` and `git rev-parse --git-common-dir` differ, the session is in a linked worktree - do all work inside it (root: `git rev-parse --show-toplevel`), never touch the main checkout, and reuse its current branch if it's a topic branch (otherwise create the plan branch there). In the main checkout, create a new branch named after the plan topic. Follow the plan exactly, phase by phase. Commit per phase using the repo's commit conventions. Run each phase's verbatim check commands and compare against the plan's expected results before moving on.
+2. **Implement.** First check for a worktree: if `git rev-parse --git-dir` and `git rev-parse --git-common-dir` differ, the session is in a linked worktree - do all work inside it (root: `git rev-parse --show-toplevel`), never touch the main checkout, and reuse its current branch if it's a topic branch (otherwise create the plan branch there). In the main checkout, create a new branch named after the plan topic. Follow the plan exactly, phase by phase. For each phase (a `### Task N` heading in the plan), in this order: run its verbatim check commands and compare against the plan's expected results; commit using the repo's commit conventions; `git push -u origin HEAD`; then tick the phase in the plan file, turning every `- [ ]` under that heading into `- [x]`, in the file where the plan lives (the vault for a queue plan, `docs/plans/` for a path plan; never commit it). Only then move on. The push is what lets another machine check the branch out; the ticks are what tell it where to resume.
 
 3. **Stop and ask** the moment any trigger fires - the plan's own stop-and-ask list plus these defaults:
    - Reality deviates from the plan (file moved, API changed, signature mismatch).
    - Tests still failing after 2 fix attempts.
    - An ambiguous requirement surfaces mid-phase.
    - A security-sensitive decision (auth, access scoping, user input, secrets) is not spelled out in the plan.
+   - The plan has ticked boxes and the checkout is not on the plan's branch carrying those commits (a handoff whose branch is not here yet: check it out, then rerun).
 
    When stopping: summarize state (phase, what fired, options), then wait. Do not improvise a resolution.
 
