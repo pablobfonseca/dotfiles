@@ -32,6 +32,8 @@ Resolve the plan file from `$ARGUMENTS`:
 
    If the plan came from a queue (queue form, or a plan whose frontmatter carries `queue:`/`queue_item:`), run `queue-tool mark <project> <qN> --pr <url>` and `queue-tool state <project> <qN> wip`. The queue should show in-flight work without waiting for a reconcile; never edit the vault's Queue.md by hand — it is a generated view.
 
+   Then record the run's outcome on the job: `claudeos record --qa <pass|fail> --blockers <N> --stop-and-ask <N>`. `--qa` and `--blockers` come from the repo's QA verifier when its workflow has one (the final verdict, and the blockers counted across every verify pass); omit both otherwise. `--stop-and-ask` is how many times step 3 fired in this session. A session claudeos did not launch has no `CLAUDEOS_JOB_ID` and the command is a no-op; it never exits non-zero, so a refused call is one stderr line, not a failed step.
+
 5. **Run `/review-pr --apply --watch`** on the new PR. Its analysis verdicts gate what gets applied; its termination rules end the loop. A `Needs clarification` verdict is a stop-and-ask trigger, not something to guess through.
 
 6. **Report and stop.** Final summary: phases completed, checks run, review threads resolved, PR URL. Suggest a Fable review pass (`/review <pr>`) as the closing step.
