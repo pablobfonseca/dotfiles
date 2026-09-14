@@ -42,6 +42,8 @@ If empty, ask for it and stop.
 
    The plan lives in the vault so it syncs between machines with the vault's own git backup, and so there is exactly one authority — never copy it into the repo.
 
+   When the item amends the project's spec, the plan edits the section the change belongs to, in place, never a dated note appended at the end; the dated why (what was decided, why, what it supersedes, the `qN` that carried it) goes to `Decisions.md` beside the spec.
+
 7. **Stamp the queue line.** `queue-tool mark <project> <qN> --plan '[[<project>/plans/YYYY-MM-DD-<topic>]]'` — the tool inserts it before the trailing `^qN`. Run the same `mark` for every line the user bundled in step 5; the plan's `queue_item:` stays the primary line only.
 
 8. **Make it executor-grade.** Beyond the writing-plans format, every phase must have:
