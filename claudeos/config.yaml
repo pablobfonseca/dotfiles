@@ -1,8 +1,65 @@
+# yaml-language-server: $schema=file:///Users/pablobfonseca/code/claudeos/schema/config.schema.json
+#
+# claudeos configuration. Every key is optional; anything left out falls back to
+# the default shown in its comment. An unknown key is a hard error, not a warning:
+# the loader runs with KnownFields(true), so a typo stops the TUI from starting.
+# Reload without restarting with ctrl+r (layout, defaults and project paths only).
+
+# ---------------------------------------------------------------------------
+# Paths
+# ---------------------------------------------------------------------------
+
+# The Obsidian vault claudeos reads: projects, plans, the Ideas list and the
+# per-project Inbox all live under it. (default: ~/obsidian/SecondBrain)
 vault: ~/obsidian/SecondBrain
+
+# The queues repo that queue-tool owns. claudeos never writes these files
+# directly, it shells out to queue-tool. (default: ~/.local/share/vault-queues)
 queues: ~/.local/share/vault-queues
+
+# Where job state, the hook log and the usage snapshot are written. Claude
+# sessions find it through CLAUDEOS_STATE_DIR, which claudeos sets on every
+# tmux window it launches. (default: ~/.local/state/claudeos)
 state: ~/.local/state/claudeos
-defaults: { model: fable, worktree: true }
+
+# ---------------------------------------------------------------------------
+# Behaviour
+# ---------------------------------------------------------------------------
+
+# Send a macOS desktop notification when a job stops and waits for your input.
+# Off here because the Telegram path and the TUI's own jobs pane already cover it.
+# (default: false)
 notify: false
+
+# Defaults the launch overlay is prefilled with. You can still override any of
+# them per launch in the overlay itself.
+defaults:
+  # Model for new sessions: plan jobs use it to pick the planning command
+  # (/fable-plan on fable, /opus-plan on opus). (default: opus)
+  model: fable
+
+  # Run the session in its own git worktree instead of the project checkout, so
+  # parallel jobs on the same repo do not fight over the working tree.
+  # (default: true)
+  worktree: true
+
+  # Chain a plan job into its implement job: when the plan session finishes,
+  # the jobs pane offers to launch /implement-plan on the same item.
+  # Only applies to plan jobs. (default: false)
+  # chain: false
+
+# ---------------------------------------------------------------------------
+# Projects
+# ---------------------------------------------------------------------------
+#
+# The key is the project name exactly as it appears in the vault under
+# projects/. `path` is the git checkout a session is launched in; without it a
+# project is browsable but cannot launch anything.
+#
+# Per project you can also set:
+#   model:  override defaults.model for this project's sessions
+#   pinned: keep the project at the top of the projects pane
+
 projects:
   ClaudeOS: { path: ~/code/claudeos }
   LazyActions: { path: ~/code/lazy-actions }
@@ -12,5 +69,131 @@ projects:
   CobrowsingSDK: { path: ~/code/cobrowsing-mobile }
   LearningApp: { path: ~/code/Playground/LearningApp }
   Dotfiles: { path: ~/.dotfiles }
+
+# ---------------------------------------------------------------------------
+# Telegram
+# ---------------------------------------------------------------------------
+#
+# The chat id is deliberately not a setting: it comes from the environment
+# variable CLAUDEOS_TELEGRAM_CHAT, so this file stays machine-independent and
+# safe to version-control. No chat id, no messages, whatever is configured here.
+# Messages are also skipped while claudeos itself is focused.
+
+# telegram:
+#   # Whether the bridge runs at all. false sends nothing, polls for no replies,
+#   # and stops a missing token file from being a startup error, without you
+#   # having to unset the chat id or empty `events`. `claudeos telegram test`
+#   # still sends either way. (default: true)
+#   enabled: true
+#
+#   # File holding the bot token, read at send time.
+#   # (default: ~/.config/claudeos/telegram-token)
+#   token_file: ~/.config/claudeos/telegram-token
+#
+#   # Job states that send a message. Only `waiting` (the session is asking you
+#   # something) and `idle` (it finished its turn) are valid.
+#   # (default: [waiting, idle])
+#   events: [waiting, idle]
+#
+#   # Per-job-kind override of `events`. A kind listed here uses its own list;
+#   # everything else falls back to `events` above. An empty list mutes the kind.
+#   kinds:
+#     plan: [waiting]
+#     implement: [waiting, idle]
+#     groom: []
+#
+#   # Wait this long before sending an `idle` message, so a session that pauses
+#   # for a second and keeps going does not buzz your phone. A Go duration
+#   # string. (default: 0, meaning send immediately)
+#   idle_delay: 30s
+
+# ---------------------------------------------------------------------------
+# Layout
+# ---------------------------------------------------------------------------
+#
+# Six panes: projects, lanes, detail, jobs, prs, inbox. Each one appears exactly
+# once, either in the top row (`columns`) or in the bottom stack (`bottom`).
+# `columns` may only hold projects, lanes and detail, and must include lanes.
+# `bottom` may only hold detail, jobs, prs and inbox.
+
+# layout:
+#   # Width in cells of the projects column. Minimum 8. (default: 18)
+#   projects_width: 18
+#
+#   # Share of the top row given to the detail pane, as a percent. 0 to 80.
+#   # (default: 35)
+#   detail_percent: 35
+#
+#   # Height in rows of each pane when it sits in the bottom stack. Minimum 1.
+#   rows:
+#     detail: 12   # (default: 12)
+#     jobs: 5      # (default: 5)
+#     prs: 5       # (default: 5)
+#     inbox: 5     # (default: 5)
+#
+#   # Top row, left to right. (default: [projects, lanes, detail])
+#   columns: [projects, lanes, detail]
+#
+#   # Bottom stack, top to bottom. (default: [jobs, prs, inbox])
+#   bottom: [jobs, prs, inbox]
+
+# ---------------------------------------------------------------------------
+# Colors
+# ---------------------------------------------------------------------------
+#
+# Each entry is either one value used for both backgrounds, or a
+# {light: …, dark: …} pair. A value is an ANSI number 0-255 or #rrggbb.
+# Defaults below are the {light, dark} pairs from DefaultColors().
+
 colors:
-  match: "#FFD602"
+  match: "#FFD602" # search hit highlight (default: {light: 170, dark: 212})
+
+
+#   title: { light: 26, dark: 39 }           # pane titles and the header
+#   dim: { light: 243, dark: 245 }           # secondary text: ids, timestamps, hints
+#   failure: { light: 160, dark: 196 }       # failed checks, errors, refusals
+#   wip: { light: 130, dark: 220 }           # in_progress items and running jobs
+#   key: { light: 28, dark: 82 }             # key names in the footer and help
+#   lane_header: { light: 97, dark: 141 }    # lane headings in the queue pane
+#   section: { light: 243, dark: 245 }       # section headings in docs and overlays
+#   cursor: { light: 254, dark: 236 }        # background of the selected row
+#   match_text: { light: 231, dark: 232 }    # text drawn on top of a search hit
+#   border: { light: 250, dark: 238 }        # pane borders
+#   active_border: { light: 26, dark: 39 }   # border of the focused pane
+
+# ---------------------------------------------------------------------------
+# Keys
+# ---------------------------------------------------------------------------
+#
+# Rebind any action, by section then action name. The value is one key or a
+# list of keys, and it replaces the default rather than adding to it. Press ?
+# in the TUI for the full list, or `claudeos docs` for the handbook.
+# A few bindings are fixed and cannot be rebound: esc to clear or go back, and
+# the viewer's close keys.
+#
+# Sections: navigation, queue, jobs, prs, inbox, ideas, viewer, global
+
+# keys:
+#   navigation:
+#     next_item: [j, down]
+#     prev_item: [k, up]
+#     search: /
+#   queue:
+#     plan: p
+#     implement: i
+#     ship: X
+#   jobs:
+#     toggle: J
+#     attach: enter
+#   prs:
+#     toggle: P
+#     merge: M
+#   inbox:
+#     toggle: I
+#   ideas:
+#     open: A
+#   viewer:
+#     half_down: [d, pgdown, space]
+#   global:
+#     palette: ":"
+#     reload: ctrl+r
