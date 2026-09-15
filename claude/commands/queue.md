@@ -34,6 +34,8 @@ Grooming a stale queue ranks fiction, so first run `claudeos sync $ARGUMENTS` an
 
 Anything in Inbox.md that names an observable symptom or a desired end state becomes a queue line. Delete the promoted line from Inbox.md outright — no "moved to Queue" annotation or breadcrumb; the queue line is the record. Prose, half-thoughts and reference material stay in Inbox.md. Say which items you promoted and leave Inbox.md's non-actionable content untouched. Promote with `queue-tool add $ARGUMENTS "<line text>" --lane <Lane>`; it stamps the `^qN` itself.
 
+A line whose text names a `qN` that sits in `## Shipped` as `- [x]` (written `q14`, `^q14` or `[[<P> Queue#^q14]]`; check the lane in the `queue-tool dump` you already read, never a date) is rework: append `#rework` beside its other tag before the `add`, so `- [ ] the jobs pane still shows waiting after q93 #bug #rework ~S`. An open, dropped or unknown `qN` does not count. This is the whole 72-hour-follow-up rule; `claudeos stats` counts the tag per week by the line's added date, so nothing detects it later.
+
 ## 3. Groom each open line
 
 In this order, and only these:
@@ -41,7 +43,7 @@ In this order, and only these:
 - **Stamp**: run `queue-tool stamp $ARGUMENTS`; it mints and pushes IDs atomically (and refuses offline, because minting against a stale remote is the two-machine race). IDs are immutable — never renumber, never reuse, never strip.
 - **Split** anything that is two deliverables. Note the split in your report; each half gets its own fresh `^qN`, the original ID stays on the half closest to the original wording.
 - **Size** unsized lines: `~XS` under an hour, `~S` a sitting, `~M` a day, `~L` needs decomposition.
-- **Tag** with at most what applies: `#bug` `#feat` `#sec` `#ops`, plus `#claude` only if an agent could finish it unattended with no product decision to make.
+- **Tag** with at most what applies: `#bug` `#feat` `#sec` `#ops`, plus `#claude` only if an agent could finish it unattended with no product decision to make, plus `#rework` when the text names a `qN` that is `- [x]` in `## Shipped` (the step 2 rule, applied to lines already in the queue).
 - **Relane**: vague → `## Needs spec` with a `→` question naming what is undetermined; waiting on something → `## Blocked` with a `→` dependency; explicitly-not-now → `## Someday`.
 - **Link** to any existing plan, audit or incident note that already covers the item.
 - **Dedupe**: if two lines are the same work, merge them and keep every `(#N)` ref.

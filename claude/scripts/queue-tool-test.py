@@ -122,6 +122,17 @@ class QueueToolTest(unittest.TestCase):
         self.assertEqual(q3["pr"], "https://github.com/o/r/pull/12")
         self.assertEqual(q3["text"], "Fix crawl dedupe on empty sitemap")
 
+    def test_dump_parses_rework_tag(self):
+        d = tempfile.mkdtemp()
+        os.makedirs(os.path.join(d, "Tribemap"))
+        with open(os.path.join(d, "Tribemap", "Queue.md"), "w") as f:
+            f.write("## Ready\n\n- [ ] The pane still shows waiting after q2 shipped #bug #rework ~S ^q1\n")
+        r = run_tool(d, "dump", "Tribemap")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        item = json.loads(r.stdout)["items"][0]
+        self.assertEqual(item["tags"], ["bug", "rework"])
+        self.assertEqual(item["text"], "The pane still shows waiting after q2 shipped")
+
     def test_dump_ignores_proposed_blockquote(self):
         d = self.dump()
         self.assertFalse(any("because reasons" in i["raw"] for i in d["items"]))
