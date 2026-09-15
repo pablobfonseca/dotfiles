@@ -164,6 +164,14 @@
             "statusMessage": "Loading i-have-adhd ruleset..."
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claudeos hook SessionStart"
+          }
+        ]
       }
     ],
     "SessionEnd": [
