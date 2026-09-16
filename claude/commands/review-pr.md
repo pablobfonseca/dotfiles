@@ -101,8 +101,14 @@ Keep the PR under review until every review bot on it has nothing left to say. D
   - Reviews: `gh api "repos/{owner}/{repo}/pulls/<number>/reviews" --paginate`
   - Issue comments: `gh api "repos/{owner}/{repo}/issues/<number>/comments" --paginate`
   - Copilot (`user.login` containing `copilot`): latest output contains a `Comments generated:` line whose value is **`0 new`** (inside the collapsed `Review details` block; ignore markdown bold markers), or the legacy phrase **`and generated no new comments`**. Case-insensitive either way. Any other value (e.g. `**Comments generated:** 3`) means another pass is needed; the `🟢 Approval recommended` / `🟡 Changes recommended` header alone is not the signal, since `0 new` also appears under `Changes recommended`.
-  - CodeRabbit (`user.login` containing `coderabbit`): latest review body says **`Actionable comments posted: 0`**.
+  - CodeRabbit (`user.login` containing `coderabbit`): latest review body says **`Actionable comments posted: 0`**. A **`Review limit reached`** notice is not a done signal (see below).
 - When every bot present has signalled done, **stop the loop** (end the `/loop` run) and report a final summary. Otherwise let `/loop` fire the next pass in 5 minutes.
+
+**CodeRabbit rate limit.** When CodeRabbit's latest output on the PR is an issue comment whose body contains `Review limit reached`, the last push has not been reviewed yet:
+- Parse the wait from the line `Next included review available in <N> minutes` (or `<N> hours`). The wait counts from that comment's `created_at`, not from now: `ready_at = created_at + N`.
+- If `ready_at` is in the past, request the review: `gh api repos/{owner}/{repo}/issues/<number>/comments -f body='@coderabbitai review'`. Then let `/loop` continue; the next pass picks up the fresh review.
+- If `ready_at` is still ahead, do nothing and report `CodeRabbit rate-limited, next review at <ready_at> (<M> min)`; the next pass re-checks.
+- Request at most once per rate-limit notice (track the notice's comment ID). If the reply to the request is another `Review limit reached` notice, re-parse from that one. Never enable usage-based reviews or answer any other bot prompt in that comment.
 
 Guardrails:
 - Only act on comments not already handled in a previous pass (track comment IDs already analysed / applied).
