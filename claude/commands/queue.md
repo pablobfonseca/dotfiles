@@ -19,7 +19,7 @@ Worked example, one Inbox line: `- [ ] the jobs pane shows waiting after I answe
 
 ## 0. Reconcile natively, then read
 
-Queue authority lives in the vault-queues repo; `queue-tool` pulls before every read and pushes every write, and the vault's `projects/<P>/Queue.md` is a generated read-only view — never edit it. If any `queue-tool` call reports a rebase conflict, duplicate IDs or a dirty repo, stop and report; never resolve it yourself.
+Queue authority lives in the vault-queues repo; `queue-tool` pulls before every read and pushes every write, and the vault's `projects/<P>/Queue.md` is a generated read-only view. If any `queue-tool` call reports a rebase conflict, duplicate IDs or a dirty repo, stop and report; never resolve it yourself.
 
 Grooming a stale queue ranks fiction, so first run `claudeos sync $ARGUMENTS` and print its output. It does the whole plans → PRs → issues reconciliation and writes what the artifacts prove; its `needs judgment` lines are input to your grooming below, not something to act on blindly. If it says the GitHub half was skipped, say so in your report. Do not re-derive any reconciliation by hand.
 
