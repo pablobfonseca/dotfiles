@@ -26,7 +26,7 @@ If empty, ask for it and stop.
 
 5. **Refine requirements.** Invoke `superpowers:brainstorming` with the item — quote the queue line verbatim as the symptom (the user's phrasing encodes what they noticed; do not improve it) and bring the open questions from step 2 already drawn up. Present the related candidates from step 3; bundling, sequencing, or leaving each alone is the user's call, made here. Resolve every ambiguity here, with the user; an ambiguity left in the plan becomes a judgment call for a model chosen precisely because it should not make them. With `--council`, the design round (see **--council**) runs first and its table opens the brainstorm.
 
-6. **Write the plan.** Invoke `superpowers:writing-plans`. Save to the vault: `projects/<project>/plans/YYYY-MM-DD-<topic>.md` (create `plans/` if missing). The plan carries a **Related queue items** section: every candidate `^qN` from step 3 with a verdict — `bundled (rides this PR)`, `successor`, `out of scope: <why>`, or `checked, unrelated`. No candidates → write "none found", so silence is distinguishable from a skipped scan. Frontmatter carries the vault's standard keys plus the backlink that lets `/sync` and `/implement-plan` trace it:
+6. **Write the plan.** Invoke `superpowers:writing-plans`. Pick the shape from **Plan shapes** first: size `XS` or `S` is short, anything else is full, and the short shape's sections replace the full ones below. Save to the vault: `projects/<project>/plans/YYYY-MM-DD-<topic>.md` (create `plans/` if missing). The plan carries a **Related queue items** section: every candidate `^qN` from step 3 with a verdict — `bundled (rides this PR)`, `successor`, `out of scope: <why>`, or `checked, unrelated`. No candidates → write "none found", so silence is distinguishable from a skipped scan. Frontmatter carries the vault's standard keys plus the backlink that lets `/sync` and `/implement-plan` trace it:
 
    ```yaml
    ---
@@ -46,13 +46,13 @@ If empty, ask for it and stop.
 
 7. **Stamp the queue line.** `queue-tool mark <project> <qN> --plan '[[<project>/plans/YYYY-MM-DD-<topic>]]'` — the tool inserts it before the trailing `^qN`. Run the same `mark` for every line the user bundled in step 5; the plan's `queue_item:` stays the primary line only.
 
-8. **Make it executor-grade.** Beyond the writing-plans format, every phase must have:
+8. **Make it executor-grade.** For the full shape (the short shape's bar is in **Plan shapes**), beyond the writing-plans format, every phase must have:
    - Exact file paths and function signatures for each change.
    - Verbatim commands for tests/lint/typecheck with expected results.
    - Acceptance checks: observable behavior, not "should work".
    - A **stop-and-ask list** at the top of the plan. Minimum triggers: reality deviates from the plan (file moved, API changed), tests still failing after 2 fix attempts, ambiguous requirement discovered mid-phase, any security-sensitive decision not spelled out in the plan.
 
-9. **Self-check.** Reread the plan as if you were Sonnet with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list. With `--council`, run the council (see below) instead. If the pass changed the phases enough to change the executor grade, update the plan's `model:` before handing off.
+9. **Self-check.** Reread the plan as if you were Sonnet with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list. With `--council`, run the council (see below) instead. If the pass changed the phases enough to change the executor grade, update the plan's `model:` before handing off. For a short plan, ask **Plan shapes**' question instead and run its line check: `awk 'c>=2{n++} /^---$/{c++} END{print n}' <plan>` prints at most `60`, and `grep -c '^```' <plan>` prints `0`.
 
 10. **Hand off.** Print exactly this and stop, with `<model>` replaced by the value written to `model:` in step 6:
 
@@ -65,7 +65,28 @@ If empty, ask for it and stop.
 
 ## Steps (plain form)
 
-Same as above minus everything queue-related: brainstorm (step 5), write the plan to `docs/plans/YYYY-MM-DD-<topic>.md` relative to cwd, make it executor-grade (step 8), self-check (step 9). NEVER commit a `docs/plans/` plan (global rule); add `docs/plans/` to `.git/info/exclude` if the repo doesn't ignore it. Hand off with the path form: `/implement-plan docs/plans/<file>.md`.
+Same as above minus everything queue-related: brainstorm (step 5), size the task in one line and pick the shape (**Plan shapes**), write the plan to `docs/plans/YYYY-MM-DD-<topic>.md` relative to cwd, make it executor-grade (step 8), self-check (step 9). NEVER commit a `docs/plans/` plan (global rule); add `docs/plans/` to `.git/info/exclude` if the repo doesn't ignore it. Hand off with the path form: `/implement-plan docs/plans/<file>.md`.
+
+## Plan shapes
+
+The item's size picks the plan's shape. Queue form: the `size` key of `queue-tool find`'s JSON; `XS` or `S` is **short**, anything else (`M` and up, or no size) is **full**. Plain form: size the task on the same scale in one line before step 6 (`Sized ~S: two files, no new interface`) and pick from that. When step 2 or 5 shows that an `S` carries a new interface, more than about three files, or security or data-integrity weight, write the full shape and say why in one line under the plan's header. Never the reverse: an item sized `M` or above never gets the short shape, and the queue line's size is not rewritten here.
+
+**Full** is the shape steps 6, 8 and 9 describe.
+
+**Short** hands judgment back to the executor: it records the decisions the brainstorm settled and leaves the instructions out. The frontmatter is the full shape's, unchanged, because tools read it. The body below the frontmatter is at most 60 lines and has no fenced block. Its sections, in order:
+
+- The `# <title> (^qN) Implementation Plan` heading, then one `> **For agentic workers:**` line carrying the `/implement-plan <project> | qN` command and the repo to run it from, the files to read first by name (no line numbers), and the sentence `Short plan: where it is silent, decide locally and list each choice in the PR body.`
+- **Goal:** one sentence of observable behaviour.
+- **Approach:** two to four sentences: what changes, in which files and functions by name, what stays untouched and why.
+- **Stop and ask:** only triggers specific to this item; omit the section when there are none, `/implement-plan`'s defaults stand.
+- **Decisions (auto)** under `--auto` and **Council** under `--council`, exactly as those sections require.
+- **Related queue items**, exactly as step 6 requires.
+- One `### Task N: <deliverable>` heading per commit, each holding one `- [ ]` line per deliverable: the code change by file and function name, the test by name and the assertion it makes, the spec, decision, handbook or changelog edit by file and section. The executor writes the code, the test and the wording.
+- **Acceptance:** one block for the whole plan: the observable check that proves the goal, the tests named above passing, and the repo's gate (`make check`, or whatever the repo's `CLAUDE.md` names).
+
+Dropped from the short shape, deliberately: line numbers, quoted code and quoted prose, per-task steps, commands and expected outputs, per-task acceptance, **Global Constraints**, **Tech Stack**, **Spec**, the PR section and the self-review section. A short plan that needs any of them to be understood is a full plan.
+
+For the short shape, executor-grade means: every file and function it names exists, the acceptance is observable, and every decision the brainstorm settled is written down. Step 9's question for it is not whether two implementations exist (they may, and the executor picks) but whether the executor knows which outcome proves it done and which decisions are not theirs to remake.
 
 ## --council
 
