@@ -71,7 +71,6 @@ If a check can't run (no test suite, needs my credentials), say so explicitly in
 
 - At the end of each plan, give me a list of unresolved questions to answer, if any. Make the questions extremely concise. Sacrifice grammar for the sake of concision.
 - For large plans, always break it down into phases and suggest creating a Github issue containing the current plan, including all of the items checked off the plan list.
-- NEVER commit plans
 
 ## Commit Approval
 
