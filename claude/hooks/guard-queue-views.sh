@@ -5,16 +5,30 @@
 # while `queue-tool edit <project> begin` has an open session (<repo>/.git/queue-tool-edit/<project>).
 set -uo pipefail
 
+clean_path() {
+  local part out=() parts
+  IFS=/ read -ra parts <<<"$1"
+  for part in "${parts[@]}"; do
+    case $part in
+      ''|.) ;;
+      ..) (( ${#out[@]} )) && out=("${out[@]:0:${#out[@]}-1}") ;;
+      *) out+=("$part") ;;
+    esac
+  done
+  local IFS=/
+  if [[ $1 == /* ]]; then printf '/%s' "${out[*]}"; else printf '%s' "${out[*]}"; fi
+}
+
 input=$(cat) || exit 0
 tool=$(jq -r '.tool_name // empty' <<<"$input" 2>/dev/null) || exit 0
 case "$tool" in
   Bash) target=$(jq -r '.tool_input.command // empty' <<<"$input" 2>/dev/null) ;;
-  *)    target=$(jq -r '.tool_input.file_path // empty' <<<"$input" 2>/dev/null) ;;
+  *)    target=$(clean_path "$(jq -r '.tool_input.file_path // empty' <<<"$input" 2>/dev/null)") ;;
 esac
 
 [[ $target =~ (SecondBrain/projects|vault-queues|(^|[^[:alnum:]_/.-])projects)/[^/[:space:]]+/Queue\.md ]] || exit 0
 
-if [[ $tool == Edit && $target == /*/Queue.md && $target != *'/../'* && $target != *'/./'* ]]; then
+if [[ $tool == Edit && $target == /*/Queue.md ]]; then
   project_dir=${target%/Queue.md}
   [[ -f ${project_dir%/*}/.git/queue-tool-edit/${project_dir##*/} ]] && exit 0
 fi
