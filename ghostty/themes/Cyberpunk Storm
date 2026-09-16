@@ -1,1 +1,34 @@
-/Users/pablobfonseca/code/cyberpunk-theme/extras/ghostty/Cyberpunk Storm
+# Cyberpunk Storm Theme for Ghostty Terminal
+# Usage: theme = Cyberpunk Storm
+
+# Background and foreground
+background = #1a1f25
+foreground = #e0e6f0
+
+# Cursor
+cursor-color = #00ffff
+cursor-text = #0a0e14
+
+# Selection
+selection-background = #2a1f3d
+selection-foreground = #e0e6f0
+
+# Normal colors (ANSI 0-7)
+palette = 0=#0a0e14
+palette = 1=#ff007f
+palette = 2=#00ff41
+palette = 3=#ffff00
+palette = 4=#0080ff
+palette = 5=#bf00ff
+palette = 6=#00ffff
+palette = 7=#e0e6f0
+
+# Bright colors (ANSI 8-15)
+palette = 8=#3b4458
+palette = 9=#ff4499
+palette = 10=#44ff77
+palette = 11=#ffff66
+palette = 12=#4499ff
+palette = 13=#dd66ff
+palette = 14=#66ffff
+palette = 15=#ffffff
