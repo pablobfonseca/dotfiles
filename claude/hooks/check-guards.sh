@@ -12,8 +12,17 @@ V=$HOME/obsidian/SecondBrain/projects/ClaudeOS
 Q=$HOME/.local/share/vault-queues/ClaudeOS
 case_ "edit vault view"        deny  "$(qv Edit file_path "$V/Queue.md")"
 case_ "write vault view"       deny  "$(qv Write file_path "$V/Queue.md")"
-case_ "edit authority"         deny  "$(qv Edit file_path "$Q/Queue.md")"
 case_ "write authority"        deny  "$(qv Write file_path "$Q/Queue.md")"
+T=$(mktemp -d)/vault-queues
+mkdir -p "$T/.git/queue-tool-edit" "$T/ClaudeOS" "$T/Tribemap"
+touch "$T/.git/queue-tool-edit/ClaudeOS"
+case_ "edit authority, no session"    deny  "$(qv Edit file_path "$T/Tribemap/Queue.md")"
+case_ "edit authority, open session"  allow "$(qv Edit file_path "$T/ClaudeOS/Queue.md")"
+case_ "write authority, open session" deny  "$(qv Write file_path "$T/ClaudeOS/Queue.md")"
+case_ "bash authority, open session"  deny  "$(qv Bash command "sed -i '' 's/a/b/' $T/ClaudeOS/Queue.md")"
+case_ "edit session via dotdot"       deny  "$(qv Edit file_path "$T/ClaudeOS/../Tribemap/Queue.md")"
+case_ "edit relative, open session"   deny  "$(qv Edit file_path "vault-queues/ClaudeOS/Queue.md")"
+rm -rf "${T%/vault-queues}"
 case_ "bash sed authority"     deny  "$(qv Bash command "sed -i 's/a/b/' $Q/Queue.md")"
 case_ "bash heredoc view"      deny  "$(qv Bash command "cat > $V/Queue.md <<'X'")"
 case_ "bash cat relative view" deny  "$(qv Bash command "cat projects/ClaudeOS/Queue.md")"

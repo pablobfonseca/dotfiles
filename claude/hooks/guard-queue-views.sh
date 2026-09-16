@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # PreToolUse/Write|Edit|Bash: Queue.md is written by queue-tool only. Refuses Edit and Write on the
 # vault's generated views and on the vault-queues authority, and any Bash command that names either;
-# reads go through `queue-tool dump` and `queue-tool find`.
+# reads go through `queue-tool dump` and `queue-tool find`. The one exception is Edit on the authority
+# while `queue-tool edit <project> begin` has an open session (<repo>/.git/queue-tool-edit/<project>).
 set -uo pipefail
 
 input=$(cat) || exit 0
@@ -12,6 +13,11 @@ case "$tool" in
 esac
 
 [[ $target =~ (SecondBrain/projects|vault-queues|(^|[^[:alnum:]_/.-])projects)/[^/[:space:]]+/Queue\.md ]] || exit 0
+
+if [[ $tool == Edit && $target == /*/Queue.md && $target != *'/../'* && $target != *'/./'* ]]; then
+  project_dir=${target%/Queue.md}
+  [[ -f ${project_dir%/*}/.git/queue-tool-edit/${project_dir##*/} ]] && exit 0
+fi
 
 cat <<'JSON'
 {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"Queue.md is written by queue-tool only: the vault's projects/<P>/Queue.md is a GENERATED READ-ONLY VIEW, overwritten on the next queue write, and the vault-queues copy is the authority it regenerates from, where a hand edit leaves the repo dirty and every later queue-tool write refused. Use the tool: queue-tool state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `queue-tool edit <project> begin` then `queue-tool edit <project> commit -m \"...\"` for free-form grooming, and queue-tool dump|find <project> to read. Run `queue-tool --help` for syntax."}}
