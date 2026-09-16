@@ -65,7 +65,7 @@ If empty, ask for it and stop.
 
 ## Steps (plain form)
 
-Same as above minus everything queue-related: brainstorm (step 5), size the task in one line and pick the shape (**Plan shapes**), write the plan to `docs/plans/YYYY-MM-DD-<topic>.md` relative to cwd, make it executor-grade (step 8), self-check (step 9). NEVER commit a `docs/plans/` plan (global rule); add `docs/plans/` to `.git/info/exclude` if the repo doesn't ignore it. The step 6 header line names `/implement-plan docs/plans/<file>.md` in place of the queue form. Hand off with the path form: `/implement-plan docs/plans/<file>.md`.
+Same as above minus everything queue-related: brainstorm (step 5), size the task in one line and pick the shape (**Plan shapes**), write the plan to `docs/plans/YYYY-MM-DD-<topic>.md` relative to cwd, make it executor-grade (step 8), self-check (step 9). The step 6 header line names `/implement-plan docs/plans/<file>.md` in place of the queue form. Hand off with the path form: `/implement-plan docs/plans/<file>.md`.
 
 ## Plan shapes
 
