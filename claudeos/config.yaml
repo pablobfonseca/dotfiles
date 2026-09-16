@@ -79,33 +79,33 @@ projects:
 # safe to version-control. No chat id, no messages, whatever is configured here.
 # Messages are also skipped while claudeos itself is focused.
 
-# telegram:
-#   # Whether the bridge runs at all. false sends nothing, polls for no replies,
-#   # and stops a missing token file from being a startup error, without you
-#   # having to unset the chat id or empty `events`. `claudeos telegram test`
-#   # still sends either way. (default: true)
-#   enabled: true
-#
-#   # File holding the bot token, read at send time.
-#   # (default: ~/.config/claudeos/telegram-token)
-#   token_file: ~/.config/claudeos/telegram-token
-#
-#   # Job states that send a message. Only `waiting` (the session is asking you
-#   # something) and `idle` (it finished its turn) are valid.
-#   # (default: [waiting, idle])
-#   events: [waiting, idle]
-#
-#   # Per-job-kind override of `events`. A kind listed here uses its own list;
-#   # everything else falls back to `events` above. An empty list mutes the kind.
-#   kinds:
-#     plan: [waiting]
-#     implement: [waiting, idle]
-#     groom: []
-#
-#   # Wait this long before sending an `idle` message, so a session that pauses
-#   # for a second and keeps going does not buzz your phone. A Go duration
-#   # string. (default: 0, meaning send immediately)
-#   idle_delay: 30s
+telegram:
+  #   # Whether the bridge runs at all. false sends nothing, polls for no replies,
+  #   # and stops a missing token file from being a startup error, without you
+  #   # having to unset the chat id or empty `events`. `claudeos telegram test`
+  #   # still sends either way. (default: true)
+  #   enabled: true
+  #
+  #   # File holding the bot token, read at send time.
+  #   # (default: ~/.config/claudeos/telegram-token)
+  #   token_file: ~/.config/claudeos/telegram-token
+  #
+  #   # Job states that send a message. Only `waiting` (the session is asking you
+  #   # something) and `idle` (it finished its turn) are valid.
+  #   # (default: [waiting, idle])
+  #   events: [waiting, idle]
+  #
+  #   # Per-job-kind override of `events`. A kind listed here uses its own list;
+  #   # everything else falls back to `events` above. An empty list mutes the kind.
+  #   kinds:
+  #     plan: [waiting]
+  #     implement: [waiting, idle]
+  #     groom: []
+  #
+  #   # Wait this long before sending an `idle` message, so a session that pauses
+  #   # for a second and keeps going does not buzz your phone. A Go duration
+  #   # string. (default: 0, meaning send immediately)
+  idle_delay: 30s
 
 # ---------------------------------------------------------------------------
 # Layout
