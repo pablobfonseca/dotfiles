@@ -32,8 +32,9 @@ add and stamp mint IDs and refuse to run offline, because minting against a stal
 remote is what collides across machines. The others commit locally when offline.
 
 Free-form editing (splits, merges, rewording, the > proposed: blockquote):
-  edit <project> begin        pull, then print the authoritative file path to edit
-  edit <project> commit -m M  dup-scan, commit, push that file
+  edit <project> begin        pull, open an edit session, print the authoritative file path to edit
+  edit <project> commit -m M  dup-scan, commit, push that file, close the session
+                              (the queue guard hook allows Edit on that file only inside a session)
 
 Recovery (every mutation is a git commit, so history is the undo buffer):
   log <project> [-n N]        recent queue commits for that project, newest first
@@ -543,10 +544,17 @@ def cmd_view(args):
         write_view(args.repo, args.vault, project)
 
 
+def edit_marker(repo, project):
+    return Path(repo) / ".git" / "queue-tool-edit" / project
+
+
 def cmd_edit(args):
     path = repo_queue_path(args.repo, args.project)
+    marker = edit_marker(args.repo, args.project)
     if args.action == "begin":
         pull_rebase(args.repo)
+        marker.parent.mkdir(exist_ok=True)
+        marker.touch()
         print(path)
         return
     if not args.message:
@@ -556,6 +564,7 @@ def cmd_edit(args):
     check_no_duplicates(path.read_text(), "in your edit")
     git_run(args.repo, "add", str(path))
     git_run(args.repo, "commit", "--quiet", "-m", f"q: edit {args.project}: {args.message}")
+    marker.unlink(missing_ok=True)
     if push_head(args.repo) or (pull_rebase(args.repo) and push_head(args.repo)):
         write_view(args.repo, args.vault, args.project)
         return

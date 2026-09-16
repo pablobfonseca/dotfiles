@@ -466,10 +466,13 @@ class EditTest(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stderr)
         path = r.stdout.strip()
         self.assertTrue(path.endswith("Tribemap/Queue.md"))
+        marker = os.path.join(a, ".git", "queue-tool-edit", "Tribemap")
+        self.assertTrue(os.path.isfile(marker))
         with open(path, "a") as f:
             f.write("\n- [ ] Groomed in free-form ^q7\n")
         r = run_tool(a, "edit", "Tribemap", "commit", "-m", "groom", "--vault", vault)
         self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertFalse(os.path.exists(marker))
         sh(b, "git", "pull", "-q")
         with open(os.path.join(b, "Tribemap", "Queue.md")) as f:
             self.assertIn("Groomed in free-form", f.read())
