@@ -45,19 +45,20 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "Write|Edit|Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.dotfiles/claude/hooks/guard-queue-views.sh",
-            "if": "Edit(**/SecondBrain/projects/**/Queue.md)",
-            "statusMessage": "Checking queue view guard..."
-          },
+            "command": "~/.dotfiles/claude/hooks/guard-queue-views.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
           {
             "type": "command",
-            "command": "~/.dotfiles/claude/hooks/guard-queue-views.sh",
-            "if": "Write(**/SecondBrain/projects/**/Queue.md)",
-            "statusMessage": "Checking queue view guard..."
+            "command": "~/.dotfiles/claude/hooks/guard-merge.sh"
           }
         ]
       }
