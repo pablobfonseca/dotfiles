@@ -123,24 +123,6 @@
     ],
     "Notification": [
       {
-        "matcher": "idle_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "input=$(cat); [ -z \"$CLAUDEOS_NOTIFY\" ] && echo \"$input\" | terminal-notifier -group \"claude-$(echo \"$input\" | jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Input Required - $(basename $PWD)\" -message 'Waiting for your input' -sound 'default'"
-          }
-        ]
-      },
-      {
-        "matcher": "permission_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "input=$(cat); [ -z \"$CLAUDEOS_NOTIFY\" ] && echo \"$input\" | terminal-notifier -group \"claude-$(echo \"$input\" | jq -r '.session_id' 2>/dev/null)\" -title 'Claude Code' -subtitle \"Permission Required - $(basename $PWD)\" -message 'Needs your approval' -sound 'default'"
-          }
-        ]
-      },
-      {
         "hooks": [
           {
             "type": "command",
