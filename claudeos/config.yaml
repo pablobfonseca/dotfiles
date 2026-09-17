@@ -159,6 +159,10 @@ telegram:
 #
 #   # Bottom stack, top to bottom. (default: [jobs, prs, inbox])
 #   bottom: [jobs, prs, inbox]
+layout:
+  projects_width: 23
+  row:
+    tags: true
 
 # ---------------------------------------------------------------------------
 # Colors
