@@ -79,3 +79,5 @@ codex/history.jsonl
 codex/session_index.jsonl
 codex/thread-writer-locks/
 codex/*.sqlite*
+claude/skills/synced/
+claude/skills/.trash/
