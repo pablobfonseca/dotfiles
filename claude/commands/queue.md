@@ -58,7 +58,7 @@ For each open line, check the notes for evidence it shipped (a plan marked compl
 
 ## 5. Propose the next 5
 
-Replace the `> proposed:` blockquote under `## Next` with a fresh one, dated today. Five items, ranked, each with one or two sentences of *reasoning that cites a note* — not a restatement of the item. Write each rank as `> N. [[<P> Queue#^qNN]] — <reason, naming the note>`; `queue-tool dump` parses that shape.
+Replace the `> proposed:` blockquote under `## Next` with a fresh one, dated today. Five items, ranked, each with one or two sentences of *reasoning that cites a note* — not a restatement of the item. Write each rank as `> N. `^qNN` [[<P> Queue#^qNN]] — <reason, naming the note>`; `queue-tool dump` parses the bare `` `^qNN` `` right after the rank number (the wikilink alone does not parse), and the wikilink keeps Obsidian navigation.
 
 Rank by leverage, roughly in this order of precedence:
 
