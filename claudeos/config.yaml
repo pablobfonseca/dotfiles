@@ -133,6 +133,20 @@ telegram:
 #   # (default: 35)
 #   detail_percent: 35
 #
+#   # Share of the window width a docked job pane takes, as a percent.
+#   # 10 to 90, read on each dock. (default: 50)
+#   dock_percent: 50
+#
+#   # Lanes to show, in this order. A lane left out has no rows.
+#   # (default: [Next, Ready, Needs spec, Blocked, Someday, Shipped])
+#   lanes: [Next, Ready, Needs spec, Blocked, Someday, Shipped]
+#
+#   # Trailers an item row paints after its text.
+#   row:
+#     size: true   # ~S (default: true)
+#     id: true     # ^qN (default: true)
+#     tags: false  # #feat #bug (default: false)
+#
 #   # Height in rows of each pane when it sits in the bottom stack. Minimum 1.
 #   rows:
 #     detail: 12   # (default: 12)
