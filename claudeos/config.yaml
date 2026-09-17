@@ -121,10 +121,10 @@ telegram:
 # `bottom` may only hold detail, jobs, prs and inbox.
 
 # layout:
-# Blank row after each queue item and before each lane header (except the
-# first), so a header sits on its first item and the lanes pane reads less
-# dense. (default: false)
-# spacing: true
+# How many blank rows go after each queue item and before each lane header
+# (except the first), so a header sits on its first item and the lanes pane
+# reads less dense. Minimum 0, which is the dense view. (default: 0)
+# spacing: 1
 #
 #   # Width in cells of the projects column. Minimum 8. (default: 18)
 #   projects_width: 18
