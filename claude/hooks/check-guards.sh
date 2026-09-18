@@ -33,7 +33,7 @@ case_ "bash cat relative view" deny  "$(qv Bash command "cat projects/ClaudeOS/Q
 case_ "bash icloud view"       deny  "$(qv Bash command "sed -i '' 's/a/b/' '$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/SecondBrain/projects/ClaudeOS/Queue.md'")"
 case_ "edit inbox"             allow "$(qv Edit file_path "$V/Inbox.md")"
 case_ "edit a plan"            allow "$(qv Edit file_path "$V/plans/2026-09-16-mechanical-rules.md")"
-case_ "bash queue-tool dump"   allow "$(qv Bash command "queue-tool dump ClaudeOS")"
+case_ "bash queue dump"        allow "$(qv Bash command "claudeos queue dump ClaudeOS")"
 case_ "bash grep docs"         allow "$(qv Bash command "grep -n Queue.md ~/obsidian/SecondBrain/CLAUDE.md")"
 case_ "bash unrelated"         allow "$(qv Bash command "cat README.md")"
 case_ "queue guard bad input"  allow "$(printf 'garbage' | "$H/guard-queue-views.sh" | decision)"

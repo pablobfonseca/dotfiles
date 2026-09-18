@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# PreToolUse/Write|Edit|Bash: Queue.md is written by queue-tool only. Refuses Edit and Write on the
+# PreToolUse/Write|Edit|Bash: Queue.md is written by `claudeos queue` only. Refuses Edit and Write on the
 # vault's generated views and on the vault-queues authority, and any Bash command that names either;
-# reads go through `queue-tool dump` and `queue-tool find`. The one exception is Edit on the authority
-# while `queue-tool edit <project> begin` has an open session (<repo>/.git/queue-tool-edit/<project>).
+# reads go through `claudeos queue dump` and `claudeos queue find`. The one exception is Edit on the authority
+# while `claudeos queue edit <project> begin` has an open session (<repo>/.git/queue-tool-edit/<project>, the
+# marker path the Python queue-tool used, kept by the port).
 set -uo pipefail
 
 clean_path() {
@@ -34,6 +35,6 @@ if [[ $tool == Edit && $target == /*/Queue.md ]]; then
 fi
 
 cat <<'JSON'
-{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"Queue.md is written by queue-tool only: the vault's projects/<P>/Queue.md is a GENERATED READ-ONLY VIEW, overwritten on the next queue write, and the vault-queues copy is the authority it regenerates from, where a hand edit leaves the repo dirty and every later queue-tool write refused. Use the tool: queue-tool state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `queue-tool edit <project> begin` then `queue-tool edit <project> commit -m \"...\"` for free-form grooming, and queue-tool dump|find <project> to read. Run `queue-tool --help` for syntax."}}
+{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"Queue.md is written by claudeos queue only: the vault's projects/<P>/Queue.md is a GENERATED READ-ONLY VIEW, overwritten on the next queue write, and the vault-queues copy is the authority it regenerates from, where a hand edit leaves the repo dirty and every later queue write refused. Use the tool: claudeos queue state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `claudeos queue edit <project> begin` then `claudeos queue edit <project> commit -m \"...\"` for free-form grooming, and claudeos queue dump|find <project> to read. Run `claudeos queue --help` for syntax."}}
 JSON
 exit 0
