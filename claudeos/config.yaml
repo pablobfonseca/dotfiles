@@ -43,9 +43,9 @@ defaults:
   # (default: true)
   worktree: true
 
-  # Chain a plan job into its implement job: when the plan session finishes,
-  # the jobs pane offers to launch /implement-plan on the same item.
-  # Only applies to plan jobs. (default: false)
+  # Chain a job into the next one on its item: a plan session that exits
+  # with a plan stamped launches /implement-plan, and an implement session
+  # that exits with a PR stamped launches /code-review on it. (default: false)
   # chain: false
 
   # Prefill for the plan overlay's review: field, for what ! launches with, and
