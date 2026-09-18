@@ -48,6 +48,13 @@ defaults:
   # Only applies to plan jobs. (default: false)
   # chain: false
 
+  # Chain an implement job into a /code-review session on its PR. false stops
+  # the chain at the pull request: the implement overlay opens with chain: no
+  # whatever `chain` above says, nothing is /exit-ed and no reviewer is
+  # launched. Set it per project below to spend the review only where it pays.
+  # (default: true)
+  # code_review: true
+
 # ---------------------------------------------------------------------------
 # Projects
 # ---------------------------------------------------------------------------
@@ -59,6 +66,8 @@ defaults:
 # Per project you can also set:
 #   model:  override defaults.model for this project's sessions
 #   pinned: keep the project at the top of the projects pane
+#   code_review: override defaults.code_review, either way
+#                e.g. GX100: { path: ~/code/gx100-midi-control, code_review: false }
 
 projects:
   ClaudeOS: { path: ~/code/claudeos }
