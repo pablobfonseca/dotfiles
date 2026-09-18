@@ -10,7 +10,7 @@ paths:
 
 ## Overview
 
-Queue authority is the private **vault-queues** repo (`~/.local/share/vault-queues`), not the vault. `queue-tool` runs every mutation as one git transaction (pull --rebase, mutate, commit, push, retry), which is what stops two machines silently losing each other's writes.
+Queue authority is the private **vault-queues** repo (`~/.local/share/vault-queues`), not the vault. `claudeos queue` runs every mutation as one git transaction (pull --rebase, mutate, commit, push, retry), which is what stops two machines silently losing each other's writes.
 
 **The vault's `projects/<Project>/Queue.md` is a generated read-only view.** Editing it with Edit/Write looks like it worked, then gets overwritten on the next queue write.
 
@@ -19,7 +19,7 @@ Queue authority is the private **vault-queues** repo (`~/.local/share/vault-queu
 Never edit a `Queue.md` in the vault. Never hand-write a `^qN`. Every change goes through:
 
 ```bash
-queue-tool --help
+claudeos queue --help
 ```
 
 That help output is the syntax reference. Read it instead of guessing flags; this skill covers only the judgment it cannot encode.

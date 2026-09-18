@@ -9,38 +9,38 @@ Groom `projects/$ARGUMENTS/Queue.md`. The vault is `~/obsidian/SecondBrain`; eve
 
 You are the judgment half of grooming; every mechanical step already ran. Rules that keep a weaker session from doing damage:
 
-- **Never reword a line into something more abstract.** Append markers (`#tag`, `~size`, `→ question`) with `queue-tool edit`; leave the user's words. A groomed line is *more* specific, never less.
+- **Never reword a line into something more abstract.** Append markers (`#tag`, `~size`, `→ question`) with `claudeos queue edit`; leave the user's words. A groomed line is *more* specific, never less.
 - **When unsure, do less.** Unsure whether an Inbox line is work → leave it in the Inbox. Unsure of a size → `~M`. Unsure whether two lines are one deliverable → leave both and say so in the report. Unsure whether an item shipped → leave it open and flag the evidence.
 - **Cite or do not rank.** Every line of the `> proposed:` blockquote names the note, plan, PR or incident that justifies it. A rank you cannot cite goes at the bottom with "no note supports this".
-- **One write per change, through `queue-tool`.** `add`, `stamp`, `state`, `lane`, `mark` for single lines; `edit begin` / `edit commit -m` only for splits, merges, rewording markers and the blockquote. Never open the vault's Queue.md.
+- **One write per change, through `claudeos queue`.** `add`, `stamp`, `state`, `lane`, `mark` for single lines; `edit begin` / `edit commit -m` only for splits, merges, rewording markers and the blockquote. Never open the vault's Queue.md.
 - **Report in the fixed shape of section 6**, nothing else appended.
 
-Worked example, one Inbox line: `- [ ] the jobs pane shows waiting after I answered` → `queue-tool add <P> "The jobs pane keeps showing waiting after the prompt is answered #bug ~S" --lane Ready` (symptom kept verbatim, tag and size appended, Ready because a stranger could start). A line like `think about telegram` stays in the Inbox: it names no symptom and no end state.
+Worked example, one Inbox line: `- [ ] the jobs pane shows waiting after I answered` → `claudeos queue add <P> "The jobs pane keeps showing waiting after the prompt is answered #bug ~S" --lane Ready` (symptom kept verbatim, tag and size appended, Ready because a stranger could start). A line like `think about telegram` stays in the Inbox: it names no symptom and no end state.
 
 ## 0. Reconcile natively, then read
 
-Queue authority lives in the vault-queues repo; `queue-tool` pulls before every read and pushes every write, and the vault's `projects/<P>/Queue.md` is a generated read-only view. If any `queue-tool` call reports a rebase conflict, duplicate IDs or a dirty repo, stop and report; never resolve it yourself.
+Queue authority lives in the vault-queues repo; `claudeos queue` pulls before every read and pushes every write, and the vault's `projects/<P>/Queue.md` is a generated read-only view. If any `claudeos queue` call reports a rebase conflict, duplicate IDs or a dirty repo, stop and report; never resolve it yourself.
 
 Grooming a stale queue ranks fiction, so first run `claudeos sync $ARGUMENTS` and print its output. It does the whole plans → PRs → issues reconciliation and writes what the artifacts prove; its `needs judgment` lines are input to your grooming below, not something to act on blindly. If it says the GitHub half was skipped, say so in your report. Do not re-derive any reconciliation by hand.
 
 ## 1. Read the whole picture before touching a line
 
 - `projects/$ARGUMENTS.md` — goal, status, next steps. This is what "leverage" is measured against.
-- `queue-tool dump $ARGUMENTS` — the queue, parsed: every line's lane, state and markers as JSON, plus `duplicates`, `unstamped` and `next_id`. Trust this parse instead of reading the markers by eye; to change a line, use `queue-tool` rather than opening the vault's read-only view.
+- `claudeos queue dump $ARGUMENTS` — the queue, parsed: every line's lane, state and markers as JSON, plus `duplicates`, `unstamped` and `next_id`. Trust this parse instead of reading the markers by eye; to change a line, use `claudeos queue` rather than opening the vault's read-only view.
 - `projects/$ARGUMENTS/Inbox.md` if present — loose capture that may contain promotable items.
 - Every support note in `projects/$ARGUMENTS/` whose title suggests a plan, audit or incident. You cannot rank without knowing what is already specced.
 
 ## 2. Promote from Inbox
 
-Anything in Inbox.md that names an observable symptom or a desired end state becomes a queue line. Delete the promoted line from Inbox.md outright — no "moved to Queue" annotation or breadcrumb; the queue line is the record. Prose, half-thoughts and reference material stay in Inbox.md. Say which items you promoted and leave Inbox.md's non-actionable content untouched. Promote with `queue-tool add $ARGUMENTS "<line text>" --lane <Lane>`; it stamps the `^qN` itself.
+Anything in Inbox.md that names an observable symptom or a desired end state becomes a queue line. Delete the promoted line from Inbox.md outright — no "moved to Queue" annotation or breadcrumb; the queue line is the record. Prose, half-thoughts and reference material stay in Inbox.md. Say which items you promoted and leave Inbox.md's non-actionable content untouched. Promote with `claudeos queue add $ARGUMENTS "<line text>" --lane <Lane>`; it stamps the `^qN` itself.
 
-A line whose text names a `qN` that sits in `## Shipped` as `- [x]` (written `q14`, `^q14` or `[[<P> Queue#^q14]]`; check the lane in the `queue-tool dump` you already read, never a date) is rework: append `#rework` beside its other tag before the `add`, so `- [ ] the jobs pane still shows waiting after q93 #bug #rework ~S`. An open, dropped or unknown `qN` does not count. This is the whole 72-hour-follow-up rule; `claudeos stats` counts the tag per week by the line's added date, so nothing detects it later.
+A line whose text names a `qN` that sits in `## Shipped` as `- [x]` (written `q14`, `^q14` or `[[<P> Queue#^q14]]`; check the lane in the `claudeos queue dump` you already read, never a date) is rework: append `#rework` beside its other tag before the `add`, so `- [ ] the jobs pane still shows waiting after q93 #bug #rework ~S`. An open, dropped or unknown `qN` does not count. This is the whole 72-hour-follow-up rule; `claudeos stats` counts the tag per week by the line's added date, so nothing detects it later.
 
 ## 3. Groom each open line
 
 In this order, and only these:
 
-- **Stamp**: run `queue-tool stamp $ARGUMENTS`; it mints and pushes IDs atomically (and refuses offline, because minting against a stale remote is the two-machine race). IDs are immutable — never renumber, never reuse, never strip.
+- **Stamp**: run `claudeos queue stamp $ARGUMENTS`; it mints and pushes IDs atomically (and refuses offline, because minting against a stale remote is the two-machine race). IDs are immutable — never renumber, never reuse, never strip.
 - **Split** anything that is two deliverables. Note the split in your report; each half gets its own fresh `^qN`, the original ID stays on the half closest to the original wording.
 - **Size** unsized lines: `~XS` under an hour, `~S` a sitting, `~M` a day, `~L` needs decomposition.
 - **Tag** with at most what applies: `#bug` `#feat` `#sec` `#ops`, plus `#claude` only if an agent could finish it unattended with no product decision to make, plus `#rework` when the text names a `qN` that is `- [x]` in `## Shipped` (the step 2 rule, applied to lines already in the queue).
@@ -48,7 +48,7 @@ In this order, and only these:
 - **Link** to any existing plan, audit or incident note that already covers the item.
 - **Dedupe**: if two lines are the same work, merge them and keep every `(#N)` ref.
 
-How to write: single-line changes use the atomic subcommands (`state`, `lane`, `mark`, `add`); anything free-form — splits, rewording, merges, the `> proposed:` blockquote — goes through `queue-tool edit $ARGUMENTS begin`, editing the printed file, then `queue-tool edit $ARGUMENTS commit -m "<what changed>"`.
+How to write: single-line changes use the atomic subcommands (`state`, `lane`, `mark`, `add`); anything free-form — splits, rewording, merges, the `> proposed:` blockquote — goes through `claudeos queue edit $ARGUMENTS begin`, editing the printed file, then `claudeos queue edit $ARGUMENTS commit -m "<what changed>"`.
 
 Do not reword a line into something more abstract than the user wrote. Precision is the point; a groomed line should be *more* specific, never less.
 
@@ -58,7 +58,7 @@ For each open line, check the notes for evidence it shipped (a plan marked compl
 
 ## 5. Propose the next 5
 
-Replace the `> proposed:` blockquote under `## Next` with a fresh one, dated today. Five items, ranked, each with one or two sentences of *reasoning that cites a note* — not a restatement of the item. Write each rank as `> N. `^qNN` [[<P> Queue#^qNN]] — <reason, naming the note>`; `queue-tool dump` parses the bare `` `^qNN` `` right after the rank number (the wikilink alone does not parse), and the wikilink keeps Obsidian navigation.
+Replace the `> proposed:` blockquote under `## Next` with a fresh one, dated today. Five items, ranked, each with one or two sentences of *reasoning that cites a note* — not a restatement of the item. Write each rank as `> N. `^qNN` [[<P> Queue#^qNN]] — <reason, naming the note>`; `claudeos queue dump` parses the bare `` `^qNN` `` right after the rank number (the wikilink alone does not parse), and the wikilink keeps Obsidian navigation.
 
 Rank by leverage, roughly in this order of precedence:
 
@@ -76,4 +76,4 @@ Never move an item into `## Next` yourself. The blockquote is the whole delivera
 - Anything you deliberately left alone and why.
 - Which lines are now the largest unknowns in the queue.
 
-Every `queue-tool` mutation commits and pushes the authority repo itself and regenerates the vault view; there is nothing to commit in the vault for queue changes. Inbox.md edits still live in the vault as before.
+Every `claudeos queue` mutation commits and pushes the authority repo itself and regenerates the vault view; there is nothing to commit in the vault for queue changes. Inbox.md edits still live in the vault as before.

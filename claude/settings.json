@@ -13,11 +13,11 @@
   },
   "permissions": {
     "allow": [
-      "Bash(queue-tool dump:*)",
-      "Bash(queue-tool find:*)",
-      "Bash(queue-tool plans:*)",
-      "Bash(queue-tool log:*)",
-      "Bash(queue-tool --help)"
+      "Bash(claudeos queue dump:*)",
+      "Bash(claudeos queue find:*)",
+      "Bash(claudeos queue plans:*)",
+      "Bash(claudeos queue log:*)",
+      "Bash(claudeos queue --help)"
     ],
     "deny": [
       "Read(./.env)",
