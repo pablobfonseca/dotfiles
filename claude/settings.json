@@ -210,7 +210,8 @@
     "harness@harness-marketplace": true,
     "stripe@claude-plugins-official": true,
     "taste-skill@taste-skill": true,
-    "google-ads-api-developer-assistant@google-ads-assistant-local": true
+    "google-ads-api-developer-assistant@google-ads-assistant-local": true,
+    "typesafe@typesafe-ai": true
   },
   "extraKnownMarketplaces": {
     "dev-browser-marketplace": {
@@ -271,6 +272,12 @@
       "source": {
         "source": "directory",
         "path": "/Users/pablobfonseca/code/Playground/google-ads-api-developer-assistant"
+      }
+    },
+    "typesafe-ai": {
+      "source": {
+        "source": "github",
+        "repo": "typesafe-ai/skills"
       }
     }
   },
