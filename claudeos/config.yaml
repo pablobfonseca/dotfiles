@@ -13,8 +13,8 @@
 # per-project Inbox all live under it. (default: ~/obsidian/SecondBrain)
 vault: ~/obsidian/SecondBrain
 
-# The queues repo that queue-tool owns. claudeos never writes these files
-# directly, it shells out to queue-tool. (default: ~/.local/share/vault-queues)
+# The queues repo the queue tool owns. Every write, from the TUI or `claudeos queue`,
+# is one git transaction there: pull --rebase, commit, push. (default: ~/.local/share/vault-queues)
 queues: ~/.local/share/vault-queues
 
 # Where job state, the hook log and the usage snapshot are written. Claude

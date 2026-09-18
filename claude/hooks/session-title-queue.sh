@@ -20,8 +20,8 @@ item=$(printf '%s' "${args#*|}" | sed -E 's/--[a-z-]+//g' | trim)
 if [[ $item =~ ^\^?q?([0-9]+)$ ]]; then
   id="q${BASH_REMATCH[1]}"
 else
-  # Issue refs and text fragments only queue-tool can resolve.
-  id=$(PATH="$HOME/.dotfiles/scripts:$PATH" queue-tool find "$project" "$item" 2>/dev/null | jq -r '.id // empty')
+  # Issue refs and text fragments only the queue tool can resolve.
+  id=$(claudeos queue find "$project" "$item" 2>/dev/null | jq -r '.id // empty')
 fi
 
 [[ -n ${id:-} ]] || exit 0

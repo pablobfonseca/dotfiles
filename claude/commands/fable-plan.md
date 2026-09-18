@@ -16,13 +16,13 @@ If empty, ask for it and stop.
 
 ## Steps (queue form)
 
-1. **Resolve the item.** `queue-tool find <project> <item>` — it resolves a block ID (`q14`, `14` and `^q14` all mean the line ending in `^q14`), an issue ref (`#901` means the line carrying `(#901)`), or a text fragment, and returns the line parsed as JSON. If a fragment matches several lines it lists them with their `^qN` IDs; relay that and ask which. If nothing matches, say so and stop.
+1. **Resolve the item.** `claudeos queue find <project> <item>` — it resolves a block ID (`q14`, `14` and `^q14` all mean the line ending in `^q14`), an issue ref (`#901` means the line carrying `(#901)`), or a text fragment, and returns the line parsed as JSON. If a fragment matches several lines it lists them with their `^qN` IDs; relay that and ask which. If nothing matches, say so and stop.
 
 2. **Read what the vault already knows.** `projects/<project>.md` for the goal, current state and `repo:`. Then every note the queue line wikilinks, plus any audit, incident or plan note in `projects/<project>/` whose subject overlaps the item. This is the part you cannot skip — an item like "server stability" is meaningless without the incident write-ups behind it. Arrive at brainstorming knowing what is established (with note names), what you inferred, and what the vault does not settle.
 
-3. **Scan the rest of the queue.** `queue-tool dump <project>`, then read every open line. Collect items that share a file, surface, subsystem, root cause, or provenance (same PR review, same audit) with the target — the wording may share nothing; the connection is structural. These are input to brainstorming, never silent inclusions.
+3. **Scan the rest of the queue.** `claudeos queue dump <project>`, then read every open line. Collect items that share a file, surface, subsystem, root cause, or provenance (same PR review, same audit) with the target — the wording may share nothing; the connection is structural. These are input to brainstorming, never silent inclusions.
 
-4. **Mark planning in progress.** `queue-tool state <project> <qN> wip`. Do not change its lane; the lane changes when the plan exists.
+4. **Mark planning in progress.** `claudeos queue state <project> <qN> wip`. Do not change its lane; the lane changes when the plan exists.
 
 5. **Refine requirements.** Invoke `superpowers:brainstorming` with the item — quote the queue line verbatim as the symptom (the user's phrasing encodes what they noticed; do not improve it) and bring the open questions from step 2 already drawn up. Present the related candidates from step 3; bundling, sequencing, or leaving each alone is the user's call, made here. Resolve every ambiguity here, with the user; an ambiguity left in the plan becomes a judgment call for a model chosen precisely because it should not make them. With `--council`, the design round (see **--council**) runs first and its table opens the brainstorm.
 
@@ -44,7 +44,7 @@ If empty, ask for it and stop.
 
    When the item amends the project's spec, the plan edits the section the change belongs to, in place, never a dated note appended at the end; the dated why (what was decided, why, what it supersedes, the `qN` that carried it) goes to `Decisions.md` beside the spec.
 
-7. **Stamp the queue line.** `queue-tool mark <project> <qN> --plan '[[<project>/plans/YYYY-MM-DD-<topic>]]'` — the tool inserts it before the trailing `^qN`. Run the same `mark` for every line the user bundled in step 5; the plan's `queue_item:` stays the primary line only.
+7. **Stamp the queue line.** `claudeos queue mark <project> <qN> --plan '[[<project>/plans/YYYY-MM-DD-<topic>]]'` — the tool inserts it before the trailing `^qN`. Run the same `mark` for every line the user bundled in step 5; the plan's `queue_item:` stays the primary line only.
 
 8. **Make it executor-grade.** For the full shape (the short shape's bar is in **Plan shapes**), beyond the writing-plans format, every phase must have:
    - Exact file paths and function signatures for each change.
@@ -69,7 +69,7 @@ Same as above minus everything queue-related: brainstorm (step 5), size the task
 
 ## Plan shapes
 
-The item's size picks the plan's shape. Queue form: the `size` key of `queue-tool find`'s JSON; `XS` or `S` is **short**, anything else (`M` and up, or no size) is **full**. Plain form: size the task on the same scale in one line before step 6 (`Sized ~S: two files, no new interface`) and pick from that. When step 2 or 5 shows that an `S` carries a new interface, more than about three files, or security or data-integrity weight, write the full shape and say why in one line under the plan's header. Never the reverse: an item sized `M` or above never gets the short shape, and the queue line's size is not rewritten here.
+The item's size picks the plan's shape. Queue form: the `size` key of `claudeos queue find`'s JSON; `XS` or `S` is **short**, anything else (`M` and up, or no size) is **full**. Plain form: size the task on the same scale in one line before step 6 (`Sized ~S: two files, no new interface`) and pick from that. When step 2 or 5 shows that an `S` carries a new interface, more than about three files, or security or data-integrity weight, write the full shape and say why in one line under the plan's header. Never the reverse: an item sized `M` or above never gets the short shape, and the queue line's size is not rewritten here.
 
 **Full** is the shape steps 6, 8 and 9 describe.
 
