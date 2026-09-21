@@ -46,7 +46,7 @@ defaults:
   # Chain a job into the next one on its item: a plan session that exits
   # with a plan stamped launches /implement-plan, and an implement session
   # that exits with a PR stamped launches /code-review on it. (default: false)
-  # chain: false
+  chain: true
 
   # Prefill for the plan overlay's review: field, for what ! launches with, and
   # for the implement overlay's chain: field. It says how far a chain runs: on,
@@ -73,9 +73,9 @@ defaults:
 #                e.g. GX100: { path: ~/code/gx100-midi-control, code_review: false }
 
 projects:
-  ClaudeOS: { path: ~/code/claudeos }
+  ClaudeOS: { path: ~/code/claudeos, pinned: true }
   LazyActions: { path: ~/code/lazy-actions }
-  Tribemap: { path: ~/code/upscope-env/tribemap }
+  Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true }
   GX100: { path: ~/code/gx100-midi-control }
   Devdeck: { path: ~/code/DevDeck }
   CobrowsingSDK: { path: ~/code/cobrowsing-mobile }
