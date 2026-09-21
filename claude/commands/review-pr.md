@@ -106,11 +106,11 @@ Keep the PR under review until every review bot on it has nothing left to say. D
   - A bot is done when path (a) or path (b) holds for it.
 - When every bot present has signalled done, **stop the loop** (end the `/loop` run) and report a final summary. Otherwise let `/loop` fire the next pass in 5 minutes.
 
-**CodeRabbit rate limit.** When CodeRabbit's latest output on the PR is an issue comment whose body contains `Review limit reached`, the last push has not been reviewed yet:
+**CodeRabbit rate limit.** When CodeRabbit's latest output on the PR is an issue comment whose body contains `Review limit reached`, or a reply to a review request that says `Action not completed` or `Review rate limited`, the last push has not been reviewed yet:
 - Parse the wait from the line `Next included review available in <N> minutes` (or `<N> hours`). The wait counts from that comment's `created_at`, not from now: `ready_at = created_at + N`.
 - If `ready_at` is in the past, request the review: `gh api repos/{owner}/{repo}/issues/<number>/comments -f body='@coderabbitai review'`. Then let `/loop` continue; the next pass picks up the fresh review.
 - If `ready_at` is still ahead, do nothing and report `CodeRabbit rate-limited, next review at <ready_at> (<M> min)`; the next pass re-checks.
-- Request at most once per rate-limit notice (track the notice's comment ID). If the reply to the request is another `Review limit reached` notice, re-parse from that one. Never enable usage-based reviews or answer any other bot prompt in that comment.
+- If the request fails or CodeRabbit is rate limited again (a new `Review limit reached` notice, or an `Action not completed` / `Review rate limited` reply), repeat the process: re-parse the wait from the newest notice when it gives one, otherwise treat it as ready on the next pass, then request again. Make at most one request per pass, so the pass cap bounds the retries. Never enable usage-based reviews or answer any other bot prompt in that comment.
 
 Guardrails:
 - Only act on comments not already handled in a previous pass (track comment IDs already analysed / applied).
