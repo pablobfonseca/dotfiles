@@ -126,6 +126,20 @@ telegram:
   idle_delay: 30s
 
 # ---------------------------------------------------------------------------
+# Judge (TypeSafe)
+# ---------------------------------------------------------------------------
+#
+# The TypeSafe System One client behind `claudeos judge test`, and the
+# judgments later items build on it (why a session stopped, which job a
+# Telegram reply is for). The key is read from a file at call time and never
+# placed in any environment.
+
+# judge:
+#   # File holding the TypeSafe API key, one line, mode 0600.
+#   # (default: ~/.config/claudeos/typesafe-key)
+#   key_file: ~/.config/claudeos/typesafe-key
+
+# ---------------------------------------------------------------------------
 # Serve (phone link)
 # ---------------------------------------------------------------------------
 #
