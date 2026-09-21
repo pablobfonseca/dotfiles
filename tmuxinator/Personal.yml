@@ -7,8 +7,8 @@ windows:
   - dotfiles:
       layout: main-vertical
       root: ~/.dotfiles
-  - code:
+  - devdeck:
       layout: main-vertical
-      root: ~/code
+      root: ~/code/devdeck
       panes:
-        - claudeos
+        -
