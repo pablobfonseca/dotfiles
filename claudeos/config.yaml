@@ -80,6 +80,7 @@ projects:
   Devdeck: { path: ~/code/DevDeck }
   CobrowsingSDK: { path: ~/code/cobrowsing-mobile }
   Dotfiles: { path: ~/.dotfiles }
+  YoutubeMusicCLI: { path: ~/code/youtube-music-cli }
   DotfilesInstaller:
     {
       path: ~/code/go-workspace/src/github.com/pablobfonseca/dotfiles-installer,
@@ -98,15 +99,17 @@ telegram:
   #   # Whether the bridge runs at all. false sends nothing, polls for no replies,
   #   # and stops a missing token file from being a startup error, without you
   #   # having to unset the chat id or empty `events`. `claudeos telegram test`
-  #   # still sends either way. (default: true)
+  #   # still sends either way. Read again at every send, so `false` needs no
+  #   # restart; every other telegram key does. (default: true)
   enabled: false
   #
   #   # File holding the bot token, read at send time.
   #   # (default: ~/.config/claudeos/telegram-token)
   #   token_file: ~/.config/claudeos/telegram-token
   #
-  #   # Job states that send a message. Only `waiting` (the session is asking you
-  #   # something) and `idle` (it finished its turn) are valid.
+  #   # Job states that send a message: `waiting` (the session is asking you
+  #   # something) and `idle` (it finished its turn).
+  #   # A verdict word (finished, asking, blocked, failed) names the idles the Judge classified so; idle means every idle.
   #   # (default: [waiting, idle])
   #   events: [waiting, idle]
   #
