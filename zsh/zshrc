@@ -206,6 +206,15 @@ function branch_clean() {
       | xargs -r git branch -d
 }
 
+function remote_branch_clean() {
+  git fetch origin --prune || return
+  git branch -r --format='%(refname:short)' --merged origin/master \
+    | grep '/' \
+    | sed 's|^origin/||' \
+    | grep -vx master \
+    | xargs -r -n 25 git push origin --delete
+}
+
 function git_test() {
   local file;
   file=$(git status --porcelain -- '*.test.ts' | cut -c4- | fzf --tmux --prompt "Select a test file: ") \
