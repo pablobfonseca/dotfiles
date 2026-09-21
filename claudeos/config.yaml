@@ -56,7 +56,7 @@ defaults:
   # is /exit-ed. Only a prefill: each launch decides for itself, and V runs a
   # code review on any PR by hand. Set it per project below to spend the review
   # only where it pays. (default: true)
-  # code_review: true
+  code_review: false
 
 # ---------------------------------------------------------------------------
 # Projects
@@ -99,7 +99,7 @@ telegram:
   #   # and stops a missing token file from being a startup error, without you
   #   # having to unset the chat id or empty `events`. `claudeos telegram test`
   #   # still sends either way. (default: true)
-  #   enabled: true
+  enabled: false
   #
   #   # File holding the bot token, read at send time.
   #   # (default: ~/.config/claudeos/telegram-token)
@@ -205,7 +205,6 @@ layout:
 colors:
   match: "#FFD602" # search hit highlight (default: {light: 170, dark: 212})
 
-
 #   title: { light: 26, dark: 39 }           # pane titles and the header
 #   dim: { light: 243, dark: 245 }           # secondary text: ids, timestamps, hints
 #   failure: { light: 160, dark: 196 }       # failed checks, errors, refusals
@@ -255,3 +254,6 @@ colors:
 #     palette: ":"
 #     reload: ctrl+r
 #     usage: T
+
+serve:
+  listen: 100.108.205.64:4343
