@@ -124,6 +124,23 @@ telegram:
   idle_delay: 30s
 
 # ---------------------------------------------------------------------------
+# Serve (phone link)
+# ---------------------------------------------------------------------------
+#
+# A WebSocket the running TUI serves to a native phone client (DevDeck), gated
+# by a pairing token. Plain ws://, no TLS: bind a Tailscale IP or a trusted LAN
+# interface, the address is the mitigation. Both keys need a restart.
+
+# serve:
+#   # Address to listen on, as host:port. Empty means nothing listens.
+#   # (default: "")
+#   listen: 100.64.0.1:4343
+#
+#   # File holding the pairing token the phone presents, one line, mode 0600.
+#   # (default: ~/.config/claudeos/serve-token)
+#   token_file: ~/.config/claudeos/serve-token
+
+# ---------------------------------------------------------------------------
 # Layout
 # ---------------------------------------------------------------------------
 #
