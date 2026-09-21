@@ -34,7 +34,7 @@ Resolve the plan file from `$ARGUMENTS`:
 
 5. **Run `/review-pr --apply --watch`** on the new PR. Its analysis verdicts gate what gets applied; its termination rules end the loop. A `Needs clarification` verdict is a stop-and-ask trigger, not something to guess through.
 
-6. **Record, report and stop.** Once step 5's loop has ended, and not before, record the run's outcome: `claudeos record --stop-and-ask <N>` (the times this run stopped to ask), plus `--qa <pass|fail> --blockers <N>` when the repo's harness ran a verifier. It is a no-op outside a claudeos-launched session; skip it when `claudeos` is not on PATH. This record is what tells claudeos the session is finished, and a chained implement is ended on it, so it never runs while the review watch is still live. Final summary: phases completed, checks run, review threads resolved, PR URL. Suggest a Fable review pass (`/review <pr>`) as the closing step.
+6. **Record, report and stop.** Once step 5's loop has ended, and not before, record the run's outcome: `claudeos record`, plus `--qa <pass|fail> --blockers <N>` when the repo's harness ran a verifier (the times the run stopped to ask are counted by claudeos's Stop hook, not reported). It is a no-op outside a claudeos-launched session; skip it when `claudeos` is not on PATH. This record is what tells claudeos the session is finished, and a chained implement is ended on it, so it never runs while the review watch is still live. Final summary: phases completed, checks run, review threads resolved, PR URL. Suggest a Fable review pass (`/review <pr>`) as the closing step.
 
 ## Rules
 
