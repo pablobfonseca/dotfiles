@@ -97,11 +97,13 @@ For each `Agree` thread you do **not** apply (out of scope for this PR, needs a 
 Keep the PR under review until every review bot on it has nothing left to say. Delegate the 5-minute interval to the `/loop` skill rather than sleeping in-band:
 
 - Start the loop with the review command minus `--watch`, e.g. `/loop 5m /review-pr <number> --apply`. Each firing runs one full pass (steps 1–6, plus Apply mode if `--apply` is set).
-- **Termination check** (run at the end of every pass): every bot that has reviewed the PR must signal done in its most recent output.
+- **Termination check** (run at the end of every pass): every bot that has reviewed the PR must be done, by path (a) or path (b) below, and both require the bot's latest review to be on the PR head SHA: `gh pr view <number> --json headRefOid`, compared against that review's `commit_id`. A bot whose latest review predates the current head has not seen the last push, so it is not done regardless of what it said or which threads are resolved.
   - Reviews: `gh api "repos/{owner}/{repo}/pulls/<number>/reviews" --paginate`
   - Issue comments: `gh api "repos/{owner}/{repo}/issues/<number>/comments" --paginate`
-  - Copilot (`user.login` containing `copilot`): latest output contains a `Comments generated:` line whose value is **`0 new`** (inside the collapsed `Review details` block; ignore markdown bold markers), or the legacy phrase **`and generated no new comments`**. Case-insensitive either way. Any other value (e.g. `**Comments generated:** 3`) means another pass is needed; the `🟢 Approval recommended` / `🟡 Changes recommended` header alone is not the signal, since `0 new` also appears under `Changes recommended`.
-  - CodeRabbit (`user.login` containing `coderabbit`): latest review body says **`Actionable comments posted: 0`**. A **`Review limit reached`** notice is not a done signal (see below).
+  - Review threads (for path (b)): `gh api graphql -f query='query($owner:String!,$repo:String!,$pr:Int!){repository(owner:$owner,name:$repo){pullRequest(number:$pr){reviewThreads(first:100){nodes{id isResolved comments(first:1){nodes{databaseId author{login}}}}}}}}' -f owner=<owner> -f repo=<repo> -F pr=<number>`
+  - **Path (a), body signal:** Copilot (`user.login` containing `copilot`): latest output contains a `Comments generated:` line whose value is **`0 new`** (inside the collapsed `Review details` block; ignore markdown bold markers), or the legacy phrase **`and generated no new comments`**. Case-insensitive either way. Any other value (e.g. `**Comments generated:** 3`) means another pass is needed; the `🟢 Approval recommended` / `🟡 Changes recommended` header alone is not the signal, since `0 new` also appears under `Changes recommended`. CodeRabbit (`user.login` containing `coderabbit`): its latest review that carries a body says **`Actionable comments posted: 0`** — a review with an empty body is CodeRabbit's in-thread reply, never the review to read the count from, so skip it when looking for this signal (its `commit_id` still counts for the head-SHA guard above). A **`Review limit reached`** notice is not a done signal (see below).
+  - **Path (b), threads resolved or handled:** every review thread the bot opened (its first comment's `author.login` matches the bot) is either `isResolved: true`, or handled — declined in an earlier pass (👎 and reply, per Apply mode) — whatever the bot has answered in it since. A bot with no threads it opened passes this path trivially.
+  - A bot is done when path (a) or path (b) holds for it.
 - When every bot present has signalled done, **stop the loop** (end the `/loop` run) and report a final summary. Otherwise let `/loop` fire the next pass in 5 minutes.
 
 **CodeRabbit rate limit.** When CodeRabbit's latest output on the PR is an issue comment whose body contains `Review limit reached`, the last push has not been reviewed yet:
@@ -113,7 +115,7 @@ Keep the PR under review until every review bot on it has nothing left to say. D
 Guardrails:
 - Only act on comments not already handled in a previous pass (track comment IDs already analysed / applied).
 - A bot reply inside a thread you already replied to is not a new comment: ignore it unless it raises a claim the thread has not covered. Never reply to a bot reply that only acknowledges, restates, or asks a question — that starts a ping-pong.
-- Stop the loop with a status if a bot never signals done after a reasonable number of passes (e.g. 12 ≈ 1 hour), rather than looping indefinitely.
+- Stop the loop with a status if a bot still has an unresolved, unhandled thread, or hasn't reviewed the latest push, after a reasonable number of passes (e.g. 12 ≈ 1 hour), rather than looping indefinitely. A declined thread counts as handled for this cap even after the bot replies in it — the bullet above already forbids answering that reply.
 
 ## Rules
 
