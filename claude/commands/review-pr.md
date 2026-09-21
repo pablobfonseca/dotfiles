@@ -11,7 +11,7 @@ Review the **inline review comments** on a pull request and, for each one, decid
 Parse `$ARGUMENTS`:
 - First non-flag token is the PR number (if empty, use the PR for the current branch).
 - `--apply`: after analysis, automatically apply fixes for valid comments (see **Apply mode**).
-- `--watch`: keep re-reviewing every 5 minutes until Copilot signals it is done (see **Watch mode**).
+- `--watch`: keep re-reviewing, self-paced, until every review bot signals it is done (see **Watch mode**).
 
 ## Steps
 
@@ -94,9 +94,9 @@ For each `Agree` thread you do **not** apply (out of scope for this PR, needs a 
 
 ## Watch mode (`--watch`)
 
-Keep the PR under review until every review bot on it has nothing left to say. Delegate the 5-minute interval to the `/loop` skill rather than sleeping in-band:
+Keep the PR under review until every review bot on it has nothing left to say. Delegate pacing to the `/loop` skill's self-paced mode rather than sleeping in-band or firing on a fixed interval: a fixed-interval `/loop` is a cron job whose next firing cannot move, so it cannot wait out a CodeRabbit rate limit that names a `ready_at` hours away without burning the pass cap on no-op re-checks in between.
 
-- Start the loop with the review command minus `--watch`, e.g. `/loop 5m /review-pr <number> --apply`. Each firing runs one full pass (steps 1–6, plus Apply mode if `--apply` is set).
+- Start the loop with the review command minus `--watch` and no interval, e.g. `/loop /review-pr <number> --apply`. Each firing runs one full pass (steps 1–6, plus Apply mode if `--apply` is set), then ends by scheduling its own next wakeup (see the pass-end rule below).
 - **Termination check** (run at the end of every pass): every bot that has reviewed the PR must be done, by path (a) or path (b) below, and both require the bot's latest review to be on the PR head SHA: `gh pr view <number> --json headRefOid`, compared against that review's `commit_id`. A bot whose latest review predates the current head has not seen the last push, so it is not done regardless of what it said or which threads are resolved.
   - Reviews: `gh api "repos/{owner}/{repo}/pulls/<number>/reviews" --paginate`
   - Issue comments: `gh api "repos/{owner}/{repo}/issues/<number>/comments" --paginate`
@@ -104,18 +104,21 @@ Keep the PR under review until every review bot on it has nothing left to say. D
   - **Path (a), body signal:** Copilot (`user.login` containing `copilot`): latest output contains a `Comments generated:` line whose value is **`0 new`** (inside the collapsed `Review details` block; ignore markdown bold markers), or the legacy phrase **`and generated no new comments`**. Case-insensitive either way. Any other value (e.g. `**Comments generated:** 3`) means another pass is needed; the `🟢 Approval recommended` / `🟡 Changes recommended` header alone is not the signal, since `0 new` also appears under `Changes recommended`. CodeRabbit (`user.login` containing `coderabbit`): its latest review that carries a body says **`Actionable comments posted: 0`** — a review with an empty body is CodeRabbit's in-thread reply, never the review to read the count from, so skip it when looking for this signal (its `commit_id` still counts for the head-SHA guard above). A **`Review limit reached`** notice is not a done signal (see below).
   - **Path (b), threads resolved or handled:** every review thread the bot opened (its first comment's `author.login` matches the bot) is either `isResolved: true`, or handled — declined in an earlier pass (👎 and reply, per Apply mode) — whatever the bot has answered in it since. A bot with no threads it opened passes this path trivially.
   - A bot is done when path (a) or path (b) holds for it.
-- When every bot present has signalled done, **stop the loop** (end the `/loop` run) and report a final summary. Otherwise let `/loop` fire the next pass in 5 minutes.
+- **Pass-end rule.** Every pass ends by choosing exactly one of three outcomes and calling `ScheduleWakeup` accordingly:
+  - Every bot present has signalled done: `stop: true`. End the `/loop` run and report a final summary.
+  - CodeRabbit rate-limited with `ready_at` still ahead (see below): schedule the wakeup at `ready_at`, `noop: true`, `reason` naming the `ready_at`. `ScheduleWakeup` clamps a single wakeup to 60 minutes, so a `ready_at` more than an hour out is reached by chaining hourly wakeups — each one runs a full pass (steps 1–6), re-parses the newest CodeRabbit notice, and waits again; there is no notice-only shortcut pass.
+  - Anything else: 300 seconds (write it in seconds, not the `/loop` skill's idle default of 20–30 minutes, which does not apply here), `noop: false`.
 
 **CodeRabbit rate limit.** When CodeRabbit's latest output on the PR is an issue comment whose body contains `Review limit reached`, or a reply to a review request that says `Action not completed` or `Review rate limited`, the last push has not been reviewed yet:
 - Parse the wait from the line `Next included review available in <N> minutes` (or `<N> hours`). The wait counts from that comment's `created_at`, not from now: `ready_at = created_at + N`.
-- If `ready_at` is in the past, request the review: `gh api repos/{owner}/{repo}/issues/<number>/comments -f body='@coderabbitai review'`. Then let `/loop` continue; the next pass picks up the fresh review.
-- If `ready_at` is still ahead, do nothing and report `CodeRabbit rate-limited, next review at <ready_at> (<M> min)`; the next pass re-checks.
+- If `ready_at` is in the past, request the review: `gh api repos/{owner}/{repo}/issues/<number>/comments -f body='@coderabbitai review'`. This pass then takes the 300-second delay from the pass-end rule; the next pass picks up the fresh review.
+- If `ready_at` is still ahead, do nothing and report `CodeRabbit rate-limited, next review at <ready_at> (<M> min)`; this pass takes the "wake at `ready_at`" outcome from the pass-end rule.
 - If the request fails or CodeRabbit is rate limited again (a new `Review limit reached` notice, or an `Action not completed` / `Review rate limited` reply), repeat the process: re-parse the wait from the newest notice when it gives one, otherwise treat it as ready on the next pass, then request again. Make at most one request per pass, so the pass cap bounds the retries. Never enable usage-based reviews or answer any other bot prompt in that comment.
 
 Guardrails:
 - Only act on comments not already handled in a previous pass (track comment IDs already analysed / applied).
 - A bot reply inside a thread you already replied to is not a new comment: ignore it unless it raises a claim the thread has not covered. Never reply to a bot reply that only acknowledges, restates, or asks a question — that starts a ping-pong.
-- Stop the loop with a status if a bot still has an unresolved, unhandled thread, or hasn't reviewed the latest push, after a reasonable number of passes (e.g. 12 ≈ 1 hour), rather than looping indefinitely. A declined thread counts as handled for this cap even after the bot replies in it — the bullet above already forbids answering that reply.
+- Stop the loop with a status if a bot still has an unresolved, unhandled thread, or hasn't reviewed the latest push, after a reasonable number of passes (e.g. 12), rather than looping indefinitely. The cap counts working passes only: a pass that ends waiting on a CodeRabbit `ready_at` (the pass-end rule's second outcome) does not count toward it, whatever else it did, because the wait itself already bounds it. A declined thread counts as handled for this cap even after the bot replies in it — the bullet above already forbids answering that reply.
 
 ## Rules
 
