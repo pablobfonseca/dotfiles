@@ -79,7 +79,6 @@ projects:
   GX100: { path: ~/code/gx100-midi-control }
   Devdeck: { path: ~/code/DevDeck }
   CobrowsingSDK: { path: ~/code/cobrowsing-mobile }
-  LearningApp: { path: ~/code/Playground/LearningApp }
   Dotfiles: { path: ~/.dotfiles }
   DotfilesInstaller:
     {
