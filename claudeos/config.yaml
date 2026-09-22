@@ -58,6 +58,13 @@ defaults:
   # only where it pays. (default: true)
   code_review: false
 
+  # Flags appended to every /code-review: the prefill of V's flags field, and
+  # what the chained review and the phone's code_review run with, unattended.
+  # --comment here posts findings to the PR with nobody watching; --fix is
+  # refused (the review runs in the checkout, not on the PR's branch).
+  # (default: "")
+  # code_review_flags: high
+
 # ---------------------------------------------------------------------------
 # Projects
 # ---------------------------------------------------------------------------
