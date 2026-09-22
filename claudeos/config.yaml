@@ -71,6 +71,10 @@ defaults:
 #   pinned: keep the project at the top of the projects pane
 #   code_review: override defaults.code_review's prefill, either way
 #                e.g. GX100: { path: ~/code/gx100-midi-control, code_review: false }
+#   repos:  checkouts by tag for a project spread over several git repos; an
+#           item tagged with exactly one key launches there, any other item
+#           uses path, and ad-hoc PRs are discovered in every repo listed
+#                e.g. Devdeck: { path: ~/code/DevDeck, repos: { server: ~/code/DevDeck/devdeck-server, app: ~/code/DevDeck/dev-deck } }
 
 projects:
   ClaudeOS: { path: ~/code/claudeos, pinned: true }
@@ -155,6 +159,19 @@ telegram:
 #   # File holding the pairing token the phone presents, one line, mode 0600.
 #   # (default: ~/.config/claudeos/serve-token)
 #   token_file: ~/.config/claudeos/serve-token
+
+# ---------------------------------------------------------------------------
+# Judge
+# ---------------------------------------------------------------------------
+#
+# The TypeSafe System One client behind `claudeos judge test` and the
+# judgments later items build on it. The key is read from a file at call time
+# and never placed in any environment.
+
+# judge:
+#   # Path to the file holding the TypeSafe API key. It must be mode 0600.
+#   # (default: ~/.config/claudeos/typesafe-key)
+#   key_file: ~/.config/claudeos/typesafe-key
 
 # ---------------------------------------------------------------------------
 # Layout
