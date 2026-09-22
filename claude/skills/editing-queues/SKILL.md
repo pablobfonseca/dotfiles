@@ -35,6 +35,8 @@ That help output is the syntax reference. Read it instead of guessing flags; thi
 | Abandoning an item | `state <P> <qN> dropped --reason "<why>"` |
 | Plan written for it | `mark <P> <qN> --plan '[[<P>/plans/<file>]]'` |
 | PR opened | `mark <P> <qN> --pr <url>` |
+| Re-sizing an item | `mark <P> <qN> --size XS\|S\|M\|L` |
+| Setting or clearing a tag | `mark <P> <qN> --tag <t>` or `--untag <t>` (`<t>`: `claude`, `bug`, `feat`, `sec`, `ops`, `rework`, with or without a leading `#`) |
 | New item | `add <P> "<text>" --lane <Lane>` (mints the ID) |
 | Reading state before deciding | `dump <P>` or `find <P> <qN\|#N\|text>` |
 | Split, merge, reword, `> proposed:` blockquote | `edit <P> begin` → edit the printed path → `edit <P> commit -m "<what>"` |
