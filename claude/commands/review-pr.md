@@ -94,7 +94,7 @@ For each `Agree` thread you do **not** apply (out of scope for this PR, needs a 
 
 ## Watch mode (`--watch`)
 
-Keep the PR under review until every review bot on it has nothing left to say. Delegate pacing to the `/loop` skill's self-paced mode rather than sleeping in-band or firing on a fixed interval: a fixed-interval `/loop` is a cron job whose next firing cannot move, so it cannot wait out a CodeRabbit rate limit that names a `ready_at` hours away without burning the pass cap on no-op re-checks in between.
+Keep the PR under review until every review bot on it has nothing left to say. Delegate pacing to the `/loop` skill's self-paced mode rather than sleeping in-band or firing on a fixed interval: a fixed-interval `/loop` is a cron job whose next firing cannot move, so it cannot wait out a CodeRabbit rate limit that names a `ready_at` hours away without burning the pass cap on no-op re-checks in between. claudeos can pause and resume this loop while it runs a `/code-review --comment` on the same PR; see **Pause and resume**.
 
 - Start the loop with the review command minus `--watch` and no interval, e.g. `/loop /review-pr <number> --apply`. Each firing runs one full pass (steps 1–6, plus Apply mode if `--apply` is set), then ends by scheduling its own next wakeup (see the pass-end rule below).
 - **Termination check** (run at the end of every pass): every bot that has reviewed the PR must be done, by path (a) or path (b) below, and both require the bot's latest review to be on the PR head SHA: `gh pr view <number> --json headRefOid`, compared against that review's `commit_id`. A bot whose latest review predates the current head has not seen the last push, so it is not done regardless of what it said or which threads are resolved.
@@ -119,6 +119,14 @@ Guardrails:
 - Only act on comments not already handled in a previous pass (track comment IDs already analysed / applied).
 - A bot reply inside a thread you already replied to is not a new comment: ignore it unless it raises a claim the thread has not covered. Never reply to a bot reply that only acknowledges, restates, or asks a question — that starts a ping-pong.
 - Stop the loop with a status if a bot still has an unresolved, unhandled thread, or hasn't reviewed the latest push, after a reasonable number of passes (e.g. 12), rather than looping indefinitely. The cap counts working passes only: a pass that ends waiting on a CodeRabbit `ready_at` (the pass-end rule's second outcome) does not count toward it, whatever else it did, because the wait itself already bounds it. A declined thread counts as handled for this cap even after the bot replies in it — the bullet above already forbids answering that reply.
+
+## Pause and resume
+
+claudeos types two one-line prompts into a watching session when it pairs a `/code-review <number> --comment` job with it (the TUI's `V`, or the phone's `code_review`, pressed on an item whose `/review-pr` job is live): `pause` when that code review launches, `resume` when it ends. They are commands from claudeos, not review comments: never analyse them as findings, never reply to them on the PR.
+
+- **`pause`**: end the `/loop` run (`ScheduleWakeup` with `stop: true`, in place of the pass-end rule if a pass is mid-flight; let that pass finish its steps first) and report `paused: a /code-review is running on #<number>; waiting for resume`. Then wait for the next prompt. A `pause` while already paused changes nothing: say so in one line and keep waiting.
+- **`resume`**: run one full pass now (steps 1–6, plus Apply mode if `--apply` was set), which triages the code review's inline comments like any other thread (they come from the same GitHub account as this session; the analysis verdict still gates Apply mode, so a wrong finding is declined, not applied), then restart the watch with the same command the loop was started with (`/loop /review-pr <number> --apply`, or without `--apply` if it ran without it), which takes the pass-end rule from there. A `resume` while the loop was never paused runs the one pass and ends it with the pass-end rule as usual; never start a second loop.
+- The pass cap counts a resumed pass as a working pass; the paused wait is not a pass and counts nothing, like a `ready_at` wait.
 
 ## Rules
 
