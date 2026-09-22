@@ -81,8 +81,23 @@ projects:
   LazyActions: { path: ~/code/lazy-actions }
   Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true }
   GX100: { path: ~/code/gx100-midi-control }
-  Devdeck: { path: ~/code/DevDeck }
-  CobrowsingSDK: { path: ~/code/cobrowsing-mobile }
+  Devdeck:
+    path: ~/code/DevDeck
+    repos:
+      app: ~/code/DevDeck/dev-deck
+      server: ~/code/DevDeck/devdeck-server
+      web: ~/code/DevDeck/devdeck-web
+      hub: ~/code/DevDeck/devdeck-hub
+      infra: ~/code/DevDeck/devdeck-infra
+      harness: ~/code/DevDeck/devdeck-harness
+  CobrowsingSDK:
+    path: ~/code/cobrowsing-mobile
+    repos:
+      ios: ~/code/cobrowsing-mobile/ios-sdk
+      android: ~/code/cobrowsing-mobile/android-sdk
+      rn: ~/code/cobrowsing-mobile/react-native-sdk
+      flutter: ~/code/cobrowsing-mobile/flutter-sdk
+      docs: ~/code/cobrowsing-mobile/upscopedocs
   Dotfiles: { path: ~/.dotfiles }
   YoutubeMusicCLI: { path: ~/code/youtube-music-cli }
   DotfilesInstaller:
