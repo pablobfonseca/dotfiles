@@ -1,0 +1,84 @@
+{
+  "security": {
+    "auth": {
+      "selectedType": "gemini-api-key"
+    }
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "name": "claudeos",
+            "type": "command",
+            "command": "claudeos hook SessionStart; echo '{}'",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "name": "claudeos",
+            "type": "command",
+            "command": "claudeos hook SessionEnd; echo '{}'",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "name": "claudeos",
+            "type": "command",
+            "command": "claudeos hook UserPromptSubmit; echo '{}'",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "hooks": [
+          {
+            "name": "claudeos",
+            "type": "command",
+            "command": "claudeos hook PostToolUse; echo '{}'",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "AfterAgent": [
+      {
+        "hooks": [
+          {
+            "name": "claudeos",
+            "type": "command",
+            "command": "claudeos hook Stop; echo '{}'",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "name": "claudeos",
+            "type": "command",
+            "command": "claudeos hook Notification; echo '{}'",
+            "timeout": 10000
+          }
+        ]
+      }
+    ]
+  },
+  "hooksConfig": {
+    "enabled": true
+  }
+}

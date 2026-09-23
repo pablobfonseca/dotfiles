@@ -38,6 +38,11 @@ defaults:
   # (/fable-plan on fable, /opus-plan on opus). (default: opus)
   model: fable
 
+  # Which CLI a launch runs: claude, gemini or codex. Only a bare session (C)
+  # and an implement run on gemini or codex; every other kind runs on claude.
+  # Override per project with projects.<Name>.executor. (default: claude)
+  # executor: claude
+
   # Run the session in its own git worktree instead of the project checkout, so
   # parallel jobs on the same repo do not fight over the working tree.
   # (default: true)
@@ -75,6 +80,7 @@ defaults:
 #
 # Per project you can also set:
 #   model:  override defaults.model for this project's sessions
+#   executor: override defaults.executor for this project's sessions
 #   pinned: keep the project at the top of the projects pane
 #   code_review: override defaults.code_review's prefill, either way
 #                e.g. GX100: { path: ~/code/gx100-midi-control, code_review: false }

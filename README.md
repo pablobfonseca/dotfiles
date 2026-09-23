@@ -13,7 +13,7 @@
 | **Multiplexer** | tmux + tpm | `tmux/`, `tmuxinator/` |
 | **Window Manager** | AeroSpace | `aerospace/` |
 | **Git** | git + lazygit + delta | `git/`, `lazygit/` |
-| **AI** | Claude Code, Codex | `claude/`, `codex/` |
+| **AI** | Claude Code, Codex, Gemini CLI | `claude/`, `codex/`, `gemini/` |
 | **macOS** | Hammerspoon, Karabiner | `hammerspoon/`, `karabiner/` |
 | **File Manager** | yazi | `yazi/` |
 | **Utilities** | bat, btop, atuin, fzf | `bat/`, `btop/`, `atuin/` |
@@ -60,6 +60,10 @@ claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest
 ## Codex
 
 Best-practice Codex setup with global `AGENTS.md`, conservative CLI defaults, focused reusable skills, GitHub plugin enabled, and narrow custom agents for review-oriented work.
+
+## Gemini CLI
+
+`~/.gemini/settings.json`, `~/.gemini/commands` and `~/.gemini/agents` are symlinks into `gemini/`; the settings carry the claudeos hook registrations.
 
 ## Shell
 

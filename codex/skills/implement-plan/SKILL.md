@@ -1,0 +1,41 @@
+---
+name: implement-plan
+description: Execute a /fable-plan file - implement and open a PR. Never merges. Use when the user runs $implement-plan with a project and queue item or a plan path.
+argument-hint: "<project> | <item: qN> — or a plan-file path"
+disable-model-invocation: true
+---
+## Task
+
+Execute a plan produced by `/fable-plan` in a cheaper-model session. The plan is the authority; this session contributes labor, not judgment. A short plan (its header line says `Short plan:`) hands local judgment back: decide where it is silent, never where it has decided, and list each choice in the PR body.
+
+Resolve the plan file from `$ARGUMENTS`:
+
+- **Queue form** — `<project> | <item>`: resolve the line with `claudeos queue find <project> <item>` (`qN` ID, `#issue` ref, or text fragment; the vault is `~/obsidian/SecondBrain`, reachable from any cwd) and follow the result's `plan` wikilink to `projects/<project>/plans/`. If the line has no `→plan:`, stop and tell the user to run `/fable-plan <project> | qN` first.
+- **Path form** — a file path, read as given.
+- **Empty** — use the newest file in `docs/plans/`; if none exists, stop and tell the user to run `/fable-plan` first.
+
+## Steps
+
+1. **Load the plan.** Read it fully, including its stop-and-ask list. This command's steps are the checkpoint discipline; the repo's harness skill, when its `CLAUDE.md` names one (claudeos: `claudeos-workflow`, read from `.agents/skills/claudeos-workflow/SKILL.md`), is how each phase's code gets written and verified. No other execution skill is invoked. A ticked box (`- [x]`) is a task an earlier session finished, committed and pushed, possibly on another machine; the plan file is the progress record a handoff reads. Treat those tasks as done and start at the first task with an open box, once the checkout is on the plan's branch with those commits in `git log --oneline` (step 3 stops otherwise).
+
+2. **Implement.** First check for a worktree: if `git rev-parse --git-dir` and `git rev-parse --git-common-dir` differ, the session is in a linked worktree - do all work inside it (root: `git rev-parse --show-toplevel`) and never touch the main checkout. Then get on the plan's branch, whose name is fixed: the plan file's stem without its date, prefixed with `q<N>-` for a queue plan (`2026-09-14-implement-plan-ticks-boxes.md` for `^q197` is `q197-implement-plan-ticks-boxes`). The `worktree-*` branch Claude Code created for the session is never the plan's branch. Run `git fetch origin`, then `git ls-remote --heads origin '<name>*'` with the `q<N>-` prefix alone as the pattern for a queue plan: exactly one ref is the item's branch, possibly pushed from another machine, so check it out instead of creating one (`git switch <branch>` then `git pull --ff-only` when a local branch of that name exists, else `git switch -c <branch> --track origin/<branch>`); no ref means create it, `git switch -c <name>` from the current HEAD; two or more refs is a stop-and-ask. Follow the plan exactly, phase by phase. For each phase (a `### Task N` heading in the plan), in this order: run its verbatim check commands and compare against the plan's expected results, or, when the phase names no commands, run the tests it names and the repo's gate (`make check`, or whatever the repo's `CLAUDE.md` names) and compare against the plan's **Acceptance** block; commit using the repo's commit conventions; `git push -u origin HEAD`; then tick the phase in the plan file, turning every `- [ ]` under that heading into `- [x]`, in the file where the plan lives (the vault for a queue plan, `docs/plans/` for a path plan; never commit it). Only then move on. The push is what lets another machine check the branch out; the ticks are what tell it where to resume.
+
+3. **Stop and ask** the moment any trigger fires - the plan's own stop-and-ask list plus these defaults:
+   - Reality deviates from the plan (file moved, API changed, signature mismatch).
+   - Tests still failing after 2 fix attempts.
+   - An ambiguous requirement surfaces mid-phase.
+   - A security-sensitive decision (auth, access scoping, user input, secrets) is not spelled out in the plan.
+   - The branch lookup in step 2 cannot land on one branch: `ls-remote` lists two or more refs, `git switch` refuses (a dirty tree, or the branch is checked out in another worktree on this machine), `git pull --ff-only` refuses, or the plan has ticked boxes and origin has no branch for it (a tick is written only after a push, so the vault and origin disagree).
+
+   When stopping: summarize state (phase, what fired, options), then wait. Do not improvise a resolution.
+
+4. **Open the PR** once all phases pass their checks: push the branch, then `gh pr create --assignee @me` (derive repo from `git remote get-url origin`; no Claude attribution in the description). PR body, in this order: first line exactly `Closes <project> ^qN.` when the plan came from a queue (this line is what `claudeos sync` matches, so it is required, not optional; a plain-form plan writes `Plan: docs/plans/<file>` instead); then the plan summary; then the per-phase checklist of what was verified; then, for a short plan, a `Local choices:` list of every decision the plan left to you; then `Plan: projects/<project>/plans/<file>.md (vault)`.
+
+   If the plan came from a queue (queue form, or a plan whose frontmatter carries `queue:`/`queue_item:`), run `claudeos queue mark <project> <qN> --pr <url>` and `claudeos queue state <project> <qN> wip`. The queue should show in-flight work without waiting for a reconcile.
+
+5. **Record, report and stop.** Record the run's outcome: `claudeos record`, plus `--qa <pass|fail> --blockers <N>` when the repo's harness ran a verifier (the times the run stopped to ask are counted by claudeos's Stop hook, not reported). It is a no-op outside a claudeos-launched session; skip it when `claudeos` is not on PATH. This record is what tells claudeos the session is finished, and a chained implement is ended on it, so it never runs while the review watch is still live. Final summary: phases completed, checks run, review threads resolved, PR URL.
+
+## Rules
+
+- The plan outranks your preferences. Disagree with an approach? That's a stop-and-ask, not a silent rewrite.
+- No scope beyond the plan: no drive-by refactors, no extra features.
