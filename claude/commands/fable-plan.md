@@ -1,6 +1,6 @@
 ---
 description: Plan a task on Fable so a cheaper model can execute it in a separate session (pairs with /implement-plan)
-argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task description [--council[=gemini,codex,claude]] [--critics[=gemini|codex|agy]] [--auto]"
+argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task description [--council[=gemini,codex,claude]] [--critics[=gemini|codex|agy]] [--auto] [--notes <text…>]"
 ---
 
 ## Task
@@ -24,7 +24,7 @@ If empty, ask for it and stop.
 
 4. **Mark planning in progress.** `claudeos queue state <project> <qN> wip`. Do not change its lane; the lane changes when the plan exists.
 
-5. **Refine requirements.** Invoke `superpowers:brainstorming` with the item — quote the queue line verbatim as the symptom (the user's phrasing encodes what they noticed; do not improve it) and bring the open questions from step 2 already drawn up. Present the related candidates from step 3; bundling, sequencing, or leaving each alone is the user's call, made here. Resolve every ambiguity here, with the user; an ambiguity left in the plan becomes a judgment call for a model chosen precisely because it should not make them. With `--council`, the design round (see **--council**) runs first and its table opens the brainstorm.
+5. **Refine requirements.** Invoke `superpowers:brainstorming` with the item — quote the queue line verbatim as the symptom (the user's phrasing encodes what they noticed; do not improve it) and bring the open questions from step 2 already drawn up. With `--notes`, quote them verbatim beside the queue line, before any question (see **--notes**). Present the related candidates from step 3; bundling, sequencing, or leaving each alone is the user's call, made here. Resolve every ambiguity here, with the user; an ambiguity left in the plan becomes a judgment call for a model chosen precisely because it should not make them. With `--council`, the design round (see **--council**) runs first and its table opens the brainstorm.
 
 6. **Write the plan.** Invoke `superpowers:writing-plans`. Its mandatory `> **For agentic workers:**` header line is not kept; write this one instead, with `<harness>` the skill the repo's `CLAUDE.md` harness section names (claudeos: `claudeos-workflow`), or `no harness skill: the session writes and verifies each phase` when it names none: > **For agentic workers:** execute via `/implement-plan <project> | qN` from `<repo root>`; the repo's harness skill (`<harness>`) writes and verifies each phase. Steps use checkbox (`- [ ]`) syntax for tracking. Name no other execution skill anywhere in the plan. Pick the shape from **Plan shapes** first: size `XS` or `S` is short, anything else is full, and the short shape's sections replace the full ones below. Save to the vault: `projects/<project>/plans/YYYY-MM-DD-<topic>.md` (create `plans/` if missing). The plan carries a **Related queue items** section: every candidate `^qN` from step 3 with a verdict — `bundled (rides this PR)`, `successor`, `out of scope: <why>`, or `checked, unrelated`. No candidates → write "none found", so silence is distinguishable from a skipped scan. Frontmatter carries the vault's standard keys plus the backlink that lets `/sync` and `/implement-plan` trace it:
 
@@ -40,7 +40,7 @@ If empty, ask for it and stop.
 
    `model:` is the executor model this plan is graded for — `opus` or `sonnet`, nothing else — chosen by the rule in Rules. Tools read it instead of scraping the handoff, and step 10 prints the same value, so the frontmatter and the terminal never disagree.
 
-   The plan lives in the vault so it syncs between machines with the vault's own git backup, and so there is exactly one authority — never copy it into the repo.
+   The plan lives in the vault so it syncs between machines with the vault's own git backup, and so there is exactly one authority — never copy it into the repo. With `--notes`, the plan records them verbatim on one `**Launch notes:**` line, under **Goal** for the short shape or under the header for the full shape — the job does not store flags, so the plan is their only record.
 
    When the item amends the project's spec, the plan edits the section the change belongs to, in place, never a dated note appended at the end; the dated why (what was decided, why, what it supersedes, the `qN` that carried it) goes to `Decisions.md` beside the spec.
 
@@ -102,6 +102,7 @@ Several models answer the same queue item and this session chairs (karpathy/llm-
 You are one seat on a design council for a queue item. Propose how to resolve its open question.
 
 Queue line: <the line verbatim, markers included>
+Launch notes: <the --notes text verbatim, or omit the line when there are none>
 Project: <project>, repo root <path>. Read the code there yourself.
 What the vault says: <projects/<project>.md, the Problem and Current state sections, verbatim>
 Notes already read: <one path per line, with one sentence on what it settles>
@@ -163,10 +164,21 @@ If the plan came out at one or two mechanical phases, say the review round is ov
 
 Unattended planning, what `claudeos`'s `!` key sends. Strip the flag from `$ARGUMENTS` before parsing the rest; applies to both forms and combines with `--council` and `--critics`. Nobody is at the keyboard: claudeos ends this session with `/exit` on the first queue re-dump that shows the item's `→plan:` while the session is idle, then launches the implement in a worktree. Everything below follows from that.
 
-- **Step 5 asks nothing.** Do not call AskUserQuestion, do not stop to ask in prose, do not wait. The queue line (its `→ undetermined:` clause included) and what step 2 read are the whole brief. For every ambiguity take the most conventional resolution, and record each one under a **Decisions (auto)** section of the plan with the alternative rejected and why, so the user can overrule it before the implement lands. Step 3's related candidates are `out of scope` unless the queue line names them.
+- **Step 5 asks nothing.** Do not call AskUserQuestion, do not stop to ask in prose, do not wait. The queue line (its `→ undetermined:` clause included), `--notes` when given, and what step 2 read are the whole brief — the notes join the brief beside the queue line. For every ambiguity take the most conventional resolution, and record each one under a **Decisions (auto)** section of the plan with the alternative rejected and why, so the user can overrule it before the implement lands. A note that contradicts the vault's spec or decisions is the `Not planned:` stop below, never silently followed. Step 3's related candidates are `out of scope` unless the queue line names them.
 - **Stop before step 6 when a default would be a guess at intent**, or when the item turns out to carry architectural, security or data-integrity weight. Write no plan, stamp nothing, leave the item `wip`, and end the turn with `Not planned: <one line why>` followed by `Run /fable-plan <project> | qN attended.` Nothing chains, because nothing was stamped; the idle session is how the user finds out.
 - **Steps 6 to 10 run as written**, self-check included, in the same turn. The handoff is the last thing the session prints; do not append questions or offers after it.
 - `model:` follows the usual rule. The chained implement reads it.
+
+## --notes
+
+Steers what the brainstorm opens with. `--notes` takes everything after it, verbatim, to the end of `$ARGUMENTS`; it goes last, since there is nothing to parse after it. Applies to both forms.
+
+- `--notes` with nothing after it: reply `--notes needs text` and stop. The palette does not validate this before launching; a mistyped `--notes` with no text still reaches here.
+- Step 5 opens the brainstorm by quoting the notes verbatim beside the queue line, before the first question. The notes settle what they cover; they are not additional requirements to relitigate. A note that contradicts [[ClaudeOS/Design]] or [[ClaudeOS/Decisions]] is raised with the user, never silently followed.
+- Under `--auto`, the notes join the brief beside the queue line (see **--auto**); the same contradiction becomes the `Not planned:` stop.
+- Under `--council`, the design brief gains a `Launch notes: <verbatim>` line after the queue line.
+- Step 6 records the notes verbatim on one `**Launch notes:**` line, under **Goal** for the short shape or under the header for the full shape, since the job that launched this session does not store flags.
+- Out of scope: a dedicated overlay field for notes, an `$EDITOR` prompt, notes through `!`.
 
 ## Rules
 
