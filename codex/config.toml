@@ -59,3 +59,59 @@ source = "/Users/pablobfonseca/.codex/.tmp/bundled-marketplaces/openai-bundled"
 last_updated = "2026-05-04T13:50:51Z"
 source_type = "local"
 source = "/Users/pablobfonseca/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[[hooks.SessionStart]]
+[[hooks.SessionStart.hooks]]
+type = "command"
+command = "claudeos hook SessionStart"
+timeout = 10
+
+[[hooks.SessionEnd]]
+[[hooks.SessionEnd.hooks]]
+type = "command"
+command = "claudeos hook SessionEnd"
+timeout = 10
+
+[[hooks.UserPromptSubmit]]
+[[hooks.UserPromptSubmit.hooks]]
+type = "command"
+command = "claudeos hook UserPromptSubmit"
+timeout = 10
+
+[[hooks.PostToolUse]]
+[[hooks.PostToolUse.hooks]]
+type = "command"
+command = "claudeos hook PostToolUse"
+timeout = 10
+
+[[hooks.Stop]]
+[[hooks.Stop.hooks]]
+type = "command"
+command = "claudeos hook Stop"
+timeout = 10
+
+[[hooks.PermissionRequest]]
+[[hooks.PermissionRequest.hooks]]
+type = "command"
+command = "claudeos hook PermissionRequest"
+timeout = 10
+
+[hooks.state]
+
+[hooks.state."/Users/pablobfonseca/.codex/config.toml:permission_request:0:0"]
+trusted_hash = "sha256:f4e72842fecf0d55ec8ac54048d21076485b1f416cf18655ab0de89fb7fa66de"
+
+[hooks.state."/Users/pablobfonseca/.codex/config.toml:post_tool_use:0:0"]
+trusted_hash = "sha256:c7b24a263a20920706bbdbadbfeb4c201fc770a3a95d41ea672504770b87fb39"
+
+[hooks.state."/Users/pablobfonseca/.codex/config.toml:session_start:0:0"]
+trusted_hash = "sha256:c744779bd32e18881b7df47b3c1800cb8bc6ed96fad3afcd87527c1ac3e3c2bb"
+
+[hooks.state."/Users/pablobfonseca/.codex/config.toml:session_end:0:0"]
+trusted_hash = "sha256:dd8f36440590fc14645b4b192a9bad3b298af83b39da8c6a618eb8b8e7860096"
+
+[hooks.state."/Users/pablobfonseca/.codex/config.toml:user_prompt_submit:0:0"]
+trusted_hash = "sha256:e75aa3180cd3cfd07e3fd370d4b3b5f78a5afa85b60a70ea51043eb91c689276"
+
+[hooks.state."/Users/pablobfonseca/.codex/config.toml:stop:0:0"]
+trusted_hash = "sha256:b538930215619b231b929e4f04fdac81ce2db365ad9661dc4d834fb2d0f979cd"
