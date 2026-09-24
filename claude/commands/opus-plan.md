@@ -1,6 +1,6 @@
 ---
 description: Plan a mid-complexity task on Opus with max thinking, for Sonnet to execute (cheap-path sibling of /fable-plan)
-argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task description [--council[=gemini,codex,claude]] [--critics[=gemini|codex|agy]] [--auto]"
+argument-hint: "<project> | <item: qN, #issue, or text> — or a plain task description [--council[=gemini,codex,claude]] [--critics[=gemini|codex|agy]] [--auto] [--notes <text…>]"
 ---
 
 ultrathink
