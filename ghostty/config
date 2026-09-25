@@ -1,12 +1,26 @@
-shell-integration = zsh
+# ==============================================================================================================================
+# Ghostty config
+# ==============================================================================================================================
+
+# --- Theme & Colors ---
+theme = Cyberpunk Storm
+background = 000000
+foreground = cdd6fa
+
+# --- Font ---
 font-family = IosevkaTerm Nerd Font
 font-size = 16
 font-feature = -calt, -liga, -dlig
-adjust-cell-height = 1
 font-thicken = true
 font-thicken-strength = 1
 
-theme = Cyberpunk Storm
+# --- Window & Padding ---
+window-padding-y = 12
+window-padding-x = 16
+window-padding-balance = true
+
+shell-integration = zsh
+adjust-cell-height = 1
 
 cursor-style = block
 cursor-style-blink = true
@@ -14,6 +28,3 @@ shell-integration-features = no-cursor
 
 macos-titlebar-style = hidden
 macos-titlebar-proxy-icon = hidden
-
-window-padding-y = 25,1
-window-padding-x = 10,1
