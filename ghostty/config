@@ -4,7 +4,7 @@
 
 # --- Theme & Colors ---
 theme = Cyberpunk Storm
-background = 000000
+background = 090e15
 foreground = cdd6fa
 
 # --- Font ---
