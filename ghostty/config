@@ -18,13 +18,17 @@ font-thicken-strength = 1
 window-padding-y = 12
 window-padding-x = 16
 window-padding-balance = true
-
-shell-integration = zsh
-adjust-cell-height = 1
-
-cursor-style = block
-cursor-style-blink = true
-shell-integration-features = no-cursor
-
 macos-titlebar-style = hidden
 macos-titlebar-proxy-icon = hidden
+window-decoration = auto
+window-theme = dark
+window-colorspace = display-p3
+
+# --- Cursor ---
+cursor-style = block
+cursor-style-blink = true
+
+shell-integration = zsh
+shell-integration-features = no-cursor
+adjust-cell-height = 1
+
