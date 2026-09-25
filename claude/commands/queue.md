@@ -29,10 +29,11 @@ Grooming a stale queue ranks fiction, so first run `claudeos sync $ARGUMENTS` an
 - `claudeos queue dump $ARGUMENTS` — the queue, parsed: every line's lane, state and markers as JSON, plus `duplicates`, `unstamped` and `next_id`. Trust this parse instead of reading the markers by eye; to change a line, use `claudeos queue` rather than opening the vault's read-only view.
 - `projects/$ARGUMENTS/Inbox.md` if present — loose capture that may contain promotable items.
 - Every support note in `projects/$ARGUMENTS/` whose title suggests a plan, audit or incident. You cannot rank without knowing what is already specced.
+- `claudeos queue triage $ARGUMENTS` — the Judge's read of every open and Inbox line, as JSON: `tag` and `size` (an `option` with its `confidence`), and `claude`, `needs_spec`, `promotable` (Inbox lines only) and each `duplicates[].noul` as probabilities from 0 to 1. Read a Noul ≥ 0.7 as yes, ≤ 0.3 as no, anything between as unsure; a Choice whose `confidence` is under 0.5 is unsure; a `duplicates` entry ≥ 0.8 is the same work. Unsure falls to "when unsure, do less". A line with an `error`, or a triage that exits before printing (no key file), is judged by you alone; say which in the report.
 
 ## 2. Promote from Inbox
 
-Anything in Inbox.md that names an observable symptom or a desired end state becomes a queue line. Delete the promoted line from Inbox.md outright — no "moved to Queue" annotation or breadcrumb; the queue line is the record. Prose, half-thoughts and reference material stay in Inbox.md. Say which items you promoted and leave Inbox.md's non-actionable content untouched. Promote with `claudeos queue add $ARGUMENTS "<line text>" --lane <Lane>`; it stamps the `^qN` itself.
+Anything in Inbox.md that names an observable symptom or a desired end state becomes a queue line. Take the triage's word for it: promote an Inbox line whose promotable is yes, leave one whose promotable is no or unsure; its lane is Needs spec when needs_spec is yes, Ready otherwise; its tag and size are the triage's when not unsure; a duplicates entry ≥ 0.8 means it is already queued: leave it in the Inbox and name the qN in the report. Delete the promoted line from Inbox.md outright — no "moved to Queue" annotation or breadcrumb; the queue line is the record. Prose, half-thoughts and reference material stay in Inbox.md. Say which items you promoted and leave Inbox.md's non-actionable content untouched. Promote with `claudeos queue add $ARGUMENTS "<line text>" --lane <Lane>`; it stamps the `^qN` itself.
 
 A line whose text names a `qN` that sits in `## Shipped` as `- [x]` (written `q14`, `^q14` or `[[<P> Queue#^q14]]`; check the lane in the `claudeos queue dump` you already read, never a date) is rework: append `#rework` beside its other tag before the `add`, so `- [ ] the jobs pane still shows waiting after q93 #bug #rework ~S`. An open, dropped or unknown `qN` does not count. This is the whole 72-hour-follow-up rule; `claudeos stats` counts the tag per week by the line's added date, so nothing detects it later.
 
@@ -42,11 +43,13 @@ In this order, and only these:
 
 - **Stamp**: run `claudeos queue stamp $ARGUMENTS`; it mints and pushes IDs atomically (and refuses offline, because minting against a stale remote is the two-machine race). IDs are immutable — never renumber, never reuse, never strip.
 - **Split** anything that is two deliverables. Note the split in your report; each half gets its own fresh `^qN`, the original ID stays on the half closest to the original wording.
-- **Size** unsized lines: `~XS` under an hour, `~S` a sitting, `~M` a day, `~L` needs decomposition.
-- **Tag** with at most what applies: `#bug` `#feat` `#sec` `#ops`, plus `#claude` only if an agent could finish it unattended with no product decision to make, plus `#rework` when the text names a `qN` that is `- [x]` in `## Shipped` (the step 2 rule, applied to lines already in the queue).
-- **Relane**: vague → `## Needs spec` with a `→` question naming what is undetermined; waiting on something → `## Blocked` with a `→` dependency; explicitly-not-now → `## Someday`.
+- **Size** unsized lines, from the triage's size when not unsure: `~XS` under an hour, `~S` a sitting, `~M` a day, `~L` needs decomposition.
+- **Tag** with at most what applies, from the triage's tag when not unsure; #claude when claude is yes: `#bug` `#feat` `#sec` `#ops`, plus `#claude` only if an agent could finish it unattended with no product decision to make, plus `#rework` when the text names a `qN` that is `- [x]` in `## Shipped` (the step 2 rule, applied to lines already in the queue).
+- **Relane**: vague (needs_spec yes) → `## Needs spec` with a `→` question naming what is undetermined; waiting on something → `## Blocked` with a `→` dependency; explicitly-not-now → `## Someday`.
 - **Link** to any existing plan, audit or incident note that already covers the item.
-- **Dedupe**: if two lines are the same work, merge them and keep every `(#N)` ref.
+- **Dedupe**: if two lines are the same work (a duplicates entry ≥ 0.8 on either line), merge them and keep every `(#N)` ref.
+
+A triage answer that disagrees with the line's current marker is reported as a disagreement, never silently applied over a marker the user wrote.
 
 How to write: single-line changes use the atomic subcommands (`state`, `lane`, `mark`, `add`); anything free-form — splits, rewording, merges, the `> proposed:` blockquote — goes through `claudeos queue edit $ARGUMENTS begin`, editing the printed file, then `claudeos queue edit $ARGUMENTS commit -m "<what changed>"`.
 
