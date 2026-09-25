@@ -74,7 +74,7 @@ defaults:
   # cap a pressed launch is refused (the same key again launches anyway), a
   # batch skips the item, a chained implement waits and starts by itself when
   # one exits, and the phone's is refused. (default: 0, unlimited)
-  max_implements: 2
+  max_implements: 5
 
   # How many open PRs of yours (the rows the PRs pane shows) may exist before an
   # implement launch is held the same way; released when a PR merges or closes.
@@ -300,7 +300,7 @@ colors:
 # A few bindings are fixed and cannot be rebound: esc to clear or go back, and
 # the viewer's close keys.
 #
-# Sections: navigation, queue, jobs, prs, inbox, ideas, viewer, global
+# Sections: navigation, queue, jobs, prs, inbox, projects, ideas, viewer, global
 
 # keys:
 #   navigation:
