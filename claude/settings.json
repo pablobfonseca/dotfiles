@@ -211,7 +211,8 @@
     "stripe@claude-plugins-official": true,
     "taste-skill@taste-skill": true,
     "google-ads-api-developer-assistant@google-ads-assistant-local": true,
-    "typesafe@typesafe-ai": true
+    "typesafe@typesafe-ai": true,
+    "slack@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "dev-browser-marketplace": {

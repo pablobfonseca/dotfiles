@@ -104,6 +104,8 @@ projects:
   ClaudeOS: { path: ~/code/claudeos, pinned: true }
   LazyActions: { path: ~/code/lazy-actions }
   Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true }
+  #   # slack_channel: the private #tribemap-feedback channel the Feedback pull (q306) reads into the Inbox; uncomment once q306 ships
+  #   # Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true, slack_channel: C0C4D3FBA2Z }
   GX100: { path: ~/code/gx100-midi-control }
   Devdeck:
     path: ~/code/DevDeck
@@ -167,6 +169,32 @@ telegram:
   #   # for a second and keeps going does not buzz your phone. A Go duration
   #   # string. (default: 0, meaning send immediately)
   idle_delay: 30s
+
+# ---------------------------------------------------------------------------
+# Slack (Feedback pull)
+# ---------------------------------------------------------------------------
+#
+# A project's Slack channel read into its Inbox: `claudeos slack pull` and the
+# running TUI capture each new top-level human message as one `## Raw` line,
+# download its files beside the note, and react ✅ as the claim. Inbound only.
+# The channel is per project: `projects.<P>.slack_channel` (the id, C… or G…).
+# Every key here needs a restart. One machine polls: set CLAUDEOS_SLACK_NO_PULL
+# on the others, `claudeos slack pull` still runs there by hand.
+
+# slack:
+#   # Whether the TUI polls at all. `claudeos slack pull` runs either way.
+#   # (default: true)
+#   enabled: true
+#
+#   # File holding the bot token (xoxb-…), one line, mode 0600, read at call time.
+#   # Scopes: files:read, reactions:write, and groups:history (private channel)
+#   # or channels:history (public). Invite the bot to the channel.
+#   # (default: ~/.config/claudeos/slack-token)
+#   token_file: ~/.config/claudeos/slack-token
+#
+#   # How often the TUI pulls every configured channel. Refused under 10s.
+#   # (default: 60s)
+#   every: 60s
 
 # ---------------------------------------------------------------------------
 # Judge (TypeSafe)
