@@ -125,7 +125,6 @@ projects:
       flutter: ~/code/cobrowsing-mobile/flutter-sdk
       docs: ~/code/cobrowsing-mobile/upscopedocs
   Dotfiles: { path: ~/.dotfiles }
-  YoutubeMusicCLI: { path: ~/code/youtube-music-cli }
   DotfilesInstaller:
     {
       path: ~/code/go-workspace/src/github.com/pablobfonseca/dotfiles-installer,
