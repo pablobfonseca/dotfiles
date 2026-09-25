@@ -70,6 +70,17 @@ defaults:
   # (default: "")
   # code_review_flags: high
 
+  # How many implement sessions may be live at once, across projects. Over the
+  # cap a pressed launch is refused (the same key again launches anyway), a
+  # batch skips the item, a chained implement waits and starts by itself when
+  # one exits, and the phone's is refused. (default: 0, unlimited)
+  # max_implements: 2
+
+  # How many open PRs of yours (the rows the PRs pane shows) may exist before an
+  # implement launch is held the same way; released when a PR merges or closes.
+  # (default: 0, unlimited)
+  # max_review_backlog: 4
+
 # ---------------------------------------------------------------------------
 # Projects
 # ---------------------------------------------------------------------------
