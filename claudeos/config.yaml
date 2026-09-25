@@ -306,6 +306,7 @@ colors:
 #   prs:
 #     toggle: P
 #     merge: M
+#     attach: a
 #   inbox:
 #     toggle: I
 #   ideas:
