@@ -59,11 +59,11 @@ claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest
 
 ## Codex
 
-Best-practice Codex setup with global `AGENTS.md`, conservative CLI defaults, focused reusable skills, GitHub plugin enabled, and narrow custom agents for review-oriented work.
+Best-practice Codex setup with global `AGENTS.md`, conservative CLI defaults, focused reusable skills, GitHub plugin enabled, and narrow custom agents for review-oriented work. `config.toml` carries the claudeos hook registrations and the two guards from `claude/hooks/` (`guard-queue-views.sh`, `guard-merge.sh`) as `PreToolUse` hooks.
 
 ## Gemini CLI
 
-`~/.gemini/settings.json`, `~/.gemini/commands` and `~/.gemini/agents` are symlinks into `gemini/`; the settings carry the claudeos hook registrations.
+`~/.gemini/settings.json`, `~/.gemini/commands` and `~/.gemini/agents` are symlinks into `gemini/`; the settings carry the claudeos hook registrations and the same two guards as `BeforeTool` hooks.
 
 ## Shell
 

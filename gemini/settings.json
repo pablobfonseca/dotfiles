@@ -76,6 +76,30 @@
           }
         ]
       }
+    ],
+    "BeforeTool": [
+      {
+        "matcher": "run_shell_command|write_file|replace",
+        "hooks": [
+          {
+            "name": "guard-queue-views",
+            "type": "command",
+            "command": "/Users/pablobfonseca/.dotfiles/claude/hooks/guard-queue-views.sh",
+            "timeout": 10000
+          }
+        ]
+      },
+      {
+        "matcher": "run_shell_command",
+        "hooks": [
+          {
+            "name": "guard-merge",
+            "type": "command",
+            "command": "/Users/pablobfonseca/.dotfiles/claude/hooks/guard-merge.sh",
+            "timeout": 10000
+          }
+        ]
+      }
     ]
   },
   "hooksConfig": {

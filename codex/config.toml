@@ -31,9 +31,12 @@ trust_level = "trusted"
 [projects."/Users/pablobfonseca/code/claudeos"]
 trust_level = "trusted"
 
+[tui]
+screen_reader_detection_done = true
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
-gpt-6-astra = 1
+gpt-6-astra = 2
 
 [plugins."github@openai-curated"]
 enabled = true
@@ -96,6 +99,20 @@ type = "command"
 command = "claudeos hook PermissionRequest"
 timeout = 10
 
+[[hooks.PreToolUse]]
+matcher = "Bash|apply_patch"
+[[hooks.PreToolUse.hooks]]
+type = "command"
+command = "/Users/pablobfonseca/.dotfiles/claude/hooks/guard-queue-views.sh"
+timeout = 10
+
+[[hooks.PreToolUse]]
+matcher = "^Bash$"
+[[hooks.PreToolUse.hooks]]
+type = "command"
+command = "/Users/pablobfonseca/.dotfiles/claude/hooks/guard-merge.sh"
+timeout = 10
+
 [hooks.state]
 
 [hooks.state."/Users/pablobfonseca/.codex/config.toml:permission_request:0:0"]
@@ -115,3 +132,9 @@ trusted_hash = "sha256:e75aa3180cd3cfd07e3fd370d4b3b5f78a5afa85b60a70ea51043eb91
 
 [hooks.state."/Users/pablobfonseca/.codex/config.toml:stop:0:0"]
 trusted_hash = "sha256:b538930215619b231b929e4f04fdac81ce2db365ad9661dc4d834fb2d0f979cd"
+
+[hooks.state."/Users/pablobfonseca/.codex/config.toml:pre_tool_use:0:0"]
+trusted_hash = "sha256:136f77ae48c741dd9963dedf868011333155732e457e0928f9af5fdb2a809c8f"
+
+[hooks.state."/Users/pablobfonseca/.codex/config.toml:pre_tool_use:1:0"]
+trusted_hash = "sha256:e1bb8a42346a4f25592ed95518f726f588f58aa474396e4ddf769d0f42076e0f"
