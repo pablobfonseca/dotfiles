@@ -13,10 +13,9 @@ set -uo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/guard-dialect.sh"
 
 QUEUE_RE='(SecondBrain/projects|vault-queues|(^|[^[:alnum:]_/.-])projects)/[^/[:space:]]+/Queue\.md'
-REASON=$(cat <<'EOF'
+read -r -d '' REASON <<'EOF'
 Queue.md is written by claudeos queue only: the vault's projects/<P>/Queue.md is a GENERATED READ-ONLY VIEW, overwritten on the next queue write, and the vault-queues copy is the authority it regenerates from, where a hand edit leaves the repo dirty and every later queue write refused. Use the tool: claudeos queue state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `claudeos queue edit <project> begin` then `claudeos queue edit <project> commit -m "..."` for free-form grooming, and claudeos queue dump|find <project> to read. Run `claudeos queue --help` for syntax.
 EOF
-)
 
 clean_path() {
   local part out=() parts
