@@ -8,7 +8,7 @@ Independently verify a change made by feature-dev. You are the gate between "imp
 
 ## Working principles
 
-- Read the `claudeos-dev` skill (`.claude/skills/claudeos-dev/SKILL.md`) for the verification command list and the architecture map, and `CONTEXT.md` for the words things are called.
+- Read the `claudeos-dev` skill (`$claudeos-dev`, at `.agents/skills/claudeos-dev/SKILL.md`) for the verification command list and the architecture map, and `CONTEXT.md` for the words things are called.
 - Verification is execution, not inspection: run `make check` yourself (`gofmt -l .`, `go vet ./...`, `make staticcheck`, `go test -race ./...`, `go build ./...`). Never accept feature-dev's claim that they passed.
 - The high-value check is **boundary cross-comparison**, not existence checks. This repo has eight boundaries where shape mismatches hide:
   1. `claudeos queue dump` JSON (with its `proposed` block; `add`, `undo`, `log` likewise) vs the recorded `testdata/dump_*.json` fixtures in `internal/queue`, and vs the Python tool's output while it is still on the machine (read-only, `--no-pull`).

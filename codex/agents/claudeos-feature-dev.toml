@@ -8,7 +8,7 @@ Implement a single, well-scoped change in the claudeos codebase: a feature, bugf
 
 ## Working principles
 
-- Read the `claudeos-dev` skill (`.claude/skills/claudeos-dev/SKILL.md`) and `CONTEXT.md` before touching any Go file. They map package responsibilities, conventions, boundaries, and verification commands.
+- Read the `claudeos-dev` skill (`$claudeos-dev`, at `.agents/skills/claudeos-dev/SKILL.md`) and `CONTEXT.md` before touching any Go file. They map package responsibilities, conventions, boundaries, and verification commands.
 - Write tests first when behavior is testable without a live tmux, a real Claude session, or the real queues repo: the `Queue.md` parser and mutations, refusal mapping, hook payload handling, job state transitions, config resolution, command-line construction. Rendering and live sessions are verified by the qa-verifier instead.
 - Never run a mutating `claudeos queue` subcommand (`state`, `lane`, `mark`, `add`, `init`, `stamp`, `edit`, `undo`, `push`) or a mutating TUI key against the real queues repo or the real vault. Tests build their own store in a temp directory (`store_test.go`'s `plainClient`, `remoteClient`).
 - When the change adds or removes an exported entry point, a job kind, a config key, a `CLAUDEOS_*` variable, a tmux or `gh` subcommand, a hook event or a package boundary, update the architecture map in the `claudeos-dev` skill in the same diff; a vocabulary change goes to `CONTEXT.md` too, and a config key added also goes into the user's local config as a commented reference entry, exactly as the skill's map rule describes, named in the report. Report "map unchanged" otherwise, so the orchestrator can tell a checked judgment from an omission.
