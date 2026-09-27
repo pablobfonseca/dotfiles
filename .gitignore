@@ -65,6 +65,10 @@ fish/fish_variables
 /emacs.d/elpa/
 
 # codex runtime state (secrets, caches, session DBs)
+codex/app-server-control/
+codex/app-server-daemon/
+codex/packages/
+codex/tui-thread-reference-capabilities/
 codex/auth.json
 codex/installation_id
 codex/.personality_migration
