@@ -60,7 +60,13 @@ claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest
 
 ## Codex
 
-Best-practice Codex setup with global `AGENTS.md`, conservative CLI defaults, focused reusable skills (the queue commands `$queue`, `$next`, `$sync` and `$capture` are copies of `claude/commands/`, changed together with them; the planners `$fable-plan` and `$opus-plan` are rewritten copies of `claude/commands/`, since the originals call Claude Code tools, and change with them too), GitHub plugin enabled, and narrow custom agents for review-oriented work. `config.toml` carries the claudeos hook registrations and the two guards from `claude/hooks/` (`guard-queue-views.sh`, `guard-merge.sh`) as `PreToolUse` hooks. `rules/default.rules` lets `gh` and `claudeos` run without an approval prompt. Codex finds each skill and the rules file through a symlink in `~/.codex/` (`~/.codex/skills/<name>`, `~/.codex/rules/default.rules`), made by hand on each machine.
+Best-practice Codex setup with global `AGENTS.md`, conservative CLI defaults, focused reusable skills (the queue commands `$queue`, `$next`, `$sync` and `$capture` are copies of `claude/commands/`, changed together with them; the planners `$fable-plan` and `$opus-plan` are rewritten copies of `claude/commands/`, since the originals call Claude Code tools, and change with them too), GitHub plugin enabled, and narrow custom agents for review-oriented work. `config.toml` carries the claudeos hook registrations and the two guards from `claude/hooks/` (`guard-queue-views.sh`, `guard-merge.sh`) as `PreToolUse` hooks. `rules/default.rules` lets `gh` and `claudeos` run without an approval prompt. Codex finds each skill and the rules file through a symlink in `~/.codex/` (`~/.codex/skills/<name>`, `~/.codex/rules/default.rules`), made by hand on each machine. Merge any local `~/.codex/rules/default.rules` into the dotfiles copy first, since `-f` replaces it; `-n` keeps a rerun from nesting a link inside an existing skill directory.
+
+```bash
+mkdir -p ~/.codex/skills ~/.codex/rules
+for s in ~/.dotfiles/codex/skills/*/; do ln -sfn "${s%/}" ~/.codex/skills/"$(basename "$s")"; done
+ln -sfn ~/.dotfiles/codex/rules/default.rules ~/.codex/rules/default.rules
+```
 
 ## Gemini CLI
 
