@@ -103,7 +103,12 @@ defaults:
 projects:
   ClaudeOS: { path: ~/code/claudeos, pinned: true }
   LazyActions: { path: ~/code/lazy-actions }
-  Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true }
+  Tribemap:
+    {
+      path: ~/code/upscope-env/tribemap,
+      pinned: true,
+      slack_channel: C0C4D3FBA2Z,
+    }
   #   # slack_channel: the private #tribemap-feedback channel the Feedback pull (q306) reads into the Inbox; uncomment once q306 ships
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true, slack_channel: C0C4D3FBA2Z }
   GX100: { path: ~/code/gx100-midi-control }
@@ -177,8 +182,9 @@ telegram:
 # running TUI capture each new top-level human message as one `## Raw` line,
 # download its files beside the note, and react ✅ as the claim. Inbound only.
 # The channel is per project: `projects.<P>.slack_channel` (the id, C… or G…).
-# Every key here needs a restart. One machine polls: set CLAUDEOS_SLACK_NO_PULL
-# on the others, `claudeos slack pull` still runs there by hand.
+# Every key here needs a restart. One machine polls: the TUI polling the Telegram
+# bot is the one that pulls Slack; CLAUDEOS_SLACK_NO_PULL or CLAUDEOS_TELEGRAM_SEND_ONLY
+# keeps a TUI out of it, `claudeos slack pull` still runs there by hand.
 
 # slack:
 #   # Whether the TUI polls at all. `claudeos slack pull` runs either way.
@@ -309,6 +315,7 @@ colors:
 #   dim: { light: 243, dark: 245 }           # secondary text: ids, timestamps, hints
 #   failure: { light: 160, dark: 196 }       # failed checks, errors, refusals
 #   wip: { light: 130, dark: 220 }           # in_progress items and running jobs
+#   success: { light: 28, dark: 82 }         # a PR nothing stands in the way of: the mergeable marker
 #   key: { light: 28, dark: 82 }             # key names in the footer and help
 #   lane_header: { light: 97, dark: 141 }    # lane headings in the queue pane
 #   section: { light: 243, dark: 245 }       # section headings in docs and overlays
