@@ -5,21 +5,21 @@
 
 ## What's Inside
 
-| Category | Tool | Config |
-|----------|------|--------|
-| **Shell** | zsh + starship prompt | `zsh/`, `starship/` |
-| **Editor** | Neovim (lazy.nvim) | `nvim/` |
-| **Terminal** | Ghostty, Alacritty, WezTerm | `ghostty/`, `alacritty/`, `wezterm/` |
-| **Multiplexer** | tmux + tpm | `tmux/`, `tmuxinator/` |
-| **Window Manager** | AeroSpace | `aerospace/` |
-| **Git** | git + lazygit + delta | `git/`, `lazygit/` |
-| **AI** | Claude Code, Codex, Gemini CLI | `claude/`, `codex/`, `gemini/` |
-| **macOS** | Hammerspoon, Karabiner | `hammerspoon/`, `karabiner/` |
-| **File Manager** | yazi | `yazi/` |
-| **Utilities** | bat, btop, atuin, fzf | `bat/`, `btop/`, `atuin/` |
-| **Packages** | Homebrew Bundle | `homebrew/Brewfile` |
-| **Scripts** | tmux helpers, Obsidian, utils | `scripts/` |
-| **Stream Deck** | DevDeck | `devdeck/` |
+| Category           | Tool                           | Config                               |
+| ------------------ | ------------------------------ | ------------------------------------ |
+| **Shell**          | zsh + starship prompt          | `zsh/`, `starship/`                  |
+| **Editor**         | Neovim (lazy.nvim)             | `nvim/`                              |
+| **Terminal**       | Ghostty, Alacritty, WezTerm    | `ghostty/`, `alacritty/`, `wezterm/` |
+| **Multiplexer**    | tmux + tpm                     | `tmux/`, `tmuxinator/`               |
+| **Window Manager** | AeroSpace                      | `aerospace/`                         |
+| **Git**            | git + lazygit + delta          | `git/`, `lazygit/`                   |
+| **AI**             | Claude Code, Codex, Gemini CLI | `claude/`, `codex/`, `gemini/`       |
+| **macOS**          | Hammerspoon, Karabiner         | `hammerspoon/`, `karabiner/`         |
+| **File Manager**   | yazi                           | `yazi/`                              |
+| **Utilities**      | bat, btop, atuin, fzf          | `bat/`, `btop/`, `atuin/`            |
+| **Packages**       | Homebrew Bundle                | `homebrew/Brewfile`                  |
+| **Scripts**        | tmux helpers, Obsidian, utils  | `scripts/`                           |
+| **Stream Deck**    | DevDeck                        | `devdeck/`                           |
 
 ## Theme
 
@@ -42,6 +42,7 @@ Plugin manager: [lazy.nvim](https://github.com/folke/lazy.nvim)
 Prefix: `C-a` | Vi mode | [Cyberpunk theme](https://github.com/pablobfonseca/cyberpunk-theme)
 
 **Key bindings:**
+
 - `C-g` lazygit | `C-f` file picker | `M-g` scratch terminal
 - `C-M-h/l` window navigation
 - tmux-sessionx for session picker, tmux-floax for floating windows
@@ -59,11 +60,11 @@ claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest
 
 ## Codex
 
-Best-practice Codex setup with global `AGENTS.md`, conservative CLI defaults, focused reusable skills, GitHub plugin enabled, and narrow custom agents for review-oriented work. `config.toml` carries the claudeos hook registrations and the two guards from `claude/hooks/` (`guard-queue-views.sh`, `guard-merge.sh`) as `PreToolUse` hooks.
+Best-practice Codex setup with global `AGENTS.md`, conservative CLI defaults, focused reusable skills (the queue commands `$queue`, `$next`, `$sync` and `$capture` are copies of `claude/commands/`, changed together with them), GitHub plugin enabled, and narrow custom agents for review-oriented work. `config.toml` carries the claudeos hook registrations and the two guards from `claude/hooks/` (`guard-queue-views.sh`, `guard-merge.sh`) as `PreToolUse` hooks.
 
 ## Gemini CLI
 
-`~/.gemini/settings.json`, `~/.gemini/commands` and `~/.gemini/agents` are symlinks into `gemini/`; the settings carry the claudeos hook registrations and the same two guards as `BeforeTool` hooks.
+`~/.gemini/settings.json`, `~/.gemini/commands`, `~/.gemini/agents` and `~/.gemini/skills` are symlinks into `gemini/`; `commands/` carries `/queue`. `/next`, `/sync` and `/capture` as TOML copies of `claude/commands/` (changed together with them) and `skills/` links the shared `editing-queues`; the settings carry the claudeos hook registrations and the same two guards as `BeforeTool` hooks.
 
 ## Shell
 
