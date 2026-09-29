@@ -21,6 +21,8 @@ gv() { payload BeforeTool "$1" "$2" "$3" "${4:-}" | guard guard-queue-views.sh |
 mg() { payload PreToolUse Bash command "$1" | guard guard-merge.sh | decision; }
 gm() { payload BeforeTool run_shell_command command "$1" | guard guard-merge.sh | decision; }
 patch() { printf '*** Begin Patch\n*** %s File: %s\n@@\n-a\n+b\n*** End Patch\n' "$1" "$2"; }
+ipatch() { printf '*** Begin Patch\n  *** %s File: %s\n@@\n-a\n+b\n*** End Patch\n' "$1" "$2"; }
+mpatch() { printf '*** Begin Patch\n*** Update File: %s\n*** Move to: %s\n@@\n-a\n+b\n*** End Patch\n' "$1" "$2"; }
 V=$HOME/obsidian/SecondBrain/projects/ClaudeOS
 Q=$HOME/.local/share/vault-queues/ClaudeOS
 case_ "edit vault view"        deny  "$(qv Edit file_path "$V/Queue.md")"
@@ -45,6 +47,10 @@ case_ "codex apply_patch relative authority, open session" allow "$(qv apply_pat
 case_ "codex apply_patch relative authority, no session"   deny  "$(qv apply_patch command "$(patch Update Tribemap/Queue.md)" "$T")"
 case_ "codex apply_patch delete authority, open session"   deny  "$(qv apply_patch command "$(patch Delete "$T/ClaudeOS/Queue.md")")"
 case_ "codex apply_patch two files, one without session"   deny  "$(qv apply_patch command "$(patch Update "$T/ClaudeOS/Queue.md")$(patch Update "$T/Tribemap/Queue.md")")"
+case_ "codex apply_patch indented header, no session"      deny  "$(qv apply_patch command "$(ipatch Update Tribemap/Queue.md)" "$T")"
+case_ "codex apply_patch indented header, open session"    allow "$(qv apply_patch command "$(ipatch Update "$T/ClaudeOS/Queue.md")")"
+case_ "codex apply_patch move onto authority, open session" deny "$(qv apply_patch command "$(mpatch README.md ClaudeOS/Queue.md)" "$T")"
+case_ "codex apply_patch move authority away, open session" deny "$(qv apply_patch command "$(mpatch ClaudeOS/Queue.md ClaudeOS/old.md)" "$T")"
 # --- gemini: BeforeTool, replace and write_file carry file_path, run_shell_command carries command
 case_ "gemini replace authority, open session"          allow "$(gv replace file_path "$T/ClaudeOS/Queue.md")"
 case_ "gemini replace relative authority, open session" allow "$(gv replace file_path ClaudeOS/Queue.md "$T")"
@@ -66,6 +72,12 @@ case_ "codex apply_patch update view"        deny  "$(qv apply_patch command "$(
 case_ "codex apply_patch add relative view"  deny  "$(qv apply_patch command "$(patch Add projects/ClaudeOS/Queue.md)" "$HOME/obsidian/SecondBrain")"
 case_ "codex apply_patch body mentions view" deny  "$(qv apply_patch command "$(printf '*** Begin Patch\n*** Update File: README.md\n@@\n-a\n+see projects/ClaudeOS/Queue.md\n*** End Patch\n')" "$HOME/code/claudeos")"
 case_ "codex apply_patch unrelated"          allow "$(qv apply_patch command "$(patch Update README.md)" "$HOME/code/claudeos")"
+case_ "codex apply_patch move unrelated"     allow "$(qv apply_patch command "$(mpatch README.md docs/README.md)" "$HOME/code/claudeos")"
+case_ "codex apply_patch context mentions view"      allow "$(qv apply_patch command "$(printf '*** Begin Patch\n*** Update File: README.md\n@@\n see projects/ClaudeOS/Queue.md\n-a\n+b\n*** End Patch\n')" "$HOME/code/claudeos")"
+case_ "codex apply_patch removed line mentions view" allow "$(qv apply_patch command "$(printf '*** Begin Patch\n*** Update File: README.md\n@@\n-see projects/ClaudeOS/Queue.md\n+b\n*** End Patch\n')" "$HOME/code/claudeos")"
+case_ "codex apply_patch relative authority, no cwd" deny  "$(qv apply_patch command "$(patch Update ClaudeOS/Queue.md)")"
+case_ "codex apply_patch relative unrelated, no cwd" allow "$(qv apply_patch command "$(patch Update README.md)")"
+case_ "gemini replace relative authority, no cwd"    deny  "$(gv replace file_path ClaudeOS/Queue.md)"
 case_ "gemini write_file view"     deny  "$(gv write_file file_path "$V/Queue.md")"
 case_ "gemini shell cat view"      deny  "$(gv run_shell_command command "cat $V/Queue.md")"
 case_ "gemini shell unrelated"     allow "$(gv run_shell_command command "cat README.md")"

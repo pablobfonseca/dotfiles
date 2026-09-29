@@ -7,8 +7,10 @@
 # and `claudeos queue find`. The one exception is an edit on the authority while
 # `claudeos queue edit <project> begin` has an open session (<repo>/.git/queue-tool-edit/<project>, the
 # marker path the Python queue-tool used, kept by the port): Edit, replace, and an apply_patch whose
-# every Queue.md file header is an `*** Update File:` under one. Relative paths are joined to the
-# payload's cwd first; Gemini and Codex send them.
+# every Queue.md file header is an `*** Update File:` under one, with no `*** Move to:` into or out of
+# a Queue.md. Patch headers are read trimmed, as Codex parses them, and only `+` lines are content.
+# Relative paths are joined to the payload's cwd first; Gemini and Codex send them. Without a cwd a
+# relative path cannot be placed, so any one ending in Queue.md is refused.
 set -uo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/guard-dialect.sh"
 
@@ -31,10 +33,14 @@ clean_path() {
   if [[ $1 == /* ]]; then printf '/%s' "${out[*]}"; else printf '%s' "${out[*]}"; fi
 }
 
-absolute() { # a file_path or a patch header path; a relative one is joined to the payload's cwd
+absolute() { # a file_path or a patch header path; a relative one is joined to the payload's cwd, if any
   local p=$1
-  [[ $p == /* ]] || p="$cwd/$p"
+  [[ $p == /* || -z $cwd ]] || p="$cwd/$p"
   clean_path "$p"
+}
+
+is_queue() { # <path from absolute>: a guarded Queue.md, or any Queue.md left relative for want of a cwd
+  [[ $1 =~ $QUEUE_RE ]] || [[ $1 != /* && ${1##*/} == Queue.md ]]
 }
 
 session_open() { # <absolute .../<project>/Queue.md>: `claudeos queue edit <project> begin` is in flight
@@ -55,14 +61,22 @@ case "$tool" in
     ;;
   apply_patch)
     patch=$(jq -r '.tool_input.command // empty' <<<"$input" 2>/dev/null)
+    from_queue=
     while IFS= read -r line; do
-      if [[ $line =~ ^\*\*\*\ (Update|Add|Delete)\ File:\ (.+)$ ]]; then
+      header=${line#"${line%%[![:space:]]*}"}
+      header=${header%"${header##*[![:space:]]}"}
+      if [[ $header =~ ^\*\*\*\ (Update|Add|Delete)\ File:\ (.+)$ ]]; then
         op=${BASH_REMATCH[1]}
         path=$(absolute "${BASH_REMATCH[2]}")
-        [[ $path =~ $QUEUE_RE ]] || continue
+        from_queue=
+        is_queue "$path" || continue
+        from_queue=1
         [[ $op == Update ]] && session_open "$path" && continue
         guard_deny "$event" "$REASON"
-      elif [[ $line =~ $QUEUE_RE ]]; then
+      elif [[ $header =~ ^\*\*\*\ Move\ to:\ (.+)$ ]]; then
+        [[ -z $from_queue ]] && ! is_queue "$(absolute "${BASH_REMATCH[1]}")" && continue
+        guard_deny "$event" "$REASON"
+      elif [[ $line == +* && $line =~ $QUEUE_RE ]]; then
         guard_deny "$event" "$REASON"
       fi
     done <<<"$patch"
@@ -72,7 +86,7 @@ case "$tool" in
     file=$(jq -r '.tool_input.file_path // empty' <<<"$input" 2>/dev/null)
     [[ -n $file ]] || guard_allow "$event"
     target=$(absolute "$file")
-    [[ $target =~ $QUEUE_RE ]] || guard_allow "$event"
+    is_queue "$target" || guard_allow "$event"
     case "$tool" in Edit|replace) session_open "$target" && guard_allow "$event" ;; esac
     guard_deny "$event" "$REASON"
     ;;
