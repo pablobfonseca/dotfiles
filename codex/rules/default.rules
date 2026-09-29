@@ -1,0 +1,2 @@
+prefix_rule(pattern=["gh"], decision="allow")
+prefix_rule(pattern=["claudeos"], decision="allow")
