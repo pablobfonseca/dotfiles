@@ -40,7 +40,7 @@ The vault and the `claudeos queue` commands sit outside the workspace. When a re
 
 5. **Refine requirements, with the user.** Read the code the item touches first. Then, in this order:
 
-   1. Write one message that quotes the queue line verbatim as the symptom (the user's phrasing encodes what they noticed; do not improve it), quotes the `--notes` text verbatim beside it when given, lists what is established (with note names), what you inferred, and what is not settled, and lists the related candidates from step 3 with a suggested verdict each (bundle, sequence, or leave alone; the call is the user's).
+   1. Write one message that quotes the queue line verbatim as the symptom (the user's phrasing encodes what they noticed; do not improve it), quotes the `--notes` text verbatim beside it when given, lists what is established (with note names), what you inferred, and what is not settled, and lists the related candidates from step 3 with a suggested verdict each (bundle, sequence, or leave alone; the call is the user's). Right after the queue line and the notes, and before the established list, the message carries one line, `Objection: <one sentence>`: the strongest objection to the approach the queue line states (in plain form, the task description) and a simpler alternative. It is there on every plan, with no `No objection` variant. When the line is a bare symptom with no stated approach, object to the item as scoped: why not do it, or a smaller cut. It is not one of sub-step 2's questions and asks for no ruling: the user takes it up or ignores it, and silence means the stated approach stands.
    2. In the same message, ask every open question at once, numbered. Each question offers two to four concrete options with one line of trade-off each, the recommended option first and marked `(recommended)`. Ask only what the queue line, the notes, the vault and the code do not settle. Use the session's question tool when it has one; otherwise ask in plain text.
    3. End the turn and wait for the answers. Do not proceed on a guess.
    4. When the answers are in, write one message with the design: what changes, in which files and functions by name, what stays untouched and why, and every decision you are proposing that the user has not made yet, numbered. Ask for an explicit yes. End the turn and wait.
@@ -67,6 +67,7 @@ The vault and the `claudeos queue` commands sit outside the workspace. When a re
    - `# <title> (^qN) Implementation Plan`
    - One header line, with `<harness>` the skill the repo's `CLAUDE.md` or `AGENTS.md` harness section names, or `no harness skill: the session writes and verifies each phase` when it names none: `> **For agentic workers:** execute via `/implement-plan <project> | qN` from `<repo root>`; the repo's harness skill (`<harness>`) writes and verifies each phase. Steps use checkbox (`- [ ]`) syntax for tracking.` followed by `Read first:` and the files by path. Name no other execution skill anywhere in the plan.
    - With `--notes`, one `**Launch notes:**` line carrying them verbatim.
+   - One `**Objection:**` line: step 5's sentence verbatim, then `Outcome:` with `taken` and what changed, `overruled` and the user's reason, or `not taken up`.
    - `**Goal:**` one sentence of observable behaviour. `**Architecture:**` two or three sentences. `**Tech Stack:**` versions as installed. `**Spec:**` the spec sections and decision-log lines the plan argues from.
    - `## Global Constraints`: the repo's gate command, the branch name, what is never touched, one line each.
    - `## Stop and ask`: the numbered triggers. Minimum: reality deviates from the plan (file moved, API changed), tests still failing after 2 fix attempts, an ambiguous requirement discovered mid-phase, any security-sensitive decision not spelled out in the plan.
@@ -117,7 +118,7 @@ The item's size picks the plan's shape. Queue form: the `size` key of `claudeos 
 **Short** hands judgment back to the executor: it records the decisions step 5 settled and leaves the instructions out. The frontmatter is the full shape's, unchanged, because tools read it. The body below the frontmatter is at most 60 lines and has no fenced block. Its sections, in order:
 
 - The `# <title> (^qN) Implementation Plan` heading, then one `> **For agentic workers:**` line carrying the `/implement-plan <project> | qN` command and the repo to run it from, the files to read first by name (no line numbers), and the sentence `Short plan: where it is silent, decide locally and list each choice in the PR body.`
-- **Goal:** one sentence of observable behaviour. With `--notes`, the `**Launch notes:**` line under it.
+- **Goal:** one sentence of observable behaviour. With `--notes`, the `**Launch notes:**` line under it. Then the `**Objection:**` line, as step 6 words it; the 60-line cap is unchanged.
 - **Approach:** two to four sentences: what changes, in which files and functions by name, what stays untouched and why.
 - **Stop and ask:** only triggers specific to this item; omit the section when there are none, the implement's defaults stand.
 - **Related queue items**, exactly as step 6 requires.
@@ -133,7 +134,7 @@ For the short shape, executor-grade means: every file and function it names exis
 Steers what step 5 opens with. `--notes` takes everything after it, verbatim, to the end of the arguments; it goes last.
 
 - `--notes` with nothing after it: reply `--notes needs text` and stop.
-- Step 5 opens by quoting the notes verbatim beside the queue line, before the first question. The notes settle what they cover; they are not additional requirements to relitigate. A note that contradicts the project's spec or decision log is raised with the user, never silently followed.
+- Step 5 opens by quoting the notes verbatim beside the queue line, before the first question. The notes settle what they cover; they are not additional requirements to relitigate, and the `Objection:` line, which follows them, does not reopen what they settle. A note that contradicts the project's spec or decision log is raised with the user, never silently followed.
 - Step 6 records the notes verbatim on one `**Launch notes:**` line, since the job that launched this session does not store flags.
 
 ## Rules
