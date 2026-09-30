@@ -49,7 +49,7 @@ Prefix: `C-a` | Vi mode | [Cyberpunk theme](https://github.com/pablobfonseca/cyb
 
 ## Claude Code
 
-22 specialized agents (language + role-based), 13 plugins (4 LSP servers, superpowers, frontend-design, dev-browser, ast-grep, reflexion), auto-format hooks for TypeScript.
+22 specialized agents (language + role-based), 13 plugins (4 LSP servers, superpowers, frontend-design, dev-browser, ast-grep, reflexion), auto-format hooks for TypeScript. `claude/hooks/survival-list.sh` runs on `PreCompact` and on `SessionStart` after a compaction: in an `/implement-plan` session it tells the summary what to keep and prints the plan, the open task, the branch, the PR and the plan's stop-and-ask list into the new context; `claude/hooks/check-survival.sh` is its test.
 
 User-scope MCP servers live in `~/.claude.json` (runtime state, not versioned). On a new machine:
 
