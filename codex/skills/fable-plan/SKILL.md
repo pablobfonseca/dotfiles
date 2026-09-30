@@ -57,10 +57,13 @@ The vault and the `claudeos queue` commands sit outside the workspace. When a re
    queue: projects/<project>/Queue.md
    queue_item: <the queue line verbatim, markers included>
    model: opus | sonnet
+   repo: <owner>/<name>
    ---
    ```
 
    `model:` is the Claude executor model this plan is graded for, `opus` or `sonnet`, nothing else, chosen by the rule in Rules. A Claude implement reads it; a Codex implement runs on its own default.
+
+   `repo:` is the GitHub repo the plan executes in, as `owner/name`: the origin of the `<repo root>` the header line names (`git -C <repo root> remote get-url origin`, cut down to `owner/name`), which is not always this session's cwd. Both forms write it. claudeos launches the item's implement in the project's checkout of that repo, and `$implement-plan` stops when it finds itself in any other. Leave the key out when that root has no GitHub origin.
 
    The full shape, in this order:
 
