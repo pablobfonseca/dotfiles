@@ -157,6 +157,15 @@
             "command": "claudeos hook SessionStart"
           }
         ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.dotfiles/claude/hooks/survival-list.sh || true"
+          }
+        ]
       }
     ],
     "SessionEnd": [
@@ -184,6 +193,16 @@
           {
             "type": "command",
             "command": "claudeos hook Stop"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.dotfiles/claude/hooks/survival-list.sh || true"
           }
         ]
       }
