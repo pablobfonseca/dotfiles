@@ -101,7 +101,8 @@ defaults:
 #                e.g. Devdeck: { path: ~/code/DevDeck, repos: { server: ~/code/DevDeck/devdeck-server, app: ~/code/DevDeck/dev-deck } }
 
 projects:
-  ClaudeOS: { path: ~/code/claudeos, pinned: true }
+  ClaudeOS:
+    { path: ~/code/claudeos, pinned: true, repos: { dotfiles: ~/.dotfiles } }
   LazyActions: { path: ~/code/lazy-actions }
   Tribemap:
     {
