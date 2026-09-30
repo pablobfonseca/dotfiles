@@ -31,6 +31,10 @@ state: ~/.local/state/claudeos
 # (default: false)
 notify: false
 
+# The macOS app a click on a waiting banner raises, after switching tmux to the
+# job's pane. Only used with notify on. (default: Ghostty)
+# notify_app: Ghostty
+
 # Defaults the launch overlay is prefilled with. You can still override any of
 # them per launch in the overlay itself.
 defaults:
