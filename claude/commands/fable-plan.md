@@ -35,10 +35,13 @@ If empty, ask for it and stop.
    queue: projects/<project>/Queue.md
    queue_item: <the queue line verbatim, markers included>
    model: opus | sonnet
+   repo: <owner>/<name>
    ---
    ```
 
    `model:` is the executor model this plan is graded for — `opus` or `sonnet`, nothing else — chosen by the rule in Rules. Tools read it instead of scraping the handoff, and step 10 prints the same value, so the frontmatter and the terminal never disagree.
+
+   `repo:` is the GitHub repo the plan executes in, as `owner/name`: the origin of the `<repo root>` the header line names (`git -C <repo root> remote get-url origin`, cut down to `owner/name`), which is not always this session's cwd. Both forms write it. claudeos launches the item's implement in the project's checkout of that repo, and `/implement-plan` stops when it finds itself in any other. Leave the key out when that root has no GitHub origin.
 
    The plan lives in the vault so it syncs between machines with the vault's own git backup, and so there is exactly one authority — never copy it into the repo. With `--notes`, the plan records them verbatim on one `**Launch notes:**` line, under **Goal** for the short shape or under the header for the full shape — the job does not store flags, so the plan is their only record. The plan also records step 5's objection on one `**Objection:**` line: the sentence verbatim, then `Outcome:` with `taken` and what changed, `overruled` and the user's reason, or `not taken up`. It sits under **Goal** for the short shape or under the header for the full shape, after `**Launch notes:**` when both exist. Under `--auto` there is no such line; the objection is the first **Decisions (auto)** entry (see **--auto**).
 
