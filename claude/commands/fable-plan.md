@@ -181,7 +181,7 @@ Steers what the brainstorm opens with. `--notes` takes everything after it, verb
 - Under `--auto`, the notes join the brief beside the queue line (see **--auto**); the same contradiction becomes the `Not planned:` stop.
 - Under `--council`, the design brief gains a `Launch notes: <verbatim>` line after the queue line.
 - Step 6 records the notes verbatim on one `**Launch notes:**` line, under **Goal** for the short shape or under the header for the full shape, since the job that launched this session does not store flags.
-- Out of scope: a dedicated overlay field for notes, an `$EDITOR` prompt, notes through `!`.
+- Out of scope: notes through `!`. The claudeos plan overlay's `notes:` field writes them in `$EDITOR` and passes them as `--notes`, joined to one line.
 
 ## Rules
 
