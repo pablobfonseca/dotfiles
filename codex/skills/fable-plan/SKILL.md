@@ -63,6 +63,8 @@ The vault and the `claudeos queue` commands sit outside the workspace. When a re
 
    `model:` is the Claude executor model this plan is graded for, `opus` or `sonnet`, nothing else, chosen by the rule in Rules. A Claude implement reads it; a Codex implement runs on its own default.
 
+   `effort:` is one more key, on its own line after `model:`, written only when the rule in Rules calls for it, and then always as `effort: high`. A Claude implement launched by claudeos runs at it (`claude --effort`); a Codex implement ignores it.
+
    `repo:` is the GitHub repo the plan executes in, as `owner/name`: the origin of the `<repo root>` the header line names (`git -C <repo root> remote get-url origin`, cut down to `owner/name`), which is not always this session's cwd. Both forms write it. claudeos launches the item's implement in the project's checkout of that repo, and `$implement-plan` stops when it finds itself in any other. Leave the key out when that root has no GitHub origin.
 
    The full shape, in this order:
@@ -94,9 +96,9 @@ The vault and the `claudeos queue` commands sit outside the workspace. When a re
    - Acceptance checks: observable behaviour, not "should work".
    - Every path, function and command checked against the working tree in this session, not recalled.
 
-9. **Self-check.** Reread the plan as the executor with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list. If the pass changed the tasks enough to change the executor grade, update the plan's `model:` before handing off. For a short plan, ask **Plan shapes**' question instead and run its line check: `awk 'c>=2{n++} /^---$/{c++} END{print n}' <plan>` prints at most `60`, and `grep -c '^```' <plan>` prints `0`.
+9. **Self-check.** Reread the plan as the executor with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list. If the pass changed the tasks enough to change the executor grade, update the plan's `model:` and `effort:` before handing off. For a short plan, ask **Plan shapes**' question instead and run its line check: `awk 'c>=2{n++} /^---$/{c++} END{print n}' <plan>` prints at most `60`, and `grep -c '^```' <plan>` prints `0`.
 
-10. **Hand off.** Print exactly this and stop, with `<model>` replaced by the value written to `model:` in step 6:
+10. **Hand off.** Print exactly this and stop, with `<model>` replaced by the value written to `model:` in step 6, and `[--effort high]` printed as `--effort high` when the plan carries `effort: high`, left out otherwise:
 
    ```
    Plan ready: projects/<project>/plans/<file>.md  (^qN)
@@ -104,7 +106,7 @@ The vault and the `claudeos queue` commands sit outside the workspace. When a re
      codex
      $implement-plan <project> | qN
    On Claude Code instead:
-     claude --model <model>
+     claude --model <model> [--effort high]
      /implement-plan <project> | qN
    ```
 
@@ -144,4 +146,5 @@ Steers what step 5 opens with. `--notes` takes everything after it, verbatim, to
 
 - NO implementation in this session. No code edits, no branches, no commits. Writing the plan file and stamping the queue line are the only writes this skill performs.
 - Run from the repo being planned: the plan is grounded in real code, and step 5 needs to read it.
-- Executor model, one decision with two outputs: `sonnet` when every task is mechanical (renames, config plumbing, well-specified CRUD), `opus` when tasks need minor local decisions. Write it to `model:` in step 6 and print the same value in step 10's handoff; `opus` and `sonnet` are the only values `model:` takes. Append a "bump thinking effort" note to the handoff only when tasks involve debugging or gnarly integration; otherwise say nothing about effort.
+- Executor model, one decision with two outputs: `sonnet` when every task is mechanical (renames, config plumbing, well-specified CRUD), `opus` when tasks need minor local decisions. Write it to `model:` in step 6 and print the same value in step 10's handoff; `opus` and `sonnet` are the only values `model:` takes.
+- Executor effort: write `effort: high` in step 6 when tasks involve debugging or gnarly integration, or when the plan is the short shape, which hands judgment back to the executor; otherwise leave the key out. `high` is the only value this skill writes. The Claude block of step 10's handoff carries it as `--effort high`; there is no separate note about effort.
