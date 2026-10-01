@@ -41,6 +41,8 @@ If empty, ask for it and stop.
 
    `model:` is the executor model this plan is graded for — `opus` or `sonnet`, nothing else — chosen by the rule in Rules. Tools read it instead of scraping the handoff, and step 10 prints the same value, so the frontmatter and the terminal never disagree.
 
+   `effort:` is one more key, on its own line after `model:`, written only when the rule in Rules calls for it, and then always as `effort: high`. claudeos passes it as `claude --effort` when it launches the item's implement, the chained one included; with no key the implement launches at claudeos's own `defaults.effort.implement`.
+
    `repo:` is the GitHub repo the plan executes in, as `owner/name`: the origin of the `<repo root>` the header line names (`git -C <repo root> remote get-url origin`, cut down to `owner/name`), which is not always this session's cwd. Both forms write it. claudeos launches the item's implement in the project's checkout of that repo, and `/implement-plan` stops when it finds itself in any other. Leave the key out when that root has no GitHub origin.
 
    The plan lives in the vault so it syncs between machines with the vault's own git backup, and so there is exactly one authority — never copy it into the repo. With `--notes`, the plan records them verbatim on one `**Launch notes:**` line, under **Goal** for the short shape or under the header for the full shape — the job does not store flags, so the plan is their only record. The plan also records step 5's objection on one `**Objection:**` line: the sentence verbatim, then `Outcome:` with `taken` and what changed, `overruled` and the user's reason, or `not taken up`. It sits under **Goal** for the short shape or under the header for the full shape, after `**Launch notes:**` when both exist. Under `--auto` there is no such line; the objection is the first **Decisions (auto)** entry (see **--auto**).
@@ -55,14 +57,14 @@ If empty, ask for it and stop.
    - Acceptance checks: observable behavior, not "should work".
    - A **stop-and-ask list** at the top of the plan. Minimum triggers: reality deviates from the plan (file moved, API changed), tests still failing after 2 fix attempts, ambiguous requirement discovered mid-phase, any security-sensitive decision not spelled out in the plan.
 
-9. **Self-check.** Reread the plan as if you were Sonnet with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list. With `--critics`, run the review round (see **--critics**) instead. If the pass changed the phases enough to change the executor grade, update the plan's `model:` before handing off. For a short plan, ask **Plan shapes**' question instead and run its line check: `awk 'c>=2{n++} /^---$/{c++} END{print n}' <plan>` prints at most `60`, and `grep -c '^```' <plan>` prints `0`.
+9. **Self-check.** Reread the plan as if you were Sonnet with no context: any step where two reasonable implementations exist? Fix it or move the decision to the stop-and-ask list. With `--critics`, run the review round (see **--critics**) instead. If the pass changed the phases enough to change the executor grade, update the plan's `model:` and `effort:` before handing off. For a short plan, ask **Plan shapes**' question instead and run its line check: `awk 'c>=2{n++} /^---$/{c++} END{print n}' <plan>` prints at most `60`, and `grep -c '^```' <plan>` prints `0`.
 
-10. **Hand off.** Print exactly this and stop, with `<model>` replaced by the value written to `model:` in step 6:
+10. **Hand off.** Print exactly this and stop, with `<model>` replaced by the value written to `model:` in step 6, and `[--effort high]` printed as `--effort high` when the plan carries `effort: high`, left out otherwise:
 
    ```
    Plan ready: projects/<project>/plans/<file>.md  (^qN)
    Next: exit, then run from the repo
-     claude --model <model>
+     claude --model <model> [--effort high]
      /implement-plan <project> | qN
    ```
 
@@ -170,7 +172,7 @@ Unattended planning, what `claudeos`'s `!` key sends. Strip the flag from `$ARGU
 - **Step 5 asks nothing.** Do not call AskUserQuestion, do not stop to ask in prose, do not wait. The queue line (its `→ undetermined:` clause included), `--notes` when given, and what step 2 read are the whole brief — the notes join the brief beside the queue line. For every ambiguity take the most conventional resolution, and record each one under a **Decisions (auto)** section of the plan with the alternative rejected and why, so the user can overrule it before the implement lands. The `Objection:` line still prints, and its sentence is the first **Decisions (auto)** entry, its simpler alternative being the one rejected (why: the queue line is the brief); the plan carries no separate `**Objection:**` line. The stated approach is what gets planned: the objection alone never causes the `Not planned:` stop below and never becomes the approach. A note that contradicts the vault's spec or decisions is the `Not planned:` stop below, never silently followed. Step 3's related candidates are `out of scope` unless the queue line names them.
 - **Stop before step 6 when a default would be a guess at intent**, or when the item turns out to carry architectural, security or data-integrity weight. Write no plan, stamp nothing, leave the item `wip`, and end the turn with `Not planned: <one line why>` followed by `Run /fable-plan <project> | qN attended.` Nothing chains, because nothing was stamped; the idle session is how the user finds out.
 - **Steps 6 to 10 run as written**, self-check included, in the same turn. The handoff is the last thing the session prints; do not append questions or offers after it.
-- `model:` follows the usual rule. The chained implement reads it.
+- `model:` and `effort:` follow the usual rules. The chained implement reads both.
 
 ## --notes
 
@@ -187,4 +189,5 @@ Steers what the brainstorm opens with. `--notes` takes everything after it, verb
 
 - NO implementation in this session. No code edits, no branches, no commits. Writing the plan file and stamping the queue line are the only writes this command performs.
 - Run from the repo being planned — the plan is grounded in real code, and brainstorming needs to read it.
-- Executor model, one decision with two outputs: `sonnet` when every phase is mechanical (renames, config plumbing, well-specified CRUD), `opus` when phases need minor local decisions. Write it to `model:` in step 6 and print the same value in step 10's handoff; `opus` and `sonnet` are the only values `model:` takes. Append a "bump thinking effort" note to the handoff only when phases involve debugging or gnarly integration; otherwise say nothing about effort — effort stays a handoff note, never a frontmatter key.
+- Executor model, one decision with two outputs: `sonnet` when every phase is mechanical (renames, config plumbing, well-specified CRUD), `opus` when phases need minor local decisions. Write it to `model:` in step 6 and print the same value in step 10's handoff; `opus` and `sonnet` are the only values `model:` takes.
+- Executor effort: write `effort: high` in step 6 when phases involve debugging or gnarly integration, or when the plan is the short shape, which hands judgment back to the executor; otherwise leave the key out. `high` is the only value this command writes. Step 10's handoff carries it as `--effort high`; there is no separate note about effort.
