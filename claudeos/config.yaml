@@ -39,6 +39,11 @@ notify: false
 # job's pane. Only used with notify on. (default: Ghostty)
 # notify_app: Ghostty
 
+# Show one tip under the header on the first open of each day: a key or a habit
+# worth knowing, spelled with your own keys. `D` then Tips lists them all, and
+# ctrl+r applies a change. (default: true)
+# tips: true
+
 # Defaults the launch overlay is prefilled with. You can still override any of
 # them per launch in the overlay itself.
 defaults:
