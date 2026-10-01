@@ -66,6 +66,11 @@ defaults:
   # that exits with a PR stamped launches /code-review on it. (default: false)
   chain: true
 
+  # Where the new-project form (H then n, or "+ new project" in the ideas list)
+  # creates a project's folder: <code_dir>/<lowercased name>. A relative path is
+  # refused. (default: ~/code)
+  # code_dir: ~/code
+
   # Prefill for the plan overlay's review: field, for what ! launches with, and
   # for the implement overlay's chain: field. It says how far a chain runs: on,
   # the implement a chained plan starts is chained itself and a /code-review
