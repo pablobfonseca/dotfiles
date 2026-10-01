@@ -3,6 +3,7 @@ level = 'info'
 
 [ai]
 provider = 'anthropic'
+model = 'claude-opus-5-5'
 
 [proxy]
 enable = true
@@ -119,6 +120,16 @@ priority = 60
 [contexts.xcode.match]
 frontmost_bundle_ids = ['com.apple.dt.Xcode']
 frontmost_app_names = ['Xcode']
+
+[contexts.youtube-music-web]
+name = 'YouTube Music (Web)'
+deck = 'youtube-music-web'
+priority = 70
+
+[contexts.youtube-music-web.match]
+frontmost_bundle_ids = ['com.google.Chrome', 'com.apple.Safari', 'company.thebrowser.Browser', 'com.brave.Browser', 'com.microsoft.edgemac']
+frontmost_app_names = ['Google Chrome', 'Safari', 'Arc', 'Brave Browser', 'Microsoft Edge']
+url_contains = ['music.youtube.com']
 
 [contexts.zoom]
 name = 'Zoom'
@@ -1175,6 +1186,146 @@ context = 'main'
 main = true
 WorkflowInputs = []
 
+[[commands]]
+uuid = 'f88cbe5a-b6fa-4be2-96fd-5fe2fb59ce03'
+action = 'browser_open:https://argocd.upscope.io'
+icon = 'custom:argocd'
+IconURL = ''
+label = 'Argocd'
+type = 'action'
+context = 'chrome'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '7768cbc8-8e66-46fc-9e99-568ab7abb370'
+action = 'browser_open:https://github.com/pablobfonseca/dotfiles'
+icon = 'custom:dotfiles'
+IconURL = ''
+label = 'Dotfiles'
+type = 'action'
+context = 'chrome'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'b9b14a35-ba2c-4eed-89ac-880cfad459a6'
+icon = 'folder.fill'
+IconURL = ''
+label = 'YouTube Music (Web)'
+type = 'context'
+context = 'youtube-music-web'
+main = true
+WorkflowInputs = []
+
+[[commands]]
+uuid = '5a36fbf3-e6b3-4935-a5cc-3f4875e4dbf8'
+description = 'Play / Pause'
+action = "osascript -e 'tell application \"System Events\" to keystroke space'"
+icon = 'playpause.fill'
+IconURL = ''
+label = 'Play / Pause'
+type = 'action'
+context = 'youtube-music-web'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '7b18e853-1884-40a4-9a72-8e0ec8eae88c'
+description = 'Next Song'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"j\"'"
+icon = 'forward.end.fill'
+IconURL = ''
+label = 'Next Song'
+type = 'action'
+context = 'youtube-music-web'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'a561397e-c791-434c-932e-833c7774dd29'
+description = 'Previous Song'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"k\"'"
+icon = 'backward.end.fill'
+IconURL = ''
+label = 'Previous Song'
+type = 'action'
+context = 'youtube-music-web'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'f93e5b52-973d-4626-b474-cd342a432c78'
+description = 'Like Song'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"+\"'"
+icon = 'hand.thumbsup.fill'
+IconURL = ''
+label = 'Like Song'
+type = 'action'
+context = 'youtube-music-web'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '2cd963d1-ebc9-45bd-be47-42b9c4b8e251'
+description = 'Shuffle'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"s\"'"
+icon = 'shuffle'
+IconURL = ''
+label = 'Shuffle'
+type = 'action'
+context = 'youtube-music-web'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'd0c273b9-c5e4-4e27-a81e-1595e56e4887'
+description = 'Repeat'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"r\"'"
+icon = 'repeat'
+IconURL = ''
+label = 'Repeat'
+type = 'action'
+context = 'youtube-music-web'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '02ae1409-e062-437a-93e1-0d2af908ed68'
+description = 'Search'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"/\"'"
+icon = 'magnifyingglass'
+IconURL = ''
+label = 'Search'
+type = 'action'
+context = 'youtube-music-web'
+WorkflowInputs = []
+
+[[commands]]
+uuid = 'fa0cd2dc-f70f-4a39-90a4-01d2f51d1140'
+description = 'Mute Tab'
+action = 'browser_tab:toggle_mute'
+icon = 'speaker.slash.fill'
+IconURL = ''
+label = 'Mute Tab'
+type = 'action'
+context = 'youtube-music-web'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '79829d89-9be7-4120-a2d1-9dccf5d00634'
+description = 'Pin Tab'
+action = 'browser_tab:toggle_pin'
+icon = 'pin.fill'
+IconURL = ''
+label = 'Pin Tab'
+type = 'action'
+context = 'youtube-music-web'
+WorkflowInputs = []
+
+[[commands]]
+uuid = '7e5ab5b1-e095-485e-9869-4ef1dfe27bb8'
+description = 'Show Shortcuts'
+action = "osascript -e 'tell application \"System Events\" to keystroke \"?\"'"
+icon = 'keyboard'
+IconURL = ''
+label = 'Show Shortcuts'
+type = 'action'
+context = 'youtube-music-web'
+WorkflowInputs = []
+
 [workflows]
 [workflows.ask_ai]
 name = 'Ask AI'
@@ -1224,21 +1375,3 @@ type = 'fill_form'
 
 [workflows.ask_ai.steps.fields]
 prompt = '{{query}}'
-
-# AI-generated command
-[[commands]]
-uuid = "f88cbe5a-b6fa-4be2-96fd-5fe2fb59ce03"
-label = "Argocd"
-action = "browser_open:https://argocd.upscope.io"
-icon = "custom:argocd"
-type = "action"
-context = "chrome"
-
-# AI-generated command
-[[commands]]
-uuid = "7768cbc8-8e66-46fc-9e99-568ab7abb370"
-label = "Dotfiles"
-action = "browser_open:https://github.com/pablobfonseca/dotfiles"
-icon = "custom:dotfiles"
-type = "action"
-context = "chrome"
