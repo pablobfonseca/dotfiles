@@ -367,6 +367,7 @@ colors:
 #     palette: ":"
 #     reload: ctrl+r
 #     usage: T
+#     doctor: []                  # no default key; the palette runs it as :doctor (default: [])
 
 serve:
   listen: 100.108.205.64:4343
