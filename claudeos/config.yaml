@@ -85,6 +85,18 @@ defaults:
   # (default: 0, unlimited)
   # max_review_backlog: 4
 
+  # Effort level per job kind, passed as `claude --effort` at launch: low,
+  # medium, high, xhigh or max. A kind named here replaces only its own
+  # default and a kind left out keeps the built-in one; "" switches a kind
+  # off, so it passes no flag and runs at the effortLevel of Claude Code's own
+  # settings. An implement takes its plan's own effort: first, and --effort on
+  # a palette launch outranks both. Claude only: gemini and codex sessions get
+  # no flag.
+  # (default: { implement: medium, groom: medium })
+  # effort:
+  #   implement: medium
+  #   groom: medium
+
 # ---------------------------------------------------------------------------
 # Projects
 # ---------------------------------------------------------------------------
