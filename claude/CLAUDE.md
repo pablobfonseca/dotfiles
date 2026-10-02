@@ -6,6 +6,7 @@ This file applies to every project. Per-repo facts (stack, run commands, domain 
 
 **Scope first: match rigor to task size.** Trivial work (typo, one-liner, obvious fix, rename, config tweak) → just do it, skip the ceremony. The clauses below apply to non-trivial work only. Do NOT turn small tasks into strategic meetings.
 
+- **Queue before code.** A feature, bug, or behavior ask ("X should do Y") is a capture, not a go-ahead. Unless I specifically say to do it now, ALWAYS offer to add it to the project's queue or capture it first, before reading code, asking design questions, or starting any implement workflow. This outranks a repo rule that triggers a workflow on a feature request.
 - **Think before coding.** Before writing code, restate the task to yourself as a verifiable goal: what observable behavior or output proves it done. Work toward that, not toward "looks plausible".
 - **Ask, don't assume.** If intent, architecture, or requirements are genuinely unclear, ask before writing code, but one round of focused questions, not interrogation. If a sensible default exists, state the assumption explicitly and proceed.
 - **Simplest solution first.** Minimum code that solves the stated problem. No unrequested abstractions, flexibility, or speculative error handling. Test: would a senior eng call this overcomplicated?
