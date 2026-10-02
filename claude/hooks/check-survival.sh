@@ -8,8 +8,9 @@ H=${HOOKS:-$(cd "$(dirname "$0")" && pwd)}
 T=$(mktemp -d) || exit 1
 T=$(cd "$T" && pwd -P) || exit 1
 hook() { HOME=$T/home PATH=$T/bin:$PATH ${GUARD_BASH:-} "$H/survival-list.sh"; }
+fail=0
 case_() { # name expected actual
-  if [[ $2 == "$3" ]]; then echo "PASS $1"; else echo "FAIL $1: expected '$2', got '$3'"; fi
+  if [[ $2 == "$3" ]]; then echo "PASS $1"; else echo "FAIL $1: expected '$2', got '$3'"; fail=1; fi
 }
 has() { grep -qF -- "$1" && echo yes || echo no; }
 silent() { local out; out=$(cat); [[ -z $out ]] && echo silent || echo "spoke: $out"; }
@@ -181,4 +182,8 @@ case_ "empty form takes the newest"      yes "$(start empty "" | has "Plan: $T/r
 case_ "outside a checkout"               yes "$(start nogit "Demo | q7" "$T" | has 'Branch: none (detached HEAD or not a git checkout)')"
 
 rm -rf "$T"
-[[ -z ${GUARD_BASH:-} && -x /bin/bash ]] && GUARD_BASH=/bin/bash "$0" | sed "s|^|[/bin/bash] |"
+if [[ -z ${GUARD_BASH:-} && -x /bin/bash ]]; then
+  GUARD_BASH=/bin/bash "$0" | sed "s|^|[/bin/bash] |"
+  (( PIPESTATUS[0] == 0 )) || fail=1
+fi
+exit $fail
