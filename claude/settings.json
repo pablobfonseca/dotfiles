@@ -197,6 +197,16 @@
         ]
       }
     ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claudeos hook StopFailure"
+          }
+        ]
+      }
+    ],
     "PreCompact": [
       {
         "hooks": [
