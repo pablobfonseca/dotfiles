@@ -10,8 +10,9 @@ H=${HOOKS:-$HOME/.dotfiles/claude/hooks}
 guard() { ${GUARD_BASH:-} "$H/$1"; }
 decision() { local out; out=$(cat); [[ -z $out ]] && echo allow || jq -r '.decision // .hookSpecificOutput.permissionDecision // "allow"' <<<"$out" 2>/dev/null; }
 shape() { local out; out=$(cat); [[ -z $out ]] && echo silent || jq -r 'if .decision then "gemini" elif .hookSpecificOutput then "claude" else "empty-json" end' <<<"$out" 2>/dev/null; }
+fail=0
 case_() { # name expected actual
-  if [[ $2 == "$3" ]]; then echo "PASS $1"; else echo "FAIL $1: expected $2, got '$3'"; fi
+  if [[ $2 == "$3" ]]; then echo "PASS $1"; else echo "FAIL $1: expected $2, got '$3'"; fail=1; fi
 }
 payload() { # event tool key value [cwd]
   jq -cn --arg e "$1" --arg t "$2" --arg k "$3" --arg v "$4" --arg c "${5:-}" '{hook_event_name:$e,tool_name:$t,tool_input:{($k):$v},cwd:$c}'
@@ -39,7 +40,7 @@ case_ "edit session via dotdot"       deny  "$(qv Edit file_path "$T/ClaudeOS/..
 case_ "edit dotdot into session"      allow "$(qv Edit file_path "$T/Tribemap/../ClaudeOS/Queue.md")"
 case_ "write view via dot"            deny  "$(qv Write file_path "$V/./Queue.md")"
 case_ "write view via dotdot"         deny  "$(qv Write file_path "$V/plans/../Queue.md")"
-case_ "dotdot past root"              deny  "$(qv Edit file_path "/../../$Q/Queue.md")"
+case_ "dotdot past root"              deny  "$(qv Edit file_path "/../../$T/Tribemap/Queue.md")"
 case_ "edit relative, open session"   deny  "$(qv Edit file_path "vault-queues/ClaudeOS/Queue.md")"
 # --- codex: PreToolUse, shell as Bash, edits as apply_patch with the patch in tool_input.command
 case_ "codex apply_patch update authority, open session"   allow "$(qv apply_patch command "$(patch Update "$T/ClaudeOS/Queue.md")")"
@@ -104,4 +105,8 @@ case_ "gemini merge allow shape"   empty-json "$(payload BeforeTool run_shell_co
 case_ "claude merge deny shape"    claude     "$(payload PreToolUse Bash command "gh pr merge 12" | guard guard-merge.sh | shape)"
 case_ "claude merge allow shape"   silent     "$(payload PreToolUse Bash command "gh pr view 12" | guard guard-merge.sh | shape)"
 case_ "merge guard bad input, gemini shape" silent "$(printf 'garbage' | guard guard-merge.sh | shape)"
-[[ -z ${GUARD_BASH:-} && -x /bin/bash ]] && GUARD_BASH=/bin/bash "$0" | sed "s|^|[/bin/bash] |"
+if [[ -z ${GUARD_BASH:-} && -x /bin/bash ]]; then
+  GUARD_BASH=/bin/bash "$0" | sed "s|^|[/bin/bash] |"
+  (( PIPESTATUS[0] == 0 )) || fail=1
+fi
+exit $fail
