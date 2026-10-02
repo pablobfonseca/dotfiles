@@ -345,5 +345,6 @@
       "**Org-specific CLIs**: `upscope` CLI (docker/db/console wrapper, alias `tm`; project commands defined in cli.yml) — 366 uses in shell history; `gh` (55×)",
       "No routine <user>/ prefix qualifiers found in recon"
     ]
-  }
+  },
+  "advisorModel": "opus"
 }
