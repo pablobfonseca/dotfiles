@@ -352,6 +352,7 @@ layout:
 colors:
   match: "#FFD602" # search hit highlight (default: {light: 170, dark: 212})
 
+
 #   title: { light: 26, dark: 39 }           # pane titles and the header
 #   dim: { light: 243, dark: 245 }           # secondary text: ids, timestamps, hints
 #   failure: { light: 160, dark: 196 }       # failed checks, errors, refusals
@@ -427,6 +428,5 @@ colors:
 #     - key: L                    # lazygit on the job's worktree
 #       name: lazygit
 #       command: "cd {{.Worktree}} && lazygit"
-
-serve:
-  listen: 100.96.249.82:4343
+# serve:
+#   listen: 0.0.0.0
