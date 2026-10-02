@@ -291,6 +291,11 @@ telegram:
 # reads less dense. Minimum 0, which is the dense view. (default: 0)
 # spacing: 1
 #
+#   # How many more blank rows go before each lane header (except the first),
+#   # on top of `spacing`, so the lanes stand apart while the items stay dense.
+#   # Minimum 0. (default: 0)
+#   lane_spacing: 0
+#
 #   # Changed lines (additions plus deletions) above which a PR is large:
 #   # its size on the PRs row turns amber and it sorts after changes
 #   # requested. 0 turns both off. Minimum 0. (default: 1000)
