@@ -11,6 +11,10 @@
 # a Queue.md. Patch headers are read trimmed, as Codex parses them, and only `+` lines are content.
 # Relative paths are joined to the payload's cwd first; Gemini and Codex send them. Without a cwd a
 # relative path cannot be placed, so any one ending in Queue.md is refused.
+# A shell command also names one through a relative Queue.md word that the cwd, or a `cd` target in
+# the command (each relative target joined to the one before), places on a guarded path. Variables,
+# command substitution and scripts are not followed, and with no cwd and no `cd` a bare Queue.md
+# word is allowed: a grep pattern cannot be told from a path.
 set -uo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/guard-dialect.sh"
 
@@ -33,9 +37,9 @@ clean_path() {
   if [[ $1 == /* ]]; then printf '/%s' "${out[*]}"; else printf '%s' "${out[*]}"; fi
 }
 
-absolute() { # a file_path or a patch header path; a relative one is joined to the payload's cwd, if any
-  local p=$1
-  [[ $p == /* || -z $cwd ]] || p="$cwd/$p"
+absolute() { # <path> [base]: a relative path is joined to the base, the payload's cwd unless one is given, if any
+  local p=$1 base=${2-$cwd}
+  [[ $p == /* || -z $base ]] || p="$base/$p"
   clean_path "$p"
 }
 
@@ -48,6 +52,29 @@ session_open() { # <absolute .../<project>/Queue.md>: `claudeos queue edit <proj
   [[ $1 == /*/Queue.md && -f ${project_dir%/*}/.git/queue-tool-edit/${project_dir##*/} ]]
 }
 
+CD_RE="(^|[;&|(){}[:space:]])cd[[:space:]]+(\"([^\"]*)\"|'([^']*)'|([^;&|()<>[:space:]\"']+))(.*)\$"
+# Words are split by IFS and matched by glob: bash 3.2 runs ${var//pattern/ } and ${word##*/} in
+# quadratic time, which stalls the hook on a long command.
+WORD_BREAK=$' \t\n"\';&|<>()`'
+
+shell_names_queue() { # <command>: a Queue.md word that the cwd, or a `cd` target in the command, places on a guarded one
+  [[ $1 == *Queue.md* ]] || return 1
+  local rest=$1 base=$cwd bases=("$cwd") words word
+  while [[ $rest =~ $CD_RE ]]; do
+    rest=${BASH_REMATCH[6]}
+    base=$(absolute "${BASH_REMATCH[3]}${BASH_REMATCH[4]}${BASH_REMATCH[5]}" "$base")
+    bases+=("$base")
+  done
+  IFS=$WORD_BREAK read -r -d '' -a words <<<"$1"
+  for word in "${words[@]}"; do
+    [[ $word == Queue.md || $word == */Queue.md ]] || continue
+    for base in "${bases[@]}"; do
+      [[ $(absolute "$word" "$base") =~ $QUEUE_RE ]] && return 0
+    done
+  done
+  return 1
+}
+
 input=$(cat) || exit 0
 event=$(jq -r '.hook_event_name // empty' <<<"$input" 2>/dev/null) || exit 0
 tool=$(jq -r '.tool_name // empty' <<<"$input" 2>/dev/null) || exit 0
@@ -56,7 +83,7 @@ cwd=$(jq -r '.cwd // empty' <<<"$input" 2>/dev/null) || exit 0
 case "$tool" in
   Bash|run_shell_command)
     cmd=$(jq -r '.tool_input.command // empty' <<<"$input" 2>/dev/null)
-    [[ $cmd =~ $QUEUE_RE ]] || guard_allow "$event"
+    [[ $cmd =~ $QUEUE_RE ]] || shell_names_queue "$cmd" || guard_allow "$event"
     guard_deny "$event" "$REASON"
     ;;
   apply_patch)
