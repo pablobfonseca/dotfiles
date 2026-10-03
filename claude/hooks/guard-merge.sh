@@ -30,6 +30,6 @@ HELP_RE='^[[:space:]]*gh[[:space:]]+pr[[:space:]]+merge[[:space:]]+--help[[:spac
 merge=0
 [[ $text =~ $GH_RE && $text =~ $MERGE_RE ]] && merge=1
 [[ $text =~ /pulls/[0-9]+/merge ]] && merge=1
-[[ $text =~ mergePullRequest|enablePullRequestAutoMerge ]] && merge=1
+[[ $text =~ mergePullRequest|enablePullRequestAutoMerge|enqueuePullRequest ]] && merge=1
 (( merge )) || guard_allow "$event"
 guard_deny "$event" "$REASON"
