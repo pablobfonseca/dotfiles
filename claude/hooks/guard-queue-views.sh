@@ -84,13 +84,17 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
   (( ${#words[@]} )) || return 1
   for word in "${words[@]}"; do
     if (( ${#word} > MAX_WORD )); then
-      [[ $word == *{* ]] && guard_deny "$event" "$OVERRUN"
+      [[ $word == *{* ]] && named+=(Queue.md)
       continue
     fi
     [[ $word == -[[:alpha:]]* ]] && word=${word#-?}
     n=0
     while (( n++ < MAX_BRACES )) && [[ $word =~ $BRACE_RE ]]; do word="${BASH_REMATCH[1]}*${BASH_REMATCH[2]}"; done
-    [[ $word =~ $BRACE_RE ]] && guard_deny "$event" "$OVERRUN"
+    if [[ $word =~ $BRACE_RE ]]; then
+      name=${word%%\{*}
+      named+=("${name%"${name##*/}"}Queue.md")
+      continue
+    fi
     name=${word##*/}
     [[ Queue.md == $name ]] && named+=("${word%"$name"}Queue.md")
   done
