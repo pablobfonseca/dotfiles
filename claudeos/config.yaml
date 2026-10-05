@@ -165,6 +165,7 @@ projects:
     {
       path: ~/code/go-workspace/src/github.com/pablobfonseca/dotfiles-installer,
     }
+  ChromeStickyNotes: { path: ~/code/chromestickynotes }
 
 # ---------------------------------------------------------------------------
 # Telegram
