@@ -43,9 +43,9 @@ Write `_workspace/{NN}_qa-verifier_{task-slug}.md` containing:
 - The changelog verdict: is a warranted entry missing, does the proposed entry claim more than the diff does, is an accepted residual you found reflected in it
 - The map verdict: does the diff add or remove an exported entry point, kind, config key, `CLAUDEOS_*` variable, tmux or `gh` subcommand, hook event or vocabulary term without the matching edit to the `claudeos-dev` architecture map or `CONTEXT.md`, or add a config key without its commented reference entry in `~/.dotfiles/claudeos/config.yaml` (a `[warn]`)
 - Findings list: `[blocker]` / `[warn]` / `[nit]`, each with file:line
-- Verdict: PASS or FAIL
+- The verdict, as the file's last line and in this exact spelling: `VERDICT: PASS blockers=0` or `VERDICT: FAIL blockers=N`, `N` the count of `[blocker]` findings above it
 
-Your final return message states the verdict and lists blockers only.
+Your final return message lists the blockers only, then ends on the same `VERDICT:` line, last, alone on its line, spelled exactly as above: claudeos reads that line off your return and writes the run on the job, so a reworded, reordered or missing line is a run that never counted.
 
 ## Error handling
 
