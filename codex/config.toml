@@ -37,6 +37,7 @@ screen_reader_detection_done = true
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 gpt-6-astra = 3
+"gpt-6.1-sol" = 3
 
 [plugins."github@openai-curated"]
 enabled = true
