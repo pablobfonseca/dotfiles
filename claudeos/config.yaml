@@ -144,6 +144,10 @@ projects:
   #   # slack_channel: the private #tribemap-feedback channel the Feedback pull (q306) reads into the Inbox; uncomment once q306 ships
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true, slack_channel: C0C4D3FBA2Z }
   GX100: { path: ~/code/gx100-midi-control }
+  Upscope:
+    path: ~/code/upscope-env/userview,
+    repos:
+      userview: ~/code/upscope-env/userview
   Devdeck:
     path: ~/code/DevDeck
     repos:
