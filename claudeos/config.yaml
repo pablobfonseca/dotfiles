@@ -4,6 +4,7 @@
 # the default shown in its comment. An unknown key is a hard error, not a warning:
 # the loader runs with KnownFields(true), so a typo stops the TUI from starting.
 # Reload without restarting with ctrl+r (layout, defaults and project paths only).
+# Or press `,` in the TUI: a form over every key, ctrl+s writes the changed lines.
 #
 # Machine-specific values (project paths, state:) go in an untracked
 # ~/.config/claudeos/config.local.yaml beside this file's symlink; it is laid over
