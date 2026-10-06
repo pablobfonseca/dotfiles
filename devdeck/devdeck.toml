@@ -1,5 +1,5 @@
 [log]
-level = 'info'
+level = 'debug'
 
 [ai]
 provider = 'anthropic'
@@ -13,6 +13,7 @@ columns = 3
 landscape_columns = 5
 background_color = '#000000'
 show_labels = true
+order_by_usage = true
 
 [contexts]
 [contexts.calendar]
@@ -189,7 +190,7 @@ WorkflowInputs = []
 uuid = '57577bc7-7000-5f0f-2461-1df2fe9118e5'
 app = 'Slack'
 action = 'open'
-icon = 'social.slack'
+icon = 'custom:app_slack'
 IconURL = ''
 type = 'action'
 context = 'slack'
@@ -260,8 +261,7 @@ WorkflowInputs = []
 uuid = '10982278-acb5-4509-de6b-03c2fb32ec7d'
 app = 'Calendar'
 action = 'open'
-icon = 'calendar'
-icon_color = '#2ce250'
+icon = 'custom:app_calendar'
 IconURL = ''
 type = 'action'
 context = 'main'
@@ -542,7 +542,7 @@ WorkflowInputs = []
 uuid = 'c2556e6e-e64d-49fc-8da4-cfee1e8c8386'
 app = 'Xcode'
 action = 'open'
-icon = 'hammer.fill'
+icon = 'custom:app_xcode'
 IconURL = ''
 type = 'action'
 context = 'xcode'
@@ -1146,7 +1146,7 @@ WorkflowInputs = []
 [[commands]]
 uuid = '77bad61c-95e6-44fe-85be-edb7161d1341'
 app = 'Reminders'
-icon = 'checkmark.circle.fill'
+icon = 'custom:app_reminders'
 IconURL = ''
 label = 'Open Reminders'
 type = 'action'
