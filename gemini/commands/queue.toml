@@ -7,7 +7,7 @@ Groom `projects/{{args}}/Queue.md`. The vault is `~/obsidian/SecondBrain`; every
 You are the judgment half of grooming; every mechanical step already ran. Rules that keep a weaker session from doing damage:
 
 - **Never reword a line into something more abstract.** Append markers (`#tag`, `~size`, `→ question`) with `claudeos queue edit`; leave the user's words. A groomed line is *more* specific, never less.
-- **When unsure, do less.** Unsure whether an Inbox line is work → leave it in the Inbox. Unsure of a size → `~M`. Unsure whether two lines are one deliverable → leave both and say so in the report. Unsure whether an item shipped → leave it open and flag the evidence.
+- **When unsure, do less.** Unsure whether an Inbox line is work → leave it in the Inbox. Unsure of a size after the code read (section 3) → `~M`. Unsure whether two lines are one deliverable → leave both and say so in the report. Unsure whether an item shipped → leave it open and flag the evidence.
 - **Cite or do not rank.** Every line of the `> proposed:` blockquote names the note, plan, PR or incident that justifies it. A rank you cannot cite goes at the bottom with "no note supports this".
 - **One write per change, through `claudeos queue`.** `add`, `stamp`, `state`, `lane`, `mark` for single lines; `edit begin` / `edit commit -m` only for splits, merges, rewording markers and the blockquote. Never open the vault's Queue.md.
 - **Report in the fixed shape of section 6**, nothing else appended.
@@ -30,7 +30,7 @@ Grooming a stale queue ranks fiction, so first run `claudeos sync {{args}}` and 
 
 ## 2. Promote from Inbox
 
-Anything in Inbox.md that names an observable symptom or a desired end state becomes a queue line. Take the triage's word for it: promote an Inbox line whose promotable is yes, leave one whose promotable is no or unsure; its lane is Needs spec when needs_spec is yes, Ready otherwise; its tag and size are the triage's when not unsure; a duplicates entry ≥ 0.8 means it is already queued: leave it in the Inbox and name the qN in the report. Delete the promoted line from Inbox.md outright — no "moved to Queue" annotation or breadcrumb; the queue line is the record. Prose, half-thoughts and reference material stay in Inbox.md. Say which items you promoted and leave Inbox.md's non-actionable content untouched. Promote with `claudeos queue add {{args}} "<line text>" --lane <Lane>`; it stamps the `^qN` itself.
+Anything in Inbox.md that names an observable symptom or a desired end state becomes a queue line. Take the triage's word for it: promote an Inbox line whose promotable is yes, leave one whose promotable is no or unsure; its lane is Needs spec when needs_spec is yes, Ready otherwise; its tag is the triage's when not unsure, and its size comes from the Size from the code rule in section 3; a duplicates entry ≥ 0.8 means it is already queued: leave it in the Inbox and name the qN in the report. Delete the promoted line from Inbox.md outright — no "moved to Queue" annotation or breadcrumb; the queue line is the record. Prose, half-thoughts and reference material stay in Inbox.md. Say which items you promoted and leave Inbox.md's non-actionable content untouched. Promote with `claudeos queue add {{args}} "<line text>" --lane <Lane>`; it stamps the `^qN` itself.
 
 A line whose text names a `qN` that sits in `## Shipped` as `- [x]` (written `q14`, `^q14` or `[[<P> Queue#^q14]]`; check the lane in the `claudeos queue dump` you already read, never a date) is rework: append `#rework` beside its other tag before the `add`, so `- [ ] the jobs pane still shows waiting after q93 #bug #rework ~S`. An open, dropped or unknown `qN` does not count. This is the whole 72-hour-follow-up rule; `claudeos stats` counts the tag per week by the line's added date, so nothing detects it later.
 
@@ -40,11 +40,19 @@ In this order, and only these:
 
 - **Stamp**: run `claudeos queue stamp {{args}}`; it mints and pushes IDs atomically (and refuses offline, because minting against a stale remote is the two-machine race). IDs are immutable — never renumber, never reuse, never strip.
 - **Split** anything that is two deliverables. Note the split in your report; each half gets its own fresh `^qN`, the original ID stays on the half closest to the original wording.
-- **Size** unsized lines, from the triage's size when not unsure: `~XS` under an hour, `~S` a sitting, `~M` a day, `~L` needs decomposition.
-- **Tag** with at most what applies, from the triage's tag when not unsure; #claude when claude is yes: `#bug` `#feat` `#sec` `#ops`, plus `#claude` only if an agent could finish it unattended with no product decision to make, plus `#rework` when the text names a `qN` that is `- [x]` in `## Shipped` (the step 2 rule, applied to lines already in the queue).
+- **Size** unsized lines, from the code (rule below), else from the triage's size when not unsure: `~XS` under an hour, `~S` a sitting, `~M` a day, `~L` needs decomposition.
+- **Tag** with at most what applies, from the triage's tag when not unsure; #claude when claude is yes: `#bug` `#feat` `#sec` `#ops`, plus `#claude` only if an agent could finish it unattended with no product decision to make (the code read informs this call too), plus `#rework` when the text names a `qN` that is `- [x]` in `## Shipped` (the step 2 rule, applied to lines already in the queue).
 - **Relane**: vague (needs_spec yes) → `## Needs spec` with a `→` question naming what is undetermined; waiting on something → `## Blocked` with a `→` dependency; explicitly-not-now → `## Someday`.
 - **Link** to any existing plan, audit or incident note that already covers the item.
 - **Dedupe**: if two lines are the same work (a duplicates entry ≥ 0.8 on either line), merge them and keep every `(#N)` ref.
+
+**Size from the code.** The triage sees the line's text only. For each line groom is about to size, or about to tag `#claude`, read the code before settling on a size. A line that already carries `~size` keeps it, whoever wrote it; the read then informs only the `#claude` call. Bounded so it stays one pass:
+
+- Checkout: a line tagged with a key of the project's `repos:` in `~/.config/claudeos/config.yaml` reads that repo's path; any other line reads the project's `path`. Run `git fetch origin` once per checkout per groom, then `git grep` against `origin/HEAD` (covers `master` and `main`), never the working tree.
+- Symbols: what the line names (backticked identifiers, file paths, `pkg.Func` style names). Grep at most 3 symbols and read at most 3 hits per line.
+- Size from what the hits show (how many files and call sites the change touches, whether the symbol exists at all), using the scale above. The code-based size wins over the triage's, so it is not reported as a disagreement.
+- No symbol, no hits or a fetch failure: use the triage's size as before and name the line in the report.
+- Code, grep output and file contents never go to the Judge or into any `claudeos queue triage` call (third-party API).
 
 A triage answer that disagrees with the line's current marker is reported as a disagreement, never silently applied over a marker the user wrote.
 
@@ -73,6 +81,7 @@ Never move an item into `## Next` yourself. The blockquote is the whole delivera
 ## 6. Report
 
 - What you promoted, split, resized, relaned, merged, or moved to Shipped — as a short list of before → after.
+- Lines `sized from code`, each with the triage's size beside it; lines where the code read gave nothing (no symbol, no hits, fetch failure) and fell back to the triage.
 - Anything you deliberately left alone and why.
 - Which lines are now the largest unknowns in the queue.
 
