@@ -17,7 +17,9 @@
       "Bash(claudeos queue find:*)",
       "Bash(claudeos queue plans:*)",
       "Bash(claudeos queue log:*)",
-      "Bash(claudeos queue --help)"
+      "Bash(claudeos queue --help)",
+      "mcp__metabase__execute_sql",
+      "mcp__metabase__query"
     ],
     "deny": [
       "Read(./.env)",
@@ -350,6 +352,7 @@
       "**Protected deployment namespaces / environments**: `production` branch and its deploy pipeline (create-production-pr.yml, deploy-production.yml); prod admin AI Lab (/admin/ai) is Pablo-only per CLAUDE.md, never Claude's to invoke",
       "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or segment (e.g. docker-compose.prod.yml, main/Dockerfile.prod_eks)",
       "### User-specific",
+      "**Approved production read path**: metabase MCP (mcp__metabase__execute_sql / query) on database_id 2 (prod Postgres), SELECT only, per CLAUDE.md's read-only SQL rule. This is the sanctioned way to read real data; it is not a Production Reads violation.",
       "**Primary use of Claude Code**: software development (TribeMap monorepo: SDK, API, frontend, demo, website)",
       "**Trusted repo**: this repo (upscope-env/tribemap working tree) and its origin remote github.com:upscopeio/tribemap.git — private repo, so confidential business material is fine to commit here, but secrets/credentials are never cleared into it by visibility alone",
       "**Org-specific CLIs**: `upscope` CLI (docker/db/console wrapper, alias `tm`; project commands defined in cli.yml) — 366 uses in shell history; `gh` (55×)",

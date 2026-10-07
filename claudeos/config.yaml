@@ -140,6 +140,7 @@ projects:
       path: ~/code/upscope-env/tribemap,
       pinned: true,
       slack_channel: C0C4D3FBA2Z,
+      deploy: { base: production, command: /deploy-checklist },
     }
   #   # slack_channel: the private #tribemap-feedback channel the Feedback pull (q306) reads into the Inbox; uncomment once q306 ships
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true, slack_channel: C0C4D3FBA2Z }
@@ -412,6 +413,7 @@ colors:
 #     palette: ":"
 #     reload: ctrl+r
 #     usage: T
+#     followups: F
 #     doctor: []                  # no default key; the palette runs it as :doctor (default: [])
 
 # ---------------------------------------------------------------------------
