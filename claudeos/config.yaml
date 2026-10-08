@@ -146,6 +146,8 @@ projects:
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true, slack_channel: C0C4D3FBA2Z }
   #   # deploy: the deploy PR's base branch, the checklist slash command and file classes (name: [globs]) for claudeos deploy brief (default: unset)
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, deploy: { base: production, command: /deploy-checklist, classes: { migrations: [api/src/db/migrations/*.sql] } } }
+  #   # digest: daily.dev search terms for the weekly digest, one to ten (default: unset)
+  #   # ClaudeOS: { path: ~/code/claudeos, digest: { keywords: [tmux, "bubble tea", "claude code"] } }
   GX100: { path: ~/code/gx100-midi-control }
   Upscope:
     path: ~/code/upscope-env/userview,
@@ -240,6 +242,31 @@ telegram:
 #   # How often the TUI pulls every configured channel. Refused under 10s.
 #   # (default: 60s)
 #   every: 60s
+
+# ---------------------------------------------------------------------------
+# Digest (daily.dev)
+# ---------------------------------------------------------------------------
+#
+# A weekly per-project digest: the running TUI (the one polling the Telegram
+# bot, as for Slack) writes projects/<P>/Digest YYYY-Www.md once per ISO week
+# for every project with `projects.<P>.digest.keywords`, the Judge keeping the
+# daily.dev posts that fit the keywords; `claudeos digest run <P>` does it by
+# hand and `B` lists the latest one, enter capturing an entry to the Inbox.
+# Every key here needs a restart.
+
+# digest:
+#   # Whether the TUI writes digests at all. `claudeos digest run` runs either way.
+#   # (default: true)
+#   enabled: true
+#
+#   # File holding the daily.dev personal access token (daily.dev/settings/api),
+#   # one line, mode 0600, read at call time.
+#   # (default: ~/.config/claudeos/dailydev-token)
+#   token_file: ~/.config/claudeos/dailydev-token
+#
+#   # How often the TUI checks whether each project's digest exists yet. Refused under 1m.
+#   # (default: 1h)
+#   every: 1h
 
 # ---------------------------------------------------------------------------
 # Judge (TypeSafe)
@@ -385,7 +412,7 @@ colors:
 # A few bindings are fixed and cannot be rebound: esc to clear or go back, and
 # the viewer's close keys.
 #
-# Sections: navigation, queue, jobs, prs, inbox, projects, ideas, viewer, global
+# Sections: navigation, queue, jobs, prs, inbox, projects, ideas, digest, viewer, global
 
 # keys:
 #   navigation:
@@ -403,10 +430,13 @@ colors:
 #     toggle: P
 #     merge: M
 #     attach: a
+#     deploy: d
 #   inbox:
 #     toggle: I
 #   ideas:
 #     open: A
+#   digest:
+#     open: B
 #   viewer:
 #     half_down: [d, pgdown, space]
 #   global:
