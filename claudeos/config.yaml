@@ -259,7 +259,8 @@ telegram:
 # A weekly per-project digest: the running TUI (the one polling the Telegram
 # bot, as for Slack) writes projects/<P>/Digest YYYY-Www.md once per ISO week
 # for every project with `projects.<P>.digest.keywords`, the Judge keeping the
-# daily.dev posts that fit the keywords; `claudeos digest run <P>` does it by
+# daily.dev posts that fit the project (the first paragraph of projects/<P>.md
+# under its title, beside the keywords); `claudeos digest run <P>` does it by
 # hand and `B` lists the latest one, enter capturing an entry to the Inbox.
 # Every key here needs a restart.
 
