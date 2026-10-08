@@ -133,7 +133,12 @@ defaults:
 
 projects:
   ClaudeOS:
-    { path: ~/code/claudeos, pinned: true, repos: { dotfiles: ~/.dotfiles } }
+    {
+      path: ~/code/claudeos,
+      pinned: true,
+      repos: { dotfiles: ~/.dotfiles },
+      digest: { keywords: ["claude code", "automations", "ai agents"] },
+    }
   LazyActions: { path: ~/code/lazy-actions }
   Tribemap:
     {
@@ -150,7 +155,7 @@ projects:
   #   # ClaudeOS: { path: ~/code/claudeos, digest: { keywords: [tmux, "bubble tea", "claude code"] } }
   GX100: { path: ~/code/gx100-midi-control }
   Upscope:
-    path: ~/code/upscope-env/userview,
+    path: ~/code/upscope-env/userview
     repos:
       userview: ~/code/upscope-env/userview
   Devdeck:
