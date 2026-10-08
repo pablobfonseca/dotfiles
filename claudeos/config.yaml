@@ -300,19 +300,6 @@ telegram:
 #   token_file: ~/.config/claudeos/serve-token
 
 # ---------------------------------------------------------------------------
-# Judge
-# ---------------------------------------------------------------------------
-#
-# The TypeSafe System One client behind `claudeos judge test` and the
-# judgments later items build on it. The key is read from a file at call time
-# and never placed in any environment.
-
-# judge:
-#   # Path to the file holding the TypeSafe API key. It must be mode 0600.
-#   # (default: ~/.config/claudeos/typesafe-key)
-#   key_file: ~/.config/claudeos/typesafe-key
-
-# ---------------------------------------------------------------------------
 # Layout
 # ---------------------------------------------------------------------------
 #
@@ -322,10 +309,10 @@ telegram:
 # `bottom` may only hold detail, jobs, prs and inbox.
 
 # layout:
-# How many blank rows go after each queue item and before each lane header
-# (except the first), so a header sits on its first item and the lanes pane
-# reads less dense. Minimum 0, which is the dense view. (default: 0)
-# spacing: 1
+#   # How many blank rows go after each queue item and before each lane header
+#   # (except the first), so a header sits on its first item and the lanes pane
+#   # reads less dense. Minimum 0, which is the dense view. (default: 0)
+#   spacing: 1
 #
 #   # How many more blank rows go before each lane header (except the first),
 #   # on top of `spacing`, so the lanes stand apart while the items stay dense.
@@ -468,5 +455,3 @@ colors:
 #     - key: L                    # lazygit on the job's worktree
 #       name: lazygit
 #       command: "cd {{.Worktree}} && lazygit"
-# serve:
-#   listen: 0.0.0.0
