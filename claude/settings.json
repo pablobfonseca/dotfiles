@@ -19,7 +19,8 @@
       "Bash(claudeos queue log:*)",
       "Bash(claudeos queue --help)",
       "mcp__metabase__execute_sql",
-      "mcp__metabase__query"
+      "mcp__metabase__query",
+      "mcp__sentry__update_issue"
     ],
     "deny": [
       "Read(./.env)",
