@@ -151,6 +151,10 @@ projects:
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true, slack_channel: C0C4D3FBA2Z }
   #   # deploy: the deploy PR's base branch, the checklist slash command and file classes (name: [globs]) for claudeos deploy brief (default: unset)
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, deploy: { base: production, command: /deploy-checklist, classes: { migrations: [api/src/db/migrations/*.sql] } } }
+  #   # rounds: daily passes over the project's follow-ups, by name: the local time
+  #   # of day and the project's slash command, launched once a day as rounds-<name>
+  #   # on the first machine whose claim lands; :round <name> re-runs one (default: unset)
+  #   # Tribemap: { path: ~/code/upscope-env/tribemap, rounds: { morning: { at: "08:30", command: /morning } } }
   #   # digest: daily.dev search terms for the weekly digest, one to ten (default: unset)
   #   # ClaudeOS: { path: ~/code/claudeos, digest: { keywords: [tmux, "bubble tea", "claude code"] } }
   GX100: { path: ~/code/gx100-midi-control }
@@ -437,6 +441,7 @@ colors:
 #     usage: T
 #     followups: F
 #     doctor: []                  # no default key; the palette runs it as :doctor (default: [])
+#     round: []                   # no default key; the palette runs it as :round <name> (default: [])
 
 # ---------------------------------------------------------------------------
 # Custom actions
