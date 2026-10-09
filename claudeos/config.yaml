@@ -118,7 +118,7 @@ projects:
       pinned: true,
       repos: { dotfiles: ~/.dotfiles },
       digest: { keywords: ["claude code", "automations", "ai agents"] },
-      deploy: { base: production },
+      deploy: { base: production, command: /deploy-checklist },
     }
   LazyActions: { path: ~/code/lazy-actions }
   Tribemap:
@@ -324,11 +324,6 @@ layout:
 
 colors:
   match: "#FFD602" # search hit highlight (default: {light: 170, dark: 212})
-notify: true
-notify_app: NotifiCLI
-telegram:
-  enabled: false
-
 
 #   title: { light: 26, dark: 39 }           # pane titles and the header
 #   dim: { light: 243, dark: 245 }           # secondary text: ids, timestamps, hints
