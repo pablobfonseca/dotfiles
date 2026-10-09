@@ -170,7 +170,6 @@ projects:
       web: ~/code/DevDeck/devdeck-web
       hub: ~/code/DevDeck/devdeck-hub
       infra: ~/code/DevDeck/devdeck-infra
-      harness: ~/code/DevDeck/devdeck-harness
   CobrowsingSDK:
     path: ~/code/cobrowsing-mobile
     repos:
