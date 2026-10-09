@@ -21,17 +21,19 @@
 # at `=` (of=Queue.md). More than MAX_CD `cd` targets beside such a word, or more than MAX_PLACE
 # placements, is refused unread: a guard that runs past its hook timeout does not block. A payload jq
 # cannot read a command, patch or path from is refused.
-# A command that names a guarded Queue.md is still allowed when it only reads it: every segment of
-# the command (split at ; & | ( ) newline and backtick) that holds a word which could name a Queue.md
-# starts with one of READERS as a bare word (no path, no env assignment, no sudo, env, xargs or time
-# in front), `rg` carries no --pre, and no such word follows a > redirect anywhere (>, >>, >|, &>,
-# 2>, <>); more than MAX_REDIRECT redirects or MAX_SEGMENT segments beside such a word is refused
-# unread, like the cd cap (20000 segments took 8 s under bash 3.2, against the 10 s hook timeout). So
-# in a queue project directory `ls *.md`, `cat Queue.md` and `grep -n x Queue.md` are allowed and
-# `sed -i`, `tee`, `cp`, `>>` and every unlisted program are refused. sed is not a reader:
-# its script writes (`w file`, GNU `e cmd`) and a word test cannot tell that from a read. Not
-# followed: variables, command substitution, eval, $'…' quoting, scripts and interpreters, pushd,
-# git -C, symlinks, a glob in a directory name, a directory handed to a recursive tool, a `{ …; }`
+# A command that names a guarded Queue.md is still allowed when it only reads it: EVERY segment of
+# the command (split at ; & | ( ) newline and backtick), named or not, starts with one of READERS as
+# a bare word (no path, no env assignment, no sudo, env, xargs or time in front), and no word that
+# could name a Queue.md follows a > redirect anywhere (>, >>, >|, >!, &>, 2>, <>); more than
+# MAX_REDIRECT redirects or MAX_SEGMENT segments beside such a word is refused unread, like the cd
+# cap (20000 segments took 8 s under bash 3.2, against the 10 s hook timeout). Checking every
+# segment is what refuses a reader's output reaching a writer (`$(ls Queue.md)`, `| xargs rm`), a
+# redefined reader (`cat(){ …; }`, `PATH=…`) and a zsh glob qualifier (`Queue.md(e:…:)`). So in a
+# queue project directory `ls *.md`, `cat Queue.md | head` and `grep -n x Queue.md` are allowed and
+# `sed -i`, `tee`, `cp`, `>>`, `echo`, `rg` (--pre, -z) and every unlisted program are refused. sed
+# is not a reader: its script writes (`w file`, GNU `e cmd`) and a word test cannot tell that from a
+# read. Not followed: variables, eval, $'…' quoting, scripts and interpreters, pushd, git -C,
+# symlinks, a glob in a directory name, a directory handed to a recursive tool, `file -C`, a `{ …; }`
 # group (its head word is `{`), a `>` inside a pattern (`grep '>' Queue.md` reads as a redirect). With
 # no cwd and no `cd` a bare Queue.md word is allowed: a grep pattern cannot be told from a path.
 set -uo pipefail
@@ -40,7 +42,7 @@ shopt -s nocasematch
 
 QUEUE_RE='(SecondBrain/projects|vault-queues|(^|[^[:alnum:]_/.-])projects)/[^/[:space:]]+/Queue\.md'
 read -r -d '' REASON <<'EOF'
-Queue.md is written by claudeos queue only: the vault's projects/<P>/Queue.md is a GENERATED READ-ONLY VIEW, overwritten on the next queue write, and the vault-queues copy is the authority it regenerates from, where a hand edit leaves the repo dirty and every later queue write refused. Use the tool: claudeos queue state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `claudeos queue edit <project> begin` then `claudeos queue edit <project> commit -m "..."` for free-form grooming, and claudeos queue dump|find <project> to read. Run `claudeos queue --help` for syntax. A plain read of the file is allowed: ls, cat, head, tail, wc, grep, rg, stat, diff, file, cut or nl as the bare command word, with no > redirect onto the file; this command is not one.
+Queue.md is written by claudeos queue only: the vault's projects/<P>/Queue.md is a GENERATED READ-ONLY VIEW, overwritten on the next queue write, and the vault-queues copy is the authority it regenerates from, where a hand edit leaves the repo dirty and every later queue write refused. Use the tool: claudeos queue state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `claudeos queue edit <project> begin` then `claudeos queue edit <project> commit -m "..."` for free-form grooming, and claudeos queue dump|find <project> to read. Run `claudeos queue --help` for syntax. A plain read of the file is allowed: ls, cat, head, tail, wc, grep, stat, diff, file, cut or nl as the bare command word of every part of the command, with no > redirect onto the file; this command is not one.
 EOF
 read -r -d '' OVERRUN <<'EOF'
 The queue guard could not place every path in this command: it has too many cd targets, too many > redirects, too many command segments or too many words that could name a Queue.md, and a command the guard cannot finish reading is refused. Split it into shorter commands, or write the file with the Write tool instead of a heredoc.
@@ -88,16 +90,17 @@ QUOTES=$'["\'\\\\]'
 # and ${word##*/} in quadratic time, so both are kept to words of MAX_WORD at most, and a subshell
 # per placement is what let a 2.6 KB command run for 12 s.
 WORD_BREAK=$' \t\n;&|<>()`='
-# The read exception: programs that only read the files named on their command line.
-READERS=' ls cat head tail wc grep rg stat diff file cut nl '
+# The read exception: programs that only read the files named on their command line, and cd, which
+# only moves where the next one reads.
+READERS=' ls cat head tail wc grep stat diff file cut nl cd '
 SEGMENT_BREAK=$'\n;&|()`'
-HEAD_BREAK=$' \t<>='
-REDIRECT_RE='>[>|&]*[[:space:]]*([^[:space:];&|<>()`=]+)(.*)$'
+HEAD_BREAK=$' \t'
+REDIRECT_RE='>[>|&!]*[[:space:]]*([^[:space:];&|<>()`=]+)(.*)$'
 
 names_queue() { # <dequoted word>: its last part could expand to Queue.md, or it holds a guarded path
   local word=$1 n=0
-  if (( ${#word} > MAX_WORD )); then [[ $word == *{* ]]; return; fi
   [[ $word =~ $QUEUE_RE ]] && return 0
+  if (( ${#word} > MAX_WORD )); then [[ $word == *{* ]]; return; fi
   [[ $word == -[[:alpha:]]* ]] && word=${word#-?}
   while (( n++ < MAX_BRACES )) && [[ $word =~ $BRACE_RE ]]; do word="${BASH_REMATCH[1]}*${BASH_REMATCH[2]}"; done
   [[ $word =~ $BRACE_RE ]] && return 0
@@ -144,8 +147,8 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
   return 1
 }
 
-shell_reads_queue() { # <command dequoted>: every segment holding a word that could name a Queue.md starts with a bare reader, and no such word follows a > redirect
-  local rest=$1 segments segment words word head n=0
+shell_reads_queue() { # <command dequoted>: every segment starts with a bare reader, and no Queue.md word follows a > redirect
+  local rest=$1 segments segment head args n=0
   while [[ $rest =~ $REDIRECT_RE ]]; do
     (( n++ < MAX_REDIRECT )) || guard_deny "$event" "$OVERRUN"
     rest=${BASH_REMATCH[2]}
@@ -155,17 +158,9 @@ shell_reads_queue() { # <command dequoted>: every segment holding a word that co
   (( ${#segments[@]} )) || return 1
   (( ${#segments[@]} > MAX_SEGMENT )) && guard_deny "$event" "$OVERRUN"
   for segment in "${segments[@]}"; do
-    IFS=$WORD_BREAK read -r -d '' -a words <<<"$segment"
-    (( ${#words[@]} )) || continue
-    for word in "${words[@]}"; do
-      names_queue "$word" || continue
-      IFS=$HEAD_BREAK read -r head _ <<<"$segment"
-      [[ $READERS == *" $head "* ]] || return 1
-      if [[ $head == rg ]]; then
-        for word in "${words[@]}"; do [[ $word == --pre ]] && return 1; done
-      fi
-      break
-    done
+    IFS=$HEAD_BREAK read -r head args <<<"$segment"
+    [[ -z $head || -z $args && $head == [0-9] ]] && continue
+    [[ $READERS == *" $head "* ]] || return 1
   done
   return 0
 }
