@@ -32,8 +32,8 @@ case_ "edit vault view"        deny  "$(qv Edit file_path "$V/Queue.md")"
 case_ "write vault view"       deny  "$(qv Write file_path "$V/Queue.md")"
 case_ "write authority"        deny  "$(qv Write file_path "$Q/Queue.md")"
 T=$(mktemp -d)/vault-queues
-mkdir -p "$T/.git/queue-tool-edit" "$T/ClaudeOS" "$T/Tribemap"
-touch "$T/.git/queue-tool-edit/ClaudeOS"
+mkdir -p "$T/.claudeos/edit" "$T/ClaudeOS" "$T/Tribemap"
+touch "$T/.claudeos/edit/ClaudeOS"
 case_ "edit authority, no session"    deny  "$(qv Edit file_path "$T/Tribemap/Queue.md")"
 case_ "edit authority, open session"  allow "$(qv Edit file_path "$T/ClaudeOS/Queue.md")"
 case_ "write authority, open session" deny  "$(qv Write file_path "$T/ClaudeOS/Queue.md")"
@@ -44,6 +44,11 @@ case_ "write view via dot"            deny  "$(qv Write file_path "$V/./Queue.md
 case_ "write view via dotdot"         deny  "$(qv Write file_path "$V/plans/../Queue.md")"
 case_ "dotdot past root"              deny  "$(qv Edit file_path "/../../$T/Tribemap/Queue.md")"
 case_ "edit relative, open session"   deny  "$(qv Edit file_path "vault-queues/ClaudeOS/Queue.md")"
+O=$(mktemp -d)/SecondBrain/projects
+mkdir -p "$O/.claudeos/edit" "$O/ClaudeOS" "$O/Tribemap"
+touch "$O/.claudeos/edit/ClaudeOS"
+case_ "edit one-folder authority, open session" allow "$(qv Edit file_path "$O/ClaudeOS/Queue.md")"
+case_ "edit one-folder authority, no session"   deny  "$(qv Edit file_path "$O/Tribemap/Queue.md")"
 # --- codex: PreToolUse, shell as Bash, edits as apply_patch with the patch in tool_input.command
 case_ "codex apply_patch update authority, open session"   allow "$(qv apply_patch command "$(patch Update "$T/ClaudeOS/Queue.md")")"
 case_ "codex apply_patch relative authority, open session" allow "$(qv apply_patch command "$(patch Update ClaudeOS/Queue.md)" "$T")"
