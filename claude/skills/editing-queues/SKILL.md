@@ -31,7 +31,7 @@ That help output is the syntax reference. Read it instead of guessing flags; thi
 | Situation | Command |
 |---|---|
 | Starting work on an item | `state <P> <qN> wip` |
-| Item shipped | `state <P> <qN> done` then `lane <P> <qN> Shipped` |
+| Item shipped | `ship <P> <qN>` (sets state done and lane Shipped as one commit) |
 | Abandoning an item | `state <P> <qN> dropped --reason "<why>"` |
 | Plan written for it | `mark <P> <qN> --plan '[[<P>/plans/<file>]]'` |
 | PR opened | `mark <P> <qN> --pr <url>` |
@@ -68,5 +68,5 @@ Report these, do not resolve them yourself:
 |---|---|
 | `Edit` on the vault's `Queue.md` | Silently discarded on the next write |
 | Appending `^qN` yourself | Collides with the other machine's next mint |
-| Moving a line by hand to `Shipped` | Skips the transaction; use `state` then `lane` |
+| Moving a line by hand to `Shipped` | Skips the transaction; use `ship` |
 | Committing the vault for a queue change | The tool already pushed the authority repo |
