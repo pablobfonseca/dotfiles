@@ -10,7 +10,7 @@ paths:
 
 ## Overview
 
-Queue authority is the private **vault-queues** repo (`~/.local/share/vault-queues`), not the vault. `claudeos queue` runs every mutation as one git transaction (pull --rebase, mutate, commit, push, retry), which is what stops two machines silently losing each other's writes.
+Queue authority is the private **vault-queues** repo (`~/.local/share/vault-queues`), not the vault. (With `queues:` empty the vault's `projects/<P>/Queue.md` is the authority itself and the sentence below does not apply.) `claudeos queue` runs every mutation as one git transaction (pull --rebase, mutate, commit, push, retry), which is what stops two machines silently losing each other's writes.
 
 **The vault's `projects/<Project>/Queue.md` is a generated read-only view.** Editing it with Edit/Write looks like it worked, then gets overwritten on the next queue write.
 
