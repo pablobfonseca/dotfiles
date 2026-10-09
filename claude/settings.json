@@ -13,14 +13,13 @@
   },
   "permissions": {
     "allow": [
-      "Bash(claudeos queue dump:*)",
-      "Bash(claudeos queue find:*)",
-      "Bash(claudeos queue plans:*)",
-      "Bash(claudeos queue log:*)",
-      "Bash(claudeos queue --help)",
+      "Bash(claudeos queue:*)",
       "mcp__metabase__execute_sql",
       "mcp__metabase__query",
       "mcp__sentry__update_issue"
+    ],
+    "ask": [
+      "Bash(claudeos queue delete:*)"
     ],
     "deny": [
       "Read(./.env)",
