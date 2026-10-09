@@ -89,7 +89,7 @@ QUOTES=$'["\'\\\\]'
 # Words are split by IFS and tested by glob, and nothing here forks: bash 3.2 runs ${var//pattern/}
 # and ${word##*/} in quadratic time, so both are kept to words of MAX_WORD at most, and a subshell
 # per placement is what let a 2.6 KB command run for 12 s.
-WORD_BREAK=$' \t\n;&|<>()`=!'
+WORD_BREAK=$' \t\n;&|<>()`='
 # zsh reads (a|b) and (x) inside a word as a glob group, so Queue.m(d|x) names Queue.md: words for
 # that test break at blanks and redirects only, and each group is read as a `*` like a brace list.
 PAREN_BREAK=$' \t\n;&<>`'
@@ -121,6 +121,7 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
       [[ $word == *{* ]] && named+=(Queue.md)
       continue
     fi
+    word=${word#!}
     [[ $word == -[[:alpha:]]* ]] && word=${word#-?}
     n=0
     while (( n++ < MAX_BRACES )) && [[ $word =~ $BRACE_RE ]]; do word="${BASH_REMATCH[1]}*${BASH_REMATCH[2]}"; done
@@ -136,6 +137,7 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
   for word in "${words[@]}"; do
     [[ $word == *\(*\)* ]] || continue
     (( ${#word} > MAX_WORD )) && continue
+    word=${word#!}
     n=0
     while (( n++ < MAX_BRACES )) && [[ $word =~ $PAREN_RE ]]; do word="${BASH_REMATCH[1]}*${BASH_REMATCH[2]}"; done
     name=${word##*/}
