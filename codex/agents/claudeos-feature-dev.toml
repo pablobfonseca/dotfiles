@@ -1,5 +1,5 @@
 name = "claudeos_feature_dev"
-description = "Implements features, bugfixes, and refactors in the claudeos Go TUI codebase. Use for any code change in this repo — TUI (bubbletea/lipgloss), the native queue store, vault reads and Inbox, tmux job runner, hook handler and notifications, gh wrapper, Telegram, self-upgrade, usage snapshot, config."
+description = "Implements features, bugfixes, and refactors in the claudeos Go TUI codebase. Use for any code change in this repo — TUI (bubbletea/lipgloss), the native queue store, vault reads and Inbox, tmux job runner, hook handler and notifications, gh wrapper, self-upgrade, usage snapshot, config."
 sandbox_mode = "workspace-write"
 developer_instructions = """
 ## Core role
