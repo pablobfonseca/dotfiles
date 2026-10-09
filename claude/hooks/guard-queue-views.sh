@@ -24,7 +24,10 @@
 # A command that names a guarded Queue.md is still allowed when it only reads it: EVERY segment of
 # the command (split at ; & | ( ) newline and backtick), named or not, starts with one of READERS as
 # a bare word (no path, no env assignment, no sudo, env, xargs or time in front), and no word that
-# could name a Queue.md follows a > redirect anywhere (>, >>, >|, >!, &>, 2>, <>); more than
+# could name a Queue.md follows a > redirect anywhere (>, >>, >|, >!, &>, 2>, <>), and no redirect
+# target starts with $, a backtick or ( or is followed by ( (`> $(ls Queue.md)`, `>Queue.md(|ls)`:
+# the target is built at run time); a leading ! is read off a word (zsh `>!Queue.md`) and a word
+# holding a (…) group is read as a glob (zsh `Queue.m(d|x)`); more than
 # MAX_REDIRECT redirects or MAX_SEGMENT segments beside such a word is refused unread, like the cd
 # cap (20000 segments took 8 s under bash 3.2, against the 10 s hook timeout). Checking every
 # segment is what refuses a reader's output reaching a writer (`$(ls Queue.md)`, `| xargs rm`), a
@@ -135,8 +138,11 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
   done
   IFS=$PAREN_BREAK read -r -d '' -a words <<<"$2"
   for word in "${words[@]}"; do
+    if (( ${#word} > MAX_WORD )); then
+      [[ $word == *\(* ]] && named+=(Queue.md)
+      continue
+    fi
     [[ $word == *\(*\)* ]] || continue
-    (( ${#word} > MAX_WORD )) && continue
     word=${word#!}
     n=0
     while (( n++ < MAX_BRACES )) && [[ $word =~ $PAREN_RE ]]; do word="${BASH_REMATCH[1]}*${BASH_REMATCH[2]}"; done
