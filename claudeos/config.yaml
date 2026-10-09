@@ -31,20 +31,6 @@ state: ~/.local/state/claudeos
 # Behaviour
 # ---------------------------------------------------------------------------
 
-# Send a macOS desktop notification when a job stops and waits for your input.
-# Off here because the Telegram path and the TUI's own jobs pane already cover it.
-# (default: false)
-notify: false
-
-# The macOS app a click on a waiting banner raises, after switching tmux to the
-# job's pane. Only used with notify on. (default: Ghostty)
-# notify_app: Ghostty
-
-# Show one tip under the header on the first open of each day: a key or a habit
-# worth knowing, spelled with your own keys. `D` then Tips lists them all, and
-# ctrl+r applies a change. (default: true)
-# tips: true
-
 # Defaults the launch overlay is prefilled with. You can still override any of
 # them per launch in the overlay itself.
 defaults:
@@ -89,7 +75,7 @@ defaults:
   # cap a pressed launch is refused (the same key again launches anyway), a
   # batch skips the item, a chained implement waits and starts by itself when
   # one exits, and the phone's is refused. (default: 0, unlimited)
-  max_implements: 5
+  max_implements: 0
 
   # How many open PRs of yours (the rows the PRs pane shows) may exist before an
   # implement launch is held the same way; released when a PR merges or closes.
@@ -132,6 +118,7 @@ projects:
       pinned: true,
       repos: { dotfiles: ~/.dotfiles },
       digest: { keywords: ["claude code", "automations", "ai agents"] },
+      deploy: { base: production },
     }
   LazyActions: { path: ~/code/lazy-actions }
   Tribemap:
@@ -180,45 +167,6 @@ projects:
   ChromeStickyNotes: { path: ~/code/chromestickynotes }
 
 # ---------------------------------------------------------------------------
-# Telegram
-# ---------------------------------------------------------------------------
-#
-# The chat id is deliberately not a setting: it comes from the environment
-# variable CLAUDEOS_TELEGRAM_CHAT, so this file stays machine-independent and
-# safe to version-control. No chat id, no messages, whatever is configured here.
-# Messages are also skipped while claudeos itself is focused.
-
-telegram:
-  #   # Whether the bridge runs at all. false sends nothing, polls for no replies,
-  #   # and stops a missing token file from being a startup error, without you
-  #   # having to unset the chat id or empty `events`. `claudeos telegram test`
-  #   # still sends either way. Read again at every send, so `false` needs no
-  #   # restart; every other telegram key does. (default: true)
-  enabled: false
-  #
-  #   # File holding the bot token, read at send time.
-  #   # (default: ~/.config/claudeos/telegram-token)
-  #   token_file: ~/.config/claudeos/telegram-token
-  #
-  #   # Job states that send a message: `waiting` (the session is asking you
-  #   # something) and `idle` (it finished its turn).
-  #   # A verdict word (finished, asking, blocked, failed) names the idles the Judge classified so; idle means every idle.
-  #   # (default: [waiting, idle])
-  #   events: [waiting, idle]
-  #
-  #   # Per-job-kind override of `events`. A kind listed here uses its own list;
-  #   # everything else falls back to `events` above. An empty list mutes the kind.
-  #   kinds:
-  #     plan: [waiting]
-  #     implement: [waiting, idle]
-  #     groom: []
-  #
-  #   # Wait this long before sending an `idle` message, so a session that pauses
-  #   # for a second and keeps going does not buzz your phone. A Go duration
-  #   # string. (default: 0, meaning send immediately)
-  idle_delay: 30s
-
-# ---------------------------------------------------------------------------
 # Slack (Feedback pull)
 # ---------------------------------------------------------------------------
 #
@@ -226,9 +174,8 @@ telegram:
 # running TUI capture each new top-level human message as one `## Raw` line,
 # download its files beside the note, and react ✅ as the claim. Inbound only.
 # The channel is per project: `projects.<P>.slack_channel` (the id, C… or G…).
-# Every key here needs a restart. One machine polls: the TUI polling the Telegram
-# bot is the one that pulls Slack; CLAUDEOS_SLACK_NO_PULL or CLAUDEOS_TELEGRAM_SEND_ONLY
-# keeps a TUI out of it, `claudeos slack pull` still runs there by hand.
+# Every key here needs a restart. Every running TUI pulls; CLAUDEOS_SLACK_NO_PULL
+# keeps one out of it, `claudeos slack pull` still runs there by hand.
 
 # slack:
 #   # Whether the TUI polls at all. `claudeos slack pull` runs either way.
@@ -249,8 +196,8 @@ telegram:
 # Digest (daily.dev)
 # ---------------------------------------------------------------------------
 #
-# A weekly per-project digest: the running TUI (the one polling the Telegram
-# bot, as for Slack) writes projects/<P>/Digest YYYY-Www.md once per ISO week
+# A weekly per-project digest: the running TUI writes
+# projects/<P>/Digest YYYY-Www.md once per ISO week
 # for every project with `projects.<P>.digest.keywords`, the Judge keeping the
 # daily.dev posts that fit the project (the first paragraph of projects/<P>.md
 # under its title, beside the keywords); `claudeos digest run <P>` does it by
@@ -276,8 +223,8 @@ telegram:
 # ---------------------------------------------------------------------------
 #
 # The TypeSafe System One client behind `claudeos judge test`, and the
-# judgments later items build on it (why a session stopped, which job a
-# Telegram reply is for). The key is read from a file at call time and never
+# judgments later items build on it (why a session stopped). The key is read
+# from a file at call time and never
 # placed in any environment.
 
 # judge:
@@ -377,6 +324,10 @@ layout:
 
 colors:
   match: "#FFD602" # search hit highlight (default: {light: 170, dark: 212})
+notify: true
+notify_app: NotifiCLI
+telegram:
+  enabled: false
 
 
 #   title: { light: 26, dark: 39 }           # pane titles and the header
