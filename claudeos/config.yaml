@@ -138,7 +138,11 @@ projects:
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, rounds: { morning: { at: "08:30", command: /morning } } }
   #   # digest: daily.dev search terms for the weekly digest, one to ten (default: unset)
   #   # ClaudeOS: { path: ~/code/claudeos, digest: { keywords: [tmux, "bubble tea", "claude code"] } }
-  GX100: { path: ~/code/gx100-midi-control }
+  GX100:
+    {
+      path: ~/code/gx100-midi-control,
+      deploy: { base: production, command: /deploy-checklist },
+    }
   Upscope:
     path: ~/code/upscope-env/userview
     repos:
