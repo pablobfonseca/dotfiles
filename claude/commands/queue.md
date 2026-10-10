@@ -19,7 +19,7 @@ Worked example, one Inbox line: `- [ ] the jobs pane shows waiting after I answe
 
 ## 0. Reconcile natively, then read
 
-Queue authority lives in the vault-queues repo; `claudeos queue` pulls before every read and pushes every write, and the vault's `projects/<P>/Queue.md` is a generated read-only view. If any `claudeos queue` call reports a rebase conflict, duplicate IDs or a dirty repo, stop and report; never resolve it yourself.
+Queue authority lives in the vault-queues repo; `claudeos queue` pulls before every read and pushes every write when the queues directory has an origin (a plain folder or a local checkout writes locally), and the vault's `projects/<P>/Queue.md` is a generated read-only view. If any `claudeos queue` call reports a rebase conflict, duplicate IDs or a dirty repo, stop and report; never resolve it yourself.
 
 Grooming a stale queue ranks fiction, so first run `claudeos sync $ARGUMENTS` and print its output. It does the whole plans → PRs → issues reconciliation and writes what the artifacts prove; its `needs judgment` lines are input to your grooming below, not something to act on blindly. If it says the GitHub half was skipped, say so in your report. Do not re-derive any reconciliation by hand.
 
@@ -88,4 +88,4 @@ Never move an item into `## Next` yourself. The blockquote is the whole delivera
 - Anything you deliberately left alone and why.
 - Which lines are now the largest unknowns in the queue.
 
-Every `claudeos queue` mutation commits and pushes the authority repo itself and regenerates the vault view; there is nothing to commit in the vault for queue changes. Inbox.md edits still live in the vault as before.
+Every `claudeos queue` mutation commits and, with an origin, pushes the authority itself and regenerates the vault view; there is nothing to commit in the vault for queue changes. Inbox.md edits still live in the vault as before.
