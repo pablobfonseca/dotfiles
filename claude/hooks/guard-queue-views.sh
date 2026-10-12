@@ -1,26 +1,22 @@
 #!/usr/bin/env bash
-# Queue.md is written by `claudeos queue` only. Runs as Claude Code's and Codex's PreToolUse and as
-# Gemini CLI's BeforeTool, told apart by hook_event_name (guard-dialect.sh). Refuses every edit or
-# write on the vault's generated views and on the vault-queues authority (Claude's Edit and Write,
-# Gemini's replace and write_file, Codex's apply_patch, whose tool_input.command is the patch text) and
-# any shell command that names either (Bash, run_shell_command) unless it only reads it. The one
-# exception to the edit rule is an edit on the authority while `claudeos queue edit <project> begin`
-# has an open session (<repo>/.git/queue-tool-edit/<project>, the marker path the Python queue-tool
-# used, kept by the port): Edit, replace, and an apply_patch whose every Queue.md file header is an
-# `*** Update File:` under one, with no `*** Move to:` into or out of a Queue.md. Patch headers are
-# read trimmed, as Codex parses them, and only `+` lines are content.
-# Relative paths are joined to the payload's cwd first; Gemini and Codex send them. Without a cwd a
-# relative path cannot be placed, so any one ending in Queue.md is refused.
+# Queue.md is written by `claudeos queue` only. Runs as Claude Code's PreToolUse (guard-common.sh
+# holds the deny shape and the jq filters). Refuses every edit or write on the vault's generated
+# views and on the vault-queues authority (Edit and Write) and any Bash command that names either
+# unless it only reads it. The one exception to the edit rule is an edit on the authority while
+# `claudeos queue edit <project> begin` has an open session (<repo>/.git/queue-tool-edit/<project>,
+# the marker path the Python queue-tool used, kept by the port): Edit only.
+# Relative paths are joined to the payload's cwd first. Without a cwd a relative path cannot be
+# placed, so any one ending in Queue.md is refused.
 # Every match ignores case: macOS opens queue.md as Queue.md. The exception does not: a path spelled
 # in another case is refused under an open session too.
 # A shell command is read with its line continuations joined and its quotes and backslashes dropped
-# (guard-dialect.sh). It also names a Queue.md through a relative word that the cwd, or a `cd` target
+# (guard-common.sh). It also names a Queue.md through a relative word that the cwd, or a `cd` target
 # in the command (each relative target joined to the one before, options skipped, quoted and bare
 # pieces read as one target), places on a guarded path. A word counts when its last part is Queue.md
 # or a glob or brace list that can expand to it (Queue.m[d], *.md, {Queue,Design}.md). Words also end
 # at `=` (of=Queue.md). More than MAX_CD `cd` targets beside such a word, or more than MAX_PLACE
 # placements, is refused unread: a guard that runs past its hook timeout does not block. A payload jq
-# cannot read a command, patch or path from is refused.
+# cannot read a command or path from is refused.
 # A command that names a guarded Queue.md is still allowed when it only reads it: EVERY segment of
 # the command (split at ; & | ( ) newline and backtick), named or not, starts with one of READERS as
 # a bare word (no path, no env assignment, no sudo, env, xargs or time in front), and no word that
@@ -41,7 +37,7 @@
 # no cwd and no `cd` a bare Queue.md word is allowed: a grep pattern cannot be told from a path.
 set -uo pipefail
 shopt -s nocasematch
-. "$(dirname "${BASH_SOURCE[0]}")/guard-dialect.sh"
+. "$(dirname "${BASH_SOURCE[0]}")/guard-common.sh"
 
 QUEUE_RE='(SecondBrain/projects|vault-queues|(^|[^[:alnum:]_/.-])projects)/[^/[:space:]]+/Queue\.md'
 read -r -d '' REASON <<'EOF'
@@ -154,12 +150,12 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
     rest=${BASH_REMATCH[6]}
     target=${BASH_REMATCH[4]}
     (( ${#target} > MAX_WORD )) && continue
-    (( ${#bases[@]} > MAX_CD )) && guard_deny "$event" "$OVERRUN"
+    (( ${#bases[@]} > MAX_CD )) && guard_deny "$OVERRUN"
     absolute "${target//$QUOTES/}" "$base"
     base=$placed
     bases+=("$base")
   done
-  (( ${#named[@]} * ${#bases[@]} > MAX_PLACE )) && guard_deny "$event" "$OVERRUN"
+  (( ${#named[@]} * ${#bases[@]} > MAX_PLACE )) && guard_deny "$OVERRUN"
   for word in "${named[@]}"; do
     for base in "${bases[@]}"; do
       absolute "$word" "$base"
@@ -173,14 +169,14 @@ shell_reads_queue() { # <command dequoted>: every segment starts with a bare rea
   local rest=$1 segments segment head args n=0
   [[ $1 =~ $REDIRECT_OPEN_RE ]] && return 1
   while [[ $rest =~ $REDIRECT_RE ]]; do
-    (( n++ < MAX_REDIRECT )) || guard_deny "$event" "$OVERRUN"
+    (( n++ < MAX_REDIRECT )) || guard_deny "$OVERRUN"
     rest=${BASH_REMATCH[2]}
     names_queue "${BASH_REMATCH[1]}" && return 1
     [[ $rest == \(* ]] && return 1
   done
   IFS=$SEGMENT_BREAK read -r -d '' -a segments <<<"$1"
   (( ${#segments[@]} )) || return 1
-  (( ${#segments[@]} > MAX_SEGMENT )) && guard_deny "$event" "$OVERRUN"
+  (( ${#segments[@]} > MAX_SEGMENT )) && guard_deny "$OVERRUN"
   for segment in "${segments[@]}"; do
     IFS=$HEAD_BREAK read -r head args <<<"$segment"
     [[ -z $head || -z $args && $head == [0-9] ]] && continue
@@ -190,50 +186,24 @@ shell_reads_queue() { # <command dequoted>: every segment starts with a bare rea
 }
 
 input=$(cat) || exit 0
-event=$(jq -r '.hook_event_name // empty' <<<"$input" 2>/dev/null) || exit 0
 tool=$(jq -r '.tool_name // empty' <<<"$input" 2>/dev/null) || exit 0
 cwd=$(jq -r '.cwd // empty' <<<"$input" 2>/dev/null) || exit 0
 
 case "$tool" in
-  Bash|run_shell_command)
-    cmd=$(jq -r "$COMMAND_JQ" <<<"$input" 2>/dev/null) || guard_deny "$event" "$REASON"
-    text=$(jq -r "$DEQUOTED_JQ" <<<"$input" 2>/dev/null) || guard_deny "$event" "$REASON"
-    [[ $cmd =~ $QUEUE_RE || $text =~ $QUEUE_RE ]] || shell_names_queue "$cmd" "$text" || guard_allow "$event"
-    shell_reads_queue "$text" && guard_allow "$event"
-    guard_deny "$event" "$REASON"
-    ;;
-  apply_patch)
-    patch=$(jq -r '.tool_input.command // empty' <<<"$input" 2>/dev/null) || guard_deny "$event" "$REASON"
-    from_queue=
-    while IFS= read -r line; do
-      header=${line#"${line%%[![:space:]]*}"}
-      header=${header%"${header##*[![:space:]]}"}
-      if [[ $header =~ ^\*\*\*\ (Update|Add|Delete)\ File:\ (.+)$ ]]; then
-        op=${BASH_REMATCH[1]}
-        absolute "${BASH_REMATCH[2]}"
-        path=$placed
-        from_queue=
-        is_queue "$path" || continue
-        from_queue=1
-        [[ $op == Update ]] && session_open "$path" && continue
-        guard_deny "$event" "$REASON"
-      elif [[ $header =~ ^\*\*\*\ Move\ to:\ (.+)$ ]]; then
-        absolute "${BASH_REMATCH[1]}"
-        [[ -z $from_queue ]] && ! is_queue "$placed" && continue
-        guard_deny "$event" "$REASON"
-      elif [[ $line == +* && $line =~ $QUEUE_RE ]]; then
-        guard_deny "$event" "$REASON"
-      fi
-    done <<<"$patch"
-    guard_allow "$event"
+  Bash)
+    cmd=$(jq -r "$COMMAND_JQ" <<<"$input" 2>/dev/null) || guard_deny "$REASON"
+    text=$(jq -r "$DEQUOTED_JQ" <<<"$input" 2>/dev/null) || guard_deny "$REASON"
+    [[ $cmd =~ $QUEUE_RE || $text =~ $QUEUE_RE ]] || shell_names_queue "$cmd" "$text" || guard_allow
+    shell_reads_queue "$text" && guard_allow
+    guard_deny "$REASON"
     ;;
   *)
-    file=$(jq -r '.tool_input.file_path // empty' <<<"$input" 2>/dev/null) || guard_deny "$event" "$REASON"
-    [[ -n $file ]] || guard_allow "$event"
+    file=$(jq -r '.tool_input.file_path // empty' <<<"$input" 2>/dev/null) || guard_deny "$REASON"
+    [[ -n $file ]] || guard_allow
     absolute "$file"
     target=$placed
-    is_queue "$target" || guard_allow "$event"
-    case "$tool" in Edit|replace) session_open "$target" && guard_allow "$event" ;; esac
-    guard_deny "$event" "$REASON"
+    is_queue "$target" || guard_allow
+    [[ $tool == Edit ]] && session_open "$target" && guard_allow
+    guard_deny "$REASON"
     ;;
 esac
