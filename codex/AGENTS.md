@@ -42,8 +42,7 @@
 ## Codex-Specific
 
 - Use relevant skills when their descriptions match the task. Load detailed references only when needed.
-- Use custom subagents when the user explicitly asks for agents, delegation, or parallel work, or when the task itself calls for a specialized review agent such as `security_reviewer` or `database_reviewer`.
-- Prefer built-in `explorer` for read-only codebase questions and `worker` for bounded implementation work unless a custom agent is a better match.
+- Prefer built-in `explorer` for read-only codebase questions and `worker` for bounded implementation work.
 
 ## Environment
 
