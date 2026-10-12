@@ -66,7 +66,7 @@ npm install -g --prefix ~/.local @pablobfonseca/claude-cyberpunk-powerline
 
 ## Codex
 
-Best-practice Codex setup with global `AGENTS.md`, conservative CLI defaults, focused reusable skills (the queue commands `$queue`, `$next`, `$sync` and `$capture` are copies of `claude/commands/`, changed together with them; the planners `$fable-plan` and `$opus-plan` are rewritten copies of `claude/commands/`, since the originals call Claude Code tools, and change with them too), GitHub plugin enabled, and narrow custom agents for review-oriented work. `config.toml` carries the claudeos hook registrations and the two guards from `claude/hooks/` (`guard-queue-views.sh`, `guard-merge.sh`) as `PreToolUse` hooks. `rules/default.rules` lets `gh` and `claudeos` run without an approval prompt. Codex finds each skill and the rules file through a symlink in `~/.codex/` (`~/.codex/skills/<name>`, `~/.codex/rules/default.rules`), made by hand on each machine. Merge any local `~/.codex/rules/default.rules` into the dotfiles copy first, since `-f` replaces it; `-n` keeps a rerun from nesting a link inside an existing skill directory.
+Codex is an oracle here, not a job runner: `/ask-codex`, and `/fable-plan`'s `--council` and `--critics`, consult it read-only (`claude/docs/oracle-agents.md`). The setup is a global `AGENTS.md`, conservative CLI defaults in `config.toml`, and the general skills under `skills/` (codebase-design, diagnosing-bugs, domain-modeling, front-end-testing, functional, handoff, neovim-lua, typescript-strict), copies of their `claude/skills/` originals where one exists. `rules/default.rules` lets `gh` run without an approval prompt. Codex finds each skill and the rules file through a symlink in `~/.codex/` (`~/.codex/skills/<name>`, `~/.codex/rules/default.rules`), made by hand on each machine. Merge any local `~/.codex/rules/default.rules` into the dotfiles copy first, since `-f` replaces it; `-n` keeps a rerun from nesting a link inside an existing skill directory. The queue command copies, the custom agents and the claudeos hook registrations went with the Codex executor (ClaudeOS q424).
 
 ```bash
 mkdir -p ~/.codex/skills ~/.codex/rules
@@ -76,7 +76,7 @@ ln -sfn ~/.dotfiles/codex/rules/default.rules ~/.codex/rules/default.rules
 
 ## Gemini CLI
 
-`~/.gemini/settings.json`, `~/.gemini/commands`, `~/.gemini/agents` and `~/.gemini/skills` are symlinks into `gemini/`; `commands/` carries `/queue`. `/next`, `/sync` and `/capture` as TOML copies of `claude/commands/` (changed together with them) and `skills/` links the shared `editing-queues`; the settings carry the claudeos hook registrations and the same two guards as `BeforeTool` hooks.
+`~/.gemini/settings.json` is a symlink into `gemini/` and carries only the auth choice. Gemini is an oracle like Codex (`/ask-gemini`, `--council`, `--critics`); its command copies, agents and claudeos hook registrations went with the Gemini executor (ClaudeOS q424).
 
 ## Shell
 
