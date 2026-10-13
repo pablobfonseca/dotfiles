@@ -50,7 +50,7 @@ defaults:
   # that exits with a PR stamped launches /code-review on it. (default: false)
   chain: true
 
-  # Where the new-project form (H then n, or "+ new project" in the ideas list)
+  # Where the new-project form (H then n)
   # creates a project's folder: <code_dir>/<lowercased name>. A relative path is
   # refused. (default: ~/code)
   # code_dir: ~/code
@@ -119,7 +119,7 @@ projects:
       pinned: true,
       repos: { dotfiles: ~/.dotfiles },
       digest: { keywords: ["claude code", "automations", "ai agents"] },
-      deploy: { base: production },
+      deploy: { base: production, command: /deploy-checklist },
     }
   LazyActions: { path: ~/code/lazy-actions }
   Tribemap:
@@ -127,7 +127,20 @@ projects:
       path: ~/code/upscope-env/tribemap,
       pinned: true,
       slack_channel: C0C4D3FBA2Z,
-      deploy: { base: production, command: /deploy-checklist },
+      deploy:
+        {
+          base: production,
+          command: /deploy-checklist,
+          classes:
+            {
+              migrations: [api/src/db/migrations/*.sql],
+              prompts: [api/src/services/campaigns/chat-prompts.ts, api/src/services/ai-config.ts],
+              env: ["**/.env.example", "**/.env.prod.example", api/src/config.ts],
+              website: [website/*.html],
+              nginx: [main/nginx/conf.d/*],
+              sdk: ["sdk/src/**"],
+            },
+        },
     }
   #   # slack_channel: the private #tribemap-feedback channel the Feedback pull (q306) reads into the Inbox; uncomment once q306 ships
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true, slack_channel: C0C4D3FBA2Z }
@@ -139,7 +152,11 @@ projects:
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, rounds: { morning: { at: "08:30", command: /morning } } }
   #   # digest: daily.dev search terms for the weekly digest, one to ten (default: unset)
   #   # ClaudeOS: { path: ~/code/claudeos, digest: { keywords: [tmux, "bubble tea", "claude code"] } }
-  GX100: { path: ~/code/gx100-midi-control }
+  GX100:
+    {
+      path: ~/code/gx100-midi-control,
+      deploy: { base: production, command: /deploy-checklist },
+    }
   Upscope:
     path: ~/code/upscope-env/userview
     repos:
@@ -325,11 +342,6 @@ layout:
 
 colors:
   match: "#FFD602" # search hit highlight (default: {light: 170, dark: 212})
-notify: true
-notify_app: NotifiCLI
-telegram:
-  enabled: false
-
 
 #   title: { light: 26, dark: 39 }           # pane titles and the header
 #   dim: { light: 243, dark: 245 }           # secondary text: ids, timestamps, hints
