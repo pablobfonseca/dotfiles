@@ -2,8 +2,12 @@
 export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-export HISTSIZE=20000
-export SAVEHIST=20000
+export HISTSIZE=50000
+export SAVEHIST=50000
+setopt INC_APPEND_HISTORY       # write history immediately, not in shell exit
+setopt SHARE_HISTORY            # share it live across ALL open tabs
+setopt HIST_IGNORE_DUPS         # skip consecutive duplicates
+setopt HIST_IGNORE_SPACE        # commands starting with a space are never saved
 export DOTFILES=$HOME/.dotfiles
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -115,6 +119,8 @@ zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
 source $ZPLUG_HOME/init.zsh
+
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 zplug "zsh-users/zsh-autosuggestions"
 bindkey "^y" autosuggest-accept
