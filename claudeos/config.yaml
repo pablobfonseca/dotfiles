@@ -14,12 +14,13 @@
 # Paths
 # ---------------------------------------------------------------------------
 
-# The Obsidian vault claudeos reads: projects, plans, the Ideas list and the
-# per-project Inbox all live under it. (default: ~/obsidian/SecondBrain)
+# The notes folder claudeos reads: projects, plans, the Ideas list and the
+# per-project Inbox all live under it; an Obsidian vault is one such folder. (default: ~/obsidian/SecondBrain)
 vault: ~/obsidian/SecondBrain
 
-# The queues repo the queue tool owns. Every write, from the TUI or `claudeos queue`,
-# is one git transaction there: pull --rebase, commit, push. (default: ~/.local/share/vault-queues)
+# A separate queues directory holding <P>/Queue.md: a plain folder (no history), a git checkout
+# (every write a commit) or a checkout with an origin (pull --rebase, commit, push). Empty, the
+# default, keeps each queue in the vault at projects/<P>/Queue.md with no generated view. (default: "")
 queues: ~/.local/share/vault-queues
 
 # Where job state, the hook log and the usage snapshot are written. Claude
