@@ -2,8 +2,12 @@
 export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-export HISTSIZE=20000
-export SAVEHIST=20000
+export HISTSIZE=50000
+export SAVEHIST=50000
+setopt INC_APPEND_HISTORY       # write history immediately, not in shell exit
+setopt SHARE_HISTORY            # share it live across ALL open tabs
+setopt HIST_IGNORE_DUPS         # skip consecutive duplicates
+setopt HIST_IGNORE_SPACE        # commands starting with a space are never saved
 export DOTFILES=$HOME/.dotfiles
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -115,6 +119,8 @@ zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
 source $ZPLUG_HOME/init.zsh
+
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 zplug "zsh-users/zsh-autosuggestions"
 bindkey "^y" autosuggest-accept
@@ -379,6 +385,170 @@ function dependabot-merge-all() {
       echo "Merged PR #$i"
     fi
   done
+}
+
+
+export C_RED=$'\e[0;31m'
+export C_GREEN=$'\e[0;32m'
+export C_YELLOW=$'\e[0;33m'
+export C_CYAN=$'\e[0;36m'
+export C_MAGENTA=$'\e[0;35m'
+export C_NC=$'\e[0m'
+
+webshare() {
+    if [[ "$1" == "help" || "$1" == "-h" || "$1" == "--help" ]]; then
+        echo "${C_CYAN}📁 webshare${C_NC}: Instantly serve the current directory over HTTP with a beautiful UI."
+        echo "Usage: ${C_YELLOW}webshare [port] [-o]${C_NC}"
+        echo ""
+        echo "Options:"
+        echo "  ${C_YELLOW}-o, --open${C_NC}     Automatically open the server in your default browser"
+        echo ""
+        echo "Examples:"
+        echo "  webshare             (Serves on port 8000 by default)"
+        echo "  webshare 3000        (Serves on port 3000)"
+        echo "  webshare 8080 -o     (Serves on 8080 and opens browser)"
+        return 0
+    fi
+
+    local port=8000
+    local open_browser=0
+
+    for arg in "$@"; do
+        case "$arg" in
+            -o|--open) open_browser=1 ;;
+            -*) echo "${C_RED}❌ Unknown option: $arg${C_NC}"; return 1 ;;
+            *)
+                if [[ "$arg" =~ ^[0-9]+$ ]]; then port=$arg
+                else echo "${C_RED}❌ Invalid port: $arg${C_NC}"; return 1; fi
+                ;;
+        esac
+    done
+
+    while lsof -Pi :$port -sTCP:LISTEN -t >/dev/null; do
+        echo "${C_YELLOW}⚠️  Port $port is in use. Trying $((port+1))...${C_NC}"
+        port=$((port+1))
+    done
+
+    local local_ip=$(route -n get default 2>/dev/null | grep 'interface:' | awk '{print $2}' | xargs ipconfig getifaddr 2>/dev/null)
+    [[ -z "$local_ip" ]] && local_ip="127.0.0.1"
+
+    # Friendly Bonjour hostname, detected dynamically (e.g. http://my-macbook.local:8000)
+    local host_name=$(scutil --get LocalHostName 2>/dev/null)
+    local local_alias=""
+    [[ -n "$host_name" ]] && local_alias="http://${host_name}.local:$port"
+
+    echo "${C_GREEN}✅ Web server is running!${C_NC}"
+    echo "${C_CYAN}📂 Serving path:${C_NC} $(pwd)"
+    echo "------------------------------------------------------------"
+    echo "${C_MAGENTA}📱 How to use & share:${C_NC}"
+    echo " • ${C_YELLOW}For yourself:${C_NC} Click or open ${C_GREEN}http://localhost:$port${C_NC}"
+    echo " • ${C_YELLOW}For others:${C_NC}   Tell them to go to one of these links on their device:"
+    echo "                 ${C_GREEN}http://$local_ip:$port${C_NC}   (Always works)"
+    if [[ -n "$local_alias" ]]; then
+        echo "                 ${C_CYAN}$local_alias${C_NC}  (Friendly name, works on most devices)"
+    fi
+    echo "                 ${C_YELLOW}(Note: They must be on the same Wi-Fi/network)${C_NC}"
+    echo "------------------------------------------------------------"
+    echo "${C_YELLOW}Press Ctrl+C to stop the server${C_NC}"
+    echo ""
+
+    if [[ $open_browser -eq 1 ]]; then
+        open "http://localhost:$port"
+    fi
+
+    local py_script=$(cat <<'EOF'
+import http.server, socketserver, os, sys, urllib.parse, html, io
+
+PORT = int(sys.argv[1])
+
+class BeautifulHandler(http.server.SimpleHTTPRequestHandler):
+    def list_directory(self, path):
+        try:
+            files = os.listdir(path)
+        except os.error:
+            self.send_error(404, "No permission to list directory")
+            return None
+
+        files.sort(key=lambda a: a.lower())
+
+        displaypath = html.escape(urllib.parse.unquote(self.path))
+        enc = sys.getfilesystemencoding()
+
+        r = []
+        r.append('<!DOCTYPE html><html><head><meta charset="utf-8">')
+        r.append('<meta name="viewport" content="width=device-width, initial-scale=1">')
+        r.append('<title>Shared Files</title>')
+        r.append('''<style>
+            body { font-family: system-ui, -apple-system, sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 20px; }
+            .container { max-width: 800px; margin: 0 auto; background: #1e1e1e; border-radius: 12px; padding: 20px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); }
+            h1 { margin-top: 0; font-size: 1.4rem; border-bottom: 1px solid #333; padding-bottom: 15px; color: #fff; word-break: break-all; }
+            ul { list-style: none; padding: 0; margin: 0; }
+            li { border-bottom: 1px solid #2a2a2a; }
+            li:last-child { border-bottom: none; }
+            a { display: flex; align-items: center; padding: 12px 10px; color: #bbb; text-decoration: none; font-size: 16px; border-radius: 8px; transition: all 0.2s; word-break: break-word; }
+            a:hover { background: #2a2a2a; color: #fff; transform: translateX(4px); }
+            .icon { font-size: 24px; margin-right: 15px; min-width: 30px; text-align: center; }
+            @media (max-width: 600px) { body { padding: 10px; } .container { padding: 15px; } }
+        </style>''')
+        r.append('</head><body><div class="container">')
+        r.append('<h1>📡 Network Share <br><span style="color:#888; font-size:1rem; font-weight:normal;">%s</span></h1>' % displaypath)
+        r.append('<ul>')
+
+        if self.path != "/":
+            r.append('<li><a href=".."><span class="icon">🔙</span> Parent Directory</a></li>')
+
+        for name in files:
+            if name.startswith('.'):
+                continue
+
+            fullname = os.path.join(path, name)
+            displayname = linkname = name
+            icon = "📄"
+
+            if os.path.isdir(fullname):
+                displayname = name + "/"
+                linkname = name + "/"
+                icon = "📁"
+            else:
+                ext = name.lower().split('.')[-1] if '.' in name else ''
+                if ext in ['mkv', 'mp4', 'avi', 'mov', 'webm']: icon = "🎬"
+                elif ext in ['jpg', 'jpeg', 'png', 'gif', 'webp']: icon = "🖼️"
+                elif ext in ['mp3', 'wav', 'flac', 'm4a']: icon = "🎵"
+                elif ext in ['zip', 'rar', '7z', 'tar', 'gz']: icon = "📦"
+                elif ext in ['pdf']: icon = "📕"
+                elif ext in ['txt', 'md', 'csv', 'json']: icon = "📝"
+                elif ext in ['py', 'js', 'html', 'css', 'java', 'cpp', 'sh']: icon = "💻"
+
+            r.append('<li><a href="%s"><span class="icon">%s</span> %s</a></li>'
+                     % (urllib.parse.quote(linkname, errors='surrogatepass'), icon, html.escape(displayname)))
+
+        r.append('</ul></div></body></html>')
+
+        encoded = ''.join(r).encode(enc, 'surrogateescape')
+        f = io.BytesIO()
+        f.write(encoded)
+        f.seek(0)
+        self.send_response(200)
+        self.send_header("Content-type", "text/html; charset=%s" % enc)
+        self.send_header("Content-Length", str(len(encoded)))
+        self.end_headers()
+        return f
+
+class QuietServer(socketserver.TCPServer):
+    allow_reuse_address = True
+
+    def handle_error(self, request, client_address):
+        import sys
+        if issubclass(sys.exc_info()[0], (BrokenPipeError, ConnectionResetError)):
+            return
+        super().handle_error(request, client_address)
+
+with QuietServer(("", PORT), BeautifulHandler) as httpd:
+    httpd.serve_forever()
+EOF
+)
+
+    python3 -c "$py_script" "$port"
 }
 
 function mdfc() {
