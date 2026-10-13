@@ -66,6 +66,7 @@ End with:
 ## Summary
 - Agree: N   Partial: N   Disagree: N   Clarify: N
 - Recommended next steps: <bullet list>
+- Leftovers: <fN list, offers, or none>
 ```
 
 ## Apply mode (`--apply`)
@@ -107,7 +108,7 @@ The tools: `Monitor` arms the script, `TaskStop` stops it. When either is deferr
   - **Path (b), threads resolved or handled:** every review thread the bot opened (its first comment's `author.login` matches the bot) is either `isResolved: true`, or handled — declined in an earlier pass (👎 and reply, per Apply mode) — whatever the bot has answered in it since. A bot with no threads it opened passes this path trivially.
   - A bot is done when path (a) or path (b) holds for it.
 - **Pass-end rule.** Every pass ends in exactly one of two ways:
-  - Every bot present has signalled done: end the watch and report a final summary. No monitor is left armed.
+  - Every bot present has signalled done: end the watch and report a final summary. No monitor is left armed. Every watch's final summary, this one and the pass-cap stop in Guardrails, ends with `Leftovers: <fN list, offers, or none>`. A leftover is a bot not done when the watch stops at the pass cap, CI pending or failing at the end, or a CodeRabbit `ready_at` still ahead when the watch stops (register it with `--when <ready_at>`).
   - Otherwise arm the monitor, one call, with `timeout_ms: 1800000` (the maximum) and a description naming the PR (`review watch #<number>`):
 
     ```
@@ -148,3 +149,4 @@ claudeos types two one-line prompts into a watching session when it pairs a `/co
 - Read the real code, not just the diff hunk.
 - Never edit files unless `--apply` is set. Default remains review-only. With `--apply`, only `Agree`/`Partially agree` fixes are applied — no confirmation prompt.
 - Replies, 👎 reactions, and thread resolution are `--apply`-only side effects. In default mode, report only.
+- A standalone `/review-pr` session applies the global Leftovers rule (`~/.claude/CLAUDE.md`) to its `Leftovers:` line at its end; a session inside `/implement-plan` leaves that to the command's step 6.
