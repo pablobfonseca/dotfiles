@@ -37,6 +37,15 @@ Anything in Inbox.md that names an observable symptom or a desired end state bec
 
 A line whose text names a `qN` that sits in `## Shipped` as `- [x]` (written `q14`, `^q14` or `[[<P> Queue#^q14]]`; check the lane in the `claudeos queue dump` you already read, never a date) is rework: append `#rework` beside its other tag before the `add`, so `- [ ] the jobs pane still shows waiting after q93 #bug #rework ~S`. An open, dropped or unknown `qN` does not count. This is the whole 72-hour-follow-up rule; `claudeos stats` counts the tag per week by the line's added date, so nothing detects it later.
 
+## 2b. Repeated frictions (ClaudeOS only)
+
+Skip this section unless `$ARGUMENTS` is `ClaudeOS`. The commands, hooks, guards and plan rules every project's sessions run under belong to that project (the dotfiles are its repo), so its groom reads every project's frictions and no other groom reads any.
+
+1. Run `claudeos friction --since <date>`, with `<date>` the `proposed.date` of the `claudeos queue dump` you read in section 1, or `claudeos friction` alone when the dump has no `proposed`. It prints JSON: `frictions`, newest first, each with `at`, `project`, `item`, `kind` and `text`, and a `note` set only when the Judge classified nothing (say it in the report).
+2. Cluster the rows: two or more records with the same `kind` that name the same subject (one command, hook, guard, plan rule, helper or check, however each is worded). A row whose `kind` is `unsure` or empty joins a cluster by subject alone. One record is not a cluster. Unsure whether two records name one subject → they do not.
+3. Skip a cluster that an open or wip line in the dump already covers (it names the same file or rule for the same failure); name that line's qN in the report.
+4. For each remaining cluster add one line: `claudeos queue add ClaudeOS "<the failure, in the records' own words>; change <the harness file path or plan rule to change> (from friction: <project> <item> for each record, the project alone when item is empty) #harness" --lane "Needs spec"`. One line per cluster, never two clusters in one line. Section 3 sizes and tags it like any other line and keeps its `#harness`; triage ran before these lines existed, so you size and tag them alone. The `qN`s after `from friction:` say where each record came from, not what is being reworked: section 3's `#rework` rule does not apply to them.
+
 ## 3. Groom each open line
 
 In this order, and only these:
@@ -86,6 +95,7 @@ Never move an item into `## Next` yourself. The blockquote is the whole delivera
 - What you promoted, split, resized, relaned, merged, or moved to Shipped — as a short list of before → after.
 - Lines `sized from code`, each with the triage's size beside it; lines where the code read gave nothing (no symbol, no hits, fetch failure) and fell back to the triage.
 - Anything you deliberately left alone and why.
+- Frictions (ClaudeOS only): the window (the `--since` date, or `all`), each cluster added as `qN ← <project> <item>, …`, each cluster skipped with the qN that covers it, the number of single records left alone, and the `note` when set.
 - Which lines are now the largest unknowns in the queue.
 
 Every `claudeos queue` mutation commits and, with an origin, pushes the authority itself and regenerates the vault view; there is nothing to commit in the vault for queue changes. Inbox.md edits still live in the vault as before.
