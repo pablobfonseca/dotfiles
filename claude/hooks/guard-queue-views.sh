@@ -3,8 +3,8 @@
 # holds the deny shape and the jq filters). Refuses every edit or write on the vault's generated
 # views and on the vault-queues authority (Edit and Write) and any Bash command that names either
 # unless it only reads it. The one exception to the edit rule is an edit on the authority while
-# `claudeos queue edit <project> begin` has an open session (<repo>/.git/queue-tool-edit/<project>,
-# the marker path the Python queue-tool used, kept by the port): Edit only.
+# `claudeos queue edit <project> begin` has an open session (<projects root>/.claudeos/edit/<project>,
+# the root being the queues directory or the vault's projects/ folder when queues: is empty): Edit only.
 # Relative paths are joined to the payload's cwd first. Without a cwd a relative path cannot be
 # placed, so any one ending in Queue.md is refused.
 # Every match ignores case: macOS opens queue.md as Queue.md. The exception does not: a path spelled
@@ -41,7 +41,7 @@ shopt -s nocasematch
 
 QUEUE_RE='(SecondBrain/projects|vault-queues|(^|[^[:alnum:]_/.-])projects)/[^/[:space:]]+/Queue\.md'
 read -r -d '' REASON <<'EOF'
-Queue.md is written by claudeos queue only: the vault's projects/<P>/Queue.md is a GENERATED READ-ONLY VIEW, overwritten on the next queue write, and the vault-queues copy is the authority it regenerates from, where a hand edit leaves the repo dirty and every later queue write refused. Use the tool: claudeos queue state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `claudeos queue edit <project> begin` then `claudeos queue edit <project> commit -m "..."` for free-form grooming, and claudeos queue dump|find <project> to read. Run `claudeos queue --help` for syntax. A plain read of the file is allowed: ls, cat, head, tail, wc, grep, stat, diff, file, cut or nl as the bare command word of every part of the command, with no > redirect onto the file; this command is not one.
+Queue.md is written by claudeos queue only: the vault's projects/<P>/Queue.md is a GENERATED READ-ONLY VIEW, overwritten on the next queue write, when queues: names a separate directory, and the authority itself when queues: is empty, and the vault-queues copy is the authority it regenerates from, where a hand edit leaves the repo dirty and every later queue write refused. Use the tool: claudeos queue state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `claudeos queue edit <project> begin` then `claudeos queue edit <project> commit -m "..."` for free-form grooming, and claudeos queue dump|find <project> to read. Run `claudeos queue --help` for syntax. A plain read of the file is allowed: ls, cat, head, tail, wc, grep, stat, diff, file, cut or nl as the bare command word of every part of the command, with no > redirect onto the file; this command is not one.
 EOF
 read -r -d '' OVERRUN <<'EOF'
 The queue guard could not place every path in this command: it has too many cd targets, too many > redirects, too many command segments or too many words that could name a Queue.md, and a command the guard cannot finish reading is refused. Split it into shorter commands, or write the file with the Write tool instead of a heredoc.
@@ -73,7 +73,7 @@ is_queue() { # <path from absolute>: a guarded Queue.md, or any Queue.md left re
 
 session_open() { # <absolute .../<project>/Queue.md>: `claudeos queue edit <project> begin` is in flight
   local project_dir=${1%/Queue.md}
-  [[ $1 == /*/Queue.md && -f ${project_dir%/*}/.git/queue-tool-edit/${project_dir##*/} ]]
+  [[ $1 == /*/Queue.md && -f ${project_dir%/*}/.claudeos/edit/${project_dir##*/} ]]
 }
 
 MAX_CD=16      # cd targets read beside a Queue.md word
