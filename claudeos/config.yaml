@@ -126,7 +126,20 @@ projects:
       path: ~/code/upscope-env/tribemap,
       pinned: true,
       slack_channel: C0C4D3FBA2Z,
-      deploy: { base: production, command: /deploy-checklist },
+      deploy:
+        {
+          base: production,
+          command: /deploy-checklist,
+          classes:
+            {
+              migrations: [api/src/db/migrations/*.sql],
+              prompts: [api/src/services/campaigns/chat-prompts.ts, api/src/services/ai-config.ts],
+              env: ["**/.env.example", "**/.env.prod.example", api/src/config.ts],
+              website: [website/*.html],
+              nginx: [main/nginx/conf.d/*],
+              sdk: ["sdk/src/**"],
+            },
+        },
     }
   #   # slack_channel: the private #tribemap-feedback channel the Feedback pull (q306) reads into the Inbox; uncomment once q306 ships
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true, slack_channel: C0C4D3FBA2Z }
