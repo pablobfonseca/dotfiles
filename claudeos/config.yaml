@@ -134,8 +134,13 @@ projects:
           classes:
             {
               migrations: [api/src/db/migrations/*.sql],
-              prompts: [api/src/services/campaigns/chat-prompts.ts, api/src/services/ai-config.ts],
-              env: ["**/.env.example", "**/.env.prod.example", api/src/config.ts],
+              prompts:
+                [
+                  api/src/services/campaigns/chat-prompts.ts,
+                  api/src/services/ai-config.ts,
+                ],
+              env:
+                ["**/.env.example", "**/.env.prod.example", api/src/config.ts],
               website: [website/*.html],
               nginx: [main/nginx/conf.d/*],
               sdk: ["sdk/src/**"],
@@ -184,6 +189,7 @@ projects:
     }
   ChromeStickyNotes: { path: ~/code/chromestickynotes }
   ClaudeOSGUI: { path: ~/code/claudeosgui }
+  smart-wardrobe: { path: ~/code/smart-wardrobe }
 
 # ---------------------------------------------------------------------------
 # Slack (Feedback pull)
@@ -343,6 +349,7 @@ layout:
 
 colors:
   match: "#FFD602" # search hit highlight (default: {light: 170, dark: 212})
+
 
 #   title: { light: 26, dark: 39 }           # pane titles and the header
 #   dim: { light: 243, dark: 245 }           # secondary text: ids, timestamps, hints
