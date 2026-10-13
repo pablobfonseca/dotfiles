@@ -9,8 +9,8 @@ This command is the one exception to the vault rule that Claude may not invent q
 
 ## 1. Read
 
-- `projects/$ARGUMENTS.md` — the note. Missing (or no argument given): list `projects/`, say to run `claudeos queue init <P>`, and stop.
-- `claudeos queue dump $ARGUMENTS` — the queue as JSON. A failing dump: print its stderr, say to run `claudeos queue init $ARGUMENTS`, and stop.
+- `projects/$ARGUMENTS.md`: the note. Missing (or no argument given): list `projects/`, say to run `claudeos queue init <P>`, and stop.
+- `claudeos queue dump $ARGUMENTS`: the queue as JSON. A failing dump: print its stderr, say to run `claudeos queue init $ARGUMENTS`, and stop.
 
 Either stop writes nothing.
 
@@ -58,7 +58,7 @@ Each approved entry, in catalogue order, is one call:
 claudeos queue add $ARGUMENTS "<entry> #feat ~<size>" --lane "Needs spec"
 ```
 
-A refused `add` is reported verbatim and the rest still run. `none`, or no answer, adds nothing. Then write `## Next steps` (section 3).
+The text is double-quoted, so escape its backticks (`` \` ``) or the shell runs `make check`. Each `add` prints `{"id": "qN"}`; that is the minted ID. A refused `add` is reported verbatim and the rest still run. `none`, or no answer, adds nothing. Then write `## Next steps` (section 3).
 
 ## 6. Report
 
