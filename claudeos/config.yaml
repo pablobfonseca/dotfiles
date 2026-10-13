@@ -49,7 +49,7 @@ defaults:
   # that exits with a PR stamped launches /code-review on it. (default: false)
   chain: true
 
-  # Where the new-project form (H then n, or "+ new project" in the ideas list)
+  # Where the new-project form (H then n)
   # creates a project's folder: <code_dir>/<lowercased name>. A relative path is
   # refused. (default: ~/code)
   # code_dir: ~/code
