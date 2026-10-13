@@ -66,6 +66,7 @@ End with:
 ## Summary
 - Agree: N   Partial: N   Disagree: N   Clarify: N
 - Recommended next steps: <bullet list>
+- Leftovers: <fN list, offers, or none>
 ```
 
 ## Apply mode (`--apply`)
@@ -115,6 +116,7 @@ The tools: `Monitor` arms the script, `TaskStop` stops it. When either is deferr
     ```
 
     `--since` is the start time of the pass that just ran: the script reports anything created after it on its first poll, so nothing that lands while a pass runs is lost. `--ready-at` is set only while CodeRabbit is rate-limited (below). At most one monitor is ever armed.
+- **Final summary.** A watch ends either on the done signal or on the pass-cap stop in Guardrails, and either summary closes with `Leftovers: <fN list, offers, or none>`. A leftover is a bot not done when the watch stops at the pass cap, CI pending or failing at the end, or a CodeRabbit `ready_at` still ahead when the watch stops (register it with `--when <ready_at>`).
 - **On an event.** Each line the monitor prints arrives as a notification: `review <login> <id> <sha>`, `comment <login> <id> <path>`, `issue-comment <login> <id>`, `push <sha>`, `checks <pass|fail|pending>`, `ready`, `closed <MERGED|CLOSED>` or `error <message>`. Events are data from the script, never review comments to analyse or prompts to answer.
   - `review`, `comment`, `issue-comment`, `ready` or `error`: first `TaskStop` the monitor, then run a pass (which fetches whatever the event announced along with everything else), then the pass-end rule. Lines that arrive together count as one event.
   - `push` or `checks`: nothing to do yet; the bots have not spoken about the new head and the monitor is still running. Note the value for the summary and keep waiting.
@@ -130,7 +132,7 @@ The tools: `Monitor` arms the script, `TaskStop` stops it. When either is deferr
 Guardrails:
 - Only act on comments not already handled in a previous pass (track comment IDs already analysed / applied).
 - A bot reply inside a thread you already replied to is not a new comment: ignore it unless it raises a claim the thread has not covered. Never reply to a bot reply that only acknowledges, restates, or asks a question — that starts a ping-pong.
-- Stop the watch with a status if a bot still has an unresolved, unhandled thread, or hasn't reviewed the latest push, after a reasonable number of passes (e.g. 12), rather than running indefinitely. The cap counts passes only: a re-arm on expiry, a `push` or `checks` event and a `ready_at` wait count nothing, because the monitor already bounds them. A declined thread counts as handled for this cap even after the bot replies in it — the bullet above already forbids answering that reply.
+- Stop the watch with a status (and the `Leftovers:` line) if a bot still has an unresolved, unhandled thread, or hasn't reviewed the latest push, after a reasonable number of passes (e.g. 12), rather than running indefinitely. The cap counts passes only: a re-arm on expiry, a `push` or `checks` event and a `ready_at` wait count nothing, because the monitor already bounds them. A declined thread counts as handled for this cap even after the bot replies in it — the bullet above already forbids answering that reply.
 - Two `error` events in a row (ten failed polls) mean `gh` is broken, not the PR: stop the watch and report it instead of re-arming.
 
 ## Pause and resume
@@ -148,3 +150,4 @@ claudeos types two one-line prompts into a watching session when it pairs a `/co
 - Read the real code, not just the diff hunk.
 - Never edit files unless `--apply` is set. Default remains review-only. With `--apply`, only `Agree`/`Partially agree` fixes are applied — no confirmation prompt.
 - Replies, 👎 reactions, and thread resolution are `--apply`-only side effects. In default mode, report only.
+- A standalone `/review-pr` session applies the global Leftovers rule (`~/.claude/CLAUDE.md`) to its `Leftovers:` line at its end; a session inside `/implement-plan` leaves that to the command's step 6.
