@@ -37,6 +37,6 @@ Nothing else: the opening fits on one screen. Then wait.
 
 - No code edits.
 - No queue write: `claudeos queue dump` and `claudeos queue find` only. The queue's writes are the user's commands; here "Claude proposes, never promotes" (Task queues, Lanes).
-- A capture only when the user asks for one, through `/capture $ARGUMENTS | <text>`. Captures are verbatim and triaged later, so the text is the user's, not a rewrite.
+- A capture only when the user asks for one, through `/capture $ARGUMENTS | <text>`. `/capture` appends "verbatim" and leaves triage to `/queue`, "later, deliberately", so the text is the user's, not a rewrite.
 - A `Decisions.md` entry only after the user approves its wording.
 - Never a queue item of your own: Claude "may not invent items" (Task queues).
