@@ -188,7 +188,7 @@ projects:
       path: ~/code/go-workspace/src/github.com/pablobfonseca/dotfiles-installer,
     }
   ChromeStickyNotes: { path: ~/code/chromestickynotes }
-  ClaudeOSGUI: { path: ~/code/claudeosgui }
+  ClaudeOSGUI: { path: ~/code/claudeosgui, repos: { claudeos: ~/code/claudeos } }
   smart-wardrobe: { path: ~/code/smart-wardrobe }
 
 # ---------------------------------------------------------------------------
