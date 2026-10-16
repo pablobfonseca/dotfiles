@@ -35,6 +35,7 @@
       "Bash(wget * | sh)",
       "Bash(wget * | bash)",
       "Bash(gh pr merge:*)",
+      "Bash(gh repo delete:*)",
       "Skill(superpowers:executing-plans)",
       "Skill(superpowers:subagent-driven-development)"
     ],
@@ -61,6 +62,15 @@
           {
             "type": "command",
             "command": "~/.dotfiles/claude/hooks/guard-merge.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.dotfiles/claude/hooks/guard-repo-delete.sh"
           }
         ]
       }
