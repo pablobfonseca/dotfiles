@@ -12,9 +12,9 @@
 # reads whole; a `$'...'` or `$"..."` beside a `repo delete` denies even without a readable `gh`.
 # A command jq cannot read is refused. Not followed: aliases, wrapper scripts, a variable or a
 # substitution holding a word, eval, a script file, escapes inside `$'...'` that spell `gh`, a glob
-# in the binary name (`g[h]`), a word split by a brace pair (`d{e,e}lete`), `hub`, curl against
-# api.github.com. The
-# one command let through is `gh repo delete --help` on its own, the read that shows the flags.
+# in the binary name (`g[h]`), a word split by a brace pair (`d{e,e}lete`), a space or an empty
+# word spelled by a parameter expansion other than `$IFS` (`${IFS:0:1}`, `$9`, `"$@"`), `hub`, curl
+# against api.github.com. The one command let through is `gh repo delete --help` on its own, the read that shows the flags.
 set -uo pipefail
 shopt -s nocasematch
 . "$(dirname "${BASH_SOURCE[0]}")/guard-common.sh"
@@ -26,26 +26,24 @@ EOF
 input=$(cat) || exit 0
 jq empty <<<"$input" 2>/dev/null || exit 0
 cmd=$(jq -r "$COMMAND_JQ" <<<"$input" 2>/dev/null) || guard_deny "$REASON"
-ANSI_JQ=$COMMAND_JQ' | split("$" + ([39] | implode)) | join([39] | implode) | split("$\"") | join("\"")'${DEQUOTED_JQ#"$COMMAND_JQ"}
+ANSI_JQ=$COMMAND_JQ' | split("$" + ([39] | implode)) | join([39] | implode) | split("$\"") | join("\"")'${DEQUOTED_JQ#"$COMMAND_JQ"}' | split("${IFS}") | join(" ") | split("$IFS") | join(" ")'
 text=$(jq -r "$ANSI_JQ" <<<"$input" 2>/dev/null) || guard_deny "$REASON"
-text=${text//'${IFS}'/ }
-text=${text//'$IFS'/ }
-text=$(tr '{},' '   ' <<<"$text")
+braced=$(tr '{},' '   ' <<<"$text")
 ansi=0
 [[ $cmd == *'$'\'* || $cmd == *'$"'* ]] && ansi=1
 
 GH_RE='(^|[^[:alnum:]_.-])gh([[:space:];|&<>)}`]|$)'
 REPO_DELETE_RE='[[:space:]]repo([[:space:]]+-[^[:space:]]*([[:space:]]+[^-[:space:]][^[:space:]]*)?)*[[:space:]]+delete([^[:alnum:]_-]|$)'
-HELP_RE='^[[:space:]]*gh[[:space:]]+repo[[:space:]]+delete[[:space:]]+--help[[:space:]]*$'
+HELP_RE='^[[:space:]]*gh[[:blank:]]+repo[[:blank:]]+delete[[:blank:]]+--help[[:space:]]*$'
 METHOD_RE='(-[[:alpha:]]*X|--method)[[:space:]=]*DELETE([^[:alnum:]_]|$)'
-REPO_ENDPOINT_RE='(^|[[:space:]/])(repos/[^/[:space:]?]+/[^/[:space:]?]+|repositories/[^/[:space:]?]+)([[:space:]?]|/?$|/[[:space:]])'
+REPO_ENDPOINT_RE='(^|[[:space:]/])(repos/[^/[:space:]?]+/[^/[:space:]?]+|repositories/[^/[:space:]?]+)([[:space:]?]|$|/([^[:alnum:]_.-]|$))'
 QUEUE_DELETE_RE='(^|[^[:alnum:]_.-])queue([[:space:]]+-[^[:space:]]*([[:space:]]+[^-[:space:]][^[:space:]]*)?)*[[:space:]]+delete([^[:alnum:]_-]|$)'
 GITHUB_FLAG_RE='--github([^[:alnum:]_-]|$)'
 
 [[ $cmd =~ $HELP_RE ]] && guard_allow
 hit=0
-[[ $text =~ $GH_RE && $text =~ $REPO_DELETE_RE ]] && hit=1
-(( ansi )) && [[ $text =~ $REPO_DELETE_RE ]] && hit=1
+[[ $braced =~ $GH_RE && $braced =~ $REPO_DELETE_RE ]] && hit=1
+(( ansi )) && [[ $braced =~ $REPO_DELETE_RE ]] && hit=1
 [[ $text =~ $METHOD_RE && $text =~ $REPO_ENDPOINT_RE ]] && hit=1
 [[ $text =~ $QUEUE_DELETE_RE && $text =~ $GITHUB_FLAG_RE ]] && hit=1
 (( hit )) || guard_allow
