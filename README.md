@@ -51,6 +51,8 @@ Prefix: `C-a` | Vi mode | [Cyberpunk theme](https://github.com/pablobfonseca/cyb
 
 22 specialized agents (language + role-based), 13 plugins (4 LSP servers, superpowers, frontend-design, dev-browser, ast-grep, reflexion), auto-format hooks for TypeScript.
 
+`make check` runs the hook syntax check (`bash -n` on `claude/hooks/*.sh`), the guard suite and the `claude/` and `gemini/` settings JSON check; CI runs it on every push to `master` and every PR.
+
 User-scope MCP servers live in `~/.claude.json` (runtime state, not versioned). On a new machine:
 
 ```bash
