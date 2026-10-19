@@ -414,6 +414,7 @@ colors:
 #     followups: F
 #     doctor: []                  # no default key; the palette runs it as :doctor (default: [])
 #     round: []                   # no default key; the palette runs it as :round <name> (default: [])
+#     product: []                 # no default key; the palette runs it as :product (default: [])
 
 # ---------------------------------------------------------------------------
 # Custom actions
