@@ -153,8 +153,9 @@ projects:
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, deploy: { base: production, command: /deploy-checklist, classes: { migrations: [api/src/db/migrations/*.sql] } } }
   #   # rounds: daily passes over the project's follow-ups, by name: the local time
   #   # of day and the project's slash command, launched once a day as rounds-<name>
-  #   # on the first machine whose claim lands; :round <name> re-runs one (default: unset)
-  #   # Tribemap: { path: ~/code/upscope-env/tribemap, rounds: { morning: { at: "08:30", command: /morning } } }
+  #   # on the first machine whose claim lands; :round <name> re-runs one; until
+  #   # (HH:MM, after at) skips a round missed past it for the day (default: unset)
+  #   # Tribemap: { path: ~/code/upscope-env/tribemap, rounds: { morning: { at: "08:30", until: "10:00", command: /morning } } }
   #   # digest: daily.dev search terms for the weekly digest, one to ten (default: unset)
   #   # ClaudeOS: { path: ~/code/claudeos, digest: { keywords: [tmux, "bubble tea", "claude code"] } }
   GX100:
@@ -188,7 +189,12 @@ projects:
       path: ~/code/go-workspace/src/github.com/pablobfonseca/dotfiles-installer,
     }
   ChromeStickyNotes: { path: ~/code/chromestickynotes }
-  ClaudeOSGUI: { path: ~/code/claudeosgui, repos: { claudeos: ~/code/claudeos } }
+  ClaudeOSGUI:
+    {
+      path: ~/code/claudeosgui,
+      repos: { claudeos: ~/code/claudeos },
+      deploy: { base: production, command: /deploy-checklist },
+    }
   smart-wardrobe: { path: ~/code/smart-wardrobe }
 
 # ---------------------------------------------------------------------------
