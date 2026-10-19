@@ -80,6 +80,8 @@ For each open line, check the notes for evidence it shipped (a plan marked compl
 
 Replace the `> proposed:` blockquote under `## Next` with a fresh one, dated today. Five items, ranked, each with one or two sentences of *reasoning that cites a note* — not a restatement of the item. Write each rank as `> N. `^qNN` [[<P> Queue#^qNN]] — <reason, naming the note>`; `claudeos queue dump` parses the bare `` `^qNN` `` right after the rank number (the wikilink alone does not parse), and the wikilink keeps Obsidian navigation.
 
+Then run `claudeos queue parallel $ARGUMENTS <the five ids, in rank order>` and append its `line` value verbatim as the blockquote's last line (`> parallel: …`): ` · ` separates tracks that run side by side, ` → ` says an item runs after the one before it (they share a named file, or one names the other), and `unknown:` lists items whose line and plan name no file, which is a reason to name one in the line, not a licence to call them independent. The command reads the local checkout and writes nothing; when it exits non-zero, append nothing and name the refusal in the report. Never edit the line by hand: a track you disagree with is a file the item's line should name.
+
 Rank by leverage, roughly in this order of precedence:
 
 1. Corrupts or loses data at the input (everything downstream inherits it)
@@ -93,6 +95,7 @@ Never move an item into `## Next` yourself. The blockquote is the whole delivera
 ## 6. Report
 
 - What you promoted, split, resized, relaned, merged, or moved to Shipped — as a short list of before → after.
+- The `> parallel:` line as written, or the refusal when none was appended.
 - Lines `sized from code`, each with the triage's size beside it; lines where the code read gave nothing (no symbol, no hits, fetch failure) and fell back to the triage.
 - Anything you deliberately left alone and why.
 - Frictions (ClaudeOS only): the window (the `--since` date, or `all`), each cluster added as `qN ← <project> <item>, …`, each cluster skipped with the qN that covers it, the number of single records left alone, and the `note` when set.
