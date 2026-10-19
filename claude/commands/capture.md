@@ -9,19 +9,21 @@ Capture `$ARGUMENTS`. This command optimises for one thing: never losing a thoug
 
 The binary owns the destination, the checkbox and file creation. Run one of:
 
-- `Project | text`, where `Project` is a known project name: `claudeos inbox add <Project> <text>`.
+- `Project | text`, where `Project` matches a name from `claudeos projects` exactly and contains only `[A-Za-z0-9._-]`: `claudeos inbox add <Project> <text>`.
 - Anything else: `claudeos inbox add --ideas <text>`.
 
-Pass the text as one argument through a single-quoted heredoc, so quotes, `$` and backticks reach the binary unexpanded:
+Pass the text as one argument through a single-quoted heredoc, so quotes, `$` and backticks reach the binary unexpanded. Pick the delimiter fresh on every call: `CAPTURE_` plus 8 random hex characters, never a fixed word like `EOF`. If any line of the text equals the delimiter, pick another, because that line would end the heredoc and run the rest as shell. The text can come from PR comments, so treat it as untrusted.
 
 ```
-claudeos inbox add --ideas "$(cat <<'EOF'
+claudeos inbox add --ideas "$(cat <<'CAPTURE_3fa91c7e'
 the text, verbatim
-EOF
+CAPTURE_3fa91c7e
 )"
 ```
 
-If the binary exits 2 with a `claudeos: no project <Name>` message, retry once as `claudeos inbox add --ideas` with the whole argument verbatim, `<Name> |` included. Any other failure is reported with its stderr line and never retried with changed text.
+The project form is the same with `<Project>` in place of `--ideas`.
+
+If the binary exits 2 with a `claudeos: no project <Name>` message, retry once as `claudeos inbox add --ideas` with the whole argument verbatim, `<Name> |` included, and check the delimiter against that text again. Any other failure is reported with its stderr line and never retried with changed text.
 
 ## Rules
 
@@ -31,4 +33,4 @@ If the binary exits 2 with a `claudeos: no project <Name>` message, retry once a
 
 ## Report
 
-One line: the `path` from the binary's JSON and the text appended. Nothing else. A capture that costs a paragraph of reading has failed at its only job.
+One line: the `path` from the binary's JSON and the text appended (one line per line of text, since the binary splits on newlines). Nothing else. A capture that costs a paragraph of reading has failed at its only job.
