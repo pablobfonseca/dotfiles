@@ -7,19 +7,28 @@ Capture `$ARGUMENTS`. This command optimises for one thing: never losing a thoug
 
 ## Destination
 
-The vault is `~/obsidian/SecondBrain`; both destinations below resolve there, whatever the cwd.
+The binary owns the destination, the checkbox and file creation. Run one of:
 
-- If the text starts with a known project name followed by `|`, append to `projects/<project>/Inbox.md` under `## Raw`.
-- Otherwise append to `inbox/Inbox dump.md`.
-- If the target file does not exist, create it with the frontmatter from `CLAUDE.md`.
+- `Project | text`, where `Project` is a known project name: `claudeos inbox add <Project> <text>`.
+- Anything else: `claudeos inbox add --ideas <text>`.
+
+Pass the text as one argument through a single-quoted heredoc, so quotes, `$` and backticks reach the binary unexpanded:
+
+```
+claudeos inbox add --ideas "$(cat <<'EOF'
+the text, verbatim
+EOF
+)"
+```
+
+If the binary exits 2 with a `claudeos: no project <Name>` message, retry once as `claudeos inbox add --ideas` with the whole argument verbatim, `<Name> |` included. Any other failure is reported with its stderr line and never retried with changed text.
 
 ## Rules
 
-- Append **verbatim**. Do not fix the grammar, expand the abbreviation, or add context the user did not write. A capture note is evidence of what they thought, not a polished artifact.
-- Prefix with `- [ ] ` unless the text is a bare URL or already a list item; a question gets the checkbox too (it is usually something to find out). Erring toward the checkbox keeps `/queue` the single place where triage happens. The Raycast capture extension (`~/code/Playground/capture-obsidian`) and `claudeos` (`internal/vault/capture.go`) apply the same rule; change all three together.
+- Pass the text **verbatim**. Do not fix the grammar, expand the abbreviation, or add context the user did not write. A capture note is evidence of what they thought, not a polished artifact.
 - Never triage, size, tag, relane or promote. That is `/queue`'s job and it happens later, deliberately.
 - Never touch any other line in the file.
 
 ## Report
 
-One line: the file and the text appended. Nothing else — a capture that costs a paragraph of reading has failed at its only job.
+One line: the `path` from the binary's JSON and the text appended. Nothing else. A capture that costs a paragraph of reading has failed at its only job.
