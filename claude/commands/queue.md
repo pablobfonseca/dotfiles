@@ -99,6 +99,7 @@ Never move an item into `## Next` yourself. The blockquote is the whole delivera
 ## 6. Report
 
 - What you promoted, split, resized, relaned, merged, or moved to Shipped — as a short list of before → after.
+- **Left in the Inbox**, one line each, every `## Raw` line still there: its first six words, its `promotable` score (`no score` when the triage gave an `error` or did not run), and the reason it stays in one sentence: at or under 0.3; unsure and what the read found; a duplicate of `qN`; prose or reference material; a promote that failed, with the raw line and the qN when the add landed. An empty Inbox is one line, `Inbox: empty`, so a skipped list can be told from an empty one.
 - The `> parallel:` line as written, or the refusal when none was appended.
 - Lines `sized from code`, each with the triage's size beside it; lines where the code read gave nothing (no symbol, no hits, fetch failure) and fell back to the triage.
 - Anything you deliberately left alone and why.
