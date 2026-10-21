@@ -195,7 +195,7 @@ projects:
       repos: { claudeos: ~/code/claudeos },
       deploy: { base: production, command: /deploy-checklist },
     }
-  smart-wardrobe: { path: ~/code/smart-wardrobe }
+  SmartWardrobe: { path: ~/code/smart-wardrobe }
 
 # ---------------------------------------------------------------------------
 # Slack (Feedback pull)
