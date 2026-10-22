@@ -156,8 +156,9 @@ projects:
   #   # on the first machine whose claim lands; :round <name> re-runs one; until
   #   # (HH:MM, after at) skips a round missed past it for the day (default: unset)
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, rounds: { morning: { at: "08:30", until: "10:00", command: /morning } } }
-  #   # digest: daily.dev search terms for the weekly digest, one to ten (default: unset)
-  #   # ClaudeOS: { path: ~/code/claudeos, digest: { keywords: [tmux, "bubble tea", "claude code"] } }
+  #   # digest: the weekly digest; {} is enough, keywords are optional extras (default: unset)
+  #   # ClaudeOS: { path: ~/code/claudeos, digest: { keywords: [tmux, "bubble tea"] } }
+  #   # Devdeck: { path: ~/code/devdeck, digest: {} }
   GX100:
     {
       path: ~/code/gx100-midi-control,
@@ -229,10 +230,11 @@ projects:
 #
 # A weekly per-project digest: the running TUI writes
 # projects/<P>/Digest YYYY-Www.md once per ISO week
-# for every project with `projects.<P>.digest.keywords`, the Judge keeping the
-# daily.dev posts that fit the project (the first paragraph of projects/<P>.md
-# under its title, beside the keywords); `claudeos digest run <P>` does it by
-# hand and `B` lists the latest one, enter capturing an entry to the Inbox.
+# for every project with a `projects.<P>.digest` block, the search terms
+# derived from the first paragraph of projects/<P>.md under its title (plus
+# any `keywords`), the Judge keeping the posts that fit the project;
+# `claudeos digest run <P>` does it by hand and `B` lists the latest one,
+# enter capturing an entry to the Inbox.
 # Every key here needs a restart.
 
 # digest:
@@ -262,6 +264,24 @@ projects:
 #   # File holding the TypeSafe API key, one line, mode 0600.
 #   # (default: ~/.config/claudeos/typesafe-key)
 #   key_file: ~/.config/claudeos/typesafe-key
+
+# ---------------------------------------------------------------------------
+# Anthropic (Messages API)
+# ---------------------------------------------------------------------------
+#
+# The Anthropic Messages API client behind the digest's search terms: a model
+# reads the project note and derives the daily.dev terms. The key is read
+# from a file at call time and never placed in any environment. Both keys
+# need a restart.
+
+# anthropic:
+#   # File holding the Anthropic API key, one line, mode 0600.
+#   # (default: ~/.config/claudeos/anthropic-key)
+#   key_file: ~/.config/claudeos/anthropic-key
+#
+#   # Model the digest asks for its search terms.
+#   # (default: claude-haiku-5-5)
+#   model: claude-haiku-5-5
 
 # ---------------------------------------------------------------------------
 # Serve (phone link)
