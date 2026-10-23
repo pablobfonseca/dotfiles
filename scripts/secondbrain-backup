@@ -12,7 +12,7 @@ if [[ -n $(git ls-files -u) ]]; then
   exit 1
 fi
 
-git add -A
+git add -A || { echo "$(date '+%Y-%m-%d %H:%M:%S') git add failed" >> "$LOG"; exit 1; }
 git diff --cached --quiet && exit 0
 
 git commit -q -m "vault backup: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG" 2>&1
