@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
-# Queue.md is written by `claudeos queue` only. Runs as Claude Code's PreToolUse (guard-common.sh
+# Queue.md and Followups.md are written by claudeos only. Runs as Claude Code's PreToolUse (guard-common.sh
 # holds the deny shape and the jq filters). Refuses every edit or write on the vault's generated
 # views and on the vault-queues authority (Edit and Write) and any Bash command that names either
 # unless it only reads it. The one exception to the edit rule is an edit on the authority while
 # `claudeos queue edit <project> begin` has an open session (<projects root>/.claudeos/edit/<project>,
 # the root being the queues directory or the vault's projects/ folder when queues: is empty): Edit only.
 # Relative paths are joined to the payload's cwd first. Without a cwd a relative path cannot be
-# placed, so any one ending in Queue.md is refused.
+# placed, so any one ending in a guarded name is refused.
 # Every match ignores case: macOS opens queue.md as Queue.md. The exception does not: a path spelled
 # in another case is refused under an open session too.
 # A shell command is read with its line continuations joined and its quotes and backslashes dropped
-# (guard-common.sh). It also names a Queue.md through a relative word that the cwd, or a `cd` target
+# (guard-common.sh). It also names a guarded name through a relative word that the cwd, or a `cd` target
 # in the command (each relative target joined to the one before, options skipped, quoted and bare
-# pieces read as one target), places on a guarded path. A word counts when its last part is Queue.md
+# pieces read as one target), places on a guarded path. A word counts when its last part is a guarded name
 # or a glob or brace list that can expand to it (Queue.m[d], *.md, {Queue,Design}.md). Words also end
 # at `=` (of=Queue.md). More than MAX_CD `cd` targets beside such a word, or more than MAX_PLACE
 # placements, is refused unread: a guard that runs past its hook timeout does not block. A payload jq
 # cannot read a command or path from is refused.
-# A command that names a guarded Queue.md is still allowed when it only reads it: EVERY segment of
+# A command that names a guarded name is still allowed when it only reads it: EVERY segment of
 # the command (split at ; & | ( ) newline and backtick), named or not, starts with one of READERS as
 # a bare word (no path, no env assignment, no sudo, env, xargs or time in front), and no word that
-# could name a Queue.md follows a > redirect anywhere (>, >>, >|, >!, &>, 2>, <>), and no redirect
+# could name a guarded name follows a > redirect anywhere (>, >>, >|, >!, &>, 2>, <>), and no redirect
 # target starts with $, a backtick or ( or is followed by ( (`> $(ls Queue.md)`, `>Queue.md(|ls)`:
 # the target is built at run time); a leading ! is read off a word (zsh `>!Queue.md`) and a word
 # holding a (…) group is read as a glob (zsh `Queue.m(d|x)`); more than
@@ -34,17 +34,19 @@
 # read. Not followed: variables, eval, $'…' quoting, scripts and interpreters, pushd, git -C,
 # symlinks, a glob in a directory name, a directory handed to a recursive tool, `file -C`, a `{ …; }`
 # group (its head word is `{`), a `>` inside a pattern (`grep '>' Queue.md` reads as a redirect). With
-# no cwd and no `cd` a bare Queue.md word is allowed: a grep pattern cannot be told from a path.
+# no cwd and no `cd` a bare guarded name is allowed: a grep pattern cannot be told from a path.
 set -uo pipefail
 shopt -s nocasematch
 . "$(dirname "${BASH_SOURCE[0]}")/guard-common.sh"
 
-QUEUE_RE='(SecondBrain/projects|vault-queues|(^|[^[:alnum:]_/.-])projects)/[^/[:space:]]+/Queue\.md'
+GUARDED=(Queue.md Followups.md)
+NAME_RE='(Queue|Followups)\.md'
+QUEUE_RE="(SecondBrain/projects|vault-queues|(^|[^[:alnum:]_/.-])projects)/[^/[:space:]]+/$NAME_RE"
 read -r -d '' REASON <<'EOF'
-Queue.md is written by claudeos queue only: the vault's projects/<P>/Queue.md is a GENERATED READ-ONLY VIEW, overwritten on the next queue write, when queues: names a separate directory, and the authority itself when queues: is empty, and the vault-queues copy is the authority it regenerates from, where a hand edit leaves the repo dirty and every later queue write refused. Use the tool: claudeos queue state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `claudeos queue edit <project> begin` then `claudeos queue edit <project> commit -m "..."` for free-form grooming, and claudeos queue dump|find <project> to read. Run `claudeos queue --help` for syntax. A plain read of the file is allowed: ls, cat, head, tail, wc, grep, stat, diff, file, cut or nl as the bare command word of every part of the command, with no > redirect onto the file; this command is not one.
+Queue.md and Followups.md are written by claudeos only: the vault's projects/<P>/Queue.md and projects/<P>/Followups.md are GENERATED READ-ONLY VIEWS, overwritten on the next queue write, when queues: names a separate directory, and the authority itself when queues: is empty, and the vault-queues copies are the authority they regenerate from, where a hand edit leaves the repo dirty and every later queue write refused. Use the tools. Queue.md: claudeos queue state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `claudeos queue edit <project> begin` then `claudeos queue edit <project> commit -m "..."` for free-form grooming, and claudeos queue dump|find <project> to read. Followups.md: claudeos followup add|list|tick <project> ...; no edit session covers it. Run `claudeos queue --help` or `claudeos followup --help` for syntax. A plain read of either file is allowed: ls, cat, head, tail, wc, grep, stat, diff, file, cut or nl as the bare command word of every part of the command, with no > redirect onto the file; this command is not one.
 EOF
 read -r -d '' OVERRUN <<'EOF'
-The queue guard could not place every path in this command: it has too many cd targets, too many > redirects, too many command segments or too many words that could name a Queue.md, and a command the guard cannot finish reading is refused. Split it into shorter commands, or write the file with the Write tool instead of a heredoc.
+The queue guard could not place every path in this command: it has too many cd targets, too many > redirects, too many command segments or too many words that could name a Queue.md or Followups.md, and a command the guard cannot finish reading is refused. Split it into shorter commands, or write the file with the Write tool instead of a heredoc.
 EOF
 
 clean_path() { # <path>: sets $placed to the path with its empty, `.` and `..` parts resolved
@@ -67,8 +69,10 @@ absolute() { # <path> [base]: sets $placed; a relative path is joined to the bas
   clean_path "$p"
 }
 
-is_queue() { # <path from absolute>: a guarded Queue.md, or any Queue.md left relative for want of a cwd
-  [[ $1 =~ $QUEUE_RE ]] || [[ $1 != /* && ${1##*/} == Queue.md ]]
+NAME_ONLY_RE="^$NAME_RE\$"
+
+is_queue() { # <path from absolute>: a guarded path, or any guarded name left relative for want of a cwd
+  [[ $1 =~ $QUEUE_RE ]] || [[ $1 != /* && ${1##*/} =~ $NAME_ONLY_RE ]]
 }
 
 session_open() { # <absolute .../<project>/Queue.md>: `claudeos queue edit <project> begin` is in flight
@@ -76,12 +80,12 @@ session_open() { # <absolute .../<project>/Queue.md>: `claudeos queue edit <proj
   [[ $1 == /*/Queue.md && -f ${project_dir%/*}/.claudeos/edit/${project_dir##*/} ]]
 }
 
-MAX_CD=16      # cd targets read beside a Queue.md word
-MAX_PLACE=512  # (Queue.md word, base) pairs placed
+MAX_CD=16      # cd targets read beside a guarded name word
+MAX_PLACE=512  # (guarded name word, base) pairs placed
 MAX_WORD=4096  # a longer word or cd target is no path
 MAX_BRACES=8   # brace lists read in one word
-MAX_REDIRECT=64 # > redirects read beside a Queue.md word
-MAX_SEGMENT=4096 # command segments read beside a Queue.md word
+MAX_REDIRECT=64 # > redirects read beside a guarded name word
+MAX_SEGMENT=4096 # command segments read beside a guarded name word
 CD_RE="(^|[;&|(){}[:space:]])cd(([[:space:]]+-[-LPe@]*)*)[[:space:]]+((\"[^\"]*\"|'[^']*'|\\\\.|[^;&|()<>[:space:]\"'\\\\])+)(.*)\$"
 BRACE_RE='^(.*)\{[^{}]*\}(.*)$'
 QUOTES=$'["\'\\\\]'
@@ -101,18 +105,24 @@ SEGMENT_BREAK=$'\n;&|()`'
 HEAD_BREAK=$' \t'
 REDIRECT_RE='>[>|&!]*[[:space:]]*([^[:space:];&|<>()`=]+)(.*)$'
 
-names_queue() { # <dequoted word>: its last part could expand to Queue.md, or it holds a guarded path
-  local word=$1 n=0
+guarded_name() { # <glob>: sets $guarded to the first of GUARDED the glob matches
+  for guarded in "${GUARDED[@]}"; do [[ $guarded == $1 ]] && return 0; done
+  return 1
+}
+
+names_queue() { # <dequoted word>: its last part could expand to a guarded name, or it holds a guarded path
+  local word=$1 n=0 guarded
   [[ $word =~ $QUEUE_RE ]] && return 0
   if (( ${#word} > MAX_WORD )); then [[ $word == *{* ]]; return; fi
   [[ $word == -[[:alpha:]]* ]] && word=${word#-?}
   while (( n++ < MAX_BRACES )) && [[ $word =~ $BRACE_RE ]]; do word="${BASH_REMATCH[1]}*${BASH_REMATCH[2]}"; done
   [[ $word =~ $BRACE_RE ]] && return 0
-  [[ Queue.md == ${word##*/} ]]
+  guarded_name "${word##*/}"
 }
 
-shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a `cd` target in the command, places on a guarded Queue.md
-  local rest=$1 base=$cwd bases=("$cwd") target words word name named=() n
+shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a `cd` target in the command, places on a guarded path
+  local rest=$1 base=$cwd bases=("$cwd") target words word name named=() n guarded
+  # A word is recorded once, under the first guarded name it can expand to: placement tests its directory against QUEUE_RE, which takes every guarded name alike.
   IFS=$WORD_BREAK read -r -d '' -a words <<<"$2"
   (( ${#words[@]} )) || return 1
   for word in "${words[@]}"; do
@@ -130,7 +140,7 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
       continue
     fi
     name=${word##*/}
-    [[ Queue.md == $name ]] && named+=("${word%"$name"}Queue.md")
+    guarded_name "$name" && named+=("${word%"$name"}$guarded")
   done
   IFS=$PAREN_BREAK read -r -d '' -a words <<<"$2"
   for word in "${words[@]}"; do
@@ -143,7 +153,7 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
     n=0
     while (( n++ < MAX_BRACES )) && [[ $word =~ $PAREN_RE ]]; do word="${BASH_REMATCH[1]}*${BASH_REMATCH[2]}"; done
     name=${word##*/}
-    [[ Queue.md == $name ]] && named+=("${word%"$name"}Queue.md")
+    guarded_name "$name" && named+=("${word%"$name"}$guarded")
   done
   (( ${#named[@]} )) || return 1
   while [[ $rest =~ $CD_RE ]]; do
@@ -165,7 +175,7 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
   return 1
 }
 
-shell_reads_queue() { # <command dequoted>: every segment starts with a bare reader, and no Queue.md word follows a > redirect
+shell_reads_queue() { # <command dequoted>: every segment starts with a bare reader, and no guarded name word follows a > redirect
   local rest=$1 segments segment head args n=0
   [[ $1 =~ $REDIRECT_OPEN_RE ]] && return 1
   while [[ $rest =~ $REDIRECT_RE ]]; do
