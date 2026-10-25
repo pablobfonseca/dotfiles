@@ -121,8 +121,8 @@ names_queue() { # <dequoted word>: its last part could expand to a guarded name,
 }
 
 shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a `cd` target in the command, places on a guarded path
-  local rest=$1 base=$cwd bases=("$cwd") target words word name named=() n guarded
-  # A word is recorded once, under the first guarded name it can expand to: placement tests its directory against QUEUE_RE, which takes every guarded name alike.
+  local rest=$1 base=$cwd bases=("$cwd") target words word name named=() n
+  # A word is recorded once, under the first guarded name it can expand to: placement tests its directory against QUEUE_RE, which takes every guarded name alike. The names are spelled out in the word loops because a function call per word is superlinear under bash 3.2.
   IFS=$WORD_BREAK read -r -d '' -a words <<<"$2"
   (( ${#words[@]} )) || return 1
   for word in "${words[@]}"; do
@@ -140,7 +140,8 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
       continue
     fi
     name=${word##*/}
-    guarded_name "$name" && named+=("${word%"$name"}$guarded")
+    if [[ Queue.md == $name ]]; then named+=("${word%"$name"}Queue.md")
+    elif [[ Followups.md == $name ]]; then named+=("${word%"$name"}Followups.md"); fi
   done
   IFS=$PAREN_BREAK read -r -d '' -a words <<<"$2"
   for word in "${words[@]}"; do
@@ -153,7 +154,8 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
     n=0
     while (( n++ < MAX_BRACES )) && [[ $word =~ $PAREN_RE ]]; do word="${BASH_REMATCH[1]}*${BASH_REMATCH[2]}"; done
     name=${word##*/}
-    guarded_name "$name" && named+=("${word%"$name"}$guarded")
+    if [[ Queue.md == $name ]]; then named+=("${word%"$name"}Queue.md")
+    elif [[ Followups.md == $name ]]; then named+=("${word%"$name"}Followups.md"); fi
   done
   (( ${#named[@]} )) || return 1
   while [[ $rest =~ $CD_RE ]]; do
