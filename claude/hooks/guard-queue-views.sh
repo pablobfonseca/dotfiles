@@ -210,12 +210,15 @@ case "$tool" in
     guard_deny "$REASON"
     ;;
   *)
-    file=$(jq -r '.tool_input.file_path // .tool_input.notebook_path // empty' <<<"$input" 2>/dev/null) || guard_deny "$REASON"
-    [[ -n $file ]] || guard_allow
-    absolute "$file"
-    target=$placed
-    is_queue "$target" || guard_allow
-    [[ $tool == Edit ]] && session_open "$target" && guard_allow
-    guard_deny "$REASON"
+    files=$(jq -r '.tool_input | [.file_path, .notebook_path][] | select(. != null) | tostring' <<<"$input" 2>/dev/null) || guard_deny "$REASON"
+    while IFS= read -r file; do
+      [[ -n $file ]] || continue
+      absolute "$file"
+      target=$placed
+      is_queue "$target" || continue
+      [[ $tool == Edit ]] && session_open "$target" && continue
+      guard_deny "$REASON"
+    done <<<"$files"
+    guard_allow
     ;;
 esac

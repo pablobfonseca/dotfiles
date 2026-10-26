@@ -17,6 +17,7 @@ payload() { # event tool key value [cwd]
   jq -cn --arg e "$1" --arg t "$2" --arg k "$3" --arg v "$4" --arg c "${5:-}" '{hook_event_name:$e,tool_name:$t,tool_input:{($k):$v},cwd:$c}'
 }
 qv() { payload PreToolUse "$1" "$2" "$3" "${4:-}" | guard guard-queue-views.sh | decision; }
+qv2() { jq -cn --arg t "$1" --arg a "$2" --arg b "$3" '{hook_event_name:"PreToolUse",tool_name:$t,tool_input:{file_path:$a,notebook_path:$b},cwd:""}' | guard guard-queue-views.sh | decision; } # <tool> <file_path> <notebook_path>
 mg() { payload PreToolUse Bash command "$1" | guard guard-merge.sh | decision; }
 rd() { payload PreToolUse Bash command "$1" | guard guard-repo-delete.sh | decision; }
 unreadable() { jq -cn --arg e "$1" --arg t "$2" '{hook_event_name:$e,tool_name:$t,tool_input:"x",cwd:""}'; } # <event> <tool>: tool_input is a string, so jq reads no command or path from it
@@ -61,7 +62,11 @@ case_ "notebookedit followups authority"        deny  "$(qv NotebookEdit noteboo
 case_ "notebookedit authority, open session"    deny  "$(qv NotebookEdit notebook_path "$T/ClaudeOS/Queue.md")"
 case_ "notebookedit relative, no cwd"           deny  "$(qv NotebookEdit notebook_path Queue.md)"
 case_ "notebookedit elsewhere"                  allow "$(qv NotebookEdit notebook_path "$HOME/code/claudeos/Queue.md")"
-case_ "queue guard matcher"                     "Write|Edit|MultiEdit|NotebookEdit|Bash" "$(jq -r '.hooks.PreToolUse[] | select(any(.hooks[]; .command | endswith("guard-queue-views.sh"))) | .matcher' "$H/../settings.json")"
+case_ "notebookedit empty file_path, guarded notebook" deny  "$(qv2 NotebookEdit "" "$V/Queue.md")"
+case_ "notebookedit other file_path, guarded notebook" deny  "$(qv2 NotebookEdit "$HOME/x.ipynb" "$Q/Followups.md")"
+case_ "notebookedit guarded file_path, empty notebook" deny  "$(qv2 NotebookEdit "$V/Queue.md" "")"
+case_ "notebookedit two unguarded paths"        allow "$(qv2 NotebookEdit "$HOME/x.ipynb" "$HOME/y.ipynb")"
+case_ "queue guard matcher"                    "Write|Edit|MultiEdit|NotebookEdit|Bash" "$(jq -r '.hooks.PreToolUse[] | select(any(.hooks[]; .command | endswith("guard-queue-views.sh"))) | .matcher' "$H/../settings.json")"
 rm -rf "${T%/vault-queues}"
 case_ "bash sed authority"     deny  "$(qv Bash command "sed -i 's/a/b/' $Q/Queue.md")"
 case_ "bash heredoc view"      deny  "$(qv Bash command "cat > $V/Queue.md <<'X'")"
