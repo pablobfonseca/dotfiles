@@ -7,8 +7,9 @@
 # the root being the queues directory or the vault's projects/ folder when queues: is empty): Edit only.
 # Relative paths are joined to the payload's cwd first. Without a cwd a relative path cannot be
 # placed, so any one ending in a guarded name is refused.
-# Every match ignores case: macOS opens queue.md as Queue.md. The exception does not: a path spelled
-# in another case is refused under an open session too.
+# Every match ignores case: macOS opens queue.md as Queue.md. A name holding [ is also tested in the
+# guarded name's own case, as zsh globs it: bash 3.2 misses [[:upper:]]ueue.md under nocasematch.
+# The exception does not ignore case: a path spelled in another case is refused under an open session too.
 # A shell command is read with its line continuations joined and its quotes and backslashes dropped
 # (guard-common.sh). It also names a guarded name through a relative word that the cwd, or a `cd` target
 # in the command (each relative target joined to the one before, options skipped, quoted and bare
@@ -106,8 +107,13 @@ HEAD_BREAK=$' \t'
 REDIRECT_RE='>[>|&!]*[[:space:]]*([^[:space:];&|<>()`=]+)(.*)$'
 
 guarded_name() { # <glob>: sets $guarded to the first of GUARDED the glob matches
+  local exact=1
   for guarded in "${GUARDED[@]}"; do [[ $guarded == $1 ]] && return 0; done
-  return 1
+  [[ $1 == *\[* ]] || return 1
+  shopt -u nocasematch
+  for guarded in "${GUARDED[@]}"; do [[ $guarded == $1 ]] && { exact=0; break; }; done
+  shopt -s nocasematch
+  return $exact
 }
 
 names_queue() { # <dequoted word>: its last part could expand to a guarded name, or it holds a guarded path
@@ -121,7 +127,7 @@ names_queue() { # <dequoted word>: its last part could expand to a guarded name,
 }
 
 shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a `cd` target in the command, places on a guarded path
-  local rest=$1 base=$cwd bases=("$cwd") target words word name named=() n
+  local rest=$1 base=$cwd bases=("$cwd") target words word name named=() n guarded
   # A word is recorded once, under the first guarded name it can expand to: placement tests its directory against QUEUE_RE, which takes every guarded name alike. The names are spelled out in the word loops because a function call per word is superlinear under bash 3.2.
   IFS=$WORD_BREAK read -r -d '' -a words <<<"$2"
   (( ${#words[@]} )) || return 1
@@ -141,7 +147,8 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
     fi
     name=${word##*/}
     if [[ Queue.md == $name ]]; then named+=("${word%"$name"}Queue.md")
-    elif [[ Followups.md == $name ]]; then named+=("${word%"$name"}Followups.md"); fi
+    elif [[ Followups.md == $name ]]; then named+=("${word%"$name"}Followups.md")
+    elif [[ $name == *\[* ]] && guarded_name "$name"; then named+=("${word%"$name"}$guarded"); fi
   done
   IFS=$PAREN_BREAK read -r -d '' -a words <<<"$2"
   for word in "${words[@]}"; do
@@ -155,7 +162,8 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
     while (( n++ < MAX_BRACES )) && [[ $word =~ $PAREN_RE ]]; do word="${BASH_REMATCH[1]}*${BASH_REMATCH[2]}"; done
     name=${word##*/}
     if [[ Queue.md == $name ]]; then named+=("${word%"$name"}Queue.md")
-    elif [[ Followups.md == $name ]]; then named+=("${word%"$name"}Followups.md"); fi
+    elif [[ Followups.md == $name ]]; then named+=("${word%"$name"}Followups.md")
+    elif [[ $name == *\[* ]] && guarded_name "$name"; then named+=("${word%"$name"}$guarded"); fi
   done
   (( ${#named[@]} )) || return 1
   while [[ $rest =~ $CD_RE ]]; do
