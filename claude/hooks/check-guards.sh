@@ -17,6 +17,7 @@ payload() { # event tool key value [cwd]
   jq -cn --arg e "$1" --arg t "$2" --arg k "$3" --arg v "$4" --arg c "${5:-}" '{hook_event_name:$e,tool_name:$t,tool_input:{($k):$v},cwd:$c}'
 }
 qv() { payload PreToolUse "$1" "$2" "$3" "${4:-}" | guard guard-queue-views.sh | decision; }
+qv2() { jq -cn --arg t "$1" --arg a "$2" --arg b "$3" '{hook_event_name:"PreToolUse",tool_name:$t,tool_input:{file_path:$a,notebook_path:$b},cwd:""}' | guard guard-queue-views.sh | decision; } # <tool> <file_path> <notebook_path>
 mg() { payload PreToolUse Bash command "$1" | guard guard-merge.sh | decision; }
 rd() { payload PreToolUse Bash command "$1" | guard guard-repo-delete.sh | decision; }
 unreadable() { jq -cn --arg e "$1" --arg t "$2" '{hook_event_name:$e,tool_name:$t,tool_input:"x",cwd:""}'; } # <event> <tool>: tool_input is a string, so jq reads no command or path from it
@@ -53,6 +54,19 @@ case_ "edit one-folder followups, open session" deny  "$(qv Edit file_path "$O/C
 case_ "edit lower-case followups view"          deny  "$(qv Edit file_path "$V/followups.md")"
 case_ "edit relative followups, cwd in view"    deny  "$(qv Edit file_path Followups.md "$V")"
 case_ "edit relative followups, no cwd"         deny  "$(qv Edit file_path Followups.md)"
+case_ "multiedit vault view"                    deny  "$(qv MultiEdit file_path "$V/Queue.md")"
+case_ "multiedit followups authority"           deny  "$(qv MultiEdit file_path "$Q/Followups.md")"
+case_ "multiedit authority, open session"       deny  "$(qv MultiEdit file_path "$T/ClaudeOS/Queue.md")"
+case_ "notebookedit vault view"                 deny  "$(qv NotebookEdit notebook_path "$V/Queue.md")"
+case_ "notebookedit followups authority"        deny  "$(qv NotebookEdit notebook_path "$Q/Followups.md")"
+case_ "notebookedit authority, open session"    deny  "$(qv NotebookEdit notebook_path "$T/ClaudeOS/Queue.md")"
+case_ "notebookedit relative, no cwd"           deny  "$(qv NotebookEdit notebook_path Queue.md)"
+case_ "notebookedit elsewhere"                  allow "$(qv NotebookEdit notebook_path "$HOME/code/claudeos/Queue.md")"
+case_ "notebookedit empty file_path, guarded notebook" deny  "$(qv2 NotebookEdit "" "$V/Queue.md")"
+case_ "notebookedit other file_path, guarded notebook" deny  "$(qv2 NotebookEdit "$HOME/x.ipynb" "$Q/Followups.md")"
+case_ "notebookedit guarded file_path, empty notebook" deny  "$(qv2 NotebookEdit "$V/Queue.md" "")"
+case_ "notebookedit two unguarded paths"        allow "$(qv2 NotebookEdit "$HOME/x.ipynb" "$HOME/y.ipynb")"
+case_ "queue guard matcher"                    "Write|Edit|MultiEdit|NotebookEdit|Bash" "$(jq -r '.hooks.PreToolUse[] | select(any(.hooks[]; .command | endswith("guard-queue-views.sh"))) | .matcher' "$H/../settings.json")"
 rm -rf "${T%/vault-queues}"
 case_ "bash sed authority"     deny  "$(qv Bash command "sed -i 's/a/b/' $Q/Queue.md")"
 case_ "bash heredoc view"      deny  "$(qv Bash command "cat > $V/Queue.md <<'X'")"
@@ -253,6 +267,7 @@ case_ "queue guard bad input"  allow "$(printf 'garbage' | guard guard-queue-vie
 case_ "bash sed authority"                   deny  "$(qv Bash command "sed -i 's/a/b/' $Q/Queue.md")"
 case_ "queue guard unreadable command"       deny  "$(unreadable PreToolUse Bash | guard guard-queue-views.sh | decision)"
 case_ "queue guard unreadable file path"     deny  "$(unreadable PreToolUse Write | guard guard-queue-views.sh | decision)"
+case_ "queue guard unreadable notebook path" deny  "$(unreadable PreToolUse NotebookEdit | guard guard-queue-views.sh | decision)"
 case_ "claude queue deny shape"    claude     "$(payload PreToolUse Write file_path "$V/Queue.md" | guard guard-queue-views.sh | shape)"
 case_ "claude queue allow shape"   silent     "$(payload PreToolUse Write file_path "$V/Inbox.md" | guard guard-queue-views.sh | shape)"
 case_ "gh pr merge"            deny  "$(mg "gh pr merge 12")"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Queue.md and Followups.md are written by claudeos only. Runs as Claude Code's PreToolUse (guard-common.sh
 # holds the deny shape and the jq filters). Refuses every edit or write on the vault's generated
-# views and on the vault-queues authority (Edit and Write) and any Bash command that names either
+# views and on the vault-queues authority (Edit, MultiEdit, Write and NotebookEdit) and any Bash command that names either
 # unless it only reads it. The one exception to the edit rule is an edit on the authority while
 # `claudeos queue edit <project> begin` has an open session (<projects root>/.claudeos/edit/<project>,
 # the root being the queues directory or the vault's projects/ folder when queues: is empty): Edit only.
@@ -210,12 +210,15 @@ case "$tool" in
     guard_deny "$REASON"
     ;;
   *)
-    file=$(jq -r '.tool_input.file_path // empty' <<<"$input" 2>/dev/null) || guard_deny "$REASON"
-    [[ -n $file ]] || guard_allow
-    absolute "$file"
-    target=$placed
-    is_queue "$target" || guard_allow
-    [[ $tool == Edit ]] && session_open "$target" && guard_allow
-    guard_deny "$REASON"
+    files=$(jq -r '.tool_input | [.file_path, .notebook_path][] | select(. != null) | tostring' <<<"$input" 2>/dev/null) || guard_deny "$REASON"
+    while IFS= read -r file; do
+      [[ -n $file ]] || continue
+      absolute "$file"
+      target=$placed
+      is_queue "$target" || continue
+      [[ $tool == Edit ]] && session_open "$target" && continue
+      guard_deny "$REASON"
+    done <<<"$files"
+    guard_allow
     ;;
 esac
