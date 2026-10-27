@@ -73,7 +73,7 @@ In this order, and only these:
 
 A triage answer that disagrees with the line's current marker is reported as a disagreement, never silently applied over a marker the user wrote.
 
-How to write: single-line changes use the atomic subcommands (`state`, `lane`, `mark`, `add`); anything free-form — splits, rewording, merges, the `> proposed:` blockquote — goes through `claudeos queue edit $ARGUMENTS begin`, editing the printed file, then `claudeos queue edit $ARGUMENTS commit -m "<what changed>"`.
+How to write: single-line changes use the atomic subcommands (`state`, `lane`, `mark`, `add`); anything free-form — splits, rewording, merges, the `> proposed:` blockquote — goes through `claudeos queue edit $ARGUMENTS begin`, editing the printed file, then `claudeos queue edit $ARGUMENTS commit -m '<what changed>'`.
 
 Do not reword a line into something more abstract than the user wrote. Precision is the point; a groomed line should be *more* specific, never less.
 
