@@ -185,7 +185,7 @@ projects:
   #   # on the first machine whose claim lands; :round <name> re-runs one; until
   #   # (HH:MM, after at) skips a round missed past it for the day (default: unset)
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, rounds: { morning: { at: "08:30", until: "10:00", command: /morning } } }
-  #   # autopilot: tick the project's queue up to the PR while the TUI is open; :autopilot pauses it (default: false)
+  #   # autopilot: ! arms it while the TUI is open; the loop then claims Ready lines tagged #claude or rated unattended-safe by the Judge in the groom's proposed order; :autopilot pauses (default: false)
   #   # ClaudeOS: { path: ~/code/claudeos, autopilot: true }
   #   # digest: the weekly digest; {} is enough, keywords are optional extras (default: unset)
   #   # ClaudeOS: { path: ~/code/claudeos, digest: { keywords: [tmux, "bubble tea"] } }
