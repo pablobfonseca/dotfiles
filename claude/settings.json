@@ -73,6 +73,15 @@
             "command": "~/.dotfiles/claude/hooks/guard-repo-delete.sh"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.dotfiles/claude/hooks/guard-push.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [
