@@ -21,6 +21,7 @@ qv2() { jq -cn --arg t "$1" --arg a "$2" --arg b "$3" '{hook_event_name:"PreTool
 mg() { payload PreToolUse Bash command "$1" | guard guard-merge.sh | decision; }
 rd() { payload PreToolUse Bash command "$1" | guard guard-repo-delete.sh | decision; }
 pg() { payload PreToolUse Bash command "$1" "${2:-}" | guard guard-push.sh | decision; } # <command> [cwd]
+tk() { ${GUARD_BASH:-bash} -c '. "$1/guard-common.sh"; seg() { local w; for w in "$@"; do printf "[%s]" "${w//$SUBST/\$()}"; done; printf "\n"; }; shell_segments "$2" seg' tk "$H" "$1"; } # <command>: one line of [word]s per segment, a substitution shown as $()
 unreadable() { jq -cn --arg e "$1" --arg t "$2" '{hook_event_name:$e,tool_name:$t,tool_input:"x",cwd:""}'; } # <event> <tool>: tool_input is a string, so jq reads no command or path from it
 many() { local i; for ((i = 0; i < $1; i++)); do printf "$2" "$i"; done; } # <n> <printf format>: the format n times, %d the index
 V=$HOME/obsidian/SecondBrain/projects/ClaudeOS
@@ -424,6 +425,27 @@ case_ "rest read, grouped flags"          allow "$(rd "gh api -iX GET repos/o/r"
 case_ "claude repo delete deny shape"    claude "$(payload PreToolUse Bash command "gh repo delete o/r --yes" | guard guard-repo-delete.sh | shape)"
 case_ "claude repo delete allow shape"    silent "$(payload PreToolUse Bash command "gh repo view o/r" | guard guard-repo-delete.sh | shape)"
 case_ "repo delete guard bad input shape" silent "$(printf 'garbage' | guard guard-repo-delete.sh | shape)"
+case_ "tk quoted separator"             '[git][-c][a.b=x;y][push][origin][master]' "$(tk 'git -c "a.b=x;y" push origin master')"
+case_ "tk single quotes and comment"    '[git][commit][-m][a; b]' "$(tk "git commit -m 'a; b' # note; git push")"
+case_ "tk and-list"                     '[echo][x]'$'\n''[git][push][origin][master]' "$(tk 'echo x && git push origin master')"
+case_ "tk redirections"                 '[git][push][origin][master]' "$(tk 'git push origin master>/dev/null 2>&1 >>log')"
+case_ "tk quoted pieces"                '[git][push][origin][master]' "$(tk "g\"it\" push \"origin\" mas''ter")"
+case_ "tk empty quoted word"            '[echo][][x]' "$(tk 'echo "" x')"
+case_ "tk escaped space"                '[git][-c][user.name=A B][push]' "$(tk 'git -c user.name=A\ B push')"
+case_ "tk continuation"                 '[git][push][origin][master]' "$(tk "$(printf 'git push \\\n origin master')")"
+case_ "tk subshell"                     '[cd][r]'$'\n''[git][push][origin][master]' "$(tk '(cd r && git push origin master)')"
+case_ "tk substitution"                 '[git][push][origin][master]'$'\n''[x=$()]' "$(tk 'x=$(git push origin master)')"
+case_ "tk substitution in double quotes" '[echo][s]'$'\n''[git][push][origin][ma$()ter]' "$(tk 'git push origin "ma$(echo s)ter"')"
+case_ "tk substitution keeps the command whole" '[true]'$'\n''[git][push][$()][origin][master]' "$(tk 'git push $(true) origin master')"
+case_ "tk backticks"                    '[git][push][origin][master]'$'\n''[echo][$()]' "$(tk 'echo `git push origin master`')"
+case_ "tk single quotes keep backslash" '[printf][a\nb]'$'\n''[tee][f]' "$(tk "printf 'a\\nb' | tee f")"
+case_ "tk heredoc body is lines"        '[cat]'$'\n''[line][one]'$'\n''[EOF]' "$(tk "$(printf 'cat <<EOF\nline one\nEOF')")"
+case_ "tk process substitution"         '[git][log][master]'$'\n''[git][log][main]'$'\n''[diff][$()][$()]' "$(tk 'diff <(git log master) <(git log main)')"
+case_ "tk redirect into a process substitution" '[:]'$'\n''[git][push][origin][master]' "$(tk 'git push origin >>(:) master')"
+case_ "tk redirect to a substitution"   '[git][push][origin][master]'$'\n''[echo]' "$(tk 'echo >$(git push origin master)')"
+case_ "tk fd word dropped"              '[cmd][tail]' "$(tk 'cmd 2>err {fd}>out tail')"
+case_ "tk pipe both"                    '[git][push][origin][master]'$'\n''[tee][f]' "$(tk 'git push origin master |& tee f')"
+case_ "tk unclosed quote"               '[git][push][origin master]' "$(tk 'git push "origin master')"
 PM=$(mktemp -d); git -C "$PM" init -q -b master; git -C "$PM" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m x
 PF=$(mktemp -d); git -C "$PF" init -q -b q611-feature; git -C "$PF" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m x
 PN=$(mktemp -d)
