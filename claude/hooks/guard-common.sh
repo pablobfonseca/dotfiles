@@ -11,7 +11,9 @@
 # quoted words kept whole. A redirection and its target are dropped, and so is a comment. The body of
 # a `$(…)`, backtick or `<(…)` substitution is a segment of its own, and the word it sat in keeps
 # SUBST in its place, so the enclosing command stays whole and a guard can refuse what it cannot
-# read. The loop is byte-wise under LC_ALL=C with local state only, so the callback may call it again.
+# read. The loop reads 1 KB chunks under LC_ALL=C and takes a run of plain bytes in one step, since
+# `${text:i:1}` rescans the whole command and a byte-wise append recopies the word, and a long heredoc
+# or quoted script would outrun the hook timeout; its state is local, so the callback may call it again.
 COMMAND_JQ='.tool_input.command // empty | split("\\\n") | join("")'
 DEQUOTED_JQ=$COMMAND_JQ' | split("\"") | join("") | split("\u0027") | join("") | split("\\") | join("")'
 SUBST=$'\002'
@@ -23,12 +25,26 @@ guard_deny() { # <reason>
 
 shell_segments() { # <text> <callback>: runs <callback> <word>... once per segment that holds a word
   local LC_ALL=C
-  local text=$1 cb=$2 n=${#1} i=0 c next top stack=N word= have=0 skip=0 base=0
-  local words=() fword=() fbase=()
+  local text=$1 cb=$2 n=${#1} i=0 c next top rest run stack=N word= have=0 skip=0 base=0
+  local words=() fword=() fbase=() cs=()
+  for ((i = 0; i < n; i += 1024)); do cs+=("${text:i:1024}"); done
+  cs+=("")
+  i=0
   while (( i < n )); do
-    c=${text:i:1}
-    next=${text:i+1:1}
     top=${stack:${#stack}-1}
+    rest=${cs[i >> 10]:i & 1023}
+    case $top in
+      S) run=${rest%%\'*} ;;
+      D) run=${rest%%[\"\\\$\`]*} ;;
+      *) run=${rest%%[[:space:]\;\|\&\<\>\(\)\$\'\"\\\`\#]*} ;;
+    esac
+    if [[ -n $run ]]; then
+      word+=$run have=1
+      i=$((i + ${#run}))
+      continue
+    fi
+    c=${rest:0:1}
+    next=${cs[(i + 1) >> 10]:(i + 1) & 1023:1}
     case $top in
       S)
         if [[ $c == "'" ]]; then stack=${stack%?}; else word+=$c; fi ;;
@@ -64,7 +80,7 @@ shell_segments() { # <text> <callback>: runs <callback> <word>... once per segme
             if (( have )); then
               word+=$c
             else
-              while (( i + 1 < n )) && [[ ${text:i+1:1} != $'\n' ]]; do i=$((i + 1)); done
+              while (( i + 1 < n )) && [[ ${cs[(i + 1) >> 10]:(i + 1) & 1023:1} != $'\n' ]]; do i=$((i + 1)); done
             fi ;;
           "'") stack+=S; have=1 ;;
           '"') stack+=D; have=1 ;;
@@ -96,7 +112,11 @@ _ss_redirect() { # shell_segments: an fd word glued before the operator is dropp
   else
     _ss_word
   fi
-  while [[ ${text:i+1:1} == [\<\>\&\|] ]] && ! [[ ${text:i+1:1} == [\<\>] && ${text:i+2:1} == '(' ]]; do
+  local a b
+  while true; do
+    a=${cs[(i + 1) >> 10]:(i + 1) & 1023:1}
+    b=${cs[(i + 2) >> 10]:(i + 2) & 1023:1}
+    [[ $a == [\<\>\&\|] ]] && ! [[ $a == [\<\>] && $b == '(' ]] || break
     i=$((i + 1))
   done
   skip=1
