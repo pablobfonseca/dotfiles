@@ -10,13 +10,15 @@
 # (the words between unquoted `;`, `|`, `&`, newlines and parens) to a callback, quotes removed and
 # quoted words kept whole. A redirection and its target are dropped, and so is a comment. The body of
 # a `$(…)`, backtick or `<(…)` substitution is a segment of its own, and the word it sat in keeps
-# SUBST in its place, so the enclosing command stays whole and a guard can refuse what it cannot
-# read. The loop reads 1 KB chunks under LC_ALL=C and takes a run of plain bytes in one step, since
+# SUBST in its place (QSUBST inside double quotes), so the enclosing command stays whole and a guard
+# can refuse what it cannot read. An unquoted one is split into words when it runs, zsh too, so its
+# output can be several words. The loop reads 1 KB chunks under LC_ALL=C and takes a run of plain bytes in one step, since
 # `${text:i:1}` rescans the whole command and a byte-wise append recopies the word, and a long heredoc
 # or quoted script would outrun the hook timeout; its state is local, so the callback may call it again.
 COMMAND_JQ='.tool_input.command // empty | split("\\\n") | join("")'
 DEQUOTED_JQ=$COMMAND_JQ' | split("\"") | join("") | split("\u0027") | join("") | split("\\") | join("")'
 SUBST=$'\002'
+QSUBST=$'\003'
 guard_allow() { exit 0; }
 guard_deny() { # <reason>
   jq -cn --arg r "$1" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
@@ -26,7 +28,7 @@ guard_deny() { # <reason>
 shell_segments() { # <text> <callback>: runs <callback> <word>... once per segment that holds a word
   local LC_ALL=C
   local text=$1 cb=$2 n=${#1} i=0 c next top rest run stack=N word= have=0 skip=0 base=0
-  local words=() fword=() fbase=() cs=()
+  local words=() fword=() fbase=() fmark=() cs=()
   for ((i = 0; i < n; i += 1024)); do cs+=("${text:i:1024}"); done
   cs+=("")
   i=0
@@ -57,8 +59,8 @@ shell_segments() { # <text> <callback>: runs <callback> <word>... once per segme
               $'\n') i=$((i + 1)) ;;
               *) word+=$c ;;
             esac ;;
-          '$') if [[ $next == '(' ]]; then _ss_open Q; i=$((i + 1)); else word+=$c; fi ;;
-          '`') _ss_open B ;;
+          '$') if [[ $next == '(' ]]; then _ss_open Q "$QSUBST"; i=$((i + 1)); else word+=$c; fi ;;
+          '`') _ss_open B "$QSUBST" ;;
           *) word+=$c ;;
         esac ;;
       *)
@@ -66,7 +68,7 @@ shell_segments() { # <text> <callback>: runs <callback> <word>... once per segme
           ' ' | $'\t') _ss_word ;;
           $'\n' | ';' | '|') _ss_segment ;;
           '&') if [[ $next == '>' ]]; then _ss_redirect; else _ss_segment; fi ;;
-          '<' | '>') if [[ $next == '(' ]]; then _ss_open Q; i=$((i + 1)); else _ss_redirect; fi ;;
+          '<' | '>') if [[ $next == '(' ]]; then _ss_open Q "$SUBST"; i=$((i + 1)); else _ss_redirect; fi ;;
           '(') _ss_segment; stack+=P ;;
           ')')
             case $top in
@@ -74,8 +76,8 @@ shell_segments() { # <text> <callback>: runs <callback> <word>... once per segme
               P) _ss_segment; stack=${stack%?} ;;
               *) _ss_segment ;;
             esac ;;
-          '`') if [[ $top == B ]]; then _ss_close; stack=${stack%?}; else _ss_open B; fi ;;
-          '$') if [[ $next == '(' ]]; then _ss_open Q; i=$((i + 1)); else word+=$c; have=1; fi ;;
+          '`') if [[ $top == B ]]; then _ss_close; stack=${stack%?}; else _ss_open B "$SUBST"; fi ;;
+          '$') if [[ $next == '(' ]]; then _ss_open Q "$SUBST"; i=$((i + 1)); else word+=$c; have=1; fi ;;
           '#')
             if (( have )); then
               word+=$c
@@ -121,17 +123,18 @@ _ss_redirect() { # shell_segments: an fd word glued before the operator is dropp
   done
   skip=1
 }
-_ss_open() { # <stack letter>: shell_segments: a substitution opens; the enclosing word and segment wait
+_ss_open() { # <stack letter> <marker>: shell_segments: a substitution opens; the enclosing word and segment wait
   fword+=("$word")
   fbase+=("$base $skip")
+  fmark+=("$2")
   stack+=$1
   base=${#words[@]} word= have=0 skip=0
 }
-_ss_close() { # shell_segments: the substitution's body is a segment; the enclosing word resumes with SUBST
+_ss_close() { # shell_segments: the substitution's body is a segment; the enclosing word resumes with its marker
   local last=$((${#fword[@]} - 1)) saved
   _ss_segment
   saved=${fbase[last]}
-  word=${fword[last]}$SUBST have=1
+  word=${fword[last]}${fmark[last]} have=1
   base=${saved% *} skip=${saved#* }
-  unset 'fword[last]' 'fbase[last]'
+  unset 'fword[last]' 'fbase[last]' 'fmark[last]'
 }
