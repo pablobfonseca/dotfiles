@@ -447,6 +447,7 @@ case_ "tk fd word dropped"              '[cmd][tail]' "$(tk 'cmd 2>err {fd}>out 
 case_ "tk pipe both"                    '[git][push][origin][master]'$'\n''[tee][f]' "$(tk 'git push origin master |& tee f')"
 case_ "tk unclosed quote"               '[git][push][origin master]' "$(tk 'git push "origin master')"
 case_ "tk backticks in double quotes"   '[date]'$'\n''[echo][at "$()"]' "$(tk 'echo "at `date`"')"
+case_ "tk unquoted variable"            '[git][push][$()$r][$b]' "$(tk 'git push $r "$b"')"
 PM=$(mktemp -d); git -C "$PM" init -q -b master; git -C "$PM" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m x
 PF=$(mktemp -d); git -C "$PF" init -q -b q611-feature; git -C "$PF" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m x
 PN=$(mktemp -d)
@@ -657,7 +658,19 @@ case_ "default expansion in a refspec"       deny  "$(pg 'git push origin HEAD:$
 case_ "function argument in a refspec"       deny  "$(pg 'f(){ git push origin "HEAD:$1"; }; f master' "$PF")"
 case_ "ansi-c quotes in a refspec"           deny  "$(pg "git push origin HEAD:\$'master'" "$PF")"
 case_ "locale quotes in a refspec"           deny  "$(pg 'git push origin HEAD:$"master"' "$PF")"
-case_ "variable as the remote"               allow "$(pg 'git push "$remote" q611-feature' "$PF")"
+case_ "quoted variable as the remote"        deny  "$(pg 'git push "$remote" q611-feature' "$PF")"
+case_ "quoted variable as the subcommand"    deny  "$(pg 'git "$cmd" origin HEAD:master' "$PF")"
+case_ "env with a quoted substitution"       deny  "$(pg "env \"\$(echo GIT_DIR=$PM/.git)\" git push origin" "$PF")"
+case_ "env with an unquoted variable"        deny  "$(pg "v=GIT_DIR=$PM/.git; env \$v git push origin" "$PF")"
+case_ "unquoted variable in a bash -c push"  deny  "$(pg "bash -c 'v=\"origin HEAD:master\"; git push \$v'" "$PF")"
+case_ "zsh split variable in a push"         deny  "$(pg 'v="origin HEAD:master"; git push ${=v}' "$PF")"
+case_ "unquoted variable in a -C value, no subcommand" deny "$(pg "bash -c 'd=\". push origin HEAD:master\"; git -C \$d'" "$PF")"
+case_ "unquoted variable in a -o value"      deny  "$(pg "bash -c 'x=\"y HEAD:master\"; git push origin -o \$x'" "$PF")"
+case_ "unquoted variable in a -C value, then status" deny "$(pg 'git -C $d status' "$PF")"
+case_ "quoted variable in a -C value, then status" allow "$(pg 'git -C "$d" status' "$PF")"
+case_ "quoted variable in a push option value" allow "$(pg 'git push -o "$x" origin q611-feature' "$PF")"
+case_ "variable in a leading assignment, then a feature push" allow "$(pg 'MSG=$x git push origin q611-feature' "$PF")"
+case_ "unquoted variable after a non-push subcommand" allow "$(pg 'git checkout $b' "$PF")"
 case_ "subtree push to master"               deny  "$(pg "git subtree push --prefix=docs origin master" "$PF")"
 case_ "subtree push to a feature"            allow "$(pg "git subtree push --prefix=docs origin q611-feature" "$PF")"
 case_ "subtree pull from master"             allow "$(pg "git subtree pull --prefix=docs origin master" "$PF")"

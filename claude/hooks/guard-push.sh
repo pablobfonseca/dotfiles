@@ -14,11 +14,12 @@
 # checkout whose HEAD is one, read in the cwd and in every `-C` the segment names. A `git subtree push`
 # is refused when a word after `push` lands on one of the three. A `-c` on `alias.*`, `include.*`,
 # `includeIf.*` or `help.autocorrect` is refused whatever the subcommand, and so is a `GIT_CONFIG*`
-# assignment before the git word or left set by an earlier segment. A `$(…)`, backtick or
-# `<(…)` holding the subcommand, an option, a remote, a refspec, a `-c` value or the `-C` of a push of
-# HEAD is refused, since its value is not known before it runs; an unquoted one is refused anywhere
-# before the subcommand (the words before the git word too, which `env` reads as assignments)
-# whatever the subcommand, and anywhere in a push, since it splits into words when it runs. A word that
+# assignment before the git word or left set by an earlier segment. A `$(…)`, backtick, `<(…)` or `$`
+# expansion holding the subcommand, an option, a remote, a refspec, a `-c` value or the `-C` of a push
+# of HEAD is refused, since its value is not known before it runs, and so is one in a word before the
+# git word (which `env` reads as assignments) other than a leading `NAME=` assignment, whatever the
+# subcommand. An unquoted one is refused anywhere before the subcommand whatever the subcommand, and
+# anywhere in a push, option values included, since it splits into words when it runs. A word that
 # itself holds whitespace or a separator (`bash -c "…"`, `eval "…"`, a commit message, a heredoc body)
 # is read as a command too, two levels deep, and one still holding a separator and `git … push` at
 # that depth is refused. More than MAX_GIT git words in a segment, MAX_DIR `-C` in a git command or
@@ -31,8 +32,8 @@
 # beside a gh call naming one of the three; the gh rules read the command with its quotes dropped. A
 # command jq cannot read is refused. `--tags` alone and a tag refspec move no branch and are allowed.
 # Not followed: wrapper scripts (`make tag`, `scripts/tag.sh`), shell aliases, persistent git config
-# (`help.autocorrect` included), `$'...'` escapes outside a refspec, brace expansion, a variable
-# holding a word other than a refspec, a substitution holding the git word, a name piped in through
+# (`help.autocorrect` included), `$'...'` escapes in a word read as a command (`bash -c $'…'`), brace
+# expansion, a variable or substitution holding the git word, a name piped in through
 # xargs, a `GIT_*` variable set by `read`, `printf -v` or a sourced file, a `cd` earlier in the
 # command before a push of HEAD, a symref alias made in an earlier command, a `refId`-only `updateRef` or `deleteRef`, gh writes
 # that move a branch without a `refs/heads/` route (contents with `branch=`, `/merges`, a branch
@@ -63,7 +64,7 @@ TWO_GH_RE=$GH_RE'.*'$GH_RE
 STEER_RE='^(push\.|remote\..*\.(push|mirror)$)'
 ALIAS_RE='^(alias\.|include\.|includeIf\.|help\.autocorrect)'
 REF_GLOB_RE='[*?[$]'
-ANY_SUBST="[$SUBST$QSUBST]"
+ANY_EXP="[$SUBST$QSUBST\$]"
 ALLOPT='all branches mirror'
 VALOPT='repo push-option receive-pack exec recurse-submodules'
 NESTED_RE='[[:space:];|&()`]'
@@ -119,7 +120,7 @@ check_subtree() { # <word>... after `git subtree`: a push is refused when a late
   for w in "$@"; do
     [[ $w == *"$SUBST"* ]] && guard_deny "$REASON"
     if (( pushing )); then
-      [[ $w == *$ANY_SUBST* ]] && guard_deny "$REASON"
+      [[ $w == *$ANY_EXP* ]] && guard_deny "$REASON"
       [[ $w != -* ]] && refspec_protected "${w#+}" && guard_deny "$REASON"
     elif [[ $w == push ]]; then
       pushing=1
@@ -131,9 +132,14 @@ check_git() { # <index of the git word> <1 when it is a git-push, git-send-pack 
   local g=$1 bin=$2
   shift 2
   local words=("$@") n=$# i k w v sub= found=0 envcfg place=0 tags=0 all=0 opts=1 pushes_head=0 skipnext=0
-  local name ref d prev= dirs=() cfg=() positionals=() list=()
+  local name ref d prev= dirs=() cfg=() positionals=() list=() lead=1
   env_level "${words[@]:0:g}"
-  for ((i = 0; i < g; i++)); do [[ ${words[i]} == *"$SUBST"* ]] && LEVEL=2; done
+  for ((i = 0; i < g; i++)); do
+    w=${words[i]}
+    [[ $lead == 1 && $w == [A-Za-z_]*=* && ${w%%=*} != *[!A-Za-z0-9_]* ]] && continue
+    lead=0
+    [[ $w == *$ANY_EXP* ]] && LEVEL=2
+  done
   envcfg=$(( LEVEL > ENV_SET ? LEVEL : ENV_SET ))
   (( envcfg == 2 )) && guard_deny "$REASON"
   i=$((g + 1))
@@ -156,17 +162,17 @@ check_git() { # <index of the git word> <1 when it is a git-push, git-send-pack 
           i=$((i + 2)) ;;
         --git-dir=* | --work-tree=* | --namespace=*) place=1; i=$((i + 1)) ;;
         --config-env=*) cfg+=("${w#--config-env=}"); i=$((i + 1)) ;;
-        -*$ANY_SUBST*) sub=$w; found=1; break ;;
+        -*$ANY_EXP*) sub=$w; found=1; break ;;
         -*) i=$((i + 1)) ;;
         *) sub=$w; found=1; break ;;
       esac
     done
     shopt -s nocasematch
     for v in "${cfg[@]+"${cfg[@]}"}"; do
-      [[ $v == *$ANY_SUBST* || ${v%%=*} =~ $ALIAS_RE ]] && guard_deny "$REASON"
+      [[ $v == *$ANY_EXP* || ${v%%=*} =~ $ALIAS_RE ]] && guard_deny "$REASON"
     done
     (( found )) || return
-    [[ $sub == *$ANY_SUBST* ]] && guard_deny "$REASON"
+    [[ $sub == *$ANY_EXP* ]] && guard_deny "$REASON"
     if [[ $sub == subtree ]]; then
       check_subtree "${words[@]:i+1}"
       return
@@ -182,7 +188,7 @@ check_git() { # <index of the git word> <1 when it is a git-push, git-send-pack 
       [[ $w == *"$SUBST"* ]] && guard_deny "$REASON"
       continue
     fi
-    [[ $w == *$ANY_SUBST* ]] && guard_deny "$REASON"
+    [[ $w == *$ANY_EXP* ]] && guard_deny "$REASON"
     if (( opts )) && [[ $w == -?* ]]; then
       case $w in
         --) opts=0 ;;
@@ -217,7 +223,7 @@ check_git() { # <index of the git word> <1 when it is a git-push, git-send-pack 
   (( tags && ${#positionals[@]} <= 1 )) && return
   if [[ -n $cwd ]]; then list+=("$cwd"); prev=$cwd; fi
   for d in "${dirs[@]+"${dirs[@]}"}"; do
-    [[ $d == *$ANY_SUBST* ]] && guard_deny "$REASON"
+    [[ $d == *$ANY_EXP* ]] && guard_deny "$REASON"
     case $d in
       "~" | "~/"*) d=$HOME${d#"~"} ;;
       "~${USER:-}" | "~${USER:-}/"*) d=$HOME${d#"~${USER:-}"} ;;
