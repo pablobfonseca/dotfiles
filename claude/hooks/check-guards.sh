@@ -21,7 +21,7 @@ qv2() { jq -cn --arg t "$1" --arg a "$2" --arg b "$3" '{hook_event_name:"PreTool
 mg() { payload PreToolUse Bash command "$1" | guard guard-merge.sh | decision; }
 rd() { payload PreToolUse Bash command "$1" | guard guard-repo-delete.sh | decision; }
 pg() { payload PreToolUse Bash command "$1" "${2:-}" | guard guard-push.sh | decision; } # <command> [cwd]
-tk() { ${GUARD_BASH:-bash} -c '. "$1/guard-common.sh"; seg() { local w; for w in "$@"; do w=${w//$SUBST/\$()}; printf "[%s]" "${w//$QSUBST/\"\$()\"}"; done; printf "\n"; }; shell_segments "$2" seg' tk "$H" "$1"; } # <command>: one line of [word]s per segment, a substitution shown as $(), "$()" when double-quoted
+tk() { ${GUARD_BASH:-bash} -c '. "$1/guard-common.sh"; seg() { local w; for w in "$@"; do w=${w//$GLOB/}; w=${w//$SUBST/\$()}; printf "[%s]" "${w//$QSUBST/\"\$()\"}"; done; printf "\n"; }; shell_segments "$2" seg' tk "$H" "$1"; } # <command>: one line of [word]s per segment, a substitution shown as $(), "$()" when double-quoted
 unreadable() { jq -cn --arg e "$1" --arg t "$2" '{hook_event_name:$e,tool_name:$t,tool_input:"x",cwd:""}'; } # <event> <tool>: tool_input is a string, so jq reads no command or path from it
 many() { local i; for ((i = 0; i < $1; i++)); do printf "$2" "$i"; done; } # <n> <printf format>: the format n times, %d the index
 V=$HOME/obsidian/SecondBrain/projects/ClaudeOS
@@ -448,6 +448,7 @@ case_ "tk pipe both"                    '[git][push][origin][master]'$'\n''[tee]
 case_ "tk unclosed quote"               '[git][push][origin master]' "$(tk 'git push "origin master')"
 case_ "tk backticks in double quotes"   '[date]'$'\n''[echo][at "$()"]' "$(tk 'echo "at `date`"')"
 case_ "tk unquoted variable"            '[git][push][$()$r][$b]' "$(tk 'git push $r "$b"')"
+case_ "tk glob"                         '[ls][*.md][a?]' "$(tk 'ls *.md "a?"')"
 PM=$(mktemp -d); git -C "$PM" init -q -b master; git -C "$PM" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m x
 PF=$(mktemp -d); git -C "$PF" init -q -b q611-feature; git -C "$PF" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m x
 PN=$(mktemp -d)
@@ -676,6 +677,32 @@ case_ "subtree push to a feature"            allow "$(pg "git subtree push --pre
 case_ "subtree pull from master"             allow "$(pg "git subtree pull --prefix=docs origin master" "$PF")"
 case_ "http-push master"                     deny  "$(pg "git http-push https://h/r.git master" "$PF")"
 case_ "git-http-push binary"                 deny  "$(pg "/usr/libexec/git-core/git-http-push https://h/r.git master" "$PF")"
+case_ "git-subtree binary push to master"    deny  "$(pg "/usr/libexec/git-core/git-subtree push --prefix=x origin master" "$PF")"
+case_ "env -C into a master checkout"        deny  "$(pg "env -C $PM git push origin HEAD" "$PF")"
+case_ "env --chdir= into a master checkout"  deny  "$(pg "env --chdir=$PM git push origin HEAD" "$PF")"
+case_ "env -S hides the command"             deny  "$(pg "env -S'git push origin HEAD:master'" "$PF")"
+case_ "env -iS hides the command"            deny  "$(pg "env -iS'git push origin HEAD:master'" "$PF")"
+case_ "env --split-string abbreviated"       deny  "$(pg "env --sp='git push origin HEAD:master'" "$PF")"
+case_ "env -i and an assignment, feature push" allow "$(pg "env -i PATH=/usr/bin git push origin q611-feature" "$PF")"
+case_ "env -u, feature push"                 allow "$(pg "env -u FOO git push origin q611-feature" "$PF")"
+case_ "IFS as the separator in bash -c"      deny  "$(pg "bash -c 'git\${IFS}push\${IFS}origin\${IFS}HEAD:master'" "$PF")"
+case_ "IFS slice as the separator in bash -c" deny "$(pg "bash -c 'git\${IFS:0:1}push origin HEAD:master'" "$PF")"
+case_ "zsh equals expansion of git"          deny  "$(pg '=git push origin HEAD:master' "$PF")"
+case_ "question glob in the git path"        deny  "$(pg '/usr/bin/g?t push origin HEAD:master' "$PF")"
+case_ "bracket glob in the git path"         deny  "$(pg '/usr/bin/gi[t] push origin HEAD:master' "$PF")"
+case_ "glob in the env path, env -S"         deny  "$(pg "/usr/bin/e?v -S'git push origin HEAD:master'" "$PF")"
+case_ "zsh glob group in the git path"       deny  "$(pg '/usr/bin/g(i)t push origin HEAD:master' "$PF")"
+case_ "zsh glob qualifier running a push"    deny  "$(pg "echo *(e:'git push origin HEAD:master':)" "$PF")"
+case_ "zsh glob qualifier in an eval"        deny  "$(pg "eval \"echo *(e:'git push origin HEAD:master':)\"" "$PF")"
+case_ "branch merge config beside a push"    deny  "$(pg 'git -c branch.q611-feature.merge=refs/heads/master push' "$PF")"
+case_ "glob argument, then a feature push"   allow "$(pg 'ls *.md && git push origin q611-feature' "$PF")"
+case_ "function and array, then a feature push" allow "$(pg 'f() { :; }; a=(x y); f && git push origin q611-feature' "$PF")"
+case_ "command past 64 KB"                   deny  "$(pg "echo $(many 33000 'a ')" "$PF")"
+case_ "re-reads past the cap"                deny  "$(pg "echo $(many 129 '"a b" ')" "$PF")"
+case_ "re-reads at the cap"                  allow "$(pg "echo $(many 128 '"a b" ')" "$PF")"
+case_ "words beside a git word past the cap" deny  "$(pg "git status $(many 1023 'a ')" "$PF")"
+case_ "words beside a git word at the cap"   allow "$(pg "git status $(many 1022 'a ')" "$PF")"
+case_ "many words, no git word"              allow "$(pg "echo $(many 4000 'a ')" "$PF")"
 rm -rf "$PM" "$PF" "$PN" "$PMH"
 if [[ -z ${GUARD_BASH:-} && -x /bin/bash ]]; then
   GUARD_BASH=/bin/bash "$0" | sed "s|^|[/bin/bash] |"

@@ -13,13 +13,17 @@
 # SUBST in its place (QSUBST inside double quotes), so the enclosing command stays whole and a guard
 # can refuse what it cannot read. An unquoted one is split into words when it runs, zsh too, so its
 # output can be several words. An unquoted `$` (a variable, `${…}`, `$'…'`) keeps SUBST before it for
-# the same reason: bash splits it, and so does zsh's `${=v}`. The loop reads 1 KB chunks under LC_ALL=C and takes a run of plain bytes in one step, since
+# the same reason: bash splits it, and so does zsh's `${=v}`. An unquoted `*`, `?` or `[` keeps GLOB
+# before it, since the shell expands it to file names. A `(` glued to a word (zsh's `g(i)t` or
+# `*(e:…:)`, not `f()` or `a=(…)`) sets GLUED_PAREN, since the tokenizer reads it as a subshell. The loop reads 1 KB chunks under LC_ALL=C and takes a run of plain bytes in one step, since
 # `${text:i:1}` rescans the whole command and a byte-wise append recopies the word, and a long heredoc
 # or quoted script would outrun the hook timeout; its state is local, so the callback may call it again.
 COMMAND_JQ='.tool_input.command // empty | split("\\\n") | join("")'
 DEQUOTED_JQ=$COMMAND_JQ' | split("\"") | join("") | split("\u0027") | join("") | split("\\") | join("")'
 SUBST=$'\002'
 QSUBST=$'\003'
+GLOB=$'\004'
+GLUED_PAREN=0
 guard_allow() { exit 0; }
 guard_deny() { # <reason>
   jq -cn --arg r "$1" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
@@ -39,7 +43,7 @@ shell_segments() { # <text> <callback>: runs <callback> <word>... once per segme
     case $top in
       S) run=${rest%%\'*} ;;
       D) run=${rest%%[\"\\\$\`]*} ;;
-      *) run=${rest%%[[:space:]\;\|\&\<\>\(\)\$\'\"\\\`\#]*} ;;
+      *) run=${rest%%[[:space:]\;\|\&\<\>\(\)\$\'\"\\\`\#\*\?\[]*} ;;
     esac
     if [[ -n $run ]]; then
       word+=$run have=1
@@ -70,7 +74,10 @@ shell_segments() { # <text> <callback>: runs <callback> <word>... once per segme
           $'\n' | ';' | '|') _ss_segment ;;
           '&') if [[ $next == '>' ]]; then _ss_redirect; else _ss_segment; fi ;;
           '<' | '>') if [[ $next == '(' ]]; then _ss_open Q "$SUBST"; i=$((i + 1)); else _ss_redirect; fi ;;
-          '(') _ss_segment; stack+=P ;;
+          '(')
+            (( have )) && [[ $word != *= && $next != ')' ]] && GLUED_PAREN=1
+            _ss_segment; stack+=P ;;
+          '*' | '?' | '[') word+=$GLOB$c; have=1 ;;
           ')')
             case $top in
               Q) _ss_close; stack=${stack%?} ;;
