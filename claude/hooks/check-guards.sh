@@ -21,7 +21,7 @@ qv2() { jq -cn --arg t "$1" --arg a "$2" --arg b "$3" '{hook_event_name:"PreTool
 mg() { payload PreToolUse Bash command "$1" | guard guard-merge.sh | decision; }
 rd() { payload PreToolUse Bash command "$1" | guard guard-repo-delete.sh | decision; }
 pg() { payload PreToolUse Bash command "$1" "${2:-}" | guard guard-push.sh | decision; } # <command> [cwd]
-tk() { ${GUARD_BASH:-bash} -c '. "$1/guard-common.sh"; seg() { local w; for w in "$@"; do printf "[%s]" "${w//$SUBST/\$()}"; done; printf "\n"; }; shell_segments "$2" seg' tk "$H" "$1"; } # <command>: one line of [word]s per segment, a substitution shown as $()
+tk() { ${GUARD_BASH:-bash} -c '. "$1/guard-common.sh"; seg() { local w; for w in "$@"; do w=${w//$SUBST/\$()}; printf "[%s]" "${w//$QSUBST/\"\$()\"}"; done; printf "\n"; }; shell_segments "$2" seg' tk "$H" "$1"; } # <command>: one line of [word]s per segment, a substitution shown as $(), "$()" when double-quoted
 unreadable() { jq -cn --arg e "$1" --arg t "$2" '{hook_event_name:$e,tool_name:$t,tool_input:"x",cwd:""}'; } # <event> <tool>: tool_input is a string, so jq reads no command or path from it
 many() { local i; for ((i = 0; i < $1; i++)); do printf "$2" "$i"; done; } # <n> <printf format>: the format n times, %d the index
 V=$HOME/obsidian/SecondBrain/projects/ClaudeOS
@@ -435,7 +435,7 @@ case_ "tk escaped space"                '[git][-c][user.name=A B][push]' "$(tk '
 case_ "tk continuation"                 '[git][push][origin][master]' "$(tk "$(printf 'git push \\\n origin master')")"
 case_ "tk subshell"                     '[cd][r]'$'\n''[git][push][origin][master]' "$(tk '(cd r && git push origin master)')"
 case_ "tk substitution"                 '[git][push][origin][master]'$'\n''[x=$()]' "$(tk 'x=$(git push origin master)')"
-case_ "tk substitution in double quotes" '[echo][s]'$'\n''[git][push][origin][ma$()ter]' "$(tk 'git push origin "ma$(echo s)ter"')"
+case_ "tk substitution in double quotes" '[echo][s]'$'\n''[git][push][origin][ma"$()"ter]' "$(tk 'git push origin "ma$(echo s)ter"')"
 case_ "tk substitution keeps the command whole" '[true]'$'\n''[git][push][$()][origin][master]' "$(tk 'git push $(true) origin master')"
 case_ "tk backticks"                    '[git][push][origin][master]'$'\n''[echo][$()]' "$(tk 'echo `git push origin master`')"
 case_ "tk single quotes keep backslash" '[printf][a\nb]'$'\n''[tee][f]' "$(tk "printf 'a\\nb' | tee f")"
@@ -446,6 +446,7 @@ case_ "tk redirect to a substitution"   '[git][push][origin][master]'$'\n''[echo
 case_ "tk fd word dropped"              '[cmd][tail]' "$(tk 'cmd 2>err {fd}>out tail')"
 case_ "tk pipe both"                    '[git][push][origin][master]'$'\n''[tee][f]' "$(tk 'git push origin master |& tee f')"
 case_ "tk unclosed quote"               '[git][push][origin master]' "$(tk 'git push "origin master')"
+case_ "tk backticks in double quotes"   '[date]'$'\n''[echo][at "$()"]' "$(tk 'echo "at `date`"')"
 PM=$(mktemp -d); git -C "$PM" init -q -b master; git -C "$PM" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m x
 PF=$(mktemp -d); git -C "$PF" init -q -b q611-feature; git -C "$PF" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m x
 PN=$(mktemp -d)
@@ -624,6 +625,42 @@ case_ "find -exec push"                      deny  "$(pg 'find . -name git -exec
 case_ "push ending on a 1 KB chunk boundary" deny  "$(pg "$(many 1002 ' ')git push origin master")"
 case_ "redirect ending on a 1 KB chunk boundary" deny "$(pg "git push origin master$(many 1001 ' ')>")"
 case_ "push after a 100 KB heredoc"          deny  "$(pg "$(printf 'cat <<EOF\n%s\nEOF\ngit push origin master' "$(many 2000 'line %d with "quotes" and $vars; and | pipes\n')")")"
+case_ "heredoc body quotes past the depth limit" deny "$(pg $'cat <<EOF\n\'"\\"\nEOF\ngit push origin master' "$PF")"
+case_ "quoted heredoc delimiter, quotes past the depth limit" deny "$(pg $'cat <<\'EOF\'\n\'"\\"\nEOF\ngit push origin master' "$PF")"
+case_ "three levels of bash -c"              deny  "$(pg 'bash -c "bash -c \"bash -c '"'"'git push origin master'"'"'\""' "$PF")"
+case_ "heredoc commit message, then a feature push" allow "$(pg $'git commit -m "$(cat <<\'EOF\'\nDon\'t push the guard\'s tests\nEOF\n)" && git push -u origin HEAD' "$PF")"
+case_ "unquoted substitution in a -C value, no subcommand" deny "$(pg 'git -C $(echo . push origin HEAD:master)' "$PF")"
+case_ "unquoted substitution in a -C value, then status" deny "$(pg 'git -C $(echo . push origin HEAD:master) status' "$PF")"
+case_ "unquoted substitution in an attr-source value" deny "$(pg 'git --attr-source $(echo x push origin HEAD:master)' "$PF")"
+case_ "unquoted substitution in a -o value"  deny  "$(pg 'git push origin -o $(echo x HEAD:master)' "$PF")"
+case_ "unquoted substitution in a push-option value" deny "$(pg 'git push origin --push-option $(echo x HEAD:master)' "$PF")"
+case_ "unquoted substitution after a non-push subcommand" allow "$(pg 'git branch -D $(git branch --merged)' "$PF")"
+case_ "git words past the cap"               deny  "$(pg "echo $(many 33 'git ')&& git push origin q611-feature" "$PF")"
+case_ "4000 git words refused unread"        deny  "$(pg "echo $(many 4000 'git ')" "$PF")"
+case_ "-C past the cap"                      deny  "$(pg "git$(many 17 ' -C /') push origin" "$PF")"
+case_ "-C at the cap, push of HEAD from a feature" allow "$(pg "git$(many 15 ' -C /') -C $PF push origin" "$PF")"
+case_ "export GIT_CONFIG_COUNT push config, then a push" deny "$(pg 'export GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=remote.origin.push GIT_CONFIG_VALUE_0=HEAD:refs/heads/master; git push origin' "$PF")"
+case_ "export GIT_CONFIG_PARAMETERS alias, then the alias" deny "$(pg "export GIT_CONFIG_PARAMETERS=\"'alias.p=push origin HEAD:master'\"; git p" "$PF")"
+case_ "inline GIT_CONFIG_PARAMETERS alias"   deny  "$(pg "GIT_CONFIG_PARAMETERS=\"'alias.p=push origin HEAD:master'\" git p" "$PF")"
+case_ "export GIT_DIR, then a push of HEAD"  deny  "$(pg "export GIT_DIR=$PM/.git; git push origin" "$PF")"
+case_ "bare GIT_DIR assignment, then a push" deny  "$(pg "GIT_DIR=$PM/.git; git push origin" "$PF")"
+case_ "one-command GIT_EDITOR, then a feature push" allow "$(pg "GIT_EDITOR=true git rebase --continue && git push origin q611-feature" "$PF")"
+case_ "push before an export"                allow "$(pg "git push origin q611-feature; export GIT_DIR=x" "$PF")"
+case_ "-c include.path beside a push"        deny  "$(pg "git -c include.path=/tmp/c push origin" "$PF")"
+case_ "-c includeIf beside a push"           deny  "$(pg "git -c includeIf.onbranch:q611-feature.path=/tmp/c push origin" "$PF")"
+case_ "? glob in a refspec"                  deny  "$(pg "git push origin HEAD:maste?" "$PF")"
+case_ "[ glob in a refspec"                  deny  "$(pg "git push origin HEAD:maste[r]" "$PF")"
+case_ "variable in a refspec"                deny  "$(pg 'b=master; git push origin HEAD:$b' "$PF")"
+case_ "default expansion in a refspec"       deny  "$(pg 'git push origin HEAD:${x:-master}' "$PF")"
+case_ "function argument in a refspec"       deny  "$(pg 'f(){ git push origin "HEAD:$1"; }; f master' "$PF")"
+case_ "ansi-c quotes in a refspec"           deny  "$(pg "git push origin HEAD:\$'master'" "$PF")"
+case_ "locale quotes in a refspec"           deny  "$(pg 'git push origin HEAD:$"master"' "$PF")"
+case_ "variable as the remote"               allow "$(pg 'git push "$remote" q611-feature' "$PF")"
+case_ "subtree push to master"               deny  "$(pg "git subtree push --prefix=docs origin master" "$PF")"
+case_ "subtree push to a feature"            allow "$(pg "git subtree push --prefix=docs origin q611-feature" "$PF")"
+case_ "subtree pull from master"             allow "$(pg "git subtree pull --prefix=docs origin master" "$PF")"
+case_ "http-push master"                     deny  "$(pg "git http-push https://h/r.git master" "$PF")"
+case_ "git-http-push binary"                 deny  "$(pg "/usr/libexec/git-core/git-http-push https://h/r.git master" "$PF")"
 rm -rf "$PM" "$PF" "$PN" "$PMH"
 if [[ -z ${GUARD_BASH:-} && -x /bin/bash ]]; then
   GUARD_BASH=/bin/bash "$0" | sed "s|^|[/bin/bash] |"
