@@ -639,6 +639,8 @@ case_ "git words past the cap"               deny  "$(pg "echo $(many 33 'git ')
 case_ "4000 git words refused unread"        deny  "$(pg "echo $(many 4000 'git ')" "$PF")"
 case_ "-C past the cap"                      deny  "$(pg "git$(many 17 ' -C /') push origin" "$PF")"
 case_ "-C at the cap, push of HEAD from a feature" allow "$(pg "git$(many 15 ' -C /') -C $PF push origin" "$PF")"
+case_ "pushes of HEAD past the read cap"     deny  "$(pg "$(many 100 'git push; ')" "$PF")"
+case_ "env with an unquoted substitution"    deny  "$(pg "env \$(echo GIT_DIR=$PM/.git) git push origin" "$PF")"
 case_ "export GIT_CONFIG_COUNT push config, then a push" deny "$(pg 'export GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=remote.origin.push GIT_CONFIG_VALUE_0=HEAD:refs/heads/master; git push origin' "$PF")"
 case_ "export GIT_CONFIG_PARAMETERS alias, then the alias" deny "$(pg "export GIT_CONFIG_PARAMETERS=\"'alias.p=push origin HEAD:master'\"; git p" "$PF")"
 case_ "inline GIT_CONFIG_PARAMETERS alias"   deny  "$(pg "GIT_CONFIG_PARAMETERS=\"'alias.p=push origin HEAD:master'\" git p" "$PF")"

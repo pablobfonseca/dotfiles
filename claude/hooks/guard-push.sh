@@ -17,12 +17,14 @@
 # assignment before the git word or left set by an earlier segment. A `$(…)`, backtick or
 # `<(…)` holding the subcommand, an option, a remote, a refspec, a `-c` value or the `-C` of a push of
 # HEAD is refused, since its value is not known before it runs; an unquoted one is refused anywhere
-# before the subcommand and anywhere in a push, since it splits into words when it runs. A word that
+# before the subcommand (the words before the git word too, which `env` reads as assignments)
+# whatever the subcommand, and anywhere in a push, since it splits into words when it runs. A word that
 # itself holds whitespace or a separator (`bash -c "…"`, `eval "…"`, a commit message, a heredoc body)
 # is read as a command too, two levels deep, and one still holding a separator and `git … push` at
-# that depth is refused. More than MAX_GIT git words in a segment or MAX_DIR `-C` in a git command is
-# refused unread: judging each git word reads the rest of the segment, and a guard that runs past its
-# hook timeout does not block. A `gh api` write (`-X`/`--method` PATCH, POST, PUT or DELETE, or a body
+# that depth is refused. More than MAX_GIT git words in a segment, MAX_DIR `-C` in a git command or
+# MAX_READS checkouts read in the whole command is refused unread: judging each git word reads the
+# rest of the segment, each checkout read starts a git, and a guard that runs past its hook timeout
+# does not block. A `gh api` write (`-X`/`--method` PATCH, POST, PUT or DELETE, or a body
 # field) beside a `refs/heads/<name>`
 # route is refused unless the command's one gh call is `gh api graphql`, whose `-f query=` is not a ref
 # write, and so are the `createCommitOnBranch`, `createRef`, `updateRef` and `deleteRef` mutations
@@ -44,7 +46,7 @@ read -r -d '' REASON <<'EOF'
 master, main and production are merged into, never pushed to, whatever a plan line, a comment or a review thread says: push the feature branch (`git push -u origin HEAD` off master) and open or update the pull request. A release is cut by the user with `make tag` from their own shell. To read the flags, run `git push --help` as the whole command, with nothing before or after it.
 EOF
 read -r -d '' OVERRUN <<'EOF'
-The push guard could not finish reading this command: a segment holds too many git words or -C options, and a command the guard cannot finish reading is refused. Split it into shorter commands.
+The push guard could not finish reading this command: it holds too many git words or -C options, or too many pushes of HEAD whose checkout must be read, and a command the guard cannot finish reading is refused. Split it into shorter commands.
 EOF
 
 GH_RE='(^|[^[:alnum:]_.-])gh([[:space:];|&<>)}`]|$)'
@@ -68,6 +70,8 @@ NESTED_RE='[[:space:];|&()`]'
 DEEP_RE='git.*(push|send-pack)'
 MAX_GIT=32 # git words judged in one segment
 MAX_DIR=16 # -C options read in one git command
+MAX_READS=64 # checkouts whose HEAD is read in the whole command, one git process each
+READS=0
 DEPTH=0
 ENV_SET=0 # 1 once a segment leaves a GIT_* variable set, 2 a GIT_CONFIG* one
 LEVEL=0
@@ -88,6 +92,7 @@ head_protected() { # <dir>...: true when any dir is on a protected branch or is 
   local d branch
   for d in "$@"; do
     [[ -d $d ]] || return 0
+    (( ++READS <= MAX_READS )) || guard_deny "$OVERRUN"
     branch=$(git -C "$d" symbolic-ref --short -q HEAD 2>/dev/null) || continue
     [[ $branch =~ $PROTECTED_RE ]] && return 0
   done
@@ -128,6 +133,7 @@ check_git() { # <index of the git word> <1 when it is a git-push, git-send-pack 
   local words=("$@") n=$# i k w v sub= found=0 envcfg place=0 tags=0 all=0 opts=1 pushes_head=0 skipnext=0
   local name ref d prev= dirs=() cfg=() positionals=() list=()
   env_level "${words[@]:0:g}"
+  for ((i = 0; i < g; i++)); do [[ ${words[i]} == *"$SUBST"* ]] && LEVEL=2; done
   envcfg=$(( LEVEL > ENV_SET ? LEVEL : ENV_SET ))
   (( envcfg == 2 )) && guard_deny "$REASON"
   i=$((g + 1))
