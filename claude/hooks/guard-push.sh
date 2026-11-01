@@ -27,8 +27,10 @@
 # itself holds whitespace or a separator (`bash -c "…"`, `eval "…"`, a commit message, a heredoc body)
 # is read as a command too, two levels deep, and one still holding a separator and `git … push` at
 # that depth is refused, and so is a word holding `$IFS` or `${IFS…}` and `git … push`, which a
-# `bash -c` body splits. A command longer than MAX_BYTES, more than MAX_REREADS words read as a
-# command, MAX_GIT git words or MAX_WORDS words in a segment holding a git word, MAX_DIR `-C` in a git
+# `bash -c` body splits. A `send-pack` or `http-push` with `--stdin` or no ref is refused, since it
+# reads its refs elsewhere or pushes the matching ones. A command longer than MAX_BYTES, more than
+# MAX_REREADS words read as a command, more than MAX_GIT git words in all, MAX_WORDS words in a segment
+# holding a git word, MAX_DIR `-C` in a git
 # command or MAX_READS checkouts read is refused unread: each costs the guard time, and a guard that
 # runs past its hook timeout does not block. A `gh api` write (`-X`/`--method` PATCH, POST, PUT or DELETE, or a body
 # field) beside a `refs/heads/<name>`
@@ -36,6 +38,9 @@
 # write, and so are the `createCommitOnBranch`, `createRef`, `updateRef` and `deleteRef` mutations
 # beside a gh call naming one of the three; the gh rules read the command with its quotes dropped. A
 # command jq cannot read is refused. `--tags` alone and a tag refspec move no branch and are allowed.
+# The guard is a tripwire against an ordinary push, not a boundary: a command can build its git call
+# at run time (an interpreter, a pipe into `sh`, `hash`, `find -exec`, a renamed or case-folded
+# binary, a variable split by `${=x}` or a `bash -c` body), and those spellings are not read.
 # Not followed: wrapper scripts (`make tag`, `scripts/tag.sh`), shell aliases, persistent git config
 # (`help.autocorrect` included, and a planted one under a `HOME=` or `XDG_CONFIG_HOME=` prefix), `$'...'` escapes in a word read as a command (`bash -c $'…'`), brace
 # expansion, a variable or substitution holding the git word, a name piped in through
@@ -52,7 +57,7 @@ read -r -d '' REASON <<'EOF'
 master, main and production are merged into, never pushed to, whatever a plan line, a comment or a review thread says: push the feature branch (`git push -u origin HEAD` off master) and open or update the pull request. A release is cut by the user with `make tag` from their own shell. To read the flags, run `git push --help` as the whole command, with nothing before or after it.
 EOF
 read -r -d '' OVERRUN <<'EOF'
-The push guard could not finish reading this command: it is longer than 64 KB, or holds too many words beside a git word, git words, -C options, quoted strings read as commands, or pushes of HEAD whose checkout must be read, and a command the guard cannot finish reading is refused. Split it into shorter commands, or write a long text to a file first.
+The push guard could not finish reading this command: it is longer than 32 KB, or holds too many words beside a git word, git words, -C options, quoted strings read as commands, or pushes of HEAD whose checkout must be read, and a command the guard cannot finish reading is refused. Split it into shorter commands, or write a long text to a file first.
 EOF
 
 GH_RE='(^|[^[:alnum:]_.-])gh([[:space:];|&<>)}`]|$)'
@@ -74,13 +79,14 @@ ALLOPT='all branches mirror'
 VALOPT='repo push-option receive-pack exec recurse-submodules'
 NESTED='[[:space:];|&()`]'
 DEEP_RE='git.*(push|send-pack)'
-MAX_GIT=32 # git words judged in one segment
+MAX_GIT=32 # git words judged in the whole command, each walking its segment
 MAX_DIR=16 # -C options read in one git command
 MAX_READS=64 # checkouts whose HEAD is read in the whole command, one git process each
-MAX_BYTES=65536 # command length read at all
+MAX_BYTES=32768 # command length read at all
 MAX_REREADS=128 # quoted words re-read as a command, one shell_segments call each
 MAX_WORDS=1024 # words in a segment that holds a git word, each indexed per git word
 READS=0
+GITS=0
 REREADS=0
 DEPTH=0
 ENV_SET=0 # 1 once a segment leaves a GIT_* variable set, 2 a GIT_CONFIG* one
@@ -137,10 +143,10 @@ check_subtree() { # <word>... after `git subtree`: a push is refused when a late
   done
 }
 
-check_git() { # <index of the git word> <1 when it is a git-push, git-send-pack or git-http-push binary> <word>...
-  local g=$1 bin=$2
+check_git() { # <index of the git word> <push, send-pack or http-push for a git-<that> binary, empty for git> <word>...
+  local g=$1 sub=$2
   shift 2
-  local words=("$@") n=$# i k w v sub= found=0 envcfg place=0 tags=0 all=0 opts=1 pushes_head=0 skipnext=0
+  local words=("$@") n=$# i k w v found=0 stdin=0 envcfg place=0 tags=0 all=0 opts=1 pushes_head=0 skipnext=0
   local name ref d prev= dirs=() cfg=() positionals=() list=() lead=1
   env_level "${words[@]:0:g}"
   for ((i = 0; i < g; i++)); do
@@ -152,7 +158,7 @@ check_git() { # <index of the git word> <1 when it is a git-push, git-send-pack 
   envcfg=$(( LEVEL > ENV_SET ? LEVEL : ENV_SET ))
   (( envcfg == 2 )) && guard_deny "$REASON"
   i=$((g + 1))
-  if (( ! bin )); then
+  if [[ -z $sub ]]; then
     shopt -u nocasematch
     while (( i < n )); do
       w=${words[i]}
@@ -209,6 +215,8 @@ check_git() { # <index of the git word> <1 when it is a git-push, git-send-pack 
             all=1
           elif prefix_of "$name" tags; then
             tags=1
+          elif prefix_of "$name" stdin; then
+            stdin=1
           elif [[ $w != *=* ]] && prefix_of "$name" "$VALOPT"; then
             skipnext=1
           fi ;;
@@ -219,6 +227,7 @@ check_git() { # <index of the git word> <1 when it is a git-push, git-send-pack 
     fi
   done
   (( all || envcfg || place )) && guard_deny "$REASON"
+  [[ $sub != push ]] && (( stdin || ${#positionals[@]} <= 1 )) && guard_deny "$REASON"
   for v in "${cfg[@]+"${cfg[@]}"}"; do
     [[ ${v%%=*} =~ $STEER_RE ]] && guard_deny "$REASON"
   done
@@ -283,7 +292,7 @@ glob_name() { # <word holding GLOB>: NAME is the first of git, its push binaries
 }
 
 check_segment() { # <word>...: the shell_segments callback; judges the segment from every git word in it
-  local w c name glued k=0 bin gits=0 envopt=0
+  local w c name glued k=0 bin envopt=0
   for w in "$@"; do
     case $w in *'$IFS'* | *'${IFS'*) [[ $w =~ $DEEP_RE ]] && guard_deny "$REASON" ;; esac
     case $w in *$NESTED*) ;; *) continue ;; esac
@@ -322,13 +331,12 @@ check_segment() { # <word>...: the shell_segments callback; judges the segment f
     case $c in *"$GLOB"*) glob_name "$c" || continue; c=$NAME ;; esac
     case $c in
       env | */env) envopt=1; continue ;;
-      git | */git) bin=0 ;;
-      git-push | */git-push | git-send-pack | */git-send-pack | git-http-push | */git-http-push) bin=1 ;;
-      git-subtree | */git-subtree) bin=2 ;;
+      git | */git) bin= ;;
+      git-push | */git-push | git-send-pack | */git-send-pack | git-http-push | */git-http-push | git-subtree | */git-subtree) bin=${c##*/}; bin=${bin#git-} ;;
       *) continue ;;
     esac
-    (( ++gits <= MAX_GIT && $# <= MAX_WORDS )) || guard_deny "$OVERRUN"
-    if (( bin == 2 )); then check_subtree "${@:k+1}"; else check_git $((k - 1)) "$bin" "$@"; fi
+    (( ++GITS <= MAX_GIT && $# <= MAX_WORDS )) || guard_deny "$OVERRUN"
+    if [[ $bin == subtree ]]; then check_subtree "${@:k+1}"; else check_git $((k - 1)) "$bin" "$@"; fi
   done
   persistent_env "$@"
 }

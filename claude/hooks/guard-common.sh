@@ -15,7 +15,7 @@
 # output can be several words. An unquoted `$` (a variable, `${…}`, `$'…'`) keeps SUBST before it for
 # the same reason: bash splits it, and so does zsh's `${=v}`. An unquoted `*`, `?` or `[` keeps GLOB
 # before it, since the shell expands it to file names. A `(` glued to a word (zsh's `g(i)t` or
-# `*(e:…:)`, not `f()` or `a=(…)`) sets GLUED_PAREN, since the tokenizer reads it as a subshell. The loop reads 1 KB chunks under LC_ALL=C and takes a run of plain bytes in one step, since
+# `*(e:…:)`, not `f()`, `a=(…)` or a pattern inside `[[ … ]]`, which globs no file) sets GLUED_PAREN, since the tokenizer reads it as a subshell. The loop reads 1 KB chunks under LC_ALL=C and takes a run of plain bytes in one step, since
 # `${text:i:1}` rescans the whole command and a byte-wise append recopies the word, and a long heredoc
 # or quoted script would outrun the hook timeout; its state is local, so the callback may call it again.
 COMMAND_JQ='.tool_input.command // empty | split("\\\n") | join("")'
@@ -75,7 +75,7 @@ shell_segments() { # <text> <callback>: runs <callback> <word>... once per segme
           '&') if [[ $next == '>' ]]; then _ss_redirect; else _ss_segment; fi ;;
           '<' | '>') if [[ $next == '(' ]]; then _ss_open Q "$SUBST"; i=$((i + 1)); else _ss_redirect; fi ;;
           '(')
-            (( have )) && [[ $word != *= && $next != ')' ]] && GLUED_PAREN=1
+            (( have )) && [[ $word != *= && $next != ')' && ${words[base]-} != "$GLOB[$GLOB[" ]] && GLUED_PAREN=1
             _ss_segment; stack+=P ;;
           '*' | '?' | '[') word+=$GLOB$c; have=1 ;;
           ')')
