@@ -12,7 +12,8 @@
 # a `$(…)`, backtick or `<(…)` substitution is a segment of its own, and the word it sat in keeps
 # SUBST in its place (QSUBST inside double quotes), so the enclosing command stays whole and a guard
 # can refuse what it cannot read. An unquoted one is split into words when it runs, zsh too, so its
-# output can be several words. The loop reads 1 KB chunks under LC_ALL=C and takes a run of plain bytes in one step, since
+# output can be several words. An unquoted `$` (a variable, `${…}`, `$'…'`) keeps SUBST before it for
+# the same reason: bash splits it, and so does zsh's `${=v}`. The loop reads 1 KB chunks under LC_ALL=C and takes a run of plain bytes in one step, since
 # `${text:i:1}` rescans the whole command and a byte-wise append recopies the word, and a long heredoc
 # or quoted script would outrun the hook timeout; its state is local, so the callback may call it again.
 COMMAND_JQ='.tool_input.command // empty | split("\\\n") | join("")'
@@ -77,7 +78,7 @@ shell_segments() { # <text> <callback>: runs <callback> <word>... once per segme
               *) _ss_segment ;;
             esac ;;
           '`') if [[ $top == B ]]; then _ss_close; stack=${stack%?}; else _ss_open B "$SUBST"; fi ;;
-          '$') if [[ $next == '(' ]]; then _ss_open Q "$SUBST"; i=$((i + 1)); else word+=$c; have=1; fi ;;
+          '$') if [[ $next == '(' ]]; then _ss_open Q "$SUBST"; i=$((i + 1)); else word+=$SUBST$c; have=1; fi ;;
           '#')
             if (( have )); then
               word+=$c
