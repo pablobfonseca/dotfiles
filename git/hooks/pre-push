@@ -1,26 +1,44 @@
 #!/bin/bash -p
 # master, main and production move by a merged pull request, never by a push from a Claude Code
 # session. Wired for every repo by core.hooksPath in the dotfiles gitconfig, so it reads the
-# destination refs git is about to send however the command was spelled. When CLAUDECODE is set to
-# anything, a push is refused whole when any remote ref on stdin is exactly refs/heads/master,
-# refs/heads/main or refs/heads/production, a deletion included; the match is case-sensitive, since
-# the ref is git's truth and refs/heads/Master is another branch. Tags and every other branch pass.
-# Two exemptions: an unset or empty CLAUDECODE (the user's own shell, so `make tag` passes), and a
-# remote whose repository name is vault-queues (claudeos's own queue writes onto its master, from
-# inside every session). What skips this hook (a push with the hook turned off, core.hooksPath moved,
-# CLAUDECODE dropped, send-pack, which never runs pre-push) is refused by the Bash guard,
-# claude/hooks/guard-push.sh. This hook runs nothing else: a repo's own .git/hooks do not run beside it.
-# The shebang is /bin/bash -p, not env bash, so a PATH entry, BASH_ENV or an imported function set by
-# the pushing command cannot replace the interpreter or its builtins.
+# destination refs git is about to send however the command was spelled. The hook is armed when
+# CLAUDECODE is set to anything, or when a process named claude (Claude Code itself; macOS reports
+# argv[0], Linux the executable's name) is among its ancestors, read with /bin/ps one parent at a
+# time up to pid 1 or 64 hops: a session can empty or drop the variable by a spelling the Bash guard
+# does not read, but it cannot leave its own process tree. Armed, a push is refused whole when any
+# remote ref on stdin is exactly refs/heads/master, refs/heads/main or refs/heads/production, a
+# deletion included; the match is case-sensitive, since the ref is git's truth and refs/heads/Master
+# is another branch. Tags and every other branch pass. One exemption: a remote URL that is exactly
+# one of the four GitHub spellings of claudeos's queues repository, git@github.com:pablobfonseca/
+# vault-queues or https://github.com/pablobfonseca/vault-queues, with or without .git (claudeos's
+# own queue writes onto its master, from inside every session); a local path or another host named
+# vault-queues is not exempt, so a --receive-pack or ssh command cannot borrow the name. Not armed:
+# the user's own shell (so `make tag` passes), and a process that left the session's tree (tmux
+# new-window, a job that outlived its shell, launchd), a recorded residual. What skips this hook (a
+# push with the hook turned off, core.hooksPath moved, send-pack, which never runs pre-push) is
+# refused by the Bash guard, claude/hooks/guard-push.sh. This hook runs nothing else: a repo's own
+# .git/hooks do not run beside it. The shebang is /bin/bash -p, not env bash, so a PATH entry,
+# BASH_ENV or an imported function set by the pushing command cannot replace the interpreter or its
+# builtins; ps is /bin/ps by absolute path and -ww, so neither PATH nor COLUMNS reaches the walk.
 set -u
 
-[[ -n ${CLAUDECODE:-} ]] || exit 0
+url=$2
+armed=0
+[[ -n ${CLAUDECODE:-} ]] && armed=1
+pid=$$ hops=0
+while (( ! armed && pid > 1 && hops < 64 )); do
+  hops=$((hops + 1))
+  line=$(/bin/ps -ww -o ppid=,comm= -p "$pid" 2>/dev/null) || break
+  set -- $line
+  (( $# >= 2 )) || break
+  [[ ${2##*/} == claude ]] && armed=1
+  pid=$1
+done
+(( armed )) || exit 0
 
-u=${2%/}
-u=${u%.git}
-u=${u##*/}
-u=${u##*:}
-[[ $u == vault-queues ]] && exit 0
+case $url in
+  git@github.com:pablobfonseca/vault-queues.git | git@github.com:pablobfonseca/vault-queues | https://github.com/pablobfonseca/vault-queues.git | https://github.com/pablobfonseca/vault-queues) exit 0 ;;
+esac
 
 while read -r local_ref local_oid remote_ref remote_oid; do
   case $remote_ref in
