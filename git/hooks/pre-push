@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash -p
 # master, main and production move by a merged pull request, never by a push from a Claude Code
 # session. Wired for every repo by core.hooksPath in the dotfiles gitconfig, so it reads the
 # destination refs git is about to send however the command was spelled. When CLAUDECODE is set to
@@ -10,6 +10,8 @@
 # inside every session). What skips this hook (a push with the hook turned off, core.hooksPath moved,
 # CLAUDECODE dropped, send-pack, which never runs pre-push) is refused by the Bash guard,
 # claude/hooks/guard-push.sh. This hook runs nothing else: a repo's own .git/hooks do not run beside it.
+# The shebang is /bin/bash -p, not env bash, so a PATH entry, BASH_ENV or an imported function set by
+# the pushing command cannot replace the interpreter or its builtins.
 set -u
 
 [[ -n ${CLAUDECODE:-} ]] || exit 0

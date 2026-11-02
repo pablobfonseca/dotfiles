@@ -30,8 +30,10 @@
 # `bash -c` body splits. A `send-pack` or `http-push` with `--stdin` or no ref is refused, since it
 # reads its refs elsewhere or pushes the matching ones. What would skip the dotfiles pre-push hook
 # (git/hooks/pre-push, the control that reads the destination refs) is refused whatever follows:
-# `--no-verify` or an abbreviation of it on a push, `core.hooksPath` by `-c`, `--config-env` or a
-# `git config` write (a `--get` read passes), a `CLAUDECODE=` assignment, `CLAUDECODE` beside
+# `--no-verify` or an abbreviation of it on a push, `core.hooksPath` by `-c` or `--config-env`, a
+# `git config` or `git-config` write of it or of an `alias.*`, `include.*`, `includeIf.*` or
+# `help.autocorrect` key, or a section removal or rename touching `core`, `alias`, `include`,
+# `includeIf` or `help` (a `--get` read before the key passes), a `CLAUDECODE=` assignment, `CLAUDECODE` beside
 # `unset`, `export`, `declare`, `typeset`, `local` or `readonly`, `env -u`/`--unset` naming it,
 # `env -i`, `--ignore-environment` or a bare `-`. A command longer than MAX_BYTES, more than
 # MAX_REREADS words read as a command, more than MAX_GIT git words in all, MAX_WORDS words in a segment
@@ -79,6 +81,7 @@ GRAPHQL_RE='(^|[^[:alnum:]_.-])gh[[:space:]]+api[[:space:]]+graphql([[:space:]]|
 TWO_GH_RE=$GH_RE'.*'$GH_RE
 STEER_RE='^(push\.|remote\..*\.(push|mirror)$|branch\..*\.merge$)'
 ALIAS_RE='^(alias\.|include\.|includeIf\.|help\.autocorrect|core\.hookspath)'
+SECTION_RE='^(core|alias|include|includeIf|help)([.]|$)'
 REF_GLOB_RE='[*?[$]'
 ANY_EXP="[$SUBST$QSUBST\$]"
 ALLOPT='all branches mirror'
@@ -149,13 +152,16 @@ check_subtree() { # <word>... after `git subtree`: a push is refused when a late
   done
 }
 
-check_config() { # <word>... after `git config`: a write naming core.hooksPath is refused, a --get read is not
-  local w get=0 hooks=0
+check_config() { # <word>... after `git config`: a write naming core.hooksPath or an ALIAS_RE key, or a section op on one, is refused; a --get read before the key is not
+  local w get=0 section=0
   for w in "$@"; do
-    [[ $w == --get* ]] && get=1
-    [[ $w =~ ^core\.hookspath$ ]] && hooks=1
+    case $w in
+      --get*) get=1 ;;
+      --remove-section | --rename-section | remove-section | rename-section) section=1 ;;
+    esac
+    (( section )) && [[ $w =~ $SECTION_RE ]] && guard_deny "$REASON"
+    [[ $w =~ $ALIAS_RE ]] && { (( get )) || guard_deny "$REASON"; }
   done
-  (( hooks && ! get )) && guard_deny "$REASON"
   return 0
 }
 
@@ -315,7 +321,7 @@ claudecode_kept() { # <word>...: a segment that assigns or unsets CLAUDECODE is 
 glob_name() { # <word holding GLOB>: NAME is the first of git, its push binaries and env that the word's file-name glob matches
   local p=${1//$GLOB/} n
   p=${p##*/}
-  for n in git git-push git-send-pack git-http-push git-subtree env; do
+  for n in git git-push git-send-pack git-http-push git-subtree git-config env; do
     case $n in $p) NAME=$n; return 0 ;; esac
   done
   return 1
@@ -371,11 +377,15 @@ check_segment() { # <word>...: the shell_segments callback; judges the segment f
     case $c in
       env | */env) envopt=1; continue ;;
       git | */git) bin= ;;
-      git-push | */git-push | git-send-pack | */git-send-pack | git-http-push | */git-http-push | git-subtree | */git-subtree) bin=${c##*/}; bin=${bin#git-} ;;
+      git-push | */git-push | git-send-pack | */git-send-pack | git-http-push | */git-http-push | git-subtree | */git-subtree | git-config | */git-config) bin=${c##*/}; bin=${bin#git-} ;;
       *) continue ;;
     esac
     (( ++GITS <= MAX_GIT && $# <= MAX_WORDS )) || guard_deny "$OVERRUN"
-    if [[ $bin == subtree ]]; then check_subtree "${@:k+1}"; else check_git $((k - 1)) "$bin" "$@"; fi
+    case $bin in
+      subtree) check_subtree "${@:k+1}" ;;
+      config) check_config "${@:k+1}" ;;
+      *) check_git $((k - 1)) "$bin" "$@" ;;
+    esac
   done
   persistent_env "$@"
 }
