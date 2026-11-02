@@ -734,7 +734,26 @@ case_ "pp vault-queues path"             allow "$(pp /tmp/x/vault-queues "refs/h
 case_ "pp vault-queues path, .git slash" allow "$(pp /tmp/x/vault-queues.git/ "refs/heads/master $OID refs/heads/master $OID")"
 case_ "pp owner named vault-queues"      deny  "$(pp git@github.com:vault-queues/claudeos.git "refs/heads/master $OID refs/heads/master $OID")"
 case_ "pp reason names the hook"         1     "$(printf '%s\n' "refs/heads/x $OID refs/heads/master $OID" | CLAUDECODE=1 ${GUARD_BASH:-bash} "$G/pre-push" origin "$PU" 2>&1 >/dev/null | grep -c '^pre-push hook: .*make tag')"
-rm -rf "$PM" "$PF" "$PN" "$PMH"
+PR=$(mktemp -d); git init -q --bare "$PR/remote.git"; git init -q --bare "$PR/vault-queues.git"
+PW=$PR/work; git init -q -b master "$PW"
+git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m x
+git -C "$PW" remote add origin "$PR/remote.git"; git -C "$PW" remote add queues "$PR/vault-queues.git"; git -C "$PW" tag v1
+CLAUDECODE= git -C "$PW" -c core.hooksPath="$G" push -q origin master   # seeds master on the remote, as the user's shell would
+git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m y   # local master now ahead of the remote's, so a push of it is listed on the hook's stdin (git skips an up-to-date ref)
+git -C "$PW" checkout -q -b q623-feature; git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m z
+pe() { CLAUDECODE=1 git -C "$PW" -c core.hooksPath="$G" push -q "$@" >/dev/null 2>&1 && echo allow || echo deny; } # <push args>: git's own verdict with the hook wired by -c
+case_ "e2e HEAD:master"                  deny  "$(pe origin HEAD:master)"
+case_ "e2e feature:main"                 deny  "$(pe origin q623-feature:main)"
+case_ "e2e delete master"                deny  "$(pe origin :master)"
+case_ "e2e two refs, one protected"      deny  "$(pe origin q623-feature HEAD:master)"
+case_ "e2e --mirror"                     deny  "$(pe --mirror origin)"
+case_ "e2e feature branch"               allow "$(pe -u origin q623-feature)"
+case_ "e2e tag"                          allow "$(pe origin v1)"
+case_ "e2e vault-queues remote"          allow "$(pe queues HEAD:master)"
+case_ "e2e CLAUDECODE unset"             allow "$(CLAUDECODE= git -C "$PW" -c core.hooksPath="$G" push -q origin HEAD:refs/heads/production >/dev/null 2>&1 && echo allow || echo deny)"
+case_ "e2e reason reaches git's stderr"  1     "$(CLAUDECODE=1 git -C "$PW" -c core.hooksPath="$G" push -q origin HEAD:master 2>&1 | grep -c '^pre-push hook: ')"
+case_ "e2e --no-verify skips the hook"   allow "$(pe --no-verify origin HEAD:master)"
+rm -rf "$PM" "$PF" "$PN" "$PMH" "$PR"
 if [[ -z ${GUARD_BASH:-} && -x /bin/bash ]]; then
   GUARD_BASH=/bin/bash "$0" | sed "s|^|[/bin/bash] |"
   (( PIPESTATUS[0] == 0 )) || fail=1
