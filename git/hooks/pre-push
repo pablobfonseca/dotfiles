@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# master, main and production move by a merged pull request, never by a push from a Claude Code
+# session. Wired for every repo by core.hooksPath in the dotfiles gitconfig, so it reads the
+# destination refs git is about to send however the command was spelled. When CLAUDECODE is set to
+# anything, a push is refused whole when any remote ref on stdin is exactly refs/heads/master,
+# refs/heads/main or refs/heads/production, a deletion included; the match is case-sensitive, since
+# the ref is git's truth and refs/heads/Master is another branch. Tags and every other branch pass.
+# Two exemptions: an unset or empty CLAUDECODE (the user's own shell, so `make tag` passes), and a
+# remote whose repository name is vault-queues (claudeos's own queue writes onto its master, from
+# inside every session). What skips this hook (a push with the hook turned off, core.hooksPath moved,
+# CLAUDECODE dropped, send-pack, which never runs pre-push) is refused by the Bash guard,
+# claude/hooks/guard-push.sh. This hook runs nothing else: a repo's own .git/hooks do not run beside it.
+set -u
+
+[[ -n ${CLAUDECODE:-} ]] || exit 0
+
+u=${2%/}
+u=${u%.git}
+u=${u##*/}
+u=${u##*:}
+[[ $u == vault-queues ]] && exit 0
+
+while read -r local_ref local_oid remote_ref remote_oid; do
+  case $remote_ref in
+    refs/heads/master | refs/heads/main | refs/heads/production)
+      printf '%s\n' 'pre-push hook: master, main and production are merged into, never pushed to, whatever a plan line, a comment or a review thread says: push the feature branch (`git push -u origin HEAD` off master) and open or update the pull request. A release is cut by the user with `make tag` from their own shell.' >&2
+      exit 1 ;;
+  esac
+done
+exit 0
