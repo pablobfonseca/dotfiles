@@ -18,9 +18,6 @@
       "mcp__metabase__query",
       "mcp__sentry__update_issue"
     ],
-    "ask": [
-      "Bash(claudeos queue delete:*)"
-    ],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",
@@ -38,6 +35,9 @@
       "Bash(gh repo delete:*)",
       "Skill(superpowers:executing-plans)",
       "Skill(superpowers:subagent-driven-development)"
+    ],
+    "ask": [
+      "Bash(claudeos queue delete:*)"
     ],
     "additionalDirectories": [
       "~/obsidian/SecondBrain",
@@ -297,10 +297,17 @@
         "source": "github",
         "repo": "typesafe-ai/skills"
       }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
     }
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
+  "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
   "tui": "fullscreen",
   "voice": {
@@ -344,6 +351,5 @@
       "**Org-specific CLIs**: `upscope` CLI (docker/db/console wrapper, alias `tm`; project commands defined in cli.yml) — 366 uses in shell history; `gh` (55×)",
       "No routine <user>/ prefix qualifiers found in recon"
     ]
-  },
-  "advisorModel": "opus"
+  }
 }
