@@ -18,11 +18,11 @@
 # in one word, and so is a `(` glued to a word (zsh's `g(i)t` group or `*(e:…:)` qualifier, which
 # runs code), or in a word read as a command one holding `git … push`. A `-c` on `alias.*`, `include.*`,
 # `includeIf.*` or `help.autocorrect` is refused whatever the subcommand, and so is a `GIT_CONFIG*`
-# assignment before the git word or left set by an earlier segment. A `$(…)`, backtick, `<(…)` or `$`
-# expansion holding the subcommand, an option, a remote, a refspec, a `-c` value or the `-C` of a push
-# of HEAD is refused, since its value is not known before it runs, and so is one in a word before the
-# git word (which `env` reads as assignments) other than a leading `NAME=` assignment, whatever the
-# subcommand. An unquoted one is refused anywhere before the subcommand whatever the subcommand, and
+# assignment in any segment, whatever follows (a wrapper the command runs with no git word of its own
+# inherits it). A `$(…)`, backtick, `<(…)` or `$` expansion holding the subcommand, an option, a
+# remote, a refspec, a `-c` value or the `-C` of a push of HEAD is refused, since its value is not
+# known before it runs, and so is one in a word before the git word (which `env` reads as
+# assignments) other than a leading `NAME=` assignment, whatever the subcommand. An unquoted one is refused anywhere before the subcommand whatever the subcommand, and
 # anywhere in a push, option values included, since it splits into words when it runs. A word that
 # itself holds whitespace or a separator (`bash -c "…"`, `eval "…"`, a commit message, a heredoc body)
 # is read as a command too, two levels deep, and one still holding a separator and `git … push` at
@@ -99,7 +99,7 @@ READS=0
 GITS=0
 REREADS=0
 DEPTH=0
-ENV_SET=0 # 1 once a segment leaves a GIT_* variable set, 2 a GIT_CONFIG* one
+ENV_SET=0 # 1 once a segment leaves a GIT_* variable set
 LEVEL=0
 
 input=$(cat) || exit 0
@@ -287,12 +287,11 @@ check_git() { # <index of the git word> <push, send-pack or http-push for a git-
   head_protected "${list[@]+"${list[@]}"}" && guard_deny "$REASON"
 }
 
-env_level() { # <word>...: LEVEL is 2 when a word assigns GIT_CONFIG*, 1 when one assigns another GIT_*, else 0
+env_level() { # <word>...: LEVEL is 1 when a word assigns a GIT_* variable, else 0
   local w
   LEVEL=0
   for w in "$@"; do
     case $w in
-      GIT_CONFIG*=*) LEVEL=2; return ;;
       GIT_*=*) LEVEL=1 ;;
     esac
   done
@@ -312,10 +311,11 @@ persistent_env() { # <word>...: a GIT_* assignment left set for the rest of the 
   return 0
 }
 
-claudecode_kept() { # <word>...: a segment that assigns or unsets CLAUDECODE is refused, whatever follows
+arming_kept() { # <word>...: a segment that assigns or unsets CLAUDECODE, or assigns a GIT_CONFIG* variable, is refused, whatever follows
   local w kill=0 name=0
   for w in "$@"; do
     case $w in
+      GIT_CONFIG*=*) guard_deny "$REASON" ;;
       CLAUDECODE=*) guard_deny "$REASON" ;;
       unset | export | declare | typeset | local | readonly) kill=1 ;;
       CLAUDECODE) name=1 ;;
@@ -336,7 +336,7 @@ glob_name() { # <word holding GLOB>: NAME is the first of git, its push binaries
 
 check_segment() { # <word>...: the shell_segments callback; judges the segment from every git word in it
   local w c name glued k=0 bin envopt=0
-  claudecode_kept "$@"
+  arming_kept "$@"
   for w in "$@"; do
     case $w in *'$IFS'* | *'${IFS'*) [[ $w =~ $DEEP_RE ]] && guard_deny "$REASON" ;; esac
     case $w in *$NESTED*) ;; *) continue ;; esac
