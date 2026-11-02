@@ -6,6 +6,7 @@
   editor                  = nvim
   excludesfile            = ~/.global_ignore
   whitespace              = warn
+  hooksPath               = ~/.dotfiles/git/hooks
 [github]
   user                    = pablobfonseca
 [help]
