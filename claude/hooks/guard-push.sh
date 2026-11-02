@@ -86,6 +86,7 @@ REF_GLOB_RE='[*?[$]'
 ANY_EXP="[$SUBST$QSUBST\$]"
 ALLOPT='all branches mirror'
 VALOPT='repo push-option receive-pack exec recurse-submodules'
+CONFIG_VALOPT='file blob type default comment value'
 NESTED='[[:space:];|&()`]'
 DEEP_RE='git.*(push|send-pack)'
 MAX_GIT=32 # git words judged in the whole command, each walking its segment
@@ -153,12 +154,18 @@ check_subtree() { # <word>... after `git subtree`: a push is refused when a late
 }
 
 check_config() { # <word>... after `git config`: a write naming core.hooksPath or an ALIAS_RE key, or a section op on one, is refused; a --get read before the key is not
-  local w get=0 section=0
+  local w get=0 section=0 value=0
   for w in "$@"; do
-    case $w in
-      --get*) get=1 ;;
-      --remove-section | --rename-section | remove-section | rename-section) section=1 ;;
-    esac
+    if (( value )); then
+      value=0
+    else
+      case $w in
+        --get*) get=1 ;;
+        --remove-section | --rename-section | remove-section | rename-section) section=1 ;;
+        -f) value=1 ;;
+        --?*) [[ $w != *=* ]] && prefix_of "${w#--}" "$CONFIG_VALOPT" && value=1 ;;
+      esac
+    fi
     (( section )) && [[ $w =~ $SECTION_RE ]] && guard_deny "$REASON"
     [[ $w =~ $ALIAS_RE ]] && { (( get )) || guard_deny "$REASON"; }
   done
