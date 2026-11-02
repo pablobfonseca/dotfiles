@@ -762,7 +762,7 @@ CLAUDECODE= git -C "$PW" -c core.hooksPath="$G" push -q origin master   # seeds 
 git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m y   # local master now ahead of the remote's, so a push of it is listed on the hook's stdin (git skips an up-to-date ref)
 git -C "$PW" checkout -q -b q623-feature; git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m z
 ln -s /bin/bash "$PR/claude"
-pa() { printf '%s\n' "${@:2}" | CLAUDECODE= "$PR/claude" -c '"$0" "$1" origin "$2"' ${GUARD_BASH:-bash} "$G/pre-push" "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the hook with CLAUDECODE empty as a child of a process named claude (a symlink to bash), so the ancestor walk arms it
+pa() { printf '%s\n' "${@:2}" | CLAUDECODE= "$PR/claude" -c '"$0" "$1" origin "$2"; exit' ${GUARD_BASH:-bash} "$G/pre-push" "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the hook with CLAUDECODE empty as a child of a process named claude (a symlink to bash), so the ancestor walk arms it
 po() { # <url> <stdin line>...: the hook with CLAUDECODE empty from a subshell whose parent exited, reparented to pid 1, so no claude is above it: the reparenting residual
   local out=$PR/orphan i=0
   rm -f "$out"
