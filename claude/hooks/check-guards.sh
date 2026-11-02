@@ -27,6 +27,18 @@ many() { local i; for ((i = 0; i < $1; i++)); do printf "$2" "$i"; done; } # <n>
 G=$(cd "$H/../../git/hooks" && pwd)
 pp() { printf '%s\n' "${@:2}" | CLAUDECODE=1 ${GUARD_BASH:-bash} "$G/pre-push" origin "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the hook's verdict under CLAUDECODE=1, deny when it exits non-zero
 pp0() { printf '%s\n' "${@:2}" | CLAUDECODE= ${GUARD_BASH:-bash} "$G/pre-push" origin "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the same with CLAUDECODE empty
+unarmed() { # the hook's verdict on a protected push with CLAUDECODE empty from this shell: deny inside a Claude Code session (a claude ancestor arms it), allow in CI and the user's shell
+  local pid=$$ n=0 line
+  while (( pid > 1 && n++ < 64 )); do
+    line=$(/bin/ps -ww -o ppid=,comm= -p "$pid" 2>/dev/null) || break
+    set -- $line
+    (( $# >= 2 )) || break
+    [[ ${2##*/} == claude ]] && { echo deny; return; }
+    pid=$1
+  done
+  echo allow
+}
+UNARMED=$(unarmed)
 OID=$(many 40 a)
 ZERO=$(many 40 0)
 V=$HOME/obsidian/SecondBrain/projects/ClaudeOS
@@ -728,10 +740,18 @@ case_ "pp tag"                           allow "$(pp "$PU" "refs/tags/v1 $OID re
 case_ "pp Master, another branch"        allow "$(pp "$PU" "refs/heads/x $OID refs/heads/Master $ZERO")"
 case_ "pp heads/master unqualified"      allow "$(pp "$PU" "refs/heads/x $OID heads/master $ZERO")"
 case_ "pp no lines"                      allow "$(pp "$PU")"
-case_ "pp0 master, CLAUDECODE empty"     allow "$(pp0 "$PU" "refs/heads/x $OID refs/heads/master $OID")"
+case_ "pp0 master, CLAUDECODE empty, this shell's ancestry" "$UNARMED" "$(pp0 "$PU" "refs/heads/x $OID refs/heads/master $OID")"
 case_ "pp vault-queues ssh"              allow "$(pp git@github.com:pablobfonseca/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
-case_ "pp vault-queues path"             allow "$(pp /tmp/x/vault-queues "refs/heads/master $OID refs/heads/master $OID")"
-case_ "pp vault-queues path, .git slash" allow "$(pp /tmp/x/vault-queues.git/ "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues path"             deny  "$(pp /tmp/x/vault-queues "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues path, .git slash" deny  "$(pp /tmp/x/vault-queues.git/ "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues ssh, no .git"     allow "$(pp git@github.com:pablobfonseca/vault-queues "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues https"            allow "$(pp https://github.com/pablobfonseca/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues https, no .git"   allow "$(pp https://github.com/pablobfonseca/vault-queues "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues ssh, trailing slash" deny "$(pp git@github.com:pablobfonseca/vault-queues.git/ "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues ssh:// form"      deny  "$(pp ssh://git@github.com/pablobfonseca/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues other owner"      deny  "$(pp git@github.com:someone/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues other host"       deny  "$(pp git@gitlab.com:pablobfonseca/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp Vault-Queues case"             deny  "$(pp git@github.com:pablobfonseca/Vault-Queues.git "refs/heads/master $OID refs/heads/master $OID")"
 case_ "pp owner named vault-queues"      deny  "$(pp git@github.com:vault-queues/claudeos.git "refs/heads/master $OID refs/heads/master $OID")"
 case_ "pp reason names the hook"         1     "$(printf '%s\n' "refs/heads/x $OID refs/heads/master $OID" | CLAUDECODE=1 ${GUARD_BASH:-bash} "$G/pre-push" origin "$PU" 2>&1 >/dev/null | grep -c '^pre-push hook: .*make tag')"
 PR=$(mktemp -d); git init -q --bare "$PR/remote.git"; git init -q --bare "$PR/vault-queues.git"
@@ -741,6 +761,15 @@ git -C "$PW" remote add origin "$PR/remote.git"; git -C "$PW" remote add queues 
 CLAUDECODE= git -C "$PW" -c core.hooksPath="$G" push -q origin master   # seeds master on the remote, as the user's shell would
 git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m y   # local master now ahead of the remote's, so a push of it is listed on the hook's stdin (git skips an up-to-date ref)
 git -C "$PW" checkout -q -b q623-feature; git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m z
+ln -s /bin/bash "$PR/claude"
+pa() { printf '%s\n' "${@:2}" | CLAUDECODE= "$PR/claude" -c '"$0" "$1" origin "$2"' ${GUARD_BASH:-bash} "$G/pre-push" "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the hook with CLAUDECODE empty as a child of a process named claude (a symlink to bash), so the ancestor walk arms it
+po() { # <url> <stdin line>...: the hook with CLAUDECODE empty from a subshell whose parent exited, reparented to pid 1, so no claude is above it: the reparenting residual
+  local out=$PR/orphan i=0
+  rm -f "$out"
+  ( ( printf '%s\n' "${@:2}" | CLAUDECODE= ${GUARD_BASH:-bash} "$G/pre-push" origin "$1" >/dev/null 2>&1 && echo allow >"$out" || echo deny >"$out" ) & )
+  while [[ ! -s $out && $i -lt 50 ]]; do sleep 0.1; i=$((i + 1)); done
+  cat "$out" 2>/dev/null || echo timeout
+}
 pe() { CLAUDECODE=1 git -C "$PW" -c core.hooksPath="$G" push -q "$@" >/dev/null 2>&1 && echo allow || echo deny; } # <push args>: git's own verdict with the hook wired by -c
 case_ "e2e HEAD:master"                  deny  "$(pe origin HEAD:master)"
 case_ "e2e feature:main"                 deny  "$(pe origin q623-feature:main)"
@@ -749,8 +778,13 @@ case_ "e2e two refs, one protected"      deny  "$(pe origin q623-feature HEAD:ma
 case_ "e2e --mirror"                     deny  "$(pe --mirror origin)"
 case_ "e2e feature branch"               allow "$(pe -u origin q623-feature)"
 case_ "e2e tag"                          allow "$(pe origin v1)"
-case_ "e2e vault-queues remote"          allow "$(pe queues HEAD:master)"
-case_ "e2e CLAUDECODE unset"             allow "$(CLAUDECODE= git -C "$PW" -c core.hooksPath="$G" push -q origin HEAD:refs/heads/production >/dev/null 2>&1 && echo allow || echo deny)"
+case_ "e2e local path named vault-queues" deny "$(pe queues HEAD:master)"
+case_ "e2e CLAUDECODE unset, this shell's ancestry" "$UNARMED" "$(CLAUDECODE= git -C "$PW" -c core.hooksPath="$G" push -q origin HEAD:refs/heads/production >/dev/null 2>&1 && echo allow || echo deny)"
+case_ "pa master, fake claude ancestor"   deny  "$(pa "$PU" "refs/heads/x $OID refs/heads/master $OID")"
+case_ "pa feature, fake claude ancestor"  allow "$(pa "$PU" "refs/heads/x $OID refs/heads/x $ZERO")"
+case_ "pa vault-queues ssh"               allow "$(pa git@github.com:pablobfonseca/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pa local path named vault-queues"  deny  "$(pa /tmp/x/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "po master, orphaned, no ancestor"  allow "$(po "$PU" "refs/heads/x $OID refs/heads/master $OID")"
 case_ "e2e reason reaches git's stderr"  1     "$(CLAUDECODE=1 git -C "$PW" -c core.hooksPath="$G" push -q origin HEAD:master 2>&1 | grep -c '^pre-push hook: ')"
 case_ "e2e --no-verify skips the hook"   allow "$(pe --no-verify origin HEAD:master)"
 printf 'exit 0\n' >"$PR/exit0"; mkdir "$PR/fakebin"; printf '#!/bin/sh\nexit 0\n' >"$PR/fakebin/bash"; chmod +x "$PR/fakebin/bash"
