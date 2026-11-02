@@ -28,7 +28,12 @@
 # is read as a command too, two levels deep, and one still holding a separator and `git … push` at
 # that depth is refused, and so is a word holding `$IFS` or `${IFS…}` and `git … push`, which a
 # `bash -c` body splits. A `send-pack` or `http-push` with `--stdin` or no ref is refused, since it
-# reads its refs elsewhere or pushes the matching ones. A command longer than MAX_BYTES, more than
+# reads its refs elsewhere or pushes the matching ones. What would skip the dotfiles pre-push hook
+# (git/hooks/pre-push, the control that reads the destination refs) is refused whatever follows:
+# `--no-verify` or an abbreviation of it on a push, `core.hooksPath` by `-c`, `--config-env` or a
+# `git config` write (a `--get` read passes), a `CLAUDECODE=` assignment, `CLAUDECODE` beside
+# `unset`, `export`, `declare`, `typeset`, `local` or `readonly`, `env -u`/`--unset` naming it,
+# `env -i`, `--ignore-environment` or a bare `-`. A command longer than MAX_BYTES, more than
 # MAX_REREADS words read as a command, more than MAX_GIT git words in all, MAX_WORDS words in a segment
 # holding a git word, MAX_DIR `-C` in a git
 # command or MAX_READS checkouts read is refused unread: each costs the guard time, and a guard that
@@ -40,7 +45,8 @@
 # command jq cannot read is refused. `--tags` alone and a tag refspec move no branch and are allowed.
 # The guard is a tripwire against an ordinary push, not a boundary: a command can build its git call
 # at run time (an interpreter, a pipe into `sh`, `hash`, `find -exec`, a renamed or case-folded
-# binary, a variable split by `${=x}` or a `bash -c` body), and those spellings are not read.
+# binary, a variable split by `${=x}` or a `bash -c` body), and those spellings are not read here;
+# the pre-push hook reads the refs they end in.
 # Not followed: wrapper scripts (`make tag`, `scripts/tag.sh`), shell aliases, persistent git config
 # (`help.autocorrect` included, and a planted one under a `HOME=` or `XDG_CONFIG_HOME=` prefix), `$'...'` escapes in a word read as a command (`bash -c $'…'`), brace
 # expansion, a variable or substitution holding the git word, a name piped in through
@@ -72,7 +78,7 @@ HEAD_RE='^[+]?(HEAD|@)(:(HEAD|@))?$'
 GRAPHQL_RE='(^|[^[:alnum:]_.-])gh[[:space:]]+api[[:space:]]+graphql([[:space:]]|$)'
 TWO_GH_RE=$GH_RE'.*'$GH_RE
 STEER_RE='^(push\.|remote\..*\.(push|mirror)$|branch\..*\.merge$)'
-ALIAS_RE='^(alias\.|include\.|includeIf\.|help\.autocorrect)'
+ALIAS_RE='^(alias\.|include\.|includeIf\.|help\.autocorrect|core\.hookspath)'
 REF_GLOB_RE='[*?[$]'
 ANY_EXP="[$SUBST$QSUBST\$]"
 ALLOPT='all branches mirror'
@@ -143,6 +149,16 @@ check_subtree() { # <word>... after `git subtree`: a push is refused when a late
   done
 }
 
+check_config() { # <word>... after `git config`: a write naming core.hooksPath is refused, a --get read is not
+  local w get=0 hooks=0
+  for w in "$@"; do
+    [[ $w == --get* ]] && get=1
+    [[ $w =~ ^core\.hookspath$ ]] && hooks=1
+  done
+  (( hooks && ! get )) && guard_deny "$REASON"
+  return 0
+}
+
 check_git() { # <index of the git word> <push, send-pack or http-push for a git-<that> binary, empty for git> <word>...
   local g=$1 sub=$2
   shift 2
@@ -192,6 +208,7 @@ check_git() { # <index of the git word> <push, send-pack or http-push for a git-
       check_subtree "${words[@]:i+1}"
       return
     fi
+    if [[ $sub == config ]]; then check_config "${words[@]:i+1}"; return; fi
     [[ $sub == push || $sub == send-pack || $sub == http-push ]] || return
     i=$((i + 1))
   fi
@@ -207,7 +224,7 @@ check_git() { # <index of the git word> <push, send-pack or http-push for a git-
     if (( opts )) && [[ $w == -?* ]]; then
       case $w in
         --) opts=0 ;;
-        --no-*) ;;
+        --no-*) name=${w#--no-}; name=${name%%=*}; prefix_of "$name" verify && guard_deny "$REASON" ;;
         --*)
           name=${w#--}
           name=${name%%=*}
@@ -282,6 +299,19 @@ persistent_env() { # <word>...: a GIT_* assignment left set for the rest of the 
   return 0
 }
 
+claudecode_kept() { # <word>...: a segment that assigns or unsets CLAUDECODE is refused, whatever follows
+  local w kill=0 name=0
+  for w in "$@"; do
+    case $w in
+      CLAUDECODE=*) guard_deny "$REASON" ;;
+      unset | export | declare | typeset | local | readonly) kill=1 ;;
+      CLAUDECODE) name=1 ;;
+    esac
+  done
+  (( kill && name )) && guard_deny "$REASON"
+  return 0
+}
+
 glob_name() { # <word holding GLOB>: NAME is the first of git, its push binaries and env that the word's file-name glob matches
   local p=${1//$GLOB/} n
   p=${p##*/}
@@ -293,6 +323,7 @@ glob_name() { # <word holding GLOB>: NAME is the first of git, its push binaries
 
 check_segment() { # <word>...: the shell_segments callback; judges the segment from every git word in it
   local w c name glued k=0 bin envopt=0
+  claudecode_kept "$@"
   for w in "$@"; do
     case $w in *'$IFS'* | *'${IFS'*) [[ $w =~ $DEEP_RE ]] && guard_deny "$REASON" ;; esac
     case $w in *$NESTED*) ;; *) continue ;; esac
@@ -312,16 +343,24 @@ check_segment() { # <word>...: the shell_segments callback; judges the segment f
   done
   for w in "$@"; do
     k=$((k + 1))
-    if (( envopt == 2 )); then envopt=1; continue; fi
+    if (( envopt == 2 )); then
+      [[ $w == CLAUDECODE ]] && guard_deny "$REASON"
+      envopt=1
+      continue
+    fi
     if (( envopt )); then
       case $w in
         --?*)
           name=${w#--}
           name=${name%%=*}
           prefix_of "$name" "chdir split-string" && guard_deny "$REASON"
+          prefix_of "$name" ignore-environment && guard_deny "$REASON"
+          [[ $w == *=* ]] && prefix_of "$name" unset && [[ ${w#*=} == CLAUDECODE ]] && guard_deny "$REASON"
           [[ $w != *=* ]] && prefix_of "$name" unset && envopt=2
           continue ;;
-        -*[CS]*) guard_deny "$REASON" ;;
+        -) guard_deny "$REASON" ;;
+        -*[CSi]*) guard_deny "$REASON" ;;
+        -*u*CLAUDECODE) guard_deny "$REASON" ;;
         -*[uPLU]) envopt=2; continue ;;
         -* | [A-Za-z_]*=*) continue ;;
         *) envopt=0 ;;
