@@ -24,6 +24,11 @@ pg() { payload PreToolUse Bash command "$1" "${2:-}" | guard guard-push.sh | dec
 tk() { ${GUARD_BASH:-bash} -c '. "$1/guard-common.sh"; seg() { local w; for w in "$@"; do w=${w//$GLOB/}; w=${w//$SUBST/\$()}; printf "[%s]" "${w//$QSUBST/\"\$()\"}"; done; printf "\n"; }; shell_segments "$2" seg' tk "$H" "$1"; } # <command>: one line of [word]s per segment, a substitution shown as $(), "$()" when double-quoted
 unreadable() { jq -cn --arg e "$1" --arg t "$2" '{hook_event_name:$e,tool_name:$t,tool_input:"x",cwd:""}'; } # <event> <tool>: tool_input is a string, so jq reads no command or path from it
 many() { local i; for ((i = 0; i < $1; i++)); do printf "$2" "$i"; done; } # <n> <printf format>: the format n times, %d the index
+G=$(cd "$H/../../git/hooks" && pwd)
+pp() { printf '%s\n' "${@:2}" | CLAUDECODE=1 ${GUARD_BASH:-bash} "$G/pre-push" origin "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the hook's verdict under CLAUDECODE=1, deny when it exits non-zero
+pp0() { printf '%s\n' "${@:2}" | CLAUDECODE= ${GUARD_BASH:-bash} "$G/pre-push" origin "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the same with CLAUDECODE empty
+OID=$(many 40 a)
+ZERO=$(many 40 0)
 V=$HOME/obsidian/SecondBrain/projects/ClaudeOS
 Q=$HOME/.local/share/vault-queues/ClaudeOS
 case_ "edit vault view"        deny  "$(qv Edit file_path "$V/Queue.md")"
@@ -711,6 +716,24 @@ case_ "re-reads at the cap"                  allow "$(pg "echo $(many 128 '"a b"
 case_ "words beside a git word past the cap" deny  "$(pg "git status $(many 1023 'a ')" "$PF")"
 case_ "words beside a git word at the cap"   allow "$(pg "git status $(many 1022 'a ')" "$PF")"
 case_ "many words, no git word"              allow "$(pg "echo $(many 4000 'a ')" "$PF")"
+# --- pre-push hook: the destination refs git is about to move, read by git/hooks/pre-push
+PU=git@github.com:pablobfonseca/claudeos.git
+case_ "pp master"                        deny  "$(pp "$PU" "refs/heads/q623-feature $OID refs/heads/master $OID")"
+case_ "pp main"                          deny  "$(pp "$PU" "refs/heads/q623-feature $OID refs/heads/main $OID")"
+case_ "pp production"                    deny  "$(pp "$PU" "refs/heads/q623-feature $OID refs/heads/production $ZERO")"
+case_ "pp delete master"                 deny  "$(pp "$PU" "(delete) $ZERO refs/heads/master $OID")"
+case_ "pp second line protected"         deny  "$(pp "$PU" "refs/heads/q623-feature $OID refs/heads/q623-feature $ZERO" "refs/heads/q623-feature $OID refs/heads/master $OID")"
+case_ "pp feature branch"                allow "$(pp "$PU" "refs/heads/q623-feature $OID refs/heads/q623-feature $ZERO")"
+case_ "pp tag"                           allow "$(pp "$PU" "refs/tags/v1 $OID refs/tags/v1 $ZERO")"
+case_ "pp Master, another branch"        allow "$(pp "$PU" "refs/heads/x $OID refs/heads/Master $ZERO")"
+case_ "pp heads/master unqualified"      allow "$(pp "$PU" "refs/heads/x $OID heads/master $ZERO")"
+case_ "pp no lines"                      allow "$(pp "$PU")"
+case_ "pp0 master, CLAUDECODE empty"     allow "$(pp0 "$PU" "refs/heads/x $OID refs/heads/master $OID")"
+case_ "pp vault-queues ssh"              allow "$(pp git@github.com:pablobfonseca/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues path"             allow "$(pp /tmp/x/vault-queues "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues path, .git slash" allow "$(pp /tmp/x/vault-queues.git/ "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp owner named vault-queues"      deny  "$(pp git@github.com:vault-queues/claudeos.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp reason names the hook"         1     "$(printf '%s\n' "refs/heads/x $OID refs/heads/master $OID" | CLAUDECODE=1 ${GUARD_BASH:-bash} "$G/pre-push" origin "$PU" 2>&1 >/dev/null | grep -c '^pre-push hook: .*make tag')"
 rm -rf "$PM" "$PF" "$PN" "$PMH"
 if [[ -z ${GUARD_BASH:-} && -x /bin/bash ]]; then
   GUARD_BASH=/bin/bash "$0" | sed "s|^|[/bin/bash] |"
