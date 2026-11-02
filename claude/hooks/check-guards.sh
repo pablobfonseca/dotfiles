@@ -24,6 +24,11 @@ pg() { payload PreToolUse Bash command "$1" "${2:-}" | guard guard-push.sh | dec
 tk() { ${GUARD_BASH:-bash} -c '. "$1/guard-common.sh"; seg() { local w; for w in "$@"; do w=${w//$GLOB/}; w=${w//$SUBST/\$()}; printf "[%s]" "${w//$QSUBST/\"\$()\"}"; done; printf "\n"; }; shell_segments "$2" seg' tk "$H" "$1"; } # <command>: one line of [word]s per segment, a substitution shown as $(), "$()" when double-quoted
 unreadable() { jq -cn --arg e "$1" --arg t "$2" '{hook_event_name:$e,tool_name:$t,tool_input:"x",cwd:""}'; } # <event> <tool>: tool_input is a string, so jq reads no command or path from it
 many() { local i; for ((i = 0; i < $1; i++)); do printf "$2" "$i"; done; } # <n> <printf format>: the format n times, %d the index
+G=$(cd "$H/../../git/hooks" && pwd)
+pp() { printf '%s\n' "${@:2}" | CLAUDECODE=1 ${GUARD_BASH:-bash} "$G/pre-push" origin "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the hook's verdict under CLAUDECODE=1, deny when it exits non-zero
+pp0() { printf '%s\n' "${@:2}" | CLAUDECODE= ${GUARD_BASH:-bash} "$G/pre-push" origin "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the same with CLAUDECODE empty
+OID=$(many 40 a)
+ZERO=$(many 40 0)
 V=$HOME/obsidian/SecondBrain/projects/ClaudeOS
 Q=$HOME/.local/share/vault-queues/ClaudeOS
 case_ "edit vault view"        deny  "$(qv Edit file_path "$V/Queue.md")"
@@ -690,7 +695,7 @@ case_ "env --chdir= into a master checkout"  deny  "$(pg "env --chdir=$PM git pu
 case_ "env -S hides the command"             deny  "$(pg "env -S'git push origin HEAD:master'" "$PF")"
 case_ "env -iS hides the command"            deny  "$(pg "env -iS'git push origin HEAD:master'" "$PF")"
 case_ "env --split-string abbreviated"       deny  "$(pg "env --sp='git push origin HEAD:master'" "$PF")"
-case_ "env -i and an assignment, feature push" allow "$(pg "env -i PATH=/usr/bin git push origin q611-feature" "$PF")"
+case_ "env -i and an assignment, feature push (skips the hook)" deny "$(pg "env -i PATH=/usr/bin git push origin q611-feature" "$PF")"
 case_ "env -u, feature push"                 allow "$(pg "env -u FOO git push origin q611-feature" "$PF")"
 case_ "IFS as the separator in bash -c"      deny  "$(pg "bash -c 'git\${IFS}push\${IFS}origin\${IFS}HEAD:master'" "$PF")"
 case_ "IFS slice as the separator in bash -c" deny "$(pg "bash -c 'git\${IFS:0:1}push origin HEAD:master'" "$PF")"
@@ -711,7 +716,99 @@ case_ "re-reads at the cap"                  allow "$(pg "echo $(many 128 '"a b"
 case_ "words beside a git word past the cap" deny  "$(pg "git status $(many 1023 'a ')" "$PF")"
 case_ "words beside a git word at the cap"   allow "$(pg "git status $(many 1022 'a ')" "$PF")"
 case_ "many words, no git word"              allow "$(pg "echo $(many 4000 'a ')" "$PF")"
-rm -rf "$PM" "$PF" "$PN" "$PMH"
+# --- pre-push hook: the destination refs git is about to move, read by git/hooks/pre-push
+PU=git@github.com:pablobfonseca/claudeos.git
+case_ "pp master"                        deny  "$(pp "$PU" "refs/heads/q623-feature $OID refs/heads/master $OID")"
+case_ "pp main"                          deny  "$(pp "$PU" "refs/heads/q623-feature $OID refs/heads/main $OID")"
+case_ "pp production"                    deny  "$(pp "$PU" "refs/heads/q623-feature $OID refs/heads/production $ZERO")"
+case_ "pp delete master"                 deny  "$(pp "$PU" "(delete) $ZERO refs/heads/master $OID")"
+case_ "pp second line protected"         deny  "$(pp "$PU" "refs/heads/q623-feature $OID refs/heads/q623-feature $ZERO" "refs/heads/q623-feature $OID refs/heads/master $OID")"
+case_ "pp feature branch"                allow "$(pp "$PU" "refs/heads/q623-feature $OID refs/heads/q623-feature $ZERO")"
+case_ "pp tag"                           allow "$(pp "$PU" "refs/tags/v1 $OID refs/tags/v1 $ZERO")"
+case_ "pp Master, another branch"        allow "$(pp "$PU" "refs/heads/x $OID refs/heads/Master $ZERO")"
+case_ "pp heads/master unqualified"      allow "$(pp "$PU" "refs/heads/x $OID heads/master $ZERO")"
+case_ "pp no lines"                      allow "$(pp "$PU")"
+case_ "pp0 master, CLAUDECODE empty"     allow "$(pp0 "$PU" "refs/heads/x $OID refs/heads/master $OID")"
+case_ "pp vault-queues ssh"              allow "$(pp git@github.com:pablobfonseca/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues path"             allow "$(pp /tmp/x/vault-queues "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp vault-queues path, .git slash" allow "$(pp /tmp/x/vault-queues.git/ "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp owner named vault-queues"      deny  "$(pp git@github.com:vault-queues/claudeos.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pp reason names the hook"         1     "$(printf '%s\n' "refs/heads/x $OID refs/heads/master $OID" | CLAUDECODE=1 ${GUARD_BASH:-bash} "$G/pre-push" origin "$PU" 2>&1 >/dev/null | grep -c '^pre-push hook: .*make tag')"
+PR=$(mktemp -d); git init -q --bare "$PR/remote.git"; git init -q --bare "$PR/vault-queues.git"
+PW=$PR/work; git init -q -b master "$PW"
+git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m x
+git -C "$PW" remote add origin "$PR/remote.git"; git -C "$PW" remote add queues "$PR/vault-queues.git"; git -C "$PW" tag v1
+CLAUDECODE= git -C "$PW" -c core.hooksPath="$G" push -q origin master   # seeds master on the remote, as the user's shell would
+git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m y   # local master now ahead of the remote's, so a push of it is listed on the hook's stdin (git skips an up-to-date ref)
+git -C "$PW" checkout -q -b q623-feature; git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m z
+pe() { CLAUDECODE=1 git -C "$PW" -c core.hooksPath="$G" push -q "$@" >/dev/null 2>&1 && echo allow || echo deny; } # <push args>: git's own verdict with the hook wired by -c
+case_ "e2e HEAD:master"                  deny  "$(pe origin HEAD:master)"
+case_ "e2e feature:main"                 deny  "$(pe origin q623-feature:main)"
+case_ "e2e delete master"                deny  "$(pe origin :master)"
+case_ "e2e two refs, one protected"      deny  "$(pe origin q623-feature HEAD:master)"
+case_ "e2e --mirror"                     deny  "$(pe --mirror origin)"
+case_ "e2e feature branch"               allow "$(pe -u origin q623-feature)"
+case_ "e2e tag"                          allow "$(pe origin v1)"
+case_ "e2e vault-queues remote"          allow "$(pe queues HEAD:master)"
+case_ "e2e CLAUDECODE unset"             allow "$(CLAUDECODE= git -C "$PW" -c core.hooksPath="$G" push -q origin HEAD:refs/heads/production >/dev/null 2>&1 && echo allow || echo deny)"
+case_ "e2e reason reaches git's stderr"  1     "$(CLAUDECODE=1 git -C "$PW" -c core.hooksPath="$G" push -q origin HEAD:master 2>&1 | grep -c '^pre-push hook: ')"
+case_ "e2e --no-verify skips the hook"   allow "$(pe --no-verify origin HEAD:master)"
+printf 'exit 0\n' >"$PR/exit0"; mkdir "$PR/fakebin"; printf '#!/bin/sh\nexit 0\n' >"$PR/fakebin/bash"; chmod +x "$PR/fakebin/bash"
+px() { printf '%s\n' "refs/heads/x $OID refs/heads/master $OID" | env CLAUDECODE=1 "$@" "$G/pre-push" origin "$PU" >/dev/null 2>&1 && echo allow || echo deny; } # [NAME=value]...: the hook run by its own shebang with those variables set
+case_ "hook by its shebang, master"      deny  "$(px)"
+case_ "hook ignores BASH_ENV"            deny  "$(px BASH_ENV="$PR/exit0")"
+case_ "hook ignores an imported read"    deny  "$(px 'BASH_FUNC_read%%=() { return 1; }')"
+case_ "hook ignores a bash on PATH"      deny  "$(px PATH="$PR/fakebin:$PATH")"
+# --- hook bypasses: what skips git/hooks/pre-push is refused here (q623)
+case_ "push --no-verify, feature"           deny  "$(pg "git push --no-verify origin q611-feature" "$PF")"
+case_ "push --no-veri"                      deny  "$(pg "git push --no-veri -u origin q611-feature" "$PF")"
+case_ "push --no-thin"                      allow "$(pg "git push --no-thin origin q611-feature" "$PF")"
+case_ "push --no-signed"                    allow "$(pg "git push --no-signed origin q611-feature" "$PF")"
+case_ "commit --no-verify"                  allow "$(pg "git commit --no-verify -m x" "$PF")"
+case_ "-c core.hooksPath, feature push"     deny  "$(pg "git -c core.hooksPath=/dev/null push origin q611-feature" "$PF")"
+case_ "-c core.hookspath, status"           deny  "$(pg "git -c core.hookspath=/tmp status")"
+case_ "--config-env core.hooksPath"         deny  "$(pg "git --config-env=core.hooksPath=X status")"
+case_ "config core.hooksPath write"         deny  "$(pg "git config core.hooksPath /dev/null")"
+case_ "config --global --unset hooksPath"   deny  "$(pg "git config --global --unset core.hooksPath")"
+case_ "config set core.hooksPath"           deny  "$(pg "git config set core.hooksPath x")"
+case_ "config --file core.hooksPath"        deny  "$(pg "git config --file ~/.gitconfig core.hooksPath x")"
+case_ "config --get core.hooksPath"         allow "$(pg "git config --get core.hooksPath")"
+case_ "config user.name"                    allow "$(pg "git config user.name x")"
+case_ "config hooksPath, --get after it"    deny  "$(pg "git config --global core.hooksPath /dev/null --get")"
+case_ "config hooksPath set to --get"       deny  "$(pg "git config --global core.hooksPath --get")"
+case_ "config --get-all core.hooksPath"     allow "$(pg "git config --get-all core.hooksPath")"
+case_ "config --comment value is --get"     deny  "$(pg "git config --global --comment --get core.hooksPath /dev/null")"
+case_ "config --comm value is --get"        deny  "$(pg "git config --global --comm --get core.hooksPath /dev/null")"
+case_ "config -f value is --get"            deny  "$(pg "git config -f --get core.hooksPath /dev/null")"
+case_ "config --file x, then a --get read"  allow "$(pg "git config --file x --get core.hooksPath")"
+case_ "config --remove-section core"        deny  "$(pg "git config --global --remove-section core")"
+case_ "config remove-section core"          deny  "$(pg "git config remove-section --global core")"
+case_ "config --rename-section to alias"    deny  "$(pg "git config --global --rename-section x alias")"
+case_ "config --remove-section color"       allow "$(pg "git config --global --remove-section color")"
+case_ "config include.path"                 deny  "$(pg "git config --global include.path /tmp/f")"
+case_ "config includeIf path"               deny  "$(pg "git config --global includeIf.gitdir:~/x/.path /tmp/f")"
+case_ "config alias holding --no-verify"    deny  "$(pg "git config --global alias.p 'push --no-verify'")"
+case_ "git-config binary"                   deny  "$(pg "/usr/libexec/git-core/git-config --global core.hooksPath /dev/null")"
+case_ "bare git-config"                     deny  "$(pg "git-config --global core.hooksPath /dev/null")"
+case_ "git-config binary, read"             allow "$(pg "git-config --get core.hooksPath")"
+case_ "CLAUDECODE emptied before a push"    deny  "$(pg "CLAUDECODE= git push origin q611-feature" "$PF")"
+case_ "CLAUDECODE assigned, no git"         deny  "$(pg "CLAUDECODE=1 ls")"
+case_ "unset CLAUDECODE, then a push"       deny  "$(pg "unset CLAUDECODE; git push origin q611-feature" "$PF")"
+case_ "unset -v CLAUDECODE"                 deny  "$(pg "unset -v CLAUDECODE")"
+case_ "export -n CLAUDECODE"                deny  "$(pg "export -n CLAUDECODE")"
+case_ "unset in a bash -c body"             deny  "$(pg "bash -c 'unset CLAUDECODE; git push origin q611-feature'" "$PF")"
+case_ "env -u CLAUDECODE"                   deny  "$(pg "env -u CLAUDECODE git push origin q611-feature" "$PF")"
+case_ "env -uCLAUDECODE"                    deny  "$(pg "env -uCLAUDECODE true")"
+case_ "env --unset=CLAUDECODE"              deny  "$(pg "env --unset=CLAUDECODE true")"
+case_ "env --uns=CLAUDECODE"                deny  "$(pg "env --uns=CLAUDECODE true")"
+case_ "env -iu GIT_DIR"                     deny  "$(pg "env -iu GIT_DIR true")"
+case_ "env --ignore-environment"            deny  "$(pg "env --ignore-environment true")"
+case_ "env bare dash"                       deny  "$(pg "env - true")"
+case_ "env -u GIT_DIR, then git status"     allow "$(pg "env -u GIT_DIR git status")"
+case_ "grep CLAUDECODE"                     allow "$(pg "grep CLAUDECODE ~/.zshrc")"
+case_ "env piped to grep CLAUDECODE"        allow "$(pg "env | grep CLAUDECODE")"
+case_ "echo of the variable"                allow "$(pg 'echo "$CLAUDECODE"')"
+rm -rf "$PM" "$PF" "$PN" "$PMH" "$PR"
 if [[ -z ${GUARD_BASH:-} && -x /bin/bash ]]; then
   GUARD_BASH=/bin/bash "$0" | sed "s|^|[/bin/bash] |"
   (( PIPESTATUS[0] == 0 )) || fail=1
