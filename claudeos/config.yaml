@@ -356,6 +356,16 @@ projects:
 #   # requested. 0 turns both off. Minimum 0. (default: 1000)
 #   pr_large_lines: 1000
 #
+#   # Window width in columns under which the projects column leaves the top
+#   # row and its width goes to the lanes and the detail pane; it comes back
+#   # while it has the focus. 0 keeps it always. Minimum 0. (default: 120)
+#   narrow: 120
+#
+#   # Window height in rows under which the bottom stack shows one pane, the
+#   # focused one if it fits or else the first open one that does, naming the
+#   # hidden ones in its title. 0 shows every open pane. Minimum 0. (default: 36)
+#   short: 36
+#
 #   # Width in cells of the projects column. Minimum 8. (default: 18)
 #   projects_width: 18
 #
