@@ -145,6 +145,7 @@ projects:
       path: ~/code/upscope-env/tribemap,
       pinned: true,
       slack_channel: C0C4D3FBA2Z,
+      rounds: { morning: { at: "09:00", until: "11:00", command: /rounds-morning } },
       digest:
         {
           keywords:
@@ -228,6 +229,7 @@ projects:
       deploy: { base: production, command: /deploy-checklist },
     }
   SmartWardrobe: { path: ~/code/smart-wardrobe, autopilot: true }
+  ToneLab: { path: ~/code/tonelab, autopilot: true }
 
 # ---------------------------------------------------------------------------
 # Slack (Feedback pull)
