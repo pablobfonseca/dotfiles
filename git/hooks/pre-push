@@ -5,7 +5,8 @@
 # CLAUDECODE is set to anything, or when a process named claude (Claude Code itself; macOS reports
 # argv[0], Linux the executable's name) is among its ancestors, read with /bin/ps one parent at a
 # time up to pid 1 or 64 hops: a session can empty or drop the variable by a spelling the Bash guard
-# does not read, but it cannot leave its own process tree. Armed, a push is refused whole when any
+# does not read, but it cannot leave its own process tree. The walk fails closed: a process ps
+# prints with no name (a blank argv[0]) is walked through, and a chain past 64 hops arms. Armed, a push is refused whole when any
 # remote ref on stdin is exactly refs/heads/master, refs/heads/main or refs/heads/production, a
 # deletion included; the match is case-sensitive, since the ref is git's truth and refs/heads/Master
 # is another branch. Tags and every other branch pass. One exemption: a remote URL that is exactly
@@ -30,10 +31,11 @@ while (( ! armed && pid > 1 && hops < 64 )); do
   hops=$((hops + 1))
   line=$(/bin/ps -ww -o ppid=,comm= -p "$pid" 2>/dev/null) || break
   set -- $line
-  (( $# >= 2 )) || break
-  [[ ${2##*/} == claude ]] && armed=1
+  (( $# >= 1 )) || break
+  (( $# >= 2 )) && [[ ${2##*/} == claude ]] && armed=1
   pid=$1
 done
+(( hops >= 64 && pid > 1 )) && armed=1
 (( armed )) || exit 0
 
 case $url in
