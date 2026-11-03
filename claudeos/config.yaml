@@ -237,6 +237,7 @@ projects:
       autopilot: true,
       deploy: { base: production, command: /deploy-checklist },
     }
+  BuildLoop: { path: ~/code/buildloop }
 
 # ---------------------------------------------------------------------------
 # Slack (Feedback pull)
