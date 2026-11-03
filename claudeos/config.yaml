@@ -21,6 +21,7 @@ vault: ~/obsidian/SecondBrain
 # A separate queues directory holding <P>/Queue.md: a plain folder (no history), a git checkout
 # (every write a commit) or a checkout with an origin (pull --rebase, commit, push). Empty, the
 # default, keeps each queue in the vault at projects/<P>/Queue.md with no generated view. (default: "")
+# From a Claude Code session, the push lands only when the origin is github.com/pablobfonseca/vault-queues (git/hooks/pre-push exempts that URL alone).
 queues: ~/.local/share/vault-queues
 
 # Where job state, the hook log and the usage snapshot are written. Claude
