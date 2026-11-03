@@ -32,10 +32,11 @@ unarmed() { # the hook's verdict on a protected push with CLAUDECODE empty from 
   while (( pid > 1 && n++ < 64 )); do
     line=$(/bin/ps -ww -o ppid=,comm= -p "$pid" 2>/dev/null) || break
     set -- $line
-    (( $# >= 2 )) || break
-    [[ ${2##*/} == claude ]] && { echo deny; return; }
+    (( $# >= 1 )) || break
+    (( $# >= 2 )) && [[ ${2##*/} == claude ]] && { echo deny; return; }
     pid=$1
   done
+  (( n > 64 && pid > 1 )) && { echo deny; return; }
   echo allow
 }
 UNARMED=$(unarmed)
@@ -763,6 +764,9 @@ git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q 
 git -C "$PW" checkout -q -b q623-feature; git -C "$PW" -c user.name=x -c user.email=x@x -c commit.gpgsign=false commit -q --allow-empty -m z
 ln -s /bin/bash "$PR/claude"
 pa() { printf '%s\n' "${@:2}" | CLAUDECODE= "$PR/claude" -c '"$0" "$1" origin "$2"; exit' ${GUARD_BASH:-bash} "$G/pre-push" "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the hook with CLAUDECODE empty as a child of a process named claude (a symlink to bash), so the ancestor walk arms it
+pb() { printf '%s\n' "${@:2}" | CLAUDECODE= "$PR/claude" -c '(exec -a " " "$0" -c "\"\$0\" \"\$1\" origin \"\$2\"; exit" "$0" "$1" "$2"); exit' ${GUARD_BASH:-bash} "$G/pre-push" "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: as pa, with a process whose argv[0] is blank between the hook and claude, so ps prints no name for it
+printf '%s\n' '#!/bin/bash' '(( $1 < 70 )) && { "$0" $(( $1 + 1 )) "$2" "$3" "$4"; exit; }' '"$2" "$3" origin "$4"; exit' >"$PR/deep"; chmod +x "$PR/deep"
+pd() { printf '%s\n' "${@:2}" | CLAUDECODE= "$PR/deep" 0 ${GUARD_BASH:-bash} "$G/pre-push" "$1" >/dev/null 2>&1 && echo allow || echo deny; } # <url> <stdin line>...: the hook with CLAUDECODE empty under 70 nested shells, past the walk's 64-hop cap
 po() { # <url> <stdin line>...: the hook with CLAUDECODE empty from a subshell whose parent exited, reparented to pid 1, so no claude is above it: the reparenting residual
   local out=$PR/orphan i=0
   rm -f "$out"
@@ -784,6 +788,8 @@ case_ "pa master, fake claude ancestor"   deny  "$(pa "$PU" "refs/heads/x $OID r
 case_ "pa feature, fake claude ancestor"  allow "$(pa "$PU" "refs/heads/x $OID refs/heads/x $ZERO")"
 case_ "pa vault-queues ssh"               allow "$(pa git@github.com:pablobfonseca/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
 case_ "pa local path named vault-queues"  deny  "$(pa /tmp/x/vault-queues.git "refs/heads/master $OID refs/heads/master $OID")"
+case_ "pb master, blank name below claude" deny "$(pb "$PU" "refs/heads/x $OID refs/heads/master $OID")"
+case_ "pd master, past the hop cap"       deny  "$(pd "$PU" "refs/heads/x $OID refs/heads/master $OID")"
 case_ "po master, orphaned, no ancestor"  allow "$(po "$PU" "refs/heads/x $OID refs/heads/master $OID")"
 case_ "e2e reason reaches git's stderr"  1     "$(CLAUDECODE=1 git -C "$PW" -c core.hooksPath="$G" push -q origin HEAD:master 2>&1 | grep -c '^pre-push hook: ')"
 case_ "e2e --no-verify skips the hook"   allow "$(pe --no-verify origin HEAD:master)"
