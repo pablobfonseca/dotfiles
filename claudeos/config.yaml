@@ -124,20 +124,6 @@ projects:
       path: ~/code/claudeos,
       pinned: true,
       repos: { dotfiles: ~/.dotfiles },
-      digest:
-        {
-          keywords:
-            [
-              "claude code",
-              "automations",
-              "ai agents",
-              "tmux",
-              "bubble tea",
-              "software factory",
-              "agentic workflow",
-              "jev",
-            ],
-        },
       deploy: { base: production, command: /deploy-checklist },
     }
   LazyActions: { path: ~/code/lazy-actions }
@@ -148,17 +134,6 @@ projects:
       slack_channel: C0C4D3FBA2Z,
       rounds:
         { morning: { at: "09:00", until: "11:00", command: /rounds-morning } },
-      digest:
-        {
-          keywords:
-            [
-              "marketing automation",
-              "google ads",
-              "SEO",
-              "ai ads",
-              "ai marketing",
-            ],
-        },
       deploy:
         {
           base: production,
@@ -190,9 +165,6 @@ projects:
   #   # Tribemap: { path: ~/code/upscope-env/tribemap, rounds: { morning: { at: "08:30", until: "10:00", command: /morning } } }
   #   # autopilot: ! arms it while the TUI is open; the loop then claims Ready lines tagged #claude or rated unattended-safe by the Judge in the groom's proposed order; :autopilot pauses (default: false)
   #   # ClaudeOS: { path: ~/code/claudeos, autopilot: true }
-  #   # digest: the weekly digest; {} is enough, keywords are optional extras (default: unset)
-  #   # ClaudeOS: { path: ~/code/claudeos, digest: { keywords: [tmux, "bubble tea"] } }
-  #   # Devdeck: { path: ~/code/devdeck, digest: {} }
   GX100:
     {
       path: ~/code/gx100-midi-control,
@@ -266,33 +238,6 @@ projects:
 #   every: 60s
 
 # ---------------------------------------------------------------------------
-# Digest (daily.dev)
-# ---------------------------------------------------------------------------
-#
-# A weekly per-project digest: the running TUI writes
-# projects/<P>/Digest YYYY-Www.md once per ISO week
-# for every project with a `projects.<P>.digest` block, the search terms
-# derived from the first paragraph of projects/<P>.md under its title (plus
-# any `keywords`), the Judge keeping the posts that fit the project;
-# `claudeos digest run <P>` does it by hand and `B` lists the latest one,
-# enter capturing an entry to the Inbox.
-# Every key here needs a restart.
-
-# digest:
-#   # Whether the TUI writes digests at all. `claudeos digest run` runs either way.
-#   # (default: true)
-#   enabled: true
-#
-#   # File holding the daily.dev personal access token (daily.dev/settings/api),
-#   # one line, mode 0600, read at call time.
-#   # (default: ~/.config/claudeos/dailydev-token)
-#   token_file: ~/.config/claudeos/dailydev-token
-#
-#   # How often the TUI checks whether each project's digest exists yet. Refused under 1m.
-#   # (default: 1h)
-#   every: 1h
-
-# ---------------------------------------------------------------------------
 # Judge (TypeSafe)
 # ---------------------------------------------------------------------------
 #
@@ -305,24 +250,6 @@ projects:
 #   # File holding the TypeSafe API key, one line, mode 0600.
 #   # (default: ~/.config/claudeos/typesafe-key)
 #   key_file: ~/.config/claudeos/typesafe-key
-
-# ---------------------------------------------------------------------------
-# Anthropic (Messages API)
-# ---------------------------------------------------------------------------
-#
-# The Anthropic Messages API client behind the digest's search terms: a model
-# reads the project note and derives the daily.dev terms. The key is read
-# from a file at call time and never placed in any environment. Both keys
-# need a restart.
-
-# anthropic:
-#   # File holding the Anthropic API key, one line, mode 0600.
-#   # (default: ~/.config/claudeos/anthropic-key)
-#   key_file: ~/.config/claudeos/anthropic-key
-#
-#   # Model the digest asks for its search terms.
-#   # (default: claude-haiku-5-5)
-#   model: claude-haiku-5-5
 
 # ---------------------------------------------------------------------------
 # Serve (phone link)
@@ -451,7 +378,7 @@ colors:
 # A few bindings are fixed and cannot be rebound: esc to clear or go back, and
 # the viewer's close keys.
 #
-# Sections: navigation, queue, jobs, prs, inbox, projects, ideas, digest, viewer, global
+# Sections: navigation, queue, jobs, prs, inbox, projects, ideas, viewer, global
 
 # keys:
 #   navigation:
@@ -474,8 +401,6 @@ colors:
 #     toggle: I
 #   ideas:
 #     open: A
-#   digest:
-#     open: B
 #   viewer:
 #     half_down: [d, pgdown, space]
 #   global:
