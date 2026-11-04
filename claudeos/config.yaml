@@ -125,6 +125,8 @@ projects:
       pinned: true,
       repos: { dotfiles: ~/.dotfiles },
       deploy: { base: production, command: /deploy-checklist },
+      rounds:
+        { morning: { at: "09:00", until: "11:00", command: /rounds-morning } },
     }
   LazyActions: { path: ~/code/lazy-actions }
   Tribemap:
