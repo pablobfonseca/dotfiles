@@ -3,7 +3,7 @@
 # claudeos configuration. Every key is optional; anything left out falls back to
 # the default shown in its comment. An unknown key is a hard error, not a warning:
 # the loader runs with KnownFields(true), so a typo stops the TUI from starting.
-# Reload without restarting with ctrl+r (layout, defaults and project paths only).
+# Reload without restarting with ctrl+r (layout, defaults, colors and project paths only).
 # Or press `,` in the TUI: a form over every key, ctrl+s writes the changed lines.
 #
 # Machine-specific values (project paths, state:) go in an untracked
@@ -117,6 +117,20 @@ defaults:
 #           item tagged with exactly one key launches there, any other item
 #           uses path, and ad-hoc PRs are discovered in every repo listed
 #                e.g. Devdeck: { path: ~/code/DevDeck, repos: { server: ~/code/DevDeck/devdeck-server, app: ~/code/DevDeck/dev-deck } }
+#   slack_channel: the channel id (C… or G…) the Feedback pull reads into the
+#           project's Inbox; see the Slack section below (default: unset)
+#   deploy: the deploy PR's base branch, the checklist slash command and file
+#           classes (name: [globs]) for claudeos deploy brief (default: unset)
+#                e.g. Tribemap: { deploy: { base: production, command: /deploy-checklist, classes: { migrations: [api/src/db/migrations/*.sql] } } }
+#   rounds: daily passes over the project's follow-ups, by name: the local time
+#           of day and the project's slash command, launched once a day as
+#           rounds-<name> on the first machine whose claim lands; :round <name>
+#           re-runs one; until (HH:MM, after at) skips a round missed past it
+#           for the day (default: unset)
+#                e.g. Tribemap: { rounds: { morning: { at: "08:30", until: "10:00", command: /morning } } }
+#   autopilot: ! arms it while the TUI is open; the loop then claims Ready
+#           lines tagged #claude or rated unattended-safe by the Judge in the
+#           groom's proposed order; :autopilot pauses (default: false)
 
 projects:
   ClaudeOS:
@@ -156,17 +170,6 @@ projects:
             },
         },
     }
-  #   # slack_channel: the private #tribemap-feedback channel the Feedback pull (q306) reads into the Inbox; uncomment once q306 ships
-  #   # Tribemap: { path: ~/code/upscope-env/tribemap, pinned: true, slack_channel: C0C4D3FBA2Z }
-  #   # deploy: the deploy PR's base branch, the checklist slash command and file classes (name: [globs]) for claudeos deploy brief (default: unset)
-  #   # Tribemap: { path: ~/code/upscope-env/tribemap, deploy: { base: production, command: /deploy-checklist, classes: { migrations: [api/src/db/migrations/*.sql] } } }
-  #   # rounds: daily passes over the project's follow-ups, by name: the local time
-  #   # of day and the project's slash command, launched once a day as rounds-<name>
-  #   # on the first machine whose claim lands; :round <name> re-runs one; until
-  #   # (HH:MM, after at) skips a round missed past it for the day (default: unset)
-  #   # Tribemap: { path: ~/code/upscope-env/tribemap, rounds: { morning: { at: "08:30", until: "10:00", command: /morning } } }
-  #   # autopilot: ! arms it while the TUI is open; the loop then claims Ready lines tagged #claude or rated unattended-safe by the Judge in the groom's proposed order; :autopilot pauses (default: false)
-  #   # ClaudeOS: { path: ~/code/claudeos, autopilot: true }
   GX100:
     {
       path: ~/code/gx100-midi-control,
@@ -244,10 +247,10 @@ projects:
 # Judge (TypeSafe)
 # ---------------------------------------------------------------------------
 #
-# The TypeSafe System One client behind `claudeos judge test`, and the
-# judgments later items build on it (why a session stopped). The key is read
-# from a file at call time and never
-# placed in any environment.
+# The TypeSafe System One client behind `claudeos judge test`, the triage
+# verdicts, sync's reconcile, autopilot's unattended-safe rating, friction
+# kinds and why a session stopped. The key is read from a file at call time
+# and never placed in any environment.
 
 # judge:
 #   # File holding the TypeSafe API key, one line, mode 0600.
@@ -356,7 +359,6 @@ layout:
 
 colors:
   match: "#FFD602" # search hit highlight (default: {light: 170, dark: 212})
-
 
 #   title: { light: 26, dark: 39 }           # pane titles and the header
 #   dim: { light: 243, dark: 245 }           # secondary text: ids, timestamps, hints
