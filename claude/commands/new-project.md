@@ -5,7 +5,7 @@ argument-hint: <project name>
 
 Set up project `$ARGUMENTS`: fill its note from a short interview, or from a document the user points at, then offer first items for its queue. The vault is `~/obsidian/SecondBrain`; every vault path in this command resolves there, whatever the cwd. Read the vault's `CLAUDE.md` → Task queues first; its invariants bind you.
 
-This command is the one exception to the vault rule that Claude may not invent queue items, and the exception is narrow: an item comes from the catalogue below or from a passage of a document the user named, never from your own guess, and nothing is added without the user's answer.
+This command is the one exception to the vault rule that Claude may not invent queue items, and the exception is narrow: an item comes from an interview answer, from the catalogue below or from a passage of a document the user named, never from your own guess, and nothing is added without the user's answer.
 
 ## 1. Read
 
@@ -39,7 +39,9 @@ A section that already has text (for Next steps, anything beyond the `See` line)
 
 ## 4. Propose
 
-Two sources, and the user sees one numbered list.
+Three sources, and the user sees one numbered list.
+
+**From the answers**, when the interview ran: every deliverable the user named in an answer, the answer to what a first version proves above all. A deliverable is something the user said the project will do, have or port; one item each, written as an end state in the vault's grammar (`<end state> #<tag> ~<size>`, `#feat` unless the answer states otherwise, size per the vault `CLAUDE.md`), e.g. `Queue and inbox screens ported from Devdeck into the standalone app, with the planned tweaks #feat ~M` or `Configurable notifications received in the app #feat ~M`, each traced to the answer phrase it comes from, quoted. Nothing the answers do not state is drafted. A question a document answered yields no answer items; the document items cover it.
 
 **From the document**, when one was read: every deliverable the document states, one item each, written as a queue line in the vault's grammar (`<end state> #<tag> ~<size>`, tag and size per the vault `CLAUDE.md`), each traced to the passage it comes from. The document's own order and wording lead; nothing the document does not state is drafted. A document that reads as a plan (phases, milestones, a numbered list) gives one item per step.
 
@@ -55,7 +57,7 @@ Two sources, and the user sees one numbered list.
 | deploy                                 | ~S   |
 | error tracking                         | ~S   |
 
-An entry a queued line or a document item already covers (same deliverable, any wording) is skipped and named as covered by its `qN` or its number. List the document items first in document order, then the remaining catalogue entries in catalogue order, as one numbered list in prose, each line as it will be added, and ask the user to answer with numbers, `all` or `none`; the user may also reword or resize an item in the answer, and the reworded line is what is added. Wait for the answer.
+An entry a queued line, an answer item or a document item already covers (same deliverable, any wording) is skipped and named as covered by its `qN` or its number. An answer item never displaces an entry that is a different deliverable: porting existing screens and the first vertical slice both stay. A deliverable both an answer and the document state is listed once, as the answer item, with the document's passage named beside the phrase. List the answer items first in interview order, then the document items in document order, then the remaining catalogue entries in catalogue order, as one numbered list in prose, each line as it will be added, an answer item followed by its quoted phrase, and ask the user to answer with numbers, `all` or `none`; the user may also reword or resize an item in the answer, and the reworded line is what is added. Wait for the answer.
 
 ## 5. Add
 
