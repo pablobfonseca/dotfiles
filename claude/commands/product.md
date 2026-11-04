@@ -1,5 +1,5 @@
 ---
-description: Open a product manager session on a project, a state of the product and its open decisions, then answer questions
+description: Open a product manager session on a project, a state of the product and its open decisions, then answer questions and write the queue on the user's explicit ask
 argument-hint: <project name>
 ---
 
@@ -46,12 +46,33 @@ Then, only when `stale` is non-empty: `The ranking is stale: <the stale lines jo
 - Read the note or the code an answer rests on before giving it, and name that source.
 - Keep the spec apart from what shipped: `Design.md` says what the product should be, the code and the `Shipped` lane say what it is. When they disagree, say which is which.
 
-## 4. Rules
+## 4. Write
+
+The queue's writes are the user's commands, so a write happens only on an ask: a message that names the action and its target, the line (a `qN`, an Inbox line) or the ranking ("resize q655 to XS", "promote that inbox line to Ready", "rewrite the ranking"). "What do you think", "should we" and "I would put X first" are not asks: answer with sources, say your own disagreement and stop, writing nothing.
+
+Before the session's first write, read `~/.claude/commands/queue.md` → How to work and the How to write paragraph at the end of its section 3, and follow them for every write here; they are the one rulebook, not repeated in this file. The command per action is the `editing-queues` skill's table, the syntax `claudeos queue --help`.
+
+The writes an ask may name, and no others:
+
+- Rewrite the ranking: `claudeos queue edit $ARGUMENTS begin`, the `> proposed:` blockquote replaced as `queue.md` section 5 says (dated today, five ranks, each with a reason naming a note, the `claudeos queue parallel $ARGUMENTS <ids>` line last), then `claudeos queue edit $ARGUMENTS commit -m '<what changed>'`.
+- Promote an Inbox line: `claudeos inbox promote $ARGUMENTS '<raw>' '<line text>' --lane <Lane>`, the lane and markers as `queue.md` section 2 sets them.
+- Retag or resize: `claudeos queue mark $ARGUMENTS <qN>` with `--tag`, `--untag` or `--size`.
+- Hold or park: `claudeos queue lane $ARGUMENTS <qN> Blocked` or `'Needs spec'`, then the `→` clause (what it waits on, or the open question) appended through `edit begin` / `edit commit`.
+- Promote into Next: `claudeos next $ARGUMENTS <qN> [qN ...]`, only with the ids the user names, in their order; a "pick for me" is refused as `~/.claude/commands/next.md` step 1 refuses it.
+- Drop: `claudeos queue state $ARGUMENTS <qN> dropped --reason '<the user's reason>'`.
+- A new line only when the user dictates its text and its lane: `claudeos queue add $ARGUMENTS '<text>' --lane <Lane>`. Anything else the user wants kept goes through `/capture`.
+
+Never `claudeos queue ship`: shipping is the sync's.
+
+The ask is the confirmation: write first, with no confirm before it, then one report line, the command as run and the way back, `claudeos queue undo $ARGUMENTS` (for a promote or an add, whose minted `^qN` undo refuses to remove, `claudeos queue state $ARGUMENTS <qN> dropped --reason '<why>'`). A refusal (duplicate IDs, a rebase conflict, offline, a dirty queues repo, the cap of five in Next) is reported verbatim and never worked around, as the `editing-queues` skill's Stop and ask says.
+
+When `projects.$ARGUMENTS.autopilot` is true in `~/.config/claudeos/config.yaml` (inline as `{ …, autopilot: true }` or as its own key), a `--tag claude` or a `> proposed:` rewrite steers the next armed autopilot tick: say so in one line before the write, then write, with no extra confirm.
+
+## 5. Rules
 
 - No code edits.
-- No queue write: `claudeos brief`, `claudeos queue dump` and `claudeos queue find` only. The queue's writes are the user's commands; here "Claude proposes, never promotes" (Task queues, Lanes).
+- Never unprompted: a queue write only on an ask (section 4), only inside this session; the opening, an answer and a disagreement ("I would put qN first because …", citing a note) write nothing, and nothing here writes on a tick of its own. "Claude proposes, never promotes" (Task queues, Lanes): `claudeos next` runs only on the ids the user names.
 - The groom runs only when the user answers yes to the stale offer, through the queue skill; never on the opening, never because the brief disagrees with the ranking.
-- A disagreement with the ranking is said ("I would put qN first because …", citing a note), never written: no claudeos queue write leaves this session.
 - A capture only when the user asks for one, through `/capture $ARGUMENTS | <text>`. `/capture` appends "verbatim" and leaves triage to `/queue`, "later, deliberately", so the text is the user's, not a rewrite.
 - A `Decisions.md` entry only after the user approves its wording.
-- Never a queue item of your own: Claude "may not invent items" (Task queues).
+- Never a queue item of your own: Claude "may not invent items" (Task queues), so a `claudeos queue add` carries only the text and lane the user dictated.
