@@ -267,7 +267,7 @@ projects:
 #
 # A WebSocket the running TUI serves to a native phone client (DevDeck), gated
 # by a pairing token. Plain ws://, no TLS: bind a Tailscale IP or a trusted LAN
-# interface, the address is the mitigation. Both keys need a restart.
+# interface, the address is the mitigation. Every key needs a restart.
 
 # serve:
 #   # Address to listen on, as host:port. Empty means nothing listens.
@@ -277,6 +277,12 @@ projects:
 #   # File holding the pairing token the phone presents, one line, mode 0600.
 #   # (default: ~/.config/claudeos/serve-token)
 #   token_file: ~/.config/claudeos/serve-token
+#
+#   # Announce the phone link over Bonjour as _claudeos._tcp, so the phone's
+#   # pairing form lists this Mac. Needs listen to be one IP and a port (not
+#   # empty, 0.0.0.0 or ::). The record never carries the token.
+#   # (default: false)
+#   advertise: false
 
 # ---------------------------------------------------------------------------
 # Layout
@@ -418,6 +424,7 @@ colors:
 #     usage: T
 #     followups: F
 #     doctor: []                  # no default key; the palette runs it as :doctor (default: [])
+#     status: []                  # no default key; the palette runs it as :status, the phone link and runtime facts (default: [])
 #     round: []                   # no default key; the palette runs it as :round <name> (default: [])
 #     product: []                 # no default key; the palette runs it as :product (default: [])
 #     autopilot: []               # no default key; the palette runs it as :autopilot, pausing every project's autopilot (default: [])
