@@ -424,6 +424,7 @@ colors:
 #     usage: T
 #     followups: F
 #     doctor: []                  # no default key; the palette runs it as :doctor (default: [])
+#     status: []                  # no default key; the palette runs it as :status, the phone link and runtime facts (default: [])
 #     round: []                   # no default key; the palette runs it as :round <name> (default: [])
 #     product: []                 # no default key; the palette runs it as :product (default: [])
 #     autopilot: []               # no default key; the palette runs it as :autopilot, pausing every project's autopilot (default: [])
