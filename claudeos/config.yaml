@@ -215,7 +215,11 @@ projects:
       deploy: { base: production, command: /deploy-checklist },
     }
   BuildLoop: { path: ~/code/buildloop }
-  ClaudeOSMobile: { path: ~/code/claudeosmobile }
+  ClaudeOSMobile:
+    {
+      path: ~/code/claudeosmobile,
+      deploy: { base: production, command: /deploy-checklist },
+    }
 
 # ---------------------------------------------------------------------------
 # Slack (Feedback pull)
