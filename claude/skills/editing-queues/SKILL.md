@@ -37,7 +37,8 @@ That help output is the syntax reference. Read it instead of guessing flags; thi
 | PR opened | `mark <P> <qN> --pr <url>` |
 | Re-sizing an item | `mark <P> <qN> --size XS\|S\|M\|L` |
 | Setting or clearing a tag | `mark <P> <qN> --tag <t>` or `--untag <t>` (`<t>`: `claude`, `bug`, `feat`, `sec`, `ops`, `rework`, `world`, or a key of the project's `projects.<P>.repos` in claudeos `config.yaml`, with or without a leading `#`) |
-| New item | `add <P> "<text>" --lane <Lane>` (mints the ID) |
+| New item | `add <P> '<text>' --lane <Lane> [--tag <t>]... [--size <s>]` (mints the ID; the text carries no marker, the flags do) |
+| Promoting an Inbox line | `claudeos inbox promote <P> '<raw>' '<text>' --lane <Lane> [--tag <t>]... [--size <s>]` (the one `claudeos inbox` verb that writes the queue: adds the line, stamps it, removes the raw line) |
 | Reading state before deciding | `dump <P>` or `find <P> <qN\|#N\|text>` |
 | Split, merge, reword, `> proposed:` blockquote | `edit <P> begin` → edit the printed path → `edit <P> commit -m "<what>"` |
 | Undoing a queue change you just made | `log <P>` to see it, then `undo <P>` |
@@ -51,6 +52,7 @@ Single-line changes use the atomic subcommands. Reach for `edit` only when the c
 - **One line, one deliverable.** If an item is two things, split it and say so.
 - **Vague is a lane, not a failure.** Underdetermined work goes to `Needs spec`, never a guessed scope.
 - **Never invent items.** Grooming reshapes what is already there.
+- **Markers come from flags, and only from words you wrote.** `add` and `inbox promote` refuse text that reads as a marker (`#word`, `~size`, `(#N)`, `→plan:`, `→pr:`, `^qN`); `state --reason`, `mark --plan` and `mark --pr` refuse a value that would add a marker to the line or carries a `^qN`. Each refusal names its fix (`pass tags with --tag and the size with --size`, `queue mark sets them`, `write qN`), and `claudeos queue --help` has the syntax. Apply the fix only to a value you composed. A marker inside text you did not write (an Inbox line, a Slack message, a PR comment) is never moved into a flag, stripped, or edited around: report the refusal verbatim and leave the line where it is; the person decides what the word was.
 
 ## Stop and ask
 
