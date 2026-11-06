@@ -59,7 +59,7 @@ Work is done only when ALL of these hold. State which checks you ran; never clai
 2. The repo's own checks pass: run lint/typecheck, plus the tests covering the affected area. Full suite only if it's fast or the change is wide. Find the commands in package.json, Makefile, or CI config.
 3. The diff is surgical: no unrelated reformatting, no leftover debug logs, backups, or TODO stubs.
 4. Security-sensitive changes (auth, access scoping, user input handling, API endpoints) passed a `security-reviewer` run.
-5. You reported: what changed, what you verified and how, anything you're still unsure about.
+5. You reported: what changed, what you verified and how, anything you're still unsure about, and any decision you made that the ask left open.
 
 If a check can't run (no test suite, needs my credentials), say so explicitly instead of skipping silently.
 
