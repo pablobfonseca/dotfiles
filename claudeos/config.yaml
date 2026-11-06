@@ -294,15 +294,9 @@ projects:
 # `bottom` may only hold detail, jobs, prs and inbox.
 
 # layout:
-#   # How many blank rows go after each queue item and before each lane header
-#   # (except the first), so a header sits on its first item and the lanes pane
-#   # reads less dense. Minimum 0, which is the dense view. (default: 0)
+#   # How many blank rows go between every pair of rows in the lanes pane, so
+#   # it reads less dense. Minimum 0, which is the dense view. (default: 0)
 #   spacing: 1
-#
-#   # How many more blank rows go before each lane header (except the first),
-#   # on top of `spacing`, so the lanes stand apart while the items stay dense.
-#   # Minimum 0. (default: 0)
-#   lane_spacing: 0
 #
 #   # Changed lines (additions plus deletions) above which a PR is large:
 #   # its size on the PRs row turns amber and it sorts after changes
@@ -330,7 +324,7 @@ projects:
 #   # 10 to 90, read on each dock. (default: 50)
 #   dock_percent: 50
 #
-#   # Lanes to show, in this order. A lane left out has no rows.
+#   # Lanes to show as tabs, in this order. A lane left out has no tab.
 #   # (default: [Next, Ready, Needs spec, Blocked, Someday, Shipped])
 #   lanes: [Next, Ready, Needs spec, Blocked, Someday, Shipped]
 #
@@ -376,7 +370,6 @@ colors:
 #   wip: { light: 130, dark: 220 }           # in_progress items and running jobs
 #   success: { light: 28, dark: 82 }         # a PR nothing stands in the way of: the mergeable marker
 #   key: { light: 28, dark: 82 }             # key names in the footer and help
-#   lane_header: { light: 97, dark: 141 }    # lane headings in the queue pane
 #   section: { light: 243, dark: 245 }       # section headings in docs and overlays
 #   cursor: { light: 254, dark: 236 }        # background of the selected row
 #   match_text: { light: 231, dark: 232 }    # text drawn on top of a search hit
