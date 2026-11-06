@@ -57,17 +57,17 @@ Three sources, and the user sees one numbered list.
 | deploy                                 | ~S   |
 | error tracking                         | ~S   |
 
-An entry a queued line, an answer item or a document item already covers (same deliverable, any wording) is skipped and named as covered by its `qN` or its number. An answer item covers an entry only when it names that same foundation piece (sign in with Google covers auth); a product feature, however central, never covers the first vertical slice, so porting existing screens and the first vertical slice both stay. A deliverable both an answer and the document state is listed once, as the answer item, with the document's passage named beside the phrase. List the answer items first in interview order, then the document items in document order, then the remaining catalogue entries in catalogue order, as one numbered list in prose, each line as it will be added, an answer item followed by its quoted phrase, and ask the user to answer with numbers, `all` or `none`; the user may also reword or resize an item in the answer, and the reworded line is what is added. Wait for the answer.
+An entry a queued line, an answer item or a document item already covers (same deliverable, any wording) is skipped and named as covered by its `qN` or its number. An answer item covers an entry only when it names that same foundation piece (sign in with Google covers auth); a product feature, however central, never covers the first vertical slice, so porting existing screens and the first vertical slice both stay. A deliverable both an answer and the document state is listed once, as the answer item, with the document's passage named beside the phrase. List the answer items first in interview order, then the document items in document order, then the remaining catalogue entries in catalogue order, as one numbered list in prose, each line as it will be added, an answer item followed by its quoted phrase, and ask the user to answer with numbers, `all` or `none`; the user may also reword or resize an item in the answer, and the reworded line is what is added, its trailing `#tag` and `~size` read as its tag and size the way the TUI's add editor splits them (the user wrote them). Wait for the answer.
 
 ## 5. Add
 
 Each approved item, in list order, is one call:
 
 ```
-claudeos queue add $ARGUMENTS "<text> #<tag> ~<size>" --lane "Needs spec"
+claudeos queue add $ARGUMENTS '<text>' --lane 'Needs spec' --tag <tag> --size <size>
 ```
 
-The text is double-quoted, so escape its backticks (`` \` ``) or the shell runs `make check`. Each `add` prints `{"id": "qN"}`; that is the minted ID. A refused `add` is reported verbatim and the rest still run. `none`, or no answer, adds nothing. Then write `## Next steps` (section 3).
+The text is the item's end state alone, single-quoted (a `'` in it is written `'\''`; backticks, `$` and `!` stay literal); the tag and size are the flags, `<tag>` with or without its `#`, `<size>` without its `~`, never inside the text, which the add refuses when it carries a marker. Each `add` prints `{"id": "qN"}`; that is the minted ID. A refused `add` is reported verbatim and the rest still run. `none`, or no answer, adds nothing. Then write `## Next steps` (section 3).
 
 ## 6. Report
 
