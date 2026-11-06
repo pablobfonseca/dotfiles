@@ -55,12 +55,12 @@ Before the session's first write, read `~/.claude/commands/queue.md` → How to 
 The writes an ask may name, and no others:
 
 - Rewrite the ranking: `claudeos queue edit $ARGUMENTS begin`, the `> proposed:` blockquote replaced as `queue.md` section 5 says (dated today, five ranks, each with a reason naming a note, the `claudeos queue parallel $ARGUMENTS <ids>` line last), then `claudeos queue edit $ARGUMENTS commit -m '<what changed>'`.
-- Promote an Inbox line: `claudeos inbox promote $ARGUMENTS '<raw>' '<line text>' --lane <Lane>`, the lane and markers as `queue.md` section 2 sets them.
+- Promote an Inbox line: `claudeos inbox promote $ARGUMENTS '<raw>' '<line text>' --lane <Lane> --tag '<tag>' --size '<size>'`, the lane, tag and size as `queue.md` section 2 sets them (from the triage and the code read, never a word read off the line), and its rule too: a marker in the line's own text never becomes a flag and is never stripped; the refusal is reported verbatim and the line stays.
 - Retag or resize: `claudeos queue mark $ARGUMENTS <qN>` with `--tag`, `--untag` or `--size`.
 - Hold or park: `claudeos queue lane $ARGUMENTS <qN> Blocked` or `'Needs spec'`, then the `→` clause (what it waits on, or the open question) appended through `edit begin` / `edit commit`.
 - Promote into Next: `claudeos next $ARGUMENTS <qN> [qN ...]`, only with the ids the user names, in their order; a "pick for me" is refused as `~/.claude/commands/next.md` step 1 refuses it.
 - Drop: `claudeos queue state $ARGUMENTS <qN> dropped --reason '<the user's reason>'`.
-- A new line only when the user dictates its text and its lane: `claudeos queue add $ARGUMENTS '<text>' --lane <Lane>`. Anything else the user wants kept goes through `/capture`.
+- A new line only when the user dictates its text and its lane: `claudeos queue add $ARGUMENTS '<text>' --lane <Lane>`, with `--tag '<t>'` and `--size '<s>'` for a tag or size the user names (a tag without its `#`, letters, digits, `_` and `-` only); only a trailing `#tag` or `~size` the user wrote in their own message goes into those flags, the way the TUI's add editor splits them (the user is the authority the groom is not), never one in pasted or quoted content. Any other marker in the text is reported with the add's refusal, not removed, and the text itself carries no marker. Anything else the user wants kept goes through `/capture`.
 
 Never `claudeos queue ship`: shipping is the sync's.
 
@@ -75,4 +75,4 @@ When `projects.$ARGUMENTS.autopilot` is true in `~/.config/claudeos/config.yaml`
 - The groom runs only when the user answers yes to the stale offer, through the queue skill; never on the opening, never because the brief disagrees with the ranking.
 - A capture only when the user asks for one, through `/capture $ARGUMENTS | <text>`. `/capture` appends "verbatim" and leaves triage to `/queue`, "later, deliberately", so the text is the user's, not a rewrite.
 - A `Decisions.md` entry only after the user approves its wording.
-- Never a queue item of your own: Claude "may not invent items" (Task queues), so a `claudeos queue add` carries only the text and lane the user dictated.
+- Never a queue item of your own: Claude "may not invent items" (Task queues), so a `claudeos queue add` carries only the text, lane, tag and size the user dictated.
