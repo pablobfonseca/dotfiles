@@ -39,7 +39,7 @@ defaults:
   # Model the launch overlay prefills for implement (after the plan's own
   # model:), groom and review sessions. A plan job takes no model from here: its
   # model is empty (/fable-plan) or opus (/opus-plan). (default: opus)
-  model: fable
+  model: opus
 
   # Run the session in its own git worktree instead of the project checkout, so
   # parallel jobs on the same repo do not fight over the working tree.
