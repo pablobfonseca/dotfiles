@@ -305,7 +305,7 @@
     }
   },
   "effortLevel": "high",
-  "advisorModel": "opus",
+  "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
   "tui": "fullscreen",
   "voice": {
