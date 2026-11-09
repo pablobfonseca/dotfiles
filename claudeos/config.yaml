@@ -100,6 +100,19 @@ defaults:
   #   implement: medium
   #   groom: medium
 
+  # The policy the PreToolUse hook applies in every session claudeos launches
+  # (a plain terminal claude never runs it). An edit inside the job's worktree
+  # runs with no prompt; a Bash command is checked against never, then
+  # watchers, then allow, and anything else reaches Claude Code's own
+  # permission mode. Each entry is a whole-word command prefix, never a
+  # pattern, and an allowed prefix takes any argument, so allow only commands
+  # you trust with any. A project's lists are appended to these.
+  # (default: { allow: [], never: [], watchers: built-in list of dev servers })
+  # policy:
+  #   allow: [make check]
+  #   never: [git push --force]
+  #   watchers: [npm run dev]   # replaces the built-in list; [] switches it off
+
 # ---------------------------------------------------------------------------
 # Projects
 # ---------------------------------------------------------------------------
@@ -131,6 +144,9 @@ defaults:
 #   autopilot: ! arms it while the TUI is open; the loop then claims Ready
 #           lines tagged #claude or rated unattended-safe by the Judge in the
 #           groom's proposed order; :autopilot pauses (default: false)
+#   policy: allow, never and watchers lists appended to defaults.policy's
+#           for this project's sessions (default: unset)
+#                e.g. ClaudeOS: { policy: { allow: [make check, go test] } }
 
 projects:
   ClaudeOS:
@@ -141,6 +157,19 @@ projects:
       deploy: { base: production, command: /deploy-checklist },
       rounds:
         { morning: { at: "09:00", until: "11:00", command: /rounds-morning } },
+      policy:
+        {
+          allow:
+            [
+              make check,
+              go test,
+              go vet,
+              git status,
+              git diff,
+              git add,
+              git commit,
+            ],
+        },
     }
   LazyActions: { path: ~/code/lazy-actions }
   Tribemap:
