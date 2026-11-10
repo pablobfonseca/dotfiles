@@ -250,6 +250,7 @@ projects:
       deploy: { base: production, command: /deploy-checklist },
     }
   FretboardLab: { path: ~/code/FretboardLab, autopilot: true }
+  ControlRoom: { path: ~/code/controlroom }
 
 # ---------------------------------------------------------------------------
 # Slack (Feedback pull)
