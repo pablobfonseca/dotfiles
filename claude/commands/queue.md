@@ -95,7 +95,7 @@ Rank by leverage, roughly in this order of precedence:
 4. Already specced and user-facing (cheap real wins)
 5. Written-up pain that has never been converted into work
 
-When the queue still carries a `## Next` heading, retire it in the same `edit begin` / `commit` session as the blockquote: move its checkbox lines to the top of `## Ready` in file order, delete its old `> proposed:` block and any `Human-owned` prose line with the heading, and name the move in the commit message. A queue with no `## Next` heading gets no extra step.
+When the queue still carries a `## Next` heading, retire it in the same `edit begin` / `commit` session as the blockquote: move its checkbox lines to the top of `## Ready`'s checkbox lines, below the blockquote, in file order, delete its old `> proposed:` block and any `Human-owned` prose line with the heading, and name the move in the commit message. A queue with no `## Next` heading gets no extra step.
 
 The blockquote is the whole deliverable: no line moves or is reordered for a rank.
 
