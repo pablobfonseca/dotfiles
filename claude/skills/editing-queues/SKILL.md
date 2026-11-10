@@ -48,7 +48,7 @@ Single-line changes use the atomic subcommands. Reach for `edit` only when the c
 ## Judgment the CLI does not encode
 
 - **Nothing is deleted.** Completed items move to `Shipped`; abandoned ones become `dropped` with a reason. The queue is the audit trail.
-- **`## Next` is human-owned.** Propose ranked candidates as a `> proposed:` blockquote and stop.
+- **The ranking is proposed, never promoted.** Rank candidates as a `> proposed:` blockquote under `## Ready` and stop; no command moves a line for them.
 - **One line, one deliverable.** If an item is two things, split it and say so.
 - **Vague is a lane, not a failure.** Underdetermined work goes to `Needs spec`, never a guessed scope.
 - **Never invent items.** Grooming reshapes what is already there.
