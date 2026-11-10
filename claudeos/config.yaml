@@ -249,6 +249,7 @@ projects:
       path: ~/code/claudeosmobile,
       deploy: { base: production, command: /deploy-checklist },
     }
+  FretboardLab: { path: ~/code/FretboardLab, autopilot: true }
 
 # ---------------------------------------------------------------------------
 # Slack (Feedback pull)
@@ -392,6 +393,7 @@ layout:
 
 colors:
   match: "#FFD602" # search hit highlight (default: {light: 170, dark: 212})
+
 
 #   title: { light: 26, dark: 39 }           # pane titles and the header
 #   dim: { light: 243, dark: 245 }           # secondary text: ids, timestamps, hints
