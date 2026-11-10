@@ -354,8 +354,8 @@ projects:
 #   dock_percent: 50
 #
 #   # Lanes to show as tabs, in this order. A lane left out has no tab.
-#   # (default: [Next, Ready, Needs spec, Blocked, Someday, Shipped])
-#   lanes: [Next, Ready, Needs spec, Blocked, Someday, Shipped]
+#   # (default: [Ready, Needs spec, Blocked, Someday, Shipped])
+#   lanes: [Ready, Needs spec, Blocked, Someday, Shipped]
 #
 #   # Trailers an item row paints after its text.
 #   row:
