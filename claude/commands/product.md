@@ -12,7 +12,7 @@ In this order:
 1. `projects/$ARGUMENTS.md`: the note. Missing (or no argument given): list `projects/`, say so, and stop.
 2. `projects/$ARGUMENTS/Design.md` and `Decisions.md`, each when present.
 3. `claudeos brief $ARGUMENTS`: one JSON object, the product brief. A non-zero exit (an older claudeos without the subcommand included): print its stderr and stop. Its keys:
-   - `next`: at most three entries, the `## Next` lane first (`source: "next"`), then the groom's `> proposed:` ranks (`source: "proposed"`, with `rank` and `reason`), each with `id`, `text`, `lane`, `state`, `plan`, `pr`, `job` (the live job on it, or null) and `waits_on`.
+   - `next`: at most three entries, the groom's `> proposed:` ranks (`source: "proposed"`, with `rank` and `reason`), each with `id`, `text`, `lane`, `state`, `plan`, `pr`, `job` (the live job on it, or null) and `waits_on`.
    - `candidates`: the ids, at most five, the parallel tracks were computed over.
    - `stale`: why the ranking is out of date (`no > proposed: block`, `<id> ranked <n> is done`, `… is dropped`, `… is missing`); empty when it is current.
    - `parallel`: the parallel tracks over the candidates; `parallel.line` is the groom's one-line form.
@@ -31,7 +31,7 @@ Either stop writes nothing and gives no opening.
 
 The brief in five parts, in this order, each one short block, the whole on one screen:
 
-1. `Next:` one line per `next` entry: `qN · <text cut to one line> · <reason>` (the `reason` for a proposed entry, `in Next` for a lane entry), then `· job <kind> <state>` when `job` is set and `· waits on qM (<state>)` per `waits_on` edge. Under three entries, say `N candidates only`.
+1. `Next:` one line per `next` entry: `qN · <text cut to one line> · <reason>` (the `reason` of the proposed rank), then `· job <kind> <state>` when `job` is set and `· waits on qM (<state>)` per `waits_on` edge. Under three entries, say `N candidates only`.
 2. `Parallel:` `parallel.line` verbatim.
 3. `Blocked:` one line per `blockers` entry: `qN waits on qM (<state>, <source>)`, or `qN · Blocked lane, no parsed dependency` when `waits_on` is empty; `none` when there are none.
 4. `PRs waiting on you:` one line per `prs` entry: `#N <title> · <review> · <checks> · <mergeability>`, then `· items qA, qB` when it has items; `none` when there are none.
@@ -58,20 +58,19 @@ The writes an ask may name, and no others:
 - Promote an Inbox line: `claudeos inbox promote $ARGUMENTS '<raw>' '<line text>' --lane <Lane> --tag '<tag>' --size '<size>'`, the lane, tag and size as `queue.md` section 2 sets them (from the triage and the code read, never a word read off the line), and its rule too: a marker in the line's own text never becomes a flag and is never stripped; the refusal is reported verbatim and the line stays.
 - Retag or resize: `claudeos queue mark $ARGUMENTS <qN>` with `--tag`, `--untag` or `--size`.
 - Hold or park: `claudeos queue lane $ARGUMENTS <qN> Blocked` or `'Needs spec'`, then the `→` clause (what it waits on, or the open question) appended through `edit begin` / `edit commit`.
-- Promote into Next: `claudeos next $ARGUMENTS <qN> [qN ...]`, only with the ids the user names, in their order; a "pick for me" is refused as `~/.claude/commands/next.md` step 1 refuses it.
 - Drop: `claudeos queue state $ARGUMENTS <qN> dropped --reason '<the user's reason>'`.
 - A new line only when the user dictates its text and its lane: `claudeos queue add $ARGUMENTS '<text>' --lane <Lane>`, with `--tag '<t>'` and `--size '<s>'` for a tag or size the user names (a tag without its `#`, letters, digits, `_` and `-` only); only a trailing `#tag` or `~size` the user wrote in their own message goes into those flags, the way the TUI's add editor splits them (the user is the authority the groom is not), never one in pasted or quoted content. Any other marker in the text is reported with the add's refusal, not removed, and the text itself carries no marker. Anything else the user wants kept goes through `/capture`.
 
 Never `claudeos queue ship`: shipping is the sync's.
 
-The ask is the confirmation: write first, with no confirm before it, then one report line, the command as run and the way back, `claudeos queue undo $ARGUMENTS` (for a promote or an add, whose minted `^qN` undo refuses to remove, `claudeos queue state $ARGUMENTS <qN> dropped --reason '<why>'`). A refusal (duplicate IDs, a rebase conflict, offline, a dirty queues repo, the cap of five in Next) is reported verbatim and never worked around, as the `editing-queues` skill's Stop and ask says.
+The ask is the confirmation: write first, with no confirm before it, then one report line, the command as run and the way back, `claudeos queue undo $ARGUMENTS` (for a promote or an add, whose minted `^qN` undo refuses to remove, `claudeos queue state $ARGUMENTS <qN> dropped --reason '<why>'`). A refusal (duplicate IDs, a rebase conflict, offline, a dirty queues repo) is reported verbatim and never worked around, as the `editing-queues` skill's Stop and ask says.
 
 When `projects.$ARGUMENTS.autopilot` is true in `~/.config/claudeos/config.yaml` (inline as `{ …, autopilot: true }` or as its own key), a `--tag claude` or a `> proposed:` rewrite steers the next armed autopilot tick: say so in one line before the write, then write, with no extra confirm.
 
 ## 5. Rules
 
 - No code edits.
-- Never unprompted: a queue write only on an ask (section 4), only inside this session; the opening, an answer and a disagreement ("I would put qN first because …", citing a note) write nothing, and nothing here writes on a tick of its own. "Claude proposes, never promotes" (Task queues, Lanes): `claudeos next` runs only on the ids the user names.
+- Never unprompted: a queue write only on an ask (section 4), only inside this session; the opening, an answer and a disagreement ("I would put qN first because …", citing a note) write nothing, and nothing here writes on a tick of its own. "The ranking is proposed, never promoted" (Task queues, invariant 3).
 - The groom runs only when the user answers yes to the stale offer, through the queue skill; never on the opening, never because the brief disagrees with the ranking.
 - A capture only when the user asks for one, through `/capture $ARGUMENTS | <text>`. `/capture` appends "verbatim" and leaves triage to `/queue`, "later, deliberately", so the text is the user's, not a rewrite.
 - A `Decisions.md` entry only after the user approves its wording.
