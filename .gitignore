@@ -28,6 +28,7 @@ sessions/
 tmux/plugins
 tmux/resurrect/*
 zsh/.aliases.local
+nvim/lazy-lock.json
 
 .emacs.d/network-security.data
 .emacs.d/rake.cache
