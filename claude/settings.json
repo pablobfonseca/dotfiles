@@ -1,7 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 14,
-  "idleCompaction": false,
   "env": {
     "CLAUDE_CODE_DISABLE_MOUSE": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
@@ -231,24 +230,6 @@
     "slack@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
-    "dev-browser-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "SawyerHood/dev-browser"
-      }
-    },
-    "ast-grep-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "ast-grep/agent-skill"
-      }
-    },
-    "context-engineering-kit": {
-      "source": {
-        "source": "github",
-        "repo": "NeoLabHQ/context-engineering-kit"
-      }
-    },
     "ui-ux-pro-max-skill": {
       "source": {
         "source": "github",
@@ -265,12 +246,6 @@
       "source": {
         "source": "github",
         "repo": "kepano/obsidian-skills"
-      }
-    },
-    "pixijs-skills": {
-      "source": {
-        "source": "github",
-        "repo": "pixijs/pixijs-skills"
       }
     },
     "harness-marketplace": {
@@ -312,6 +287,7 @@
     "enabled": false
   },
   "editorMode": "vim",
+  "idleCompaction": false,
   "teammateMode": "in-process",
   "remoteControlAtStartup": false,
   "agentPushNotifEnabled": true,
