@@ -83,7 +83,7 @@ For each open line, check the notes for evidence it shipped (a plan marked compl
 
 ## 5. Propose the next 5
 
-Replace the `> proposed:` blockquote under `## Next` with a fresh one, dated today. Five items, ranked, each with one or two sentences of *reasoning that cites a note* — not a restatement of the item. Write each rank as `> N. `^qNN` [[<P> Queue#^qNN]] — <reason, naming the note>`; `claudeos queue dump` parses the bare `` `^qNN` `` right after the rank number (the wikilink alone does not parse), and the wikilink keeps Obsidian navigation.
+Replace the `> proposed:` blockquote under `## Ready`, directly below the heading and before its first checkbox line, with a fresh one, dated today. Five items, ranked, each with one or two sentences of *reasoning that cites a note* — not a restatement of the item. Write each rank as `> N. `^qNN` [[<P> Queue#^qNN]] — <reason, naming the note>`; `claudeos queue dump` parses the bare `` `^qNN` `` right after the rank number (the wikilink alone does not parse), and the wikilink keeps Obsidian navigation.
 
 Then run `claudeos queue parallel $ARGUMENTS <the five ids, in rank order>` and append its `line` value verbatim as the blockquote's last line (`> parallel: …`): ` · ` separates tracks that run side by side, ` → ` says an item runs after the one before it (they share a named file, or one names the other), and `unknown:` lists items whose line and plan name no file, which is a reason to name one in the line, not a licence to call them independent. The command reads the local checkout and writes nothing; when it exits non-zero, append nothing and name the refusal in the report. Never edit the line by hand: a track you disagree with is a file the item's line should name.
 
@@ -95,7 +95,9 @@ Rank by leverage, roughly in this order of precedence:
 4. Already specced and user-facing (cheap real wins)
 5. Written-up pain that has never been converted into work
 
-Never move an item into `## Next` yourself. The blockquote is the whole deliverable.
+When the queue still carries a `## Next` heading, retire it in the same `edit begin` / `commit` session as the blockquote: move its checkbox lines to the top of `## Ready` in file order, delete its old `> proposed:` block and any `Human-owned` prose line with the heading, and name the move in the commit message. A queue with no `## Next` heading gets no extra step.
+
+The blockquote is the whole deliverable: no line moves or is reordered for a rank.
 
 ## 6. Report
 
