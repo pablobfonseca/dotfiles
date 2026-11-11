@@ -12,6 +12,10 @@
   "permissions": {
     "allow": [
       "Bash(claudeos queue:*)",
+      "Bash(claudeos jobs launch:*)",
+      "Bash(claudeos jobs kill:*)",
+      "Bash(claudeos jobs --json)",
+      "Bash(gh pr view:*)",
       "mcp__metabase__execute_sql",
       "mcp__metabase__query",
       "mcp__sentry__update_issue"
