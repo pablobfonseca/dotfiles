@@ -32,7 +32,7 @@ Either stop writes nothing and gives no opening.
 The brief in five parts, in this order, each one short block, the whole on one screen:
 
 1. `Next:` one line per `next` entry: `qN · <text cut to one line> · <reason>` (the `reason` of the proposed rank), then `· job <kind> <state>` when `job` is set and `· waits on qM (<state>)` per `waits_on` edge. Under three entries, say `N candidates only`.
-2. `Parallel:` `parallel.line` verbatim.
+2. `Parallel:` `parallel.line` verbatim. When `parallel.tracks` holds two or more entries, the `Batch:` block follows on the next lines, worked out as `~/.claude/commands/queue.md` section 5's batch steps say, with the project's name in place of `$ARGUMENTS`, `candidates` as the five ids, `parallel.tracks` as the tracks and `parallel.unknown` as the unknown ids; the rules are `batch-run.md` section 2's, read there and not repeated in this file. With fewer than two entries there is no block and none of its reads run.
 3. `Blocked:` one line per `blockers` entry: `qN waits on qM (<state>, <source>)`, or `qN · Blocked lane, no parsed dependency` when `waits_on` is empty; `none` when there are none.
 4. `PRs waiting on you:` one line per `prs` entry: `#N <title> · <review> · <checks> · <mergeability>`, then `· items qA, qB` when it has items; `none` when there are none.
 5. `Inbox I would promote:` every `inbox` line whose `promotable` is at least 0.7: its text, the lane (`Needs spec` when `needs_spec` is at least 0.7, else `Ready`), the tag and size when set, and `duplicate of qN` when a duplicate's `noul` is at least 0.8. Then one line `N unsure (0.3 to 0.7), M not work`. When `notes` carries a `triage skipped` line, say `triage skipped: <why>` instead of the scores.
@@ -71,6 +71,7 @@ When `projects.$ARGUMENTS.autopilot` is true in `~/.config/claudeos/config.yaml`
 ## 5. Rules
 
 - No code edits.
+- A batch run is suggested, never launched: the `Batch run:` line of the opening is for the user to start, from the TUI (`space` on those items, then `:batch_run`, with the `lanes` word in its `flags:` field) or typed into a session they open for it. This session runs no `/batch-run` and no `claudeos jobs launch`.
 - Never unprompted: a queue write only on an ask (section 4), only inside this session; the opening, an answer and a disagreement ("I would put qN first because …", citing a note) write nothing, and nothing here writes on a tick of its own. "The ranking is proposed, never promoted" (Task queues, invariant 3).
 - The groom runs only when the user answers yes to the stale offer, through the queue skill; never on the opening, never because the brief disagrees with the ranking.
 - A capture only when the user asks for one, through `/capture $ARGUMENTS | <text>`. `/capture` appends "verbatim" and leaves triage to `/queue`, "later, deliberately", so the text is the user's, not a rewrite.
