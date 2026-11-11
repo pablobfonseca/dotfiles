@@ -324,10 +324,11 @@ projects:
 # Layout
 # ---------------------------------------------------------------------------
 #
-# Six panes: projects, lanes, detail, jobs, prs, inbox. Each one appears exactly
+# Five panes: projects, lanes, detail, jobs, prs. Each one appears exactly
 # once, either in the top row (`columns`) or in the bottom stack (`bottom`).
 # `columns` may only hold projects, lanes and detail, and must include lanes.
-# `bottom` may only hold detail, jobs, prs and inbox.
+# `bottom` may only hold detail, jobs and prs. The Inbox is a tab of the lanes
+# pane, not a pane.
 
 # layout:
 #   # How many blank rows go between every pair of rows in the lanes pane, so
@@ -375,13 +376,12 @@ projects:
 #     detail: 12   # (default: 12)
 #     jobs: 5      # (default: 5)
 #     prs: 5       # (default: 5)
-#     inbox: 5     # (default: 5)
 #
 #   # Top row, left to right. (default: [projects, lanes, detail])
 #   columns: [projects, lanes, detail]
 #
-#   # Bottom stack, top to bottom. (default: [jobs, prs, inbox])
-#   bottom: [jobs, prs, inbox]
+#   # Bottom stack, top to bottom. (default: [jobs, prs])
+#   bottom: [jobs, prs]
 layout:
   projects_width: 23
   row:
