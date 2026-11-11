@@ -50,6 +50,7 @@ Applies to text you write for humans: chat replies, commit messages, PR descript
 - **Don't fear a rewrite** if the current approach is going nowhere.
 - **Long phased work:** when context is getting heavy between phases, offer the `handoff` skill to compact state for a fresh session instead of degrading quietly.
 - **Domain vocabulary.** Before non-trivial code work, if a `CONTEXT.md` (or `CONTEXT-MAP.md`) exists in the repo, read it and name things using its terms. To actively build/sharpen the model (challenge terms, write ADRs), use the `domain-modeling` skill.
+- **Reading an article for lessons.** When I ask you to read an article or clipping and see what we can learn, judge it against the factory, not only the current repo: claudeos builds every other project, so ask where each idea would plug into the shared workflow (plan, implement, verify, review), the agents, skills and hooks, and which projects' stacks it helps. Never mark a tool not applicable because it does not fit the repo you are in. Explain a tool I may not know and say concretely how we would use it.
 
 ## Definition of Done
 
