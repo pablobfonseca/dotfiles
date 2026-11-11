@@ -46,3 +46,4 @@ Resolve the plan file from `$ARGUMENTS`:
 
 - The plan outranks your preferences. Disagree with an approach? That's a stop-and-ask, not a silent rewrite.
 - No scope beyond the plan: no drive-by refactors, no extra features.
+- Before changing a function's signature, return value or exported name, or deleting a symbol, find its uses as `~/.claude/docs/lsp-blast-radius.md` says. A use the plan does not name is the "Reality deviates from the plan" trigger.
