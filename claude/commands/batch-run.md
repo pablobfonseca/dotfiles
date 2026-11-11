@@ -27,6 +27,8 @@ Leave an item out, with the first reason that applies:
 
 An item whose `waits on ^qM` names an item of the batch depends on it: it runs after qM is merged. An item that depends on one left out is left out too: `waits on qM (left out)`.
 
+These nine reasons, in this order, are the one rulebook for what a batch run takes: `queue.md` section 5 applies them by reference for the groom's `Batch:` report, and `product.md` and `lead.md` read them through it. Change a reason here and nowhere else.
+
 The trust level allows three writes here, and each leaves its reason:
 
 - `promote=on`, a Needs spec line that passed every check above: `claudeos queue lane <P> <qN> Ready`, the reason in the ledger (`promoted: no open question on the line`).
