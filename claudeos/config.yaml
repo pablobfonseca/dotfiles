@@ -249,7 +249,12 @@ projects:
       path: ~/code/claudeosmobile,
       deploy: { base: production, command: /deploy-checklist },
     }
-  FretboardLab: { path: ~/code/FretboardLab, autopilot: true }
+  FretboardLab:
+    {
+      path: ~/code/FretboardLab,
+      autopilot: true,
+      deploy: { base: production, command: /deploy-checklist },
+    }
   ControlRoom: { path: ~/code/controlroom }
 
 # ---------------------------------------------------------------------------
