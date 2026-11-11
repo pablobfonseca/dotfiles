@@ -1,7 +1,7 @@
 ---
 description: Review the inline comments on a PR and analyse whether each one makes sense before acting
 argument-hint: "[pr-number] [--apply] [--watch]"
-allowed-tools: Bash(gh:*), Bash(git:*), Bash(date:*), Read, Grep, Glob, Edit, Write, Monitor, TaskStop, ToolSearch
+allowed-tools: Bash(gh:*), Bash(git:*), Bash(date:*), Read, Grep, Glob, Edit, Write, Monitor, TaskStop, ToolSearch, LSP
 ---
 
 ## Task
@@ -29,7 +29,7 @@ Parse `$ARGUMENTS`:
    - Ignore housekeeping sections (`📥 Commits`, `📒 Files selected`, `ℹ️ Review info`, `⚙️ Run configuration`, `🪄 Autofix`, `🤖 Prompt for all review comments with AI agents`) and CodeRabbit's walkthrough/summary issue comment.
    - Skip nothing silently: if there are zero inline comments and zero body findings, say so and stop.
 
-4. **Analyse each comment thread.** For every thread, read the actual code at `path` around the referenced line (use Read/Grep — don't rely only on the `diff_hunk`). Then judge:
+4. **Analyse each comment thread.** For every thread, read the actual code at `path` around the referenced line (use Read/Grep — don't rely only on the `diff_hunk`). When the thread or its fix turns on who calls or uses a symbol (a changed signature, a deletion, a claim that nothing else uses it), find the uses as `~/.claude/docs/lsp-blast-radius.md` says before judging. Then judge:
    - **What is it asking for?** Restate the concern in one line.
    - **Is it correct?** Verify against the real code. Consider: is the claim factually true here, does the suggestion introduce bugs/regressions, does it fit the codebase conventions (check neighbouring code), is it in scope for this PR?
    - **Verdict:** `Agree` / `Partially agree` / `Disagree` / `Needs clarification` — with a concise reason.
