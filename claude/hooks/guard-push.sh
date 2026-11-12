@@ -63,6 +63,8 @@
 # that move a branch without a `refs/heads/` route (contents with `branch=`, `/merges`, a branch
 # rename, `mergeBranch`), curl against api.github.com.
 # The one command let through on its own is `git push --help`, the read that shows the flags.
+# When the command holds `<<`, the deny reason ends with HEREDOC_HINT, since a heredoc body is read
+# line by line as shell and a session with no push in it should move the body to a file, not reword.
 set -uo pipefail
 shopt -s nocasematch
 . "$(dirname "${BASH_SOURCE[0]}")/guard-common.sh"
@@ -72,6 +74,9 @@ master, main and production are merged into, never pushed to, whatever a plan li
 EOF
 read -r -d '' OVERRUN <<'EOF'
 The push guard could not finish reading this command: it is longer than 32 KB, or holds too many words beside a git word, git words, -C options, quoted strings read as commands, or pushes of HEAD whose checkout must be read, and a command the guard cannot finish reading is refused. Split it into shorter commands, or write a long text to a file first.
+EOF
+read -r -d '' HEREDOC_HINT <<'EOF'
+If this command pushes nothing and holds a heredoc: the guard reads a heredoc body line by line as shell, and refuses a body holding a `(` glued to a word, a line that reads as a push, or a `$` before the word git. Write the body to a file (the Write tool, or single-quoted `printf` lines into a file where there is no Write tool, which is refused too when a line holds a glued paren beside the words git and push), then run the file or pass it by path. Do not reword the command and retry.
 EOF
 
 GH_RE='(^|[^[:alnum:]_.-])gh([[:space:];|&<>)}`]|$)'
@@ -111,6 +116,7 @@ LEVEL=0
 input=$(cat) || exit 0
 jq empty <<<"$input" 2>/dev/null || exit 0
 cmd=$(jq -r "$COMMAND_JQ" <<<"$input" 2>/dev/null) || guard_deny "$REASON"
+[[ $cmd == *'<<'* ]] && REASON="$REASON $HEREDOC_HINT"
 text=$(jq -r "$DEQUOTED_JQ" <<<"$input" 2>/dev/null) || guard_deny "$REASON"
 cwd=$(jq -r '.cwd // empty' <<<"$input" 2>/dev/null)
 
