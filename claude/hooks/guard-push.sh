@@ -22,7 +22,11 @@
 # inherits it). A `$(…)`, backtick, `<(…)` or `$` expansion holding the subcommand, an option, a
 # remote, a refspec, a `-c` value or the `-C` of a push of HEAD is refused, since its value is not
 # known before it runs, and so is one in a word before the git word (which `env` reads as
-# assignments) other than a leading `NAME=` assignment, whatever the subcommand. An unquoted one is refused anywhere before the subcommand whatever the subcommand, and
+# assignments) other than a leading `NAME=` assignment, whatever the subcommand. In a quoted word read
+# as a command that last rule holds only when the git word goes on to `push`, `send-pack`,
+# `http-push`, `subtree` or `config`, or is a `git-push`, `git-send-pack` or `git-http-push` binary,
+# so prose holding a `$` before the word git (a launch goal, a commit message, queue text) is not
+# refused. An unquoted one is refused anywhere before the subcommand whatever the subcommand, and
 # anywhere in a push, option values included, since it splits into words when it runs. A word that
 # itself holds whitespace or a separator (`bash -c "…"`, `eval "…"`, a commit message, a heredoc body)
 # is read as a command too, two levels deep, and one still holding a separator and `git … push` at
@@ -52,7 +56,9 @@
 # Not followed: wrapper scripts (`make tag`, `scripts/tag.sh`), shell aliases, persistent git config
 # (`help.autocorrect` included, and a planted one under a `HOME=` or `XDG_CONFIG_HOME=` prefix), `$'...'` escapes in a word read as a command (`bash -c $'…'`), brace
 # expansion, a variable or substitution holding the git word, a name piped in through
-# xargs, a `GIT_*` variable set by `read`, `printf -v` or a sourced file, a `cd` earlier in the
+# xargs, a `GIT_*` variable set by `read`, `printf -v` or a sourced file, `export` of an expansion,
+# or an expansion before git in a quoted word read as a command (`bash -c "$v git st"`, its value
+# `GIT_CONFIG_*` assignments making `st` an alias for push), a `cd` earlier in the
 # command before a push of HEAD, a symref alias made in an earlier command, a `refId`-only `updateRef` or `deleteRef`, gh writes
 # that move a branch without a `refs/heads/` route (contents with `branch=`, `/merges`, a branch
 # rename, `mergeBranch`), curl against api.github.com.
@@ -185,7 +191,8 @@ check_git() { # <index of the git word> <push, send-pack or http-push for a git-
     [[ $w == *$ANY_EXP* ]] && LEVEL=2
   done
   envcfg=$(( LEVEL > ENV_SET ? LEVEL : ENV_SET ))
-  (( envcfg == 2 )) && guard_deny "$REASON"
+  (( envcfg == 2 )) && (( DEPTH == 0 )) && guard_deny "$REASON"
+  (( envcfg == 2 )) && [[ -n $sub ]] && guard_deny "$REASON"
   i=$((g + 1))
   if [[ -z $sub ]]; then
     shopt -u nocasematch
@@ -217,6 +224,7 @@ check_git() { # <index of the git word> <push, send-pack or http-push for a git-
     done
     (( found )) || return
     [[ $sub == *$ANY_EXP* ]] && guard_deny "$REASON"
+    (( envcfg == 2 )) && [[ $sub == subtree || $sub == config || $sub == push || $sub == send-pack || $sub == http-push ]] && guard_deny "$REASON"
     if [[ $sub == subtree ]]; then
       check_subtree "${words[@]:i+1}"
       return
