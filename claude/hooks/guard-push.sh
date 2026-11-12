@@ -56,7 +56,9 @@
 # Not followed: wrapper scripts (`make tag`, `scripts/tag.sh`), shell aliases, persistent git config
 # (`help.autocorrect` included, and a planted one under a `HOME=` or `XDG_CONFIG_HOME=` prefix), `$'...'` escapes in a word read as a command (`bash -c $'…'`), brace
 # expansion, a variable or substitution holding the git word, a name piped in through
-# xargs, a `GIT_*` variable set by `read`, `printf -v` or a sourced file, a `cd` earlier in the
+# xargs, a `GIT_*` variable set by `read`, `printf -v` or a sourced file, `export` of an expansion,
+# or an expansion before git in a quoted word read as a command (`bash -c "$v git st"`, its value
+# `GIT_CONFIG_*` assignments making `st` an alias for push), a `cd` earlier in the
 # command before a push of HEAD, a symref alias made in an earlier command, a `refId`-only `updateRef` or `deleteRef`, gh writes
 # that move a branch without a `refs/heads/` route (contents with `branch=`, `/merges`, a branch
 # rename, `mergeBranch`), curl against api.github.com.
