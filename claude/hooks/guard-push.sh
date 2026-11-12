@@ -22,7 +22,11 @@
 # inherits it). A `$(…)`, backtick, `<(…)` or `$` expansion holding the subcommand, an option, a
 # remote, a refspec, a `-c` value or the `-C` of a push of HEAD is refused, since its value is not
 # known before it runs, and so is one in a word before the git word (which `env` reads as
-# assignments) other than a leading `NAME=` assignment, whatever the subcommand. An unquoted one is refused anywhere before the subcommand whatever the subcommand, and
+# assignments) other than a leading `NAME=` assignment, whatever the subcommand. In a quoted word read
+# as a command that last rule holds only when the git word goes on to `push`, `send-pack`,
+# `http-push`, `subtree` or `config`, or is a `git-push`, `git-send-pack` or `git-http-push` binary,
+# so prose holding a `$` before the word git (a launch goal, a commit message, queue text) is not
+# refused. An unquoted one is refused anywhere before the subcommand whatever the subcommand, and
 # anywhere in a push, option values included, since it splits into words when it runs. A word that
 # itself holds whitespace or a separator (`bash -c "…"`, `eval "…"`, a commit message, a heredoc body)
 # is read as a command too, two levels deep, and one still holding a separator and `git … push` at
@@ -185,7 +189,8 @@ check_git() { # <index of the git word> <push, send-pack or http-push for a git-
     [[ $w == *$ANY_EXP* ]] && LEVEL=2
   done
   envcfg=$(( LEVEL > ENV_SET ? LEVEL : ENV_SET ))
-  (( envcfg == 2 )) && guard_deny "$REASON"
+  (( envcfg == 2 )) && (( DEPTH == 0 )) && guard_deny "$REASON"
+  (( envcfg == 2 )) && [[ -n $sub ]] && guard_deny "$REASON"
   i=$((g + 1))
   if [[ -z $sub ]]; then
     shopt -u nocasematch
@@ -217,6 +222,7 @@ check_git() { # <index of the git word> <push, send-pack or http-push for a git-
     done
     (( found )) || return
     [[ $sub == *$ANY_EXP* ]] && guard_deny "$REASON"
+    (( envcfg == 2 )) && [[ $sub == subtree || $sub == config || $sub == push || $sub == send-pack || $sub == http-push ]] && guard_deny "$REASON"
     if [[ $sub == subtree ]]; then
       check_subtree "${words[@]:i+1}"
       return
