@@ -8,12 +8,7 @@
 # and the guards deny on it.
 # shell_segments is the third reading: a tokenizer over the raw command that hands each shell segment
 # (the words between unquoted `;`, `|`, `&`, newlines and parens) to a callback, quotes removed and
-# quoted words kept whole. A redirection and its target are dropped, and so is a comment. A heredoc's
-# `<<` or `<<-` and its delimiter are dropped the same way, and its body, read to the delimiter line
-# (leading tabs aside after `<<-`) or to the end of the command, is a segment of one word, quoted
-# delimiter or not, so a guard reads it as it reads a quoted word and source code or prose in a body
-# is never tokenized as shell and a body has the gaps a quoted word has (a `(` glued to a word in it
-# is refused only beside `git … push`); `<<<` is a redirection. The body of
+# quoted words kept whole. A redirection and its target are dropped, and so is a comment. The body of
 # a `$(…)`, backtick or `<(…)` substitution is a segment of its own, and the word it sat in keeps
 # SUBST in its place (QSUBST inside double quotes), so the enclosing command stays whole and a guard
 # can refuse what it cannot read. An unquoted one is split into words when it runs, zsh too, so its
@@ -38,7 +33,7 @@ guard_deny() { # <reason>
 shell_segments() { # <text> <callback>: runs <callback> <word>... once per segment that holds a word
   local LC_ALL=C
   local text=$1 cb=$2 n=${#1} i=0 c next top rest run stack=N word= have=0 skip=0 base=0
-  local words=() fword=() fbase=() fmark=() cs=() hdelim=() hdash=()
+  local words=() fword=() fbase=() fmark=() cs=()
   for ((i = 0; i < n; i += 1024)); do cs+=("${text:i:1024}"); done
   cs+=("")
   i=0
@@ -76,12 +71,9 @@ shell_segments() { # <text> <callback>: runs <callback> <word>... once per segme
       *)
         case $c in
           ' ' | $'\t') _ss_word ;;
-          $'\n') _ss_segment; (( ${#hdelim[@]} )) && _ss_bodies ;;
-          ';' | '|') _ss_segment ;;
+          $'\n' | ';' | '|') _ss_segment ;;
           '&') if [[ $next == '>' ]]; then _ss_redirect; else _ss_segment; fi ;;
-          '<' | '>')
-            if [[ $c$next == '<<' && ${cs[(i + 2) >> 10]:(i + 2) & 1023:1} != '<' ]]; then _ss_heredoc
-            elif [[ $next == '(' ]]; then _ss_open Q "$SUBST"; i=$((i + 1)); else _ss_redirect; fi ;;
+          '<' | '>') if [[ $next == '(' ]]; then _ss_open Q "$SUBST"; i=$((i + 1)); else _ss_redirect; fi ;;
           '(')
             (( have )) && [[ $word != *= && $next != ')' && ${words[base]-} != "$GLOB[$GLOB[" ]] && GLUED_PAREN=1
             _ss_segment; stack+=P ;;
@@ -153,61 +145,4 @@ _ss_close() { # shell_segments: the substitution's body is a segment; the enclos
   word=${fword[last]}${fmark[last]} have=1
   base=${saved% *} skip=${saved#* }
   unset 'fword[last]' 'fbase[last]' 'fmark[last]'
-}
-_ss_heredoc() { # shell_segments: `<<` or `<<-` and its delimiter word are dropped like a redirection; the body waits for the line's end
-  local d= a dash=0 got=0
-  if (( have )) && [[ $word =~ ^[0-9]+$ || $word =~ ^\{[A-Za-z_][A-Za-z0-9_]*\}$ ]]; then
-    word= have=0
-  else
-    _ss_word
-  fi
-  i=$((i + 2))
-  [[ ${cs[i >> 10]:i & 1023:1} == '-' ]] && { dash=1; i=$((i + 1)); }
-  while [[ ${cs[i >> 10]:i & 1023:1} == [[:blank:]] ]]; do i=$((i + 1)); done
-  while (( i < n )); do
-    a=${cs[i >> 10]:i & 1023:1}
-    case $a in
-      "'")
-        got=1; i=$((i + 1))
-        while (( i < n )) && [[ ${cs[i >> 10]:i & 1023:1} != "'" ]]; do d+=${cs[i >> 10]:i & 1023:1}; i=$((i + 1)); done ;;
-      '"')
-        got=1; i=$((i + 1))
-        while (( i < n )) && [[ ${cs[i >> 10]:i & 1023:1} != '"' ]]; do
-          [[ ${cs[i >> 10]:i & 1023:1} == '\' ]] && i=$((i + 1))
-          d+=${cs[i >> 10]:i & 1023:1}; i=$((i + 1))
-        done ;;
-      '\') got=1; i=$((i + 1)); d+=${cs[i >> 10]:i & 1023:1} ;;
-      [[:space:]] | ';' | '|' | '&' | '<' | '>' | '(' | ')') break ;;
-      *) got=1; d+=$a ;;
-    esac
-    i=$((i + 1))
-  done
-  (( got )) && { hdelim+=("$d"); hdash+=("$dash"); }
-  i=$((i - 1))
-}
-_ss_bodies() { # shell_segments: at the newline that ends a line holding heredocs, each body is a segment of one word, read to its delimiter line
-  local k line body t
-  for ((k = 0; k < ${#hdelim[@]}; k++)); do
-    body=
-    while (( i + 1 < n )); do
-      line=
-      i=$((i + 1))
-      while (( i < n )); do
-        rest=${cs[i >> 10]:i & 1023}
-        run=${rest%%$'\n'*}
-        line+=$run
-        i=$((i + ${#run}))
-        (( ${#run} < ${#rest} )) && break
-      done
-      t=$line
-      (( hdash[k] )) && t=${line#"${line%%[!$'\t']*}"}
-      [[ $t == "${hdelim[k]}" ]] && break
-      body+=$line$'\n'
-    done
-    if [[ -n $body ]]; then
-      word=$body have=1
-      _ss_segment
-    fi
-  done
-  hdelim=() hdash=()
 }
