@@ -28,7 +28,7 @@ Then every remembered `note:` line. Then wait.
 
 When the user names a project, match the name exactly against `claudeos projects`; with no match, list the names and ask which. Then read only what the question needs:
 
-- Where it stands: `claudeos brief <P>`, presented as `~/.claude/commands/product.md` section 2 says, its five parts and its `note:` lines, without its stale offer and without its open-decisions ending. A non-zero exit: print its stderr.
+- Where it stands: `claudeos brief <P>`, presented as `~/.claude/commands/product.md` section 2 says, its five parts (the `Batch:` block under `Parallel:` included) and its `note:` lines, without its stale offer and without its open-decisions ending. A non-zero exit: print its stderr.
 - Its due follow-ups: `claudeos followup list <P> --due`. Its Inbox: `claudeos inbox list <P>`.
 - Its note and spec: `projects/<P>.md`, then `projects/<P>/Design.md` and `Decisions.md`, each when present.
 - Its code: the checkout is the `checkout` key of `claudeos jobs launch <P> claude --dry-run`, which launches nothing. Read files there; never edit them.
@@ -57,6 +57,7 @@ Work is done by claudeos jobs, never in this session and never by a subagent. A 
 
 - The command: `claudeos jobs launch <P> <kind> [qN]`, with only the flags the user names, out of `--model`, `--effort`, `--name`, `--goal`, `--notes`, `--flags`, `--worktree`, `--chain` and `--review`.
 - One launch per named item, in the order the ask names them, stopping at the first refusal.
+- A batch run is not one of the kinds: `claudeos jobs launch` cannot start one. On an ask for one, print the `Batch run:` line of that project's brief (section 3), say it starts from the TUI (`space` on those items, then `:batch_run`) or typed into a session the user opens for it, launch nothing, and ask section 7's question, since the missing CLI path is a gap.
 - The report line: the command as run, the `id` and `window` of the job JSON it prints, and the way back, `claudeos jobs kill <id>`.
 - A refusal is reported verbatim. `--force` is added only when the user says to force it after seeing that refusal.
 - `claudeos jobs kill <id>` only on an ask that names the id. Never `claudeos jobs press` and never `claudeos jobs clear`.
