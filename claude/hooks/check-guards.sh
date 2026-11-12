@@ -21,6 +21,12 @@ qv2() { jq -cn --arg t "$1" --arg a "$2" --arg b "$3" '{hook_event_name:"PreTool
 mg() { payload PreToolUse Bash command "$1" | guard guard-merge.sh | decision; }
 rd() { payload PreToolUse Bash command "$1" | guard guard-repo-delete.sh | decision; }
 pg() { payload PreToolUse Bash command "$1" "${2:-}" | guard guard-push.sh | decision; } # <command> [cwd]
+pgh() { # <command> [cwd]: allow for no output; else the decision, then `base` when the reason opens with the push rule and `heredoc` when it carries the heredoc hint
+  local out
+  out=$(payload PreToolUse Bash command "$1" "${2:-}" | guard guard-push.sh)
+  [[ -z $out ]] && { echo allow; return; }
+  jq -r '.hookSpecificOutput | [.permissionDecision, (.permissionDecisionReason | (if startswith("master, main and production are merged into") then "base" else empty end), (if test("heredoc") then "heredoc" else empty end))] | join(" ")' <<<"$out" 2>/dev/null
+}
 tk() { ${GUARD_BASH:-bash} -c '. "$1/guard-common.sh"; seg() { local w; for w in "$@"; do w=${w//$GLOB/}; w=${w//$SUBST/\$()}; printf "[%s]" "${w//$QSUBST/\"\$()\"}"; done; printf "\n"; }; shell_segments "$2" seg' tk "$H" "$1"; } # <command>: one line of [word]s per segment, a substitution shown as $(), "$()" when double-quoted
 unreadable() { jq -cn --arg e "$1" --arg t "$2" '{hook_event_name:$e,tool_name:$t,tool_input:"x",cwd:""}'; } # <event> <tool>: tool_input is a string, so jq reads no command or path from it
 many() { local i; for ((i = 0; i < $1; i++)); do printf "$2" "$i"; done; } # <n> <printf format>: the format n times, %d the index
@@ -666,6 +672,11 @@ case_ "quoted expansion before an expanded subcommand" deny "$(pg 'echo "run $x 
 case_ "quoted expansion before git-push"             deny  "$(pg 'bash -c "$x git-push origin feature"' "$PF")"
 case_ "quoted expansion before a -c alias"           deny  "$(pg 'bash -c "$x git -c alias.l=push l"' "$PF")"
 case_ "quoted expansion before a subtree push"       deny  "$(pg 'bash -c "$x git subtree push --prefix=a origin feature"' "$PF")"
+case_ "heredoc python script with a glued paren, hint" "deny base heredoc" "$(pgh $'python3 - <<\'EOF\'\ns=open(p).read()\nEOF' "$PF")"
+case_ "heredoc, then a push to master, base reason first" "deny base heredoc" "$(pgh $'cat <<\'EOF\' > notes.md\nhello\nEOF\ngit push origin master' "$PF")"
+case_ "push to master with no heredoc, no hint"     "deny base" "$(pgh 'git push origin master' "$PF")"
+case_ "gh api ref write fed by a heredoc, hint"     "deny base heredoc" "$(pgh $'gh api -X PATCH repos/o/r/git/refs/heads/master --input - <<\'EOF\'\n{"sha":"abc"}\nEOF' "$PF")"
+case_ "heredoc the guard allows, no reason"         allow "$(pgh $'cat <<\'EOF\' > notes.md\nmerge into master later\nEOF' "$PF")"
 case_ "quoted expansion before an alias subcommand, accepted residual" allow "$(pg 'bash -c "$V git st"' "$PF")"
 case_ "export of an expansion, then an alias, residual on master too" allow "$(pg 'export $(cat f); git st' "$PF")"
 case_ "unquoted substitution in a -C value, no subcommand" deny "$(pg 'git -C $(echo . push origin HEAD:master)' "$PF")"
