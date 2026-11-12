@@ -15,7 +15,7 @@ args=${BASH_REMATCH[2]}
 
 trim() { sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//'; }
 project=$(printf '%s' "${args%%|*}" | trim)
-item=$(printf '%s' "${args#*|}" | sed -E 's/--[a-z-]+//g' | trim)
+item=$(printf '%s' "${args#*|}" | sed -E 's/--base[[:space:]]+[^[:space:]]+//g; s/--[a-z-]+//g' | trim)
 
 if [[ $item =~ ^\^?q?([0-9]+)$ ]]; then
   id="q${BASH_REMATCH[1]}"
