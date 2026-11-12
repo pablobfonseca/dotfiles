@@ -666,6 +666,8 @@ case_ "quoted expansion before an expanded subcommand" deny "$(pg 'echo "run $x 
 case_ "quoted expansion before git-push"             deny  "$(pg 'bash -c "$x git-push origin feature"' "$PF")"
 case_ "quoted expansion before a -c alias"           deny  "$(pg 'bash -c "$x git -c alias.l=push l"' "$PF")"
 case_ "quoted expansion before a subtree push"       deny  "$(pg 'bash -c "$x git subtree push --prefix=a origin feature"' "$PF")"
+case_ "quoted expansion before an alias subcommand, accepted residual" allow "$(pg 'bash -c "$V git st"' "$PF")"
+case_ "export of an expansion, then an alias, residual on master too" allow "$(pg 'export $(cat f); git st' "$PF")"
 case_ "unquoted substitution in a -C value, no subcommand" deny "$(pg 'git -C $(echo . push origin HEAD:master)' "$PF")"
 case_ "unquoted substitution in a -C value, then status" deny "$(pg 'git -C $(echo . push origin HEAD:master) status' "$PF")"
 case_ "unquoted substitution in an attr-source value" deny "$(pg 'git --attr-source $(echo x push origin HEAD:master)' "$PF")"
