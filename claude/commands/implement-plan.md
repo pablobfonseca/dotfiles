@@ -1,13 +1,13 @@
 ---
-description: Execute a /fable-plan file - implement, open a PR, run /review-pr --apply --watch. Never merges.
-argument-hint: "<project> | <item: qN> — or a plan-file path"
+description: Execute a /fable-plan file - implement, open a PR, run /review-pr --apply --watch (not with --no-self-review). Never merges.
+argument-hint: "<project> | <item: qN> [--no-self-review] — or a plan-file path [--no-self-review]"
 ---
 
 ## Task
 
 Execute a plan produced by `/fable-plan` in a cheaper-model session. The plan is the authority; this session contributes labor, not judgment. A short plan (its header line says `Short plan:`) hands local judgment back: decide where it is silent, never where it has decided, and list each choice in the PR body.
 
-Resolve the plan file from `$ARGUMENTS`:
+Resolve the plan file from `$ARGUMENTS`, after removing the skip token: the word `--no-self-review` wherever it stands as a word of its own. claudeos sends it for an implement launched with `--self-review no`, whose PR a separate review job takes (steps 5 and 6). Arguments that held only the token are the empty form.
 
 - **Queue form** — `<project> | <item>`: resolve the line with `claudeos queue find <project> <item>` (`qN` ID, `#issue` ref, or text fragment; the vault is `~/obsidian/SecondBrain`, reachable from any cwd) and follow the result's `plan` wikilink to `projects/<project>/plans/`. If the line has no `→plan:`, stop and tell the user to run `/fable-plan <project> | qN` first.
 - **Path form** — a file path, read as given.
@@ -36,11 +36,13 @@ Resolve the plan file from `$ARGUMENTS`:
 
 5. **Run `/review-pr --apply --watch`** on the new PR. Its analysis verdicts gate what gets applied; its termination rules end the watch. A `Needs clarification` verdict is a stop-and-ask trigger, not something to guess through.
 
-6. **Record, report and stop.** Once step 5's watch has ended, and not before, name the run's friction: one sentence, either one instruction this run was missing (something you had to work out, guess or stop to ask because the plan, this command or the repo's harness did not say it) or one manual step you repeated that a rule or a script would remove. Name the one that cost the most, the sentence the repo's harness handed with the qa values (claudeos: `claudeos-workflow` Phase 4, which already picked over its agents' `Friction:` lines) weighed beside your own; when nothing qualifies the friction is `none`, never filler.
+   With the skip token `--no-self-review` in `$ARGUMENTS`, step 5 does not run at all and nothing in this session reviews the PR: a separate review job takes it. Go to step 6 once step 4 has opened the PR and, for a queue plan, run its `queue mark --pr` and `queue state wip`.
 
-   Then collect the run's leftovers: the `Leftovers:` line of step 5's review summary plus anything the run itself leaves pending. Apply the global Leftovers rule from `~/.claude/CLAUDE.md` to each (offer when attended, register when `CLAUDEOS_JOB_ID` is set). This comes before the record, which ends a chained session.
+6. **Record, report and stop.** Once step 5's watch has ended, and not before (with the skip token `--no-self-review`, once step 4 is done, since step 5 does not run), name the run's friction: one sentence, either one instruction this run was missing (something you had to work out, guess or stop to ask because the plan, this command or the repo's harness did not say it) or one manual step you repeated that a rule or a script would remove. Name the one that cost the most, the sentence the repo's harness handed with the qa values (claudeos: `claudeos-workflow` Phase 4, which already picked over its agents' `Friction:` lines) weighed beside your own; when nothing qualifies the friction is `none`, never filler.
 
-   Then record the run's outcome: `claudeos record`, plus `--qa <pass|fail> --blockers <N>` when the repo's harness ran a verifier (the times the run stopped to ask are counted by claudeos's Stop hook, not reported), plus `--friction "<the sentence>"` unless it is `none`. A refused record answers on stderr and writes nothing: on `flag provided but not defined: -friction` (an older claudeos) run the same record again without `--friction`; on any other refusal fix the argument and run it again. It is a no-op outside a claudeos-launched session; skip it when `claudeos` is not on PATH. This record is what tells claudeos the session is finished, and a chained implement is ended on it, so it never runs while the review watch is still live. Final summary: phases completed, checks run, review threads resolved, PR URL, then `Friction: <the sentence, or none>`, then `Leftovers: <the fN list, the offers, or none>`. Suggest a Fable review pass (`/code-review <pr>`) as the closing step.
+   Then collect the run's leftovers: the `Leftovers:` line of step 5's review summary plus anything the run itself leaves pending (with the skip token there is no review summary, so the leftovers come from the run alone). Apply the global Leftovers rule from `~/.claude/CLAUDE.md` to each (offer when attended, register when `CLAUDEOS_JOB_ID` is set). This comes before the record, which ends a chained session.
+
+   Then record the run's outcome: `claudeos record`, plus `--qa <pass|fail> --blockers <N>` when the repo's harness ran a verifier (the times the run stopped to ask are counted by claudeos's Stop hook, not reported), plus `--friction "<the sentence>"` unless it is `none`. A refused record answers on stderr and writes nothing: on `flag provided but not defined: -friction` (an older claudeos) run the same record again without `--friction`; on any other refusal fix the argument and run it again. It is a no-op outside a claudeos-launched session; skip it when `claudeos` is not on PATH. This record is what tells claudeos the session is finished, and a chained implement is ended on it, so it never runs while the review watch is still live. Final summary: phases completed, checks run, review threads resolved (with the skip token, `Review: left to a separate job` in their place), PR URL, then `Friction: <the sentence, or none>`, then `Leftovers: <the fN list, the offers, or none>`. Suggest a Fable review pass (`/code-review <pr>`) as the closing step.
 
 ## Rules
 
