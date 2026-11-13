@@ -320,6 +320,31 @@ projects:
 #   advertise: false
 
 # ---------------------------------------------------------------------------
+# Peer (another Mac's phone link)
+# ---------------------------------------------------------------------------
+#
+# This TUI dials another Mac's serve.listen as a phone and lists that Mac's
+# jobs in the jobs pane as @name rows: digits, y and n answer them, t tells
+# and K kills, nothing else. Belongs in config.local.yaml, never here: each
+# Mac names the other, and a Mac refuses to load its own serve.listen as a
+# peer. Every key needs a restart.
+
+# peer:
+#   # The label the other Mac's jobs carry, as @name: 1 to 16 letters,
+#   # digits, - or _. Needed when address is set.
+#   # (default: "")
+#   name: studio
+#
+#   # The other Mac's serve.listen, as host:port. Empty means no peer and
+#   # nothing is dialled. Plain ws:// carrying the token: a Tailscale address.
+#   # (default: "")
+#   address: 100.64.0.2:4343
+#
+#   # File holding a copy of the other Mac's serve token, one line, mode 0600.
+#   # (default: ~/.config/claudeos/peer-token)
+#   token_file: ~/.config/claudeos/peer-token
+
+# ---------------------------------------------------------------------------
 # Layout
 # ---------------------------------------------------------------------------
 #
