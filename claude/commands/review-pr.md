@@ -32,7 +32,7 @@ Parse `$ARGUMENTS`:
    - `gh api "repos/{owner}/{repo}/pulls/<number>/reviews" --paginate`, filter `user.login` containing `coderabbit`.
    - Each body starts with `Actionable comments posted: N`. Extract findings from collapsed `<details>` sections such as `🧹 Nitpick comments`, `⚠️ Outside diff range comments`, and `♻️ Duplicate comments` — each entry names a file, line range, and concern. Treat each as a thread authored by `coderabbitai[bot]`.
    - Ignore housekeeping sections (`📥 Commits`, `📒 Files selected`, `ℹ️ Review info`, `⚙️ Run configuration`, `🪄 Autofix`, `🤖 Prompt for all review comments with AI agents`) and CodeRabbit's walkthrough/summary issue comment.
-   - Skip nothing silently: if there are zero inline comments and zero body findings, say so and stop.
+   - Skip nothing silently: if there are zero inline comments and zero body findings, say so and stop (a standalone run without `--watch` opens that message with `Review ended: single pass`).
 
 4. **Analyse each comment thread.** For every thread, read the actual code at `path` around the referenced line (use Read/Grep — don't rely only on the `diff_hunk`). When the thread or its fix turns on who calls or uses a symbol (a changed signature, a deletion, a claim that nothing else uses it), find the uses as `~/.claude/docs/lsp-blast-radius.md` says before judging. Then judge:
    - **What is it asking for?** Restate the concern in one line.
