@@ -340,6 +340,11 @@ projects:
 #   # (default: "")
 #   address: 100.64.0.2:4343
 #
+#   # Where enter on a peer row runs ssh: user@host, a host or an alias from
+#   # ~/.ssh/config. The other Mac needs Remote Login on and this Mac's key.
+#   # (default: the host of address)
+#   ssh: ""
+#
 #   # File holding a copy of the other Mac's serve token, one line, mode 0600.
 #   # (default: ~/.config/claudeos/peer-token)
 #   token_file: ~/.config/claudeos/peer-token
