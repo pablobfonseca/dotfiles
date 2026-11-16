@@ -18,6 +18,7 @@ This file applies to every project. Per-repo facts (stack, run commands, domain 
 ## Communication
 
 - Be extremely concise. Concision means cutting content that doesn't earn its place, not compressing grammar: chat replies stay short but in readable full sentences. Sacrifice grammar only in commit messages and plan-question lists (drop articles/pronouns there).
+- **Reply shape (I have ADHD, long replies lose me).** Lead with the answer or the outcome in the first sentence. Default to a few lines; go longer only when I ask for detail or the content cannot be cut without losing something I need to act on. One idea per sentence or bullet. No recap of what I said, no narration of the steps you took, no restating what a diff already shows. If you need something from me, put it last, on its own line. Extra context is a one-line offer ("want the details?"), never included by default.
 - Open-ended design questions: ask freeform in prose. Only use multiple-choice prompts when the options are genuinely enumerable.
 
 ### Prose style
