@@ -254,7 +254,7 @@ projects:
       autopilot: true,
       deploy: { base: production, command: /deploy-checklist },
     }
-  ControlRoom: { path: ~/code/control-room }
+  ControlRoom: { path: ~/code/controlroom }
 
 # ---------------------------------------------------------------------------
 # Slack (Feedback pull)
