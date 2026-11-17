@@ -423,6 +423,9 @@ layout:
     tags: true
   rows:
     jobs: 7
+  pin:
+    jobs: true
+    prs: true
 
 # ---------------------------------------------------------------------------
 # Colors
