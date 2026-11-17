@@ -9,6 +9,9 @@
 #   review <login> <id> <sha>        a review landed (on that commit)
 #   comment <login> <id> <path>      a new top-level inline comment
 #   issue-comment <login> <id>       a new issue comment (rate-limit notices land here)
+#   issue-comment-edit <login> <id> <updated_at>
+#                                    CodeRabbit edited an issue comment (it edits its
+#                                    rate-limit notice into its summary comment)
 #   checks <pass|fail|pending>       the CI aggregate changed
 #   ready                            --ready-at has passed (printed once)
 #   closed <MERGED|CLOSED>           the PR is over; the script exits
@@ -17,6 +20,8 @@
 # --since marks the end of the pass that armed the watch: anything created after it
 # is reported on the first poll, anything before it is the baseline. Without it the
 # first poll is the baseline and prints nothing. The viewer's own comments are skipped.
+# A CodeRabbit issue comment is reported again, as issue-comment-edit, each time its
+# updated_at moves; on the first poll --since is compared with that edit time.
 set -u
 
 repo=${1:?owner/repo}
@@ -45,13 +50,13 @@ now() { date -u +%Y-%m-%dT%H:%M:%SZ; }
 seen() { grep -qxF -- "$1" "$work/seen"; }
 mark() { echo "$1" >> "$work/seen"; }
 
-# emit <kind> <id> <created_at> <login> <rest...>: prints the event unless it is
-# the baseline, the viewer's own, or already reported.
+# emit <kind> <id> <at> <login> <rest...>: prints the event unless it is
+# the baseline, the viewer's own, or already reported with the same rest.
 emit() {
   local kind=$1 id=$2 at=$3 login=$4
   shift 4
-  seen "$kind:$id" && return
-  mark "$kind:$id"
+  seen "$kind:$id:$*" && return
+  mark "$kind:$id:$*"
   [ "$login" = "$me" ] && return
   if [ $first = 1 ]; then
     [ -z "$since" ] && return
@@ -80,17 +85,21 @@ poll() {
   comments=$(gh api "repos/$repo/pulls/$number/comments?per_page=100" --paginate \
     --jq '.[] | select(.in_reply_to_id == null) | "\(.id)\t\(.created_at)\t\(.user.login)\t\(.path)"') || return 1
   issues=$(gh api "repos/$repo/issues/$number/comments?per_page=100" --paginate \
-    --jq '.[] | "\(.id)\t\(.created_at)\t\(.user.login)"') || return 1
+    --jq '.[] | "\(.id)\t\(.created_at)\t\(.user.login)\t\(.updated_at)"') || return 1
 
-  local id at login rest
+  local id at login rest updated
   while IFS=$'\t' read -r id at login rest; do
     [ -n "$id" ] && emit review "$id" "$at" "$login" "$rest"
   done <<<"$reviews"
   while IFS=$'\t' read -r id at login rest; do
     [ -n "$id" ] && emit comment "$id" "$at" "$login" "$rest"
   done <<<"$comments"
-  while IFS=$'\t' read -r id at login rest; do
-    [ -n "$id" ] && emit issue-comment "$id" "$at" "$login"
+  while IFS=$'\t' read -r id at login updated; do
+    [ -n "$id" ] || continue
+    emit issue-comment "$id" "$at" "$login"
+    if [ "$login" = "coderabbitai[bot]" ] && [ "$updated" != "$at" ]; then
+      emit issue-comment-edit "$id" "$updated" "$login" "$updated"
+    fi
   done <<<"$issues"
 
   local buckets agg
