@@ -400,6 +400,12 @@ projects:
 #     id: true     # ^qN (default: true)
 #     tags: false  # #feat #bug (default: false)
 #
+#   # Panes that stay open: J / P only move the focus in and out of a pinned
+#   # pane, never hide it. (default: both false)
+#   pin:
+#     jobs: false  # (default: false)
+#     prs: false   # (default: false)
+#
 #   # Height in rows of each pane when it sits in the bottom stack. Minimum 1.
 #   rows:
 #     detail: 12   # (default: 12)
