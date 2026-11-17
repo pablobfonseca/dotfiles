@@ -97,7 +97,7 @@ poll() {
   while IFS=$'\t' read -r id at login updated; do
     [ -n "$id" ] || continue
     emit issue-comment "$id" "$at" "$login"
-    if [[ $login == *coderabbit* ]] && [ "$updated" != "$at" ]; then
+    if [ "$login" = "coderabbitai[bot]" ] && [ "$updated" != "$at" ]; then
       emit issue-comment-edit "$id" "$updated" "$login" "$updated"
     fi
   done <<<"$issues"
