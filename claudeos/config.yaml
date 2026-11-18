@@ -390,6 +390,11 @@ projects:
 #   # 10 to 90, read on each dock. (default: 50)
 #   dock_percent: 50
 #
+#   # While a job is docked and the jobs pane has the focus, the detail pane
+#   # shows a compact head of the docked job; false hides it there instead.
+#   # (default: true)
+#   dock_head: true
+#
 #   # Lanes to show as tabs, in this order. A lane left out has no tab.
 #   # (default: [Ready, Needs spec, Blocked, Someday, Shipped])
 #   lanes: [Ready, Needs spec, Blocked, Someday, Shipped]
