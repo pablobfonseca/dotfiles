@@ -51,7 +51,7 @@
   bselect                 = "!branches=$(git branch -a) && branch=$(echo \"$branches\" | fzf --height 40% --tmux bottom,40% --prompt "Branch: " --reverse +s +m) && [[ $branch =~ 'remotes' ]] && git checkout --track ${branch#remotes/origin/} || git checkout $(echo \"$branch\" | sed 's/.* //')"
   co                      = checkout
   conflicts               = !git ls-files -u | awk '{print $4}' | sort -u
-  copysha                 = "!git rev-parse HEAD | tr -d '\n' | pbcopy"
+  copysha                 = "!git rev-parse HEAD | tr -d '\\n' | pbcopy"
   fall                    = "!for remote in $(git remote); do echo "Fetching $remote"; git fetch "$remote"; done"
   lnames                  = !git --no-pager show --name-only $1
   rmdeleted               = !git rm $(git ls-files --deleted)
