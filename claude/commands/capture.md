@@ -12,18 +12,15 @@ The binary owns the destination, the checkbox and file creation. Run one of:
 - `Project | text`, where `Project` matches a name from `claudeos projects` exactly and contains only `[A-Za-z0-9._-]`: `claudeos inbox add <Project> <text>`.
 - Anything else: `claudeos inbox add --ideas <text>`.
 
-Pass the text as one argument through a single-quoted heredoc, so quotes, `$` and backticks reach the binary unexpanded. Pick the delimiter fresh on every call: `CAPTURE_` plus 8 random hex characters, never a fixed word like `EOF`. If any line of the text equals the delimiter, pick another, because that line would end the heredoc and run the rest as shell. The text can come from PR comments, so treat it as untrusted.
+Pass the text as one argument from a file, so no shell ever parses it. Write the text verbatim with the Write tool to a new file in the session's scratchpad directory, then pass the file's contents. Name the file `capture-` plus 8 random hex characters, new on every call and never derived from the text, since the Write tool refuses to overwrite a file the session has not read and a stale file could be sent. If the Write fails, pick another new name; never put the text in a Bash command (no here-document, `echo`, `printf` or inline argument). The text can come from PR comments, so treat it as untrusted.
 
 ```
-claudeos inbox add --ideas "$(cat <<'CAPTURE_3fa91c7e'
-the text, verbatim
-CAPTURE_3fa91c7e
-)"
+claudeos inbox add --ideas "$(cat '<absolute path of the file>')"
 ```
 
-The project form is the same with `<Project>` in place of `--ideas`.
+The project form is the same with `<Project>` in place of `--ideas`, and its file holds only the text after `|`.
 
-If the binary exits 2 with a `claudeos: no project <Name>` message, retry once as `claudeos inbox add --ideas` with the whole argument verbatim, `<Name> |` included, and check the delimiter against that text again. Any other failure is reported with its stderr line and never retried with changed text.
+If the binary exits 2 with a `claudeos: no project <Name>` message, retry once as `claudeos inbox add --ideas`, writing the whole argument verbatim, `<Name> |` included, to a new file and passing that. Any other failure is reported with its stderr line and never retried with changed text.
 
 ## Rules
 
