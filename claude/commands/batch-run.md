@@ -128,6 +128,8 @@ First, when a row is `merged`, run `claudeos sync '<P>'` once and keep what it p
 6. `Sync:` what `claudeos sync` printed, or `not run: no PR was merged into a default branch`, or `not run: this claudeos is older than q807 (no --base)`.
 7. `Ledger: <path>`.
 
+The report is this session's final message, and its first line, above item 1, says whether the run is over. With `CLAUDEOS_JOB_ID` unset (a session claudeos did not launch) it is `batch <P> done.` and nothing ends the session. Otherwise read `claudeos jobs --json` once more, after the sync. The run is over when the user did not end it early with a `pr` row still `reviewing` or `awaiting merge`, and that read lists no job whose `parent` is this session's `CLAUDEOS_JOB_ID` in a state that is not `exited`. Then the first line is exactly `Batch ended: batch <P> done.`, and claudeos ends this session by itself once it reads that line (a claudeos without the batch end leaves it open); end the turn there and run nothing after it. Otherwise the first line is `batch <P> over, session left open:` followed by what holds it, `open PRs` or `live jobs <id>, <id>` (the ids matched against the job id pattern of section 7), and the session stays until the user ends it. Never `Batch ended:` in any other message, and never kill this session's own job.
+
 ## 7. Rules
 
 - Never a merge, never any other write to a PR (a retarget, a close, a comment, an edit), and never `--force` on a launch. No override and no worker's question lifts any of them. A conflict job pushes a merge commit to its PR's head branch, as a review job pushes its fixes: that is the worker's write, under its fixed goal, and this session still pushes nothing.
