@@ -84,6 +84,14 @@ defaults:
   # (default: 0, unlimited)
   # max_review_backlog: 4
 
+  # Launch a bare session named conflicts-<qN>-<head> to fix the merge
+  # conflicts of an open PR of a queue item when no live job can be told to:
+  # it merges the base in a detached worktree, runs the gate and pushes the
+  # merge, never forced, and is ended once it reports. Once per conflict;
+  # never for an ad-hoc, deploy or fork PR, nor one a live batch run holds.
+  # (default: false)
+  conflict_jobs: true
+
   # Percent of the 5-hour or 7-day usage window autopilot keeps free: below it a
   # project on autopilot sleeps until the window resets; 0 never sleeps.
   # (default: 15)
