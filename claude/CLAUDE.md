@@ -91,7 +91,7 @@ If a check can't run (no test suite, needs my credentials), say so explicitly in
 ## Environment
 
 - Shell is **zsh**: unmatched globs hard-fail (`no matches found`). Quote glob args (`--include='*.go'`) or prefer `rg`/`fd` over bare globs.
-- `~/.claude/{CLAUDE.md,settings.json,agents,commands,skills,docs,hooks}` are symlinks into `~/.dotfiles/claude/`. Edit the dotfiles path, not the symlink.
+- `~/.claude/{CLAUDE.md,agents,commands,skills,docs,hooks}` are symlinks into `~/.dotfiles/claude/`, and `~/.claude/settings.json` into the private `~/.dotfiles-private/claude/`. Edit the repo path, not the symlink.
 - Derive the `gh` repo from `git remote get-url origin`; never guess owner/slug.
 
 ## Workflow Documentation

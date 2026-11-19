@@ -13,6 +13,12 @@ fail=0
 case_() { # name expected actual
   if [[ $2 == "$3" ]]; then echo "PASS $1"; else echo "FAIL $1: expected $2, got '$3'"; fail=1; fi
 }
+# settings.json lives in the private dotfiles repo, so a machine without it installed (CI) skips these.
+S=${SETTINGS:-$HOME/.claude/settings.json}
+registered() { # name expected-matcher guard-script
+  if [[ -r $S ]]; then case_ "$1" "$2" "$(jq -r --arg g "$3" '.hooks.PreToolUse[] | select(any(.hooks[]; .command | endswith($g))) | .matcher' "$S")"
+  else echo "SKIP $1: no $S"; fi
+}
 payload() { # event tool key value [cwd]
   jq -cn --arg e "$1" --arg t "$2" --arg k "$3" --arg v "$4" --arg c "${5:-}" '{hook_event_name:$e,tool_name:$t,tool_input:{($k):$v},cwd:$c}'
 }
@@ -92,7 +98,7 @@ case_ "notebookedit empty file_path, guarded notebook" deny  "$(qv2 NotebookEdit
 case_ "notebookedit other file_path, guarded notebook" deny  "$(qv2 NotebookEdit "$HOME/x.ipynb" "$Q/Followups.md")"
 case_ "notebookedit guarded file_path, empty notebook" deny  "$(qv2 NotebookEdit "$V/Queue.md" "")"
 case_ "notebookedit two unguarded paths"        allow "$(qv2 NotebookEdit "$HOME/x.ipynb" "$HOME/y.ipynb")"
-case_ "queue guard matcher"                    "Write|Edit|MultiEdit|NotebookEdit|Bash" "$(jq -r '.hooks.PreToolUse[] | select(any(.hooks[]; .command | endswith("guard-queue-views.sh"))) | .matcher' "$H/../settings.json")"
+registered "queue guard matcher"               "Write|Edit|MultiEdit|NotebookEdit|Bash" guard-queue-views.sh
 rm -rf "${T%/vault-queues}"
 case_ "bash sed authority"     deny  "$(qv Bash command "sed -i 's/a/b/' $Q/Queue.md")"
 case_ "bash heredoc view"      deny  "$(qv Bash command "cat > $V/Queue.md <<'X'")"
@@ -549,7 +555,7 @@ case_ "graphql read of master"               allow "$(pg 'gh api graphql -f quer
 case_ "graphql commit on a feature"          allow "$(pg 'gh api graphql -f query="mutation { createCommitOnBranch(input:{branch:{branchName:\"q611-feature\"}}) { clientMutationId } }"')"
 case_ "pushd then git status"                allow "$(pg "pushd $PM && git status" "$PF")"
 case_ "push guard bad input"                 allow "$(printf 'garbage' | guard guard-push.sh | decision)"
-case_ "push guard registered"                Bash  "$(jq -r '.hooks.PreToolUse[] | select(any(.hooks[]; .command | endswith("guard-push.sh"))) | .matcher' "$H/../settings.json")"
+registered "push guard registered"           Bash  guard-push.sh
 case_ "claude push deny shape"               claude "$(payload PreToolUse Bash command "git push origin master" | guard guard-push.sh | shape)"
 case_ "claude push allow shape"              silent "$(payload PreToolUse Bash command "git push origin q611-feature" | guard guard-push.sh | shape)"
 case_ "push guard bad input shape"           silent "$(printf 'garbage' | guard guard-push.sh | shape)"
