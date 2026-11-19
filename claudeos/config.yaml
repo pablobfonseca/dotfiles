@@ -263,6 +263,7 @@ projects:
       deploy: { base: production, command: /deploy-checklist },
     }
   ControlRoom: { path: ~/code/controlroom }
+  sopa: { path: ~/code/sopa }
 
 # ---------------------------------------------------------------------------
 # Slack (Feedback pull)
