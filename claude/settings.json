@@ -3,7 +3,8 @@
   "cleanupPeriodDays": 14,
   "env": {
     "CLAUDE_CODE_DISABLE_MOUSE": "1",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "ENABLE_CODE_SECURITY_REVIEW": "0"
   },
   "attribution": {
     "commit": "",
@@ -231,7 +232,8 @@
     "taste-skill@taste-skill": true,
     "google-ads-api-developer-assistant@google-ads-assistant-local": true,
     "typesafe@typesafe-ai": true,
-    "slack@claude-plugins-official": true
+    "slack@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
