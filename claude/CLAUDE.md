@@ -52,6 +52,7 @@ Applies to text you write for humans: chat replies, commit messages, PR descript
 - **Long phased work:** when context is getting heavy between phases, offer the `handoff` skill to compact state for a fresh session instead of degrading quietly.
 - **Domain vocabulary.** Before non-trivial code work, if a `CONTEXT.md` (or `CONTEXT-MAP.md`) exists in the repo, read it and name things using its terms. To actively build/sharpen the model (challenge terms, write ADRs), use the `domain-modeling` skill.
 - **Reading an article for lessons.** When I ask you to read an article or clipping and see what we can learn, judge it against the factory, not only the current repo: claudeos builds every other project, so ask where each idea would plug into the shared workflow (plan, implement, verify, review), the agents, skills and hooks, and which projects' stacks it helps. Never mark a tool not applicable because it does not fit the repo you are in. Explain a tool I may not know and say concretely how we would use it.
+- **Marking queue items.** "Mark q12 and q15" means the claudeos MCP tool `suggest_marks` (load it with ToolSearch first), which puts the items up as marks in the TUI; `get_marks` reads what I marked. Never `claudeos queue mark`: that command stamps a plan, PR, size or tag on a line and marks nothing. If the MCP call fails, report its error; do not fall back to another command.
 
 ## Definition of Done
 
