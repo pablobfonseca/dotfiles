@@ -76,6 +76,7 @@ return {
         require("telescope.builtin").find_files {
           prompt_title = " dotfiles",
           cwd = "~/.dotfiles",
+          search_dirs = { "~/.dotfiles", "~/.dotfiles-private" },
         }
       end,
       desc = "Find dotfiles",
