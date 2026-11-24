@@ -29,6 +29,8 @@ Applies to text you write for humans: chat replies, commit messages, PR descript
 - Cut filler and hedging: "basically", "essentially", "it's worth noting", "of course".
 - No LLM tells: no "it's not just X, it's Y", no "delve", no overwrought openers.
 - Vary sentence length. Don't pad a short correct statement, don't chain choppy fragments.
+- One term per thing, every time. Never swap in a synonym.
+- **Procedures** (`qa:`/`watch:` lines, plan steps, handbook how-tos, follow-ups): write about 80% of the way to ASD-STE100, which overrides "vary sentence length" there. Keep its sentence rules: imperative, active voice, one action per sentence, max 20 words, condition before action, max three nouns in a row. Skip its dictionary: CONTEXT.md terms, code identifiers and command names win.
 - Reread before finishing. Delete anything that doesn't earn its place.
 
 ## Code Quality
