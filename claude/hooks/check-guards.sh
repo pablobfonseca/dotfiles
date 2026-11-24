@@ -55,6 +55,7 @@ UNARMED=$(unarmed)
 OID=$(many 40 a)
 ZERO=$(many 40 0)
 V=$HOME/obsidian/SecondBrain/projects/ClaudeOS
+IB=$HOME/obsidian/SecondBrain/inbox
 Q=$HOME/.local/share/vault-queues/ClaudeOS
 case_ "edit vault view"        deny  "$(qv Edit file_path "$V/Queue.md")"
 case_ "write vault view"       deny  "$(qv Write file_path "$V/Queue.md")"
@@ -104,7 +105,19 @@ case_ "bash sed authority"     deny  "$(qv Bash command "sed -i 's/a/b/' $Q/Queu
 case_ "bash heredoc view"      deny  "$(qv Bash command "cat > $V/Queue.md <<'X'")"
 case_ "bash sed relative view" deny  "$(qv Bash command "sed -i '' 's/a/b/' projects/ClaudeOS/Queue.md")"
 case_ "bash icloud view"       deny  "$(qv Bash command "sed -i '' 's/a/b/' '$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/SecondBrain/projects/ClaudeOS/Queue.md'")"
-case_ "edit inbox"             allow "$(qv Edit file_path "$V/Inbox.md")"
+case_ "edit inbox"             deny  "$(qv Edit file_path "$V/Inbox.md")"
+case_ "write inbox"            deny  "$(qv Write file_path "$V/Inbox.md")"
+case_ "write ideas"            deny  "$(qv Write file_path "$IB/Ideas.md")"
+case_ "edit ideas, other case" deny  "$(qv Edit file_path "$IB/ideas.md")"
+case_ "write ideas outside the vault" allow "$(qv Write file_path "$HOME/code/claudeos/inbox/Ideas.md")"
+case_ "write inbox dump"       allow "$(qv Write file_path "$IB/Inbox dump.md")"
+case_ "bash grep -v rewrite of inbox, cwd in view" deny "$(qv Bash command "grep -v x Inbox.md > /tmp/i && mv /tmp/i Inbox.md" "$V")"
+case_ "bash append to ideas, cwd vault root" deny "$(qv Bash command "echo x >> inbox/Ideas.md" "$HOME/obsidian/SecondBrain")"
+case_ "bash sed -i ideas"      deny  "$(qv Bash command "sed -i '' 's/a/b/' $IB/Ideas.md")"
+case_ "bash brace list, cwd in inbox dir" deny "$(qv Bash command "rm {Ideas,Other}.md" "$IB")"
+case_ "read ideas"             allow "$(qv Bash command "cat $IB/Ideas.md")"
+case_ "grep inbox, cwd in view" allow "$(qv Bash command "grep -n x Inbox.md" "$V")"
+case_ "inbox add is no write"  allow "$(qv Bash command "claudeos inbox add ClaudeOS 'a thought'" "$V")"
 case_ "edit a plan"            allow "$(qv Edit file_path "$V/plans/2026-09-16-mechanical-rules.md")"
 case_ "bash queue dump"        allow "$(qv Bash command "claudeos queue dump ClaudeOS")"
 case_ "bash grep docs"         allow "$(qv Bash command "grep -n Queue.md ~/obsidian/SecondBrain/CLAUDE.md")"
@@ -123,7 +136,9 @@ case_ "bash cat followups, cwd in view"         allow "$(qv Bash command "cat Fo
 case_ "bash grep followups view"                allow "$(qv Bash command "grep -n x $V/Followups.md")"
 case_ "bash sed followups elsewhere"            allow "$(qv Bash command "sed -i '' 's/a/b/' Followups.md" "$C")"
 case_ "followups deny names the tool"           1     "$(payload PreToolUse Write file_path "$V/Followups.md" | guard guard-queue-views.sh | grep -c 'claudeos followup add|list|tick')"
-case_ "bash append bare name, cwd in view"    deny  "$(qv Bash command "echo x >> Queue.md" "$V")"
+case_ "inbox deny names the tool"               1     "$(payload PreToolUse Write file_path "$V/Inbox.md" | guard guard-queue-views.sh | grep -c 'claudeos inbox add|edit|remove|promote')"
+case_ "ideas deny says never write it"          1     "$(payload PreToolUse Write file_path "$IB/Ideas.md" | guard guard-queue-views.sh | grep -c 'never write it')"
+case_ "bash append bare name, cwd in view"   deny  "$(qv Bash command "echo x >> Queue.md" "$V")"
 case_ "bash append unspaced, cwd in view"     deny  "$(qv Bash command "echo x >>Queue.md" "$V")"
 case_ "bash dot-slash name, cwd in view"      deny  "$(qv Bash command "sed -i '' 's/a/b/' ./Queue.md" "$V")"
 case_ "bash dotdot name, cwd under view"      deny  "$(qv Bash command "sed -i '' 's/a/b/' ../Queue.md" "$V/plans")"
@@ -309,7 +324,7 @@ case_ "queue guard unreadable command"       deny  "$(unreadable PreToolUse Bash
 case_ "queue guard unreadable file path"     deny  "$(unreadable PreToolUse Write | guard guard-queue-views.sh | decision)"
 case_ "queue guard unreadable notebook path" deny  "$(unreadable PreToolUse NotebookEdit | guard guard-queue-views.sh | decision)"
 case_ "claude queue deny shape"    claude     "$(payload PreToolUse Write file_path "$V/Queue.md" | guard guard-queue-views.sh | shape)"
-case_ "claude queue allow shape"   silent     "$(payload PreToolUse Write file_path "$V/Inbox.md" | guard guard-queue-views.sh | shape)"
+case_ "claude queue allow shape"   silent     "$(payload PreToolUse Write file_path "$V/Design.md" | guard guard-queue-views.sh | shape)"
 case_ "gh pr merge"            deny  "$(mg "gh pr merge 12")"
 case_ "gh -R pr merge"         deny  "$(mg "gh -R pablobfonseca/claudeos pr merge 12 --squash")"
 case_ "gh pr merge --auto"     deny  "$(mg "gh pr merge --auto 12")"

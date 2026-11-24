@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Queue.md and Followups.md are written by claudeos only. Runs as Claude Code's PreToolUse (guard-common.sh
+# Queue.md, Followups.md, a project's Inbox.md and the vault's inbox/Ideas.md are written by claudeos only. Runs as Claude Code's PreToolUse (guard-common.sh
 # holds the deny shape and the jq filters). Refuses every edit or write on the vault's generated
 # views and on the vault-queues authority (Edit, MultiEdit, Write and NotebookEdit) and any Bash command that names either
 # unless it only reads it. The one exception to the edit rule is an edit on the authority while
@@ -40,14 +40,14 @@ set -uo pipefail
 shopt -s nocasematch
 . "$(dirname "${BASH_SOURCE[0]}")/guard-common.sh"
 
-GUARDED=(Queue.md Followups.md)
-NAME_RE='(Queue|Followups)\.md'
-QUEUE_RE="(SecondBrain/projects|vault-queues|(^|[^[:alnum:]_/.-])projects)/[^/[:space:]]+/$NAME_RE"
+GUARDED=(Queue.md Followups.md Inbox.md Ideas.md)
+NAME_RE='(Queue|Followups|Inbox|Ideas)\.md'
+QUEUE_RE="((SecondBrain/projects|vault-queues|(^|[^[:alnum:]_/.-])projects)/[^/[:space:]]+|SecondBrain/inbox|(^|[^[:alnum:]_/.-])inbox)/$NAME_RE"
 read -r -d '' REASON <<'EOF'
-Queue.md and Followups.md are written by claudeos only: the vault's projects/<P>/Queue.md and projects/<P>/Followups.md are GENERATED READ-ONLY VIEWS, overwritten on the next queue write, when queues: names a separate directory, and the authority itself when queues: is empty, and the vault-queues copies are the authority they regenerate from, where a hand edit leaves the repo dirty and every later queue write refused. Use the tools. Queue.md: claudeos queue state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `claudeos queue edit <project> begin` then `claudeos queue edit <project> commit -m "..."` for free-form grooming, and claudeos queue dump|find <project> to read. Followups.md: claudeos followup add|list|tick <project> ...; no edit session covers it. Run `claudeos queue --help` or `claudeos followup --help` for syntax. A plain read of either file is allowed: ls, cat, head, tail, wc, grep, stat, diff, file, cut or nl as the bare command word of every part of the command, with no > redirect onto the file; this command is not one.
+Queue.md, Followups.md, a project's Inbox.md and the vault's inbox/Ideas.md are written by claudeos only: the vault's projects/<P>/Queue.md and projects/<P>/Followups.md are GENERATED READ-ONLY VIEWS, overwritten on the next queue write, when queues: names a separate directory, and the authority itself when queues: is empty, and the vault-queues copies are the authority they regenerate from, where a hand edit leaves the repo dirty and every later queue write refused. Use the tools. Queue.md: claudeos queue state|lane|mark|add|stamp <project> <qN> ... for single-line changes, `claudeos queue edit <project> begin` then `claudeos queue edit <project> commit -m "..."` for free-form grooming, and claudeos queue dump|find <project> to read. Followups.md: claudeos followup add|list|tick <project> ...; no edit session covers it. Inbox.md: claudeos inbox add|edit|remove|promote <project> ... (remove takes --reason <why>) and claudeos inbox list <project> to read; a line removed any other way skips the notes lock and the removal record. inbox/Ideas.md is the user's own list: never write it; capture to a project with claudeos inbox add <project> <text>. Run `claudeos queue --help`, `claudeos followup --help` or `claudeos inbox --help` for syntax. A plain read of any of these files is allowed: ls, cat, head, tail, wc, grep, stat, diff, file, cut or nl as the bare command word of every part of the command, with no > redirect onto the file; this command is not one.
 EOF
 read -r -d '' OVERRUN <<'EOF'
-The queue guard could not place every path in this command: it has too many cd targets, too many > redirects, too many command segments or too many words that could name a Queue.md or Followups.md, and a command the guard cannot finish reading is refused. Split it into shorter commands, or write the file with the Write tool instead of a heredoc.
+The queue guard could not place every path in this command: it has too many cd targets, too many > redirects, too many command segments or too many words that could name a Queue.md, Followups.md, Inbox.md or Ideas.md, and a command the guard cannot finish reading is refused. Split it into shorter commands, or write the file with the Write tool instead of a heredoc.
 EOF
 
 clean_path() { # <path>: sets $placed to the path with its empty, `.` and `..` parts resolved
@@ -148,6 +148,8 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
     name=${word##*/}
     if [[ Queue.md == $name ]]; then named+=("${word%"$name"}Queue.md")
     elif [[ Followups.md == $name ]]; then named+=("${word%"$name"}Followups.md")
+    elif [[ Inbox.md == $name ]]; then named+=("${word%"$name"}Inbox.md")
+    elif [[ Ideas.md == $name ]]; then named+=("${word%"$name"}Ideas.md")
     elif [[ $name == *\[* ]] && guarded_name "$name"; then named+=("${word%"$name"}$guarded"); fi
   done
   IFS=$PAREN_BREAK read -r -d '' -a words <<<"$2"
@@ -163,6 +165,8 @@ shell_names_queue() { # <command> <command dequoted>: a word that the cwd, or a 
     name=${word##*/}
     if [[ Queue.md == $name ]]; then named+=("${word%"$name"}Queue.md")
     elif [[ Followups.md == $name ]]; then named+=("${word%"$name"}Followups.md")
+    elif [[ Inbox.md == $name ]]; then named+=("${word%"$name"}Inbox.md")
+    elif [[ Ideas.md == $name ]]; then named+=("${word%"$name"}Ideas.md")
     elif [[ $name == *\[* ]] && guarded_name "$name"; then named+=("${word%"$name"}$guarded"); fi
   done
   (( ${#named[@]} )) || return 1
