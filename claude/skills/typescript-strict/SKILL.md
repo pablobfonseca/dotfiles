@@ -28,7 +28,7 @@ interface UserRepository { findById(id: string): Promise<User | undefined> }
 
 ## Expected errors
 
-Return a `Result` for expected errors. Throw only for bugs.
+Return a `Result` for expected errors.
 
 ```typescript
 type Result<T, E = Error> =
@@ -81,7 +81,7 @@ const activeEmails = users.filter((u) => u.active).map((u) => u.email);
 
 ## tsconfig
 
-On top of the defaults, enable:
+On top of the TypeScript 7 defaults (`strict` included; on older versions also enable `strict`), enable:
 
 ```json
 {
