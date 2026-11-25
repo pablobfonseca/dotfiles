@@ -20,9 +20,9 @@ This file applies to every project. Per-repo facts (stack, run commands, domain 
     - Put each note inside the `qa:` or `watch:` line it belongs to.
     - Do this even after the merge (`gh pr edit`).
   - Do not store deploy-time notes in memory. Memory is per machine and never carries them.
-  - Register everything else still pending as a follow-up.
+  - Everything else still pending is a follow-up.
     - This covers a check to run later, a click waiting on someone else, and a cost running until stopped.
-    - Run `claudeos followup add <P> --text --src --who [--when] [--cost]`.
+    - The command is `claudeos followup add <P> --text --src --who [--when] [--cost]`.
     - Set `--src` to the PR URL or `qN`.
     - When I act, set `--who` to `user`.
     - When a later session can act, set `--who` to `claude`.
