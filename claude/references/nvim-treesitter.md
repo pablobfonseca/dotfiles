@@ -2,6 +2,7 @@
 
 This document contains type stubs and API references for Neovim's treesitter Lua API.
 Use this as a reference when working with treesitter in Neovim Lua.
+Generated from Neovim 0.12.6.
 
 ---
 

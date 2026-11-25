@@ -2,6 +2,7 @@
 
 This document contains function definitions for Neovim's diagnostics Lua API.
 Use this as a reference when working with diagnostics in Neovim Lua.
+Generated from Neovim 0.12.6.
 
 ---
 
@@ -59,12 +60,8 @@ function M.get_namespaces()
 function M.get(bufnr, opts)
 function M.count(bufnr, opts)
 function M.get_prev(opts)
-function M.get_prev_pos(opts)
-function M.goto_prev(opts)
 function M.get_next(opts)
-function M.get_next_pos(opts)
 function M.jump(opts)
-function M.goto_next(opts)
 function cleanup_show_autocmd(autocmd_key, ns)
 function show_once_loaded(autocmd_key, ns, bufnr, fn)
 function show(namespace, bufnr, diagnostics, opts)
