@@ -10,17 +10,24 @@
 # @raycast.argument1 { "type": "text", "placeholder": "URL (default: Chrome tab)", "optional": true }
 
 # Documentation:
-# @raycast.description Download a video's audio as m4a into iCloud Music/backing-tracks
+# @raycast.description Download a video's audio as m4a into the backing tracks folder
 # @raycast.author pablobfonseca
 # @raycast.authorURL https://raycast.com/pablobfonseca
 
 # Usage: backing-track [url]
+# Destination: $BACKING_TRACKS_DIR, from the environment or ~/.config/backing-track/config (sourced as bash)
 set -euo pipefail
 
 # Raycast does not load the shell profile.
 export PATH="/opt/homebrew/bin:$PATH"
 
-DEST="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Music/backing-tracks"
+CONFIG="$HOME/.config/backing-track/config"
+ENV_DIR="${BACKING_TRACKS_DIR:-}"
+if [[ -f "$CONFIG" ]]; then
+  source "$CONFIG"
+fi
+DEFAULT_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Music/backing-tracks"
+DEST="${ENV_DIR:-${BACKING_TRACKS_DIR:-$DEFAULT_DIR}}"
 URL="${1:-}"
 
 if [[ -z "$URL" ]] && pgrep -xq "Google Chrome"; then
