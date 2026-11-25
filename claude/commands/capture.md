@@ -1,6 +1,6 @@
 ---
 description: Append a thought to an inbox with zero friction
-argument-hint: [project name |] <text>
+argument-hint: "[project name |] <text>"
 ---
 
 Capture `$ARGUMENTS`. This command optimises for one thing: never losing a thought. The only thing it decides is which project's inbox the thought goes to.
@@ -28,7 +28,6 @@ A failure, `claudeos: no project <Name>` included, is reported with its stderr l
 
 - Pass the text **verbatim**. Do not fix the grammar, expand the abbreviation, or add context the user did not write. A capture note is evidence of what they thought, not a polished artifact.
 - Never triage, size, tag, relane or promote. That is `/queue`'s job and it happens later, deliberately.
-- Never touch any other line in the file.
 
 ## Report
 

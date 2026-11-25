@@ -17,7 +17,7 @@
 #   closed <MERGED|CLOSED>           the PR is over; the script exits
 #   error <message>                  five polls in a row failed; the script exits 1
 #
-# --since marks the end of the pass that armed the watch: anything created after it
+# --since marks the start of the pass that armed the watch: anything created after it
 # is reported on the first poll, anything before it is the baseline. Without it the
 # first poll is the baseline and prints nothing. The viewer's own comments are skipped.
 # A CodeRabbit issue comment is reported again, as issue-comment-edit, each time its
