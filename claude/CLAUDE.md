@@ -86,7 +86,7 @@ If a check can't run (no test suite, needs my credentials), say so explicitly in
 
 ## Agent Delegation
 
-- Delegate specialized or parallelizable implementation work to the matching agent (pick by agent description); skip delegation for trivial edits, quick reads, and simple searches.
+- Delegate Neovim and Lua work to `neovim-lua`, Python implementation to `python-pro`, and broad code searches to `Explore`; skip delegation for trivial edits, quick reads, and simple searches.
 - UI/UX work → `ui-ux-pro-max` skill + the `taste-skill` skill together; for a specific aesthetic (minimalist, brutalist, soft), take the style from `ui-ux-pro-max`'s catalog.
 - Changes touching auth, access scoping, user input handling, or API endpoints → run `security-reviewer` before reporting done.
 - Migrations or complex SQL → run `database-reviewer` before reporting done.
@@ -94,15 +94,14 @@ If a check can't run (no test suite, needs my credentials), say so explicitly in
 ## Environment
 
 - Shell is **zsh**: unmatched globs hard-fail (`no matches found`). Quote glob args (`--include='*.go'`) or prefer `rg`/`fd` over bare globs.
-- `~/.claude/{CLAUDE.md,agents,commands,skills,docs,hooks}` are symlinks into `~/.dotfiles/claude/`, and `~/.claude/settings.json` into the private `~/.dotfiles-private/claude/`. Edit the repo path, not the symlink.
+- `~/.claude/{CLAUDE.md,agents,commands,skills,docs,hooks,scripts}` are symlinks into `~/.dotfiles/claude/`, and `~/.claude/settings.json` into the private `~/.dotfiles-private/claude/`. Edit the repo path, not the symlink.
 - Derive the `gh` repo from `git remote get-url origin`; never guess owner/slug.
 
 ## Workflow Documentation
 
 Reference docs for detailed guidance:
 
-- [When to Invoke Agents vs Follow Skills](~/.claude/docs/when-to-invoke-agents.md) - Decision tree for agent invocation
-- [Conciseness Clarification](~/.claude/docs/conciseness-clarification.md) - Domain-specific conciseness rules
+- [When to Invoke Agents vs Follow Skills](~/.claude/docs/when-to-invoke-agents.md) - Which agents exist and when each runs
 
 **Quick reference:**
 
