@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# Required parameters:
+# @raycast.schemaVersion 1
+# @raycast.title Download Backing Track
+# @raycast.mode compact
+
+# Optional parameters:
+# @raycast.icon 🎸
+# @raycast.argument1 { "type": "text", "placeholder": "URL (default: Chrome tab)", "optional": true }
+
+# Documentation:
+# @raycast.description Download a video's audio as m4a into iCloud Music/backing-tracks
+# @raycast.author pablobfonseca
+# @raycast.authorURL https://raycast.com/pablobfonseca
+
+# Usage: backing-track [url]
+set -euo pipefail
+
+# Raycast does not load the shell profile.
+export PATH="/opt/homebrew/bin:$PATH"
+
+DEST="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Music/backing-tracks"
+URL="${1:-}"
+
+if [[ -z "$URL" ]] && pgrep -xq "Google Chrome"; then
+  URL=$(osascript -e 'tell application "Google Chrome" to get URL of active tab of front window' 2>/dev/null || true)
+fi
+
+if [[ ! "$URL" =~ ^https?:// ]]; then
+  echo "backing-track: no http(s) URL given or open in Chrome" >&2
+  exit 1
+fi
+
+if ! FILE=$(yt-dlp --no-playlist --playlist-items 1 --quiet --no-progress \
+  -f 'bestaudio[ext=m4a]/bestaudio' -x --audio-format m4a \
+  -P "$DEST" -o '%(title)s [%(id)s].%(ext)s' \
+  --no-simulate --print after_move:filepath -- "$URL"); then
+  echo "backing-track: download failed, see the yt-dlp error above" >&2
+  exit 1
+fi
+
+if [[ -z "$FILE" ]]; then
+  echo "backing-track: nothing was downloaded" >&2
+  exit 1
+fi
+
+echo "Saved: $(basename "$FILE")"

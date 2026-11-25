@@ -44,6 +44,8 @@ brew "pandoc"
 brew "btop"
 brew "fnm"
 brew "deno"
+brew "ffmpeg"
+brew "yt-dlp"
 
 cask "1password"
 cask "docker"
