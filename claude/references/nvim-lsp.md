@@ -2,6 +2,7 @@
 
 This document contains function definitions from Neovim's LSP help docs.
 Use this as a reference when working with LSP in Neovim Lua.
+Generated from Neovim 0.12.6.
 
 ---
 
@@ -24,6 +25,7 @@ vim.lsp.foldtext()
 vim.lsp.formatexpr({opts})
 vim.lsp.get_client_by_id({client_id})
 vim.lsp.get_clients({filter})
+vim.lsp.get_configs({filter})
 vim.lsp.is_enabled({name})
 vim.lsp.omnifunc({findstart}, {base})
 vim.lsp.start({config}, {opts})
@@ -58,12 +60,12 @@ vim.lsp.codelens.run({opts})
 vim.lsp.completion.enable({enable}, {client_id}, {bufnr}, {opts})
 vim.lsp.completion.get({opts})
 vim.lsp.diagnostic.from({diagnostics})
-vim.lsp.diagnostic.get_namespace({client_id}, {is_pull})
+vim.lsp.diagnostic.get_namespace({client_id}, {is_pull}, {pull_id})
 vim.lsp.diagnostic.on_diagnostic({error}, {result}, {ctx})
 vim.lsp.diagnostic.on_publish_diagnostics({_}, {params}, {ctx})
 vim.lsp.document_color.color_presentation()
-vim.lsp.document_color.enable({enable}, {bufnr}, {opts})
-vim.lsp.document_color.is_enabled({bufnr})
+vim.lsp.document_color.enable({enable}, {filter}, {opts})
+vim.lsp.document_color.is_enabled({filter})
 vim.lsp.inlay_hint.enable({enable}, {filter})
 vim.lsp.inlay_hint.get({filter})
 vim.lsp.inlay_hint.is_enabled({filter})
@@ -101,8 +103,8 @@ vim.lsp.util.locations_to_items({locations}, {position_encoding})
 vim.lsp.util.make_floating_popup_options({width}, {height}, {opts})
 vim.lsp.util.make_formatting_params({options})
 vim.lsp.util.make_given_range_params({start_pos}, {end_pos}, {bufnr}, {position_encoding})
-vim.lsp.util.make_position_params({window}, {position_encoding})
-vim.lsp.util.make_range_params({window}, {position_encoding})
+vim.lsp.util.make_position_params({win}, {position_encoding})
+vim.lsp.util.make_range_params({win}, {position_encoding})
 vim.lsp.util.make_text_document_params({bufnr})
 vim.lsp.util.make_workspace_params({added}, {removed})
 vim.lsp.util.open_floating_preview({contents}, {syntax}, {opts})

@@ -20,10 +20,10 @@ Read these files with the Read tool when you need accurate function signatures. 
 
 | Domain | File |
 |---|---|
-| Core API (`vim.api.*`, `vim.fn.*`) | `claude/references/nvim-api.md` |
-| LSP (`vim.lsp.*`) | `claude/references/nvim-lsp.md` |
-| Diagnostics (`vim.diagnostic.*`) | `claude/references/nvim-diagnostics.md` |
-| Treesitter (`vim.treesitter.*`, TSNode, TSTree) | `claude/references/nvim-treesitter.md` |
+| Core API (`vim.api.*`, `vim.fn.*`) | `~/.dotfiles/claude/references/nvim-api.md` |
+| LSP (`vim.lsp.*`) | `~/.dotfiles/claude/references/nvim-lsp.md` |
+| Diagnostics (`vim.diagnostic.*`) | `~/.dotfiles/claude/references/nvim-diagnostics.md` |
+| Treesitter (`vim.treesitter.*`, TSNode, TSTree) | `~/.dotfiles/claude/references/nvim-treesitter.md` |
 
 When to read which file:
 - Writing/modifying LSP config, handlers, or capabilities → read `nvim-lsp.md`
