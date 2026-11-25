@@ -33,6 +33,26 @@ local extract_function_definitions = function(text)
   return table.concat(result, "\n")
 end
 
+local drop_deprecated = function(lines)
+  local result = {}
+  local deprecated = false
+  for _, line in ipairs(lines) do
+    local trimmed = vim.trim(line)
+    if vim.startswith(trimmed, "---") then
+      if trimmed:match("@deprecated") then
+        deprecated = true
+      end
+      table.insert(result, line)
+    else
+      if not (deprecated and vim.startswith(trimmed, "function ")) then
+        table.insert(result, line)
+      end
+      deprecated = false
+    end
+  end
+  return result
+end
+
 local metas = {
   {
     name = "diagnostic.lua",
@@ -47,13 +67,14 @@ table.insert(read, "# Neovim Diagnostics API Reference")
 table.insert(read, "")
 table.insert(read, "This document contains function definitions for Neovim's diagnostics Lua API.")
 table.insert(read, "Use this as a reference when working with diagnostics in Neovim Lua.")
+table.insert(read, "Generated from Neovim " .. tostring(vim.version()) .. ".")
 table.insert(read, "")
 
 for _, meta in ipairs(metas) do
   local file = vim.api.nvim_get_runtime_file(meta.path, false)[1]
   if file then
     local lines = vim.fn.readfile(file)
-    local text = table.concat(lines, "\n")
+    local text = table.concat(drop_deprecated(lines), "\n")
     text = extract_function_definitions(text)
 
     table.insert(read, "---")
@@ -67,7 +88,8 @@ for _, meta in ipairs(metas) do
     table.insert(read, "```")
     table.insert(read, "")
   else
-    io.stderr:write("Warning: Could not find " .. meta.path .. "\n")
+    io.stderr:write("Error: Could not find " .. meta.path .. "\n")
+    os.exit(1)
   end
 end
 

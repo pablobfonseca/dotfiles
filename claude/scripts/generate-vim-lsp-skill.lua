@@ -74,6 +74,7 @@ table.insert(read, "# Neovim LSP API Reference")
 table.insert(read, "")
 table.insert(read, "This document contains function definitions from Neovim's LSP help docs.")
 table.insert(read, "Use this as a reference when working with LSP in Neovim Lua.")
+table.insert(read, "Generated from Neovim " .. tostring(vim.version()) .. ".")
 table.insert(read, "")
 table.insert(read, "---")
 table.insert(read, "")
@@ -90,7 +91,8 @@ if file then
   text = extract_function_definitions(text)
   table.insert(read, text)
 else
-  io.stderr:write("Warning: Could not find doc/lsp.txt\n")
+  io.stderr:write("Error: Could not find doc/lsp.txt\n")
+  os.exit(1)
 end
 
 table.insert(read, "```")
