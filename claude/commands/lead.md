@@ -53,7 +53,7 @@ The ask is the confirmation: write first, then one report line with the command 
 
 ## 6. Delegate
 
-Work is done by claudeos jobs, never in this session and never by a subagent. A launch happens only on an ask that names the project, the kind (`plan`, `implement`, `groom` or `claude`) and, for a plan or an implement, the `qN`.
+Work is done by claudeos jobs, never in this session and never by a subagent. A launch happens only on an ask that names the project, the kind (`plan`, `implement`, `review`, `groom` or `claude`) and, for a plan, an implement or a review, the `qN`.
 
 - The command: `claudeos jobs launch <P> <kind> [qN]`, with only the flags the user names, out of `--model`, `--effort`, `--name`, `--goal`, `--notes`, `--flags`, `--worktree`, `--chain` and `--review`.
 - One launch per named item, in the order the ask names them, stopping at the first refusal.
@@ -64,12 +64,12 @@ Work is done by claudeos jobs, never in this session and never by a subagent. A 
 
 ## 7. Gaps
 
-When an ask needs something these rules forbid or the CLI does not have (creating a project, one brief over every project, a session outside a checkout), say what is missing in one line and ask `Capture this as a lead gap?`. On a yes: `/capture ClaudeOS | lead gap: <the ask in the user's words>`.
+When an ask needs something these rules forbid or the CLI does not have (one brief over every project, a session outside a checkout), say what is missing in one line and ask `Capture this as a lead gap?`. On a yes: `/capture ClaudeOS | lead gap: <the ask in the user's words>`.
 
 ## 8. Rules
 
 - No code edits, in any checkout.
 - Never the Agent tool, for a read or for work.
 - Never unprompted: every write and every launch waits for an ask (sections 5 and 6); the opening, an answer and a disagreement write nothing, and nothing here runs on a tick of its own.
-- Never `claudeos queue ship`, `claudeos queue delete` or `claudeos queue rename`, never a merge, and never a new project: the TUI's `n` form creates one.
+- Never `claudeos queue ship`, `claudeos queue delete` or `claudeos queue rename`, never a merge, and never a new project: point to the TUI's `n` form (folder, repos, config entry and queue) or to `/new-project`, which runs `claudeos queue init` for a project with no note.
 - Never a queue item of your own: Claude "may not invent items" (Task queues), so an added line carries only what the user dictated.
