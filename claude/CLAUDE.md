@@ -7,7 +7,37 @@ This file applies to every project. Per-repo facts (stack, run commands, domain 
 **Scope first: match rigor to task size.** Trivial work (typo, one-liner, obvious fix, rename, config tweak) → just do it, skip the ceremony. The clauses below apply to non-trivial work only. Do NOT turn small tasks into strategic meetings.
 
 - **Queue before code.** A feature, bug, or behavior ask ("X should do Y") is a capture, not a go-ahead. Unless I specifically say to do it now, ALWAYS offer to add it to the project's queue or capture it first, before reading code, asking design questions, or starting any implement workflow. This outranks a repo rule that triggers a workflow on a feature request. An attended session whose ask passes `/launch-now`'s bar offers it beside the queue or capture offer: run that command, which checks the bar and makes the one-line offer.
-- **Leftovers.** When a session ends with something still pending, sort it. Queue work (a bug, an idea, a successor) goes to the project's Inbox through `/capture`. Queue work that passes `/launch-now`'s bar is offered that command beside `/capture` in an attended session, as the command's own test defines attended; unattended, it stays a capture. The PR's own state (open, awaiting review, mergeable) goes nowhere, the PRs pane tracks it, and `## Post-deploy` lines stay in the PR body for the deploy checklist to register. Anything a later session needs at deploy time (what a qa line should expect, a known gap, a likely refusal) goes in the PR's `## Post-deploy` lines, inside the `qa:` or `watch:` line it belongs to, even after the merge (`gh pr edit`). Memory is per machine and never carries it. Everything else still pending (a check to run later, a click waiting on someone else, a cost running until stopped) is a follow-up: `claudeos followup add <P> --text --src --who [--when] [--cost]`, with the PR URL or `qN` as `--src`, `--who` `user` when I act, `claude` when a later session can, `user>claude` when I act and Claude checks, `--when` only for a known time, `--cost` only for a running cost. Attended (no `CLAUDEOS_JOB_ID`): offer one line per leftover with the full command, and run it on a yes. Unattended (`CLAUDEOS_JOB_ID` set): run the add with `--who user` and put each `fN` in the final message; a refused add is reported with its stderr line, never retried with changed text. A session with no project (no queue, no `qN`, no plan reference in the PR body) names the leftovers in its final message and registers nothing.
+- **Leftovers.** When a session ends with something still pending, sort it by these routes.
+  - Send queue work (a bug, an idea, a successor) to the project's Inbox through `/capture`.
+  - If queue work passes `/launch-now`'s bar in an attended session, offer that command beside `/capture`.
+  - The command's own test defines attended.
+  - In an unattended session, keep that queue work as a capture.
+  - Do not register the PR's own state (open, awaiting review, mergeable). The PRs pane tracks it.
+  - Leave `## Post-deploy` lines in the PR body. The deploy checklist registers them.
+  - Put deploy-time notes in the PR's `## Post-deploy` lines.
+    - A deploy-time note is anything a later session needs at deploy time.
+    - Examples are what a qa line should expect, a known gap, and a likely refusal.
+    - Put each note inside the `qa:` or `watch:` line it belongs to.
+    - Do this even after the merge (`gh pr edit`).
+  - Do not store deploy-time notes in memory. Memory is per machine and never carries them.
+  - Register everything else still pending as a follow-up.
+    - This covers a check to run later, a click waiting on someone else, and a cost running until stopped.
+    - Run `claudeos followup add <P> --text --src --who [--when] [--cost]`.
+    - Set `--src` to the PR URL or `qN`.
+    - When I act, set `--who` to `user`.
+    - When a later session can act, set `--who` to `claude`.
+    - When I act and Claude checks, set `--who` to `user>claude`.
+    - Set `--when` only for a known time.
+    - Set `--cost` only for a running cost.
+  - In an attended session (no `CLAUDEOS_JOB_ID`), offer one line per leftover with the full command.
+    - Run the command when I say yes.
+  - In an unattended session (`CLAUDEOS_JOB_ID` set), run the add with `--who user`.
+    - Put each `fN` in the final message.
+    - If the add is refused, report its stderr line.
+    - Never retry a refused add with changed text.
+  - A session has no project when it has no queue, no `qN`, and no plan reference in the PR body.
+    - In that case, name the leftovers in the final message.
+    - Register nothing.
 - **Think before coding.** Before writing code, restate the task to yourself as a verifiable goal: what observable behavior or output proves it done. Work toward that, not toward "looks plausible".
 - **Ask, don't assume.** If intent, architecture, or requirements are genuinely unclear, ask before writing code, but one round of focused questions, not interrogation. If a sensible default exists, state the assumption explicitly and proceed.
 - **Simplest solution first.** Minimum code that solves the stated problem. No unrequested abstractions, flexibility, or speculative error handling. Test: would a senior eng call this overcomplicated?
