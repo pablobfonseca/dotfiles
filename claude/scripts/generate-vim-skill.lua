@@ -29,9 +29,29 @@ local remove_function_and_end = function(text)
   return table.concat(result, "\n")
 end
 
+local drop_deprecated = function(lines)
+  local result = {}
+  local deprecated = false
+  for _, line in ipairs(lines) do
+    local trimmed = vim.trim(line)
+    if vim.startswith(trimmed, "---") then
+      if trimmed:match("@deprecated") then
+        deprecated = true
+      end
+      table.insert(result, line)
+    else
+      if not (deprecated and vim.startswith(trimmed, "function ")) then
+        table.insert(result, line)
+      end
+      deprecated = false
+    end
+  end
+  return result
+end
+
 local metas = {
   {
-    name = "api.lua",
+    name = "api.gen.lua",
     description = "The following are type stubs for all the functions available on `vim.api.*`. "
       .. "Prefer these functions where possible.",
     process = { remove_function_and_end },
@@ -41,7 +61,7 @@ local metas = {
     description = "Various APIs that are provided by Neovim, that are unique to the Lua API.",
   },
   {
-    name = "api_keysets.lua",
+    name = "api_keysets.gen.lua",
     description = "The following describe various types that are used in Neovim's API.",
   },
   {
@@ -49,11 +69,11 @@ local metas = {
     description = "Additional types that are used in Neovim's API.",
   },
   {
-    name = "builtin_types.lua",
+    name = "vimfn_types.lua",
     description = "Various types used by Neovim's builtin APIs.",
   },
   {
-    name = "vimfn.lua",
+    name = "vimfn.gen.lua",
     description = "Functions available from Neovim's vimscript APIs. They are available via `vim.fn.*`.",
     process = { remove_function_and_end },
   },
@@ -66,6 +86,7 @@ table.insert(read, "# Neovim Lua API Reference")
 table.insert(read, "")
 table.insert(read, "This document contains type stubs and API references for Neovim's Lua API.")
 table.insert(read, "Use this as a reference when writing Neovim plugins or configurations in Lua.")
+table.insert(read, "Generated from Neovim " .. tostring(vim.version()) .. ".")
 table.insert(read, "")
 
 for _, meta in ipairs(metas) do
@@ -75,6 +96,7 @@ for _, meta in ipairs(metas) do
     for i, line in ipairs(lines) do
       lines[i] = line:gsub("^%s+", ""):gsub("%s+$", ""):gsub("%s+", " ")
     end
+    lines = drop_deprecated(lines)
 
     local text = table.concat(lines, "\n")
     text = remove_all_comments(text)
@@ -86,7 +108,7 @@ for _, meta in ipairs(metas) do
 
     table.insert(read, "---")
     table.insert(read, "")
-    table.insert(read, "## " .. meta.name:gsub("%.lua$", ""))
+    table.insert(read, "## " .. meta.name:gsub("%.lua$", ""):gsub("%.gen$", ""))
     table.insert(read, "")
     table.insert(read, meta.description)
     table.insert(read, "")
@@ -95,7 +117,8 @@ for _, meta in ipairs(metas) do
     table.insert(read, "```")
     table.insert(read, "")
   else
-    io.stderr:write("Warning: Could not find " .. meta.name .. "\n")
+    io.stderr:write("Error: Could not find " .. meta.name .. "\n")
+    os.exit(1)
   end
 end
 

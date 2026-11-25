@@ -56,6 +56,7 @@ table.insert(read, "# Neovim Treesitter API Reference")
 table.insert(read, "")
 table.insert(read, "This document contains type stubs and API references for Neovim's treesitter Lua API.")
 table.insert(read, "Use this as a reference when working with treesitter in Neovim Lua.")
+table.insert(read, "Generated from Neovim " .. tostring(vim.version()) .. ".")
 table.insert(read, "")
 
 -- Process meta files (type stubs)
@@ -77,7 +78,8 @@ for _, meta in ipairs(metas) do
     table.insert(read, "```")
     table.insert(read, "")
   else
-    io.stderr:write("Warning: Could not find " .. meta.path .. "\n")
+    io.stderr:write("Error: Could not find " .. meta.path .. "\n")
+    os.exit(1)
   end
 end
 
