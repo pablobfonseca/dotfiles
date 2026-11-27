@@ -32,7 +32,7 @@ That help output is the syntax reference. Read it instead of guessing flags; thi
 |---|---|
 | Starting work on an item | `state <P> <qN> wip` |
 | Item shipped | `ship <P> <qN>` (sets state done and lane Shipped as one commit) |
-| Abandoning an item | `state <P> <qN> dropped --reason "<why>"` |
+| Abandoning an item | `state <P> <qN> dropped --reason '<why>'` |
 | Plan written for it | `mark <P> <qN> --plan '[[<P>/plans/<file>]]'` |
 | PR opened | `mark <P> <qN> --pr <url>` |
 | Re-sizing an item | `mark <P> <qN> --size XS\|S\|M\|L` |
@@ -42,7 +42,7 @@ That help output is the syntax reference. Read it instead of guessing flags; thi
 | New item | `add <P> '<text>' --lane <Lane> [--tag <t>]... [--size <s>]` (mints the ID; the text carries no marker, the flags do) |
 | Promoting an Inbox line | `claudeos inbox promote <P> '<raw>' '<text>' --lane <Lane> [--tag <t>]... [--size <s>]` (the one `claudeos inbox` verb that writes the queue: adds the line, stamps it, removes the raw line) |
 | Reading state before deciding | `dump <P>` or `find <P> <qN\|#N\|text>` |
-| Split, merge, reword, `> proposed:` blockquote | `edit <P> begin` → edit the printed path → `edit <P> commit -m "<what>"` |
+| Split, merge, reword, `> proposed:` blockquote | `edit <P> begin` → edit the printed path → `edit <P> commit -m '<what>'` |
 | Undoing a queue change you just made | `log <P>` to see it, then `undo <P>` |
 
 Single-line changes use the atomic subcommands. Reach for `edit` only when the change is genuinely free-form.
@@ -64,7 +64,7 @@ Report these, do not resolve them yourself:
 - `rebase conflict in …` — the transaction aborted the rebase. Never hand-resolve it.
 - `offline: this operation mints IDs` — `add` and `stamp` refuse offline on purpose. Wait for network; never hand-write the ID.
 - `queues repo has uncommitted changes …` — an `edit begin` is in flight, or a previous edit was left unfinished. Finish it with `edit commit`, or discard it; never work around the refusal.
-- `refusing: undoing … would remove ^qN` — `undo` will not free an ID for re-minting. Drop the line with `state <qN> dropped --reason "..."` instead.
+- `refusing: undoing … would remove ^qN` — `undo` will not free an ID for re-minting. Drop the line with `state <qN> dropped --reason '...'` instead.
 
 ## Common mistakes
 
